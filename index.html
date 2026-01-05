@@ -234,9 +234,9 @@
 
     <script>
         function selectCabana(number) {
-            sessionStorage.setItem('selectedCabana', number);
-            window.location.href = 'registro.html';
-        }
+    // Instead of sessionStorage, redirect directly to specific pages
+    window.location.href = `registro-cabana${number}.html`;
+}
     </script>
 </body>
 </html>
