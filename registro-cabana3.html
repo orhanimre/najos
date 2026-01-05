@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Huéspedes - Cabañas MariaMar</title>
+    <title>Registro Cabaña 3 - Cabañas MariaMar</title>
     <style>
         * {
             margin: 0;
@@ -171,10 +171,6 @@
             cursor: not-allowed;
         }
 
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-
         .message {
             padding: 16px;
             border-radius: 8px;
@@ -199,7 +195,7 @@
         <div class="header">
             <h1>Registro de Huéspedes</h1>
             <p>Cabañas MariaMar</p>
-            <div class="cabin-badge" id="cabinBadge"></div>
+            <div class="cabin-badge">Cabaña MariaMar-3</div>
         </div>
 
         <div class="form-content">
@@ -429,9 +425,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const selectedCabana = sessionStorage.getItem('selectedCabana') || 'No especificada';
-        document.getElementById('cabinBadge').textContent = `Cabaña MariaMar-${selectedCabana}`;
-
         const form = document.getElementById('registrationForm');
         const successMessage = document.getElementById('successMessage');
         const errorMessage = document.getElementById('errorMessage');
@@ -441,7 +434,7 @@
             
             const formData = new FormData(form);
             const data = {
-                cabana: `Cabaña MariaMar-${selectedCabana}`,
+                cabana: 'Cabaña MariaMar-3',
                 timestamp: serverTimestamp(),
                 nombre: formData.get('nombre'),
                 apellido: formData.get('apellido'),
