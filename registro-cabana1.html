@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro Cabaña 1 - Cabañas MariaMar</title>
+    <title>Registro Cabaña 2 - Cabañas MariaMar</title>
     <style>
         * {
             margin: 0;
@@ -25,6 +25,19 @@
             border-radius: 12px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            position: relative;
+        }
+
+        .logo {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            height: 90px;
+            z-index: 20;
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .header {
@@ -51,6 +64,13 @@
             border-radius: 20px;
             margin-top: 10px;
             font-weight: 600;
+        }
+
+        .banner-image {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            display: block;
         }
 
         .form-content {
@@ -192,11 +212,17 @@
 </head>
 <body>
     <div class="container">
+        <!-- Logo top-left -->
+        <img src="https://drive.google.com/uc?export=view&id=17BDL2NCnuP6EespndRxVX4bQqe7wgYjL" alt="Logo Cabañas MariaMar" class="logo">
+
         <div class="header">
             <h1>Registro de Huéspedes</h1>
             <p>Cabañas MariaMar</p>
-            <div class="cabin-badge">Cabaña MariaMar-1</div>
+            <div class="cabin-badge">Cabaña MariaMar-2</div>
         </div>
+
+        <!-- Panoramic banner image -->
+        <img src="https://drive.google.com/uc?export=view&id=1cG9leSPM16gy_x8aG5yRffgri03ezegz" alt="Cabaña MariaMar-2" class="banner-image">
 
         <div class="form-content">
             <div id="successMessage" class="message success-message"></div>
@@ -434,7 +460,7 @@
             
             const formData = new FormData(form);
             const data = {
-                cabana: 'Cabaña MariaMar-1',
+                cabana: 'Cabaña MariaMar-2',
                 timestamp: serverTimestamp(),
                 nombre: formData.get('nombre'),
                 apellido: formData.get('apellido'),
