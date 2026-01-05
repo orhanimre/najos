@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro Cabaña 2 - Cabañas MariaMar</title>
+    <title>Registro Cabaña 1 - Cabañas MariaMar</title>
     <style>
         * {
             margin: 0;
@@ -29,16 +29,31 @@
         }
 
         .logo {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            height: 90px;
-            z-index: 20;
-            background: white;
-            padding: 8px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
+          position: absolute;
+          top: 12px;
+           left: 12px;
+           height: 55px;           /* ⬅️ tamaño correcto */
+          z-index: 20;
+          background: white;
+          padding: 6px;
+        border-radius: 6px;
+       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+     }
+
+        @media (max-width: 600px) {
+         .logo {
+          height: 42px;       /* ⬅️ más pequeño en celular */
+          top: 10px;
+          left: 10px;
+          padding: 4px;
+     }
+
+    .header {
+        padding-top: 80px;  /* ⬅️ deja espacio al logo */
+    }
+}
+
+
 
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -468,7 +483,7 @@
                 tipoId: formData.get('tipoId'),
                 numeroId: formData.get('numeroId'),
                 ciudad: formData.get('ciudad'),
-                totalHuespedes: parseInt(formData.get('totalHuespedes')),
+                totalHuespedes: Number(formData.get('totalHuespedes') || 0),
                 fechaEntrada: formData.get('fechaEntrada'),
                 fechaSalida: formData.get('fechaSalida'),
                 comentario: formData.get('comentario'),
