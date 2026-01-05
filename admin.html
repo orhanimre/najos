@@ -22,16 +22,95 @@
             color: white;
             padding: 30px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .header h1 {
+        .header-left h1 {
             font-size: 28px;
             margin-bottom: 8px;
         }
 
-        .header p {
+        .header-left p {
             opacity: 0.9;
             font-size: 16px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-email {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-box {
+            background: white;
+            padding: 50px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .login-box h2 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .login-box p {
+            color: #718096;
+            margin-bottom: 30px;
+        }
+
+        .google-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 14px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .google-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .container {
@@ -175,75 +254,111 @@
         .export-btn:hover {
             background: #38a169;
         }
+
+        #loginScreen {
+            display: block;
+        }
+
+        #dashboardScreen {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>📊 Panel de Administración</h1>
-        <p>Cabañas MariaMar - Registros de Huéspedes</p>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-box">
+            <h2>🏡 Cabañas MariaMar</h2>
+            <p>Panel de Administración</p>
+            <p style="margin-top: 20px; color: #718096;">Inicia sesión con tu cuenta de Google para acceder al panel</p>
+            <button id="loginBtn" class="google-btn">
+                <svg width="20" height="20" viewBox="0 0 20 20">
+                    <path fill="#4285F4" d="M19.6 10.23c0-.82-.1-1.42-.25-2.05H10v3.72h5.5c-.15.96-.74 2.31-2.04 3.22v2.45h3.16c1.89-1.73 2.98-4.3 2.98-7.34z"/>
+                    <path fill="#34A853" d="M13.46 15.13c-.83.59-1.96 1-3.46 1-2.64 0-4.88-1.74-5.68-4.15H1.07v2.52C2.72 17.75 6.09 20 10 20c2.7 0 4.96-.89 6.62-2.42l-3.16-2.45z"/>
+                    <path fill="#FBBC05" d="M3.99 10c0-.69.12-1.35.32-1.97V5.51H1.07A9.973 9.973 0 000 10c0 1.61.39 3.14 1.07 4.49l3.24-2.52c-.2-.62-.32-1.28-.32-1.97z"/>
+                    <path fill="#EA4335" d="M10 3.88c1.88 0 3.13.81 3.85 1.48l2.84-2.76C14.96.99 12.7 0 10 0 6.09 0 2.72 2.25 1.07 5.51l3.24 2.52C5.12 5.62 7.36 3.88 10 3.88z"/>
+                </svg>
+                Iniciar sesión con Google
+            </button>
+        </div>
     </div>
 
-    <div class="container">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Total Registros</h3>
-                <div class="number" id="totalRegistros">-</div>
+    <!-- Dashboard Screen -->
+    <div id="dashboardScreen">
+        <div class="header">
+            <div class="header-left">
+                <h1>📊 Panel de Administración</h1>
+                <p>Cabañas MariaMar - Registros de Huéspedes</p>
             </div>
-            <div class="stat-card">
-                <h3>Cabaña 1</h3>
-                <div class="number" id="totalCabana1">-</div>
-            </div>
-            <div class="stat-card">
-                <h3>Cabaña 2</h3>
-                <div class="number" id="totalCabana2">-</div>
-            </div>
-            <div class="stat-card">
-                <h3>Cabaña 3</h3>
-                <div class="number" id="totalCabana3">-</div>
+            <div class="user-info">
+                <span class="user-email" id="userEmail"></span>
+                <button id="logoutBtn" class="logout-btn">Cerrar Sesión</button>
             </div>
         </div>
 
-        <div class="filters">
-            <select id="cabanaFilter">
-                <option value="">Todas las Cabañas</option>
-                <option value="Cabaña MariaMar-1">Cabaña 1</option>
-                <option value="Cabaña MariaMar-2">Cabaña 2</option>
-                <option value="Cabaña MariaMar-3">Cabaña 3</option>
-            </select>
-            <input type="date" id="fechaDesde" placeholder="Desde">
-            <input type="date" id="fechaHasta" placeholder="Hasta">
-            <button onclick="applyFilters()">Aplicar Filtros</button>
-            <button onclick="clearFilters()">Limpiar</button>
-        </div>
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Registros</h3>
+                    <div class="number" id="totalRegistros">-</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Cabaña 1</h3>
+                    <div class="number" id="totalCabana1">-</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Cabaña 2</h3>
+                    <div class="number" id="totalCabana2">-</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Cabaña 3</h3>
+                    <div class="number" id="totalCabana3">-</div>
+                </div>
+            </div>
 
-        <button class="export-btn" onclick="exportToCSV()">📥 Exportar a CSV</button>
+            <div class="filters">
+                <select id="cabanaFilter">
+                    <option value="">Todas las Cabañas</option>
+                    <option value="Cabaña MariaMar-1">Cabaña 1</option>
+                    <option value="Cabaña MariaMar-2">Cabaña 2</option>
+                    <option value="Cabaña MariaMar-3">Cabaña 3</option>
+                </select>
+                <input type="date" id="fechaDesde" placeholder="Desde">
+                <input type="date" id="fechaHasta" placeholder="Hasta">
+                <button onclick="applyFilters()">Aplicar Filtros</button>
+                <button onclick="clearFilters()">Limpiar</button>
+            </div>
 
-        <div class="table-container">
-            <div id="loading" class="loading">Cargando datos...</div>
-            <table id="dataTable" style="display: none;">
-                <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Cabaña</th>
-                        <th>Nombre Completo</th>
-                        <th>Celular</th>
-                        <th>Ciudad</th>
-                        <th>Entrada</th>
-                        <th>Salida</th>
-                        <th>Huéspedes</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                </tbody>
-            </table>
-            <div id="noData" class="no-data" style="display: none;">
-                No hay registros disponibles
+            <button class="export-btn" onclick="exportToCSV()">📥 Exportar a CSV</button>
+
+            <div class="table-container">
+                <div id="loading" class="loading">Cargando datos...</div>
+                <table id="dataTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Cabaña</th>
+                            <th>Nombre Completo</th>
+                            <th>Celular</th>
+                            <th>Ciudad</th>
+                            <th>Entrada</th>
+                            <th>Salida</th>
+                            <th>Huéspedes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+                <div id="noData" class="no-data" style="display: none;">
+                    No hay registros disponibles
+                </div>
             </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
         import { getFirestore, collection, query, orderBy, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         const firebaseConfig = {
@@ -257,9 +372,55 @@
         };
 
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
 
         let allRegistrations = [];
+
+        // Auth State Observer
+        // Auth State Observer
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // Check if user is authorized
+        const authorizedEmails = ['orhanimre@gmail.com', 'marizulynaranjo@gmail.com'];
+        
+        if (!authorizedEmails.includes(user.email)) {
+            alert('No tienes permisos para acceder a este panel.');
+            signOut(auth);
+            return;
+        }
+        
+        // User is signed in and authorized
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboardScreen').style.display = 'block';
+        document.getElementById('userEmail').textContent = user.email;
+        loadData();
+    } else {
+                // User is signed out
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('dashboardScreen').style.display = 'none';
+            }
+        });
+
+        // Login
+        document.getElementById('loginBtn').addEventListener('click', async () => {
+            try {
+                await signInWithPopup(auth, provider);
+            } catch (error) {
+                console.error('Error signing in:', error);
+                alert('Error al iniciar sesión. Por favor intenta nuevamente.');
+            }
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+            } catch (error) {
+                console.error('Error signing out:', error);
+            }
+        });
 
         async function loadData() {
             try {
@@ -278,7 +439,7 @@
                 
             } catch (error) {
                 console.error('Error loading data:', error);
-                document.getElementById('loading').innerHTML = 'Error al cargar los datos';
+                document.getElementById('loading').innerHTML = 'Error al cargar los datos: ' + error.message;
             }
         }
 
@@ -393,8 +554,6 @@
             link.click();
             document.body.removeChild(link);
         };
-
-        loadData();
     </script>
 </body>
 </html>
