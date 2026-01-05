@@ -172,6 +172,10 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
+        .stat-card.centered {
+            text-align: center;
+        }
+
         .stat-card h3 {
             color: #718096;
             font-size: 11px;
@@ -253,8 +257,13 @@
         }
 
         .filter-buttons {
-            display: flex;
+            display: none;
             gap: 8px;
+            margin-top: 10px;
+        }
+
+        .filter-buttons.show {
+            display: flex;
         }
 
         .filters select, .filters input {
@@ -567,7 +576,7 @@
         <div class="container">
             <div class="stats-grid">
                 <div class="stats-row full-width">
-                    <div class="stat-card">
+                    <div class="stat-card centered">
                         <h3>Total Registros</h3>
                         <div class="number" id="totalRegistros">-</div>
                     </div>
@@ -590,7 +599,7 @@
 
             <div class="filters">
                 <div class="filter-row">
-                    <select id="cabanaFilter">
+                    <select id="cabanaFilter" onchange="applyFilters()">
                         <option value="">Todas las Cabañas</option>
                         <option value="Cabaña MariaMar-1">Cabaña 1</option>
                         <option value="Cabaña MariaMar-2">Cabaña 2</option>
@@ -616,7 +625,7 @@
                     </div>
                 </div>
 
-                <div class="filter-buttons">
+                <div id="filterButtons" class="filter-buttons">
                     <button onclick="applyFilters()">Aplicar Filtros</button>
                     <button onclick="clearFilters()">Limpiar</button>
                 </div>
@@ -790,8 +799,9 @@
                 btn.classList.remove('active');
             });
             
-            // Hide custom dates
+            // Hide custom dates and filter buttons
             document.getElementById('customDates').classList.remove('show');
+            document.getElementById('filterButtons').classList.remove('show');
             
             switch(preset) {
                 case 'week':
@@ -825,6 +835,7 @@
 
         window.toggleCustomDates = function() {
             const customDates = document.getElementById('customDates');
+            const filterButtons = document.getElementById('filterButtons');
             const isShowing = customDates.classList.contains('show');
             
             // Clear all active states
@@ -834,10 +845,12 @@
             
             if (!isShowing) {
                 customDates.classList.add('show');
+                filterButtons.classList.add('show');
                 document.querySelectorAll('.preset-btn')[3].classList.add('active');
                 activePreset = 'custom';
             } else {
                 customDates.classList.remove('show');
+                filterButtons.classList.remove('show');
                 activePreset = null;
             }
         };
@@ -853,12 +866,10 @@
                 filtered = filtered.filter(r => r.cabana === cabanaFilter);
             }
             
-            if (fechaDesde) {
-                filtered = filtered.filter(r => r.fechaEntrada >= fechaDesde);
-            }
-            
-            if (fechaHasta) {
-                filtered = filtered.filter(r => r.fechaEntrada <= fechaHasta);
+            if (fechaDesde && fechaHasta) {
+                filtered = filtered.filter(r => {
+                    return r.fechaEntrada >= fechaDesde && r.fechaEntrada <= fechaHasta;
+                });
             }
             
             displayData(filtered);
@@ -869,6 +880,7 @@
             document.getElementById('fechaDesde').value = '';
             document.getElementById('fechaHasta').value = '';
             document.getElementById('customDates').classList.remove('show');
+            document.getElementById('filterButtons').classList.remove('show');
             
             // Clear all active states
             document.querySelectorAll('.preset-btn').forEach(btn => {
