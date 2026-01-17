@@ -503,15 +503,16 @@
 
       .detail-content {
         background: white;
-        border-radius: 24px;
+        border-radius: 20px;
         padding: 0;
-        max-width: 500px;
-        width: 100%;
-        max-height: 90vh;
+        max-width: 480px;
+        width: calc(100% - 32px);
+        max-height: 85vh;
         overflow-y: auto;
         position: relative;
         animation: slideUp 0.3s ease;
         box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+        margin: 16px;
       }
 
       @keyframes slideUp {
@@ -529,17 +530,17 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 20px 20px 16px 20px;
+        padding: 20px;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        border-radius: 24px 24px 0 0;
+        border-radius: 20px 20px 0 0;
         position: sticky;
         top: 0;
         z-index: 10;
       }
 
       .detail-header h3 {
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 700;
         margin: 0;
       }
@@ -567,13 +568,13 @@
       }
 
       .detail-body {
-        padding: 16px 20px;
+        padding: 20px;
       }
 
       .detail-row {
-        margin-bottom: 16px;
-        padding-bottom: 14px;
-        border-bottom: 1px solid #f0f0f0;
+        margin-bottom: 14px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e5e7eb;
       }
 
       .detail-row:last-child {
@@ -583,15 +584,13 @@
       }
 
       .detail-label {
-        font-size: 10px;
+        font-size: 11px;
         font-weight: 700;
         color: #9ca3af;
         text-transform: uppercase;
-        letter-spacing: 0.8px;
+        letter-spacing: 0.5px;
         margin-bottom: 6px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
+        display: block;
       }
 
       .detail-label::before {
@@ -607,6 +606,7 @@
         color: #1f2937;
         font-weight: 600;
         line-height: 1.4;
+        word-wrap: break-word;
       }
 
       .detail-value a {
@@ -621,11 +621,10 @@
       }
 
       .detail-actions {
-        padding: 16px 20px 20px 20px;
+        padding: 16px 20px;
         background: #f9fafb;
-        border-radius: 0 0 24px 24px;
-        position: sticky;
-        bottom: 0;
+        border-radius: 0 0 20px 20px;
+        border-top: 1px solid #e5e7eb;
       }
 
       .delete-btn {
