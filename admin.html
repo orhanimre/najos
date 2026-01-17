@@ -256,26 +256,26 @@
       }
 
       .delete-btn {
-  background: linear-gradient(135deg, #f56565 0%, #c53030 100%);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 13px;
-  transition: all 0.3s;
-  margin-top: 8px;
-}
+        background: linear-gradient(135deg, #f56565 0%, #c53030 100%);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 13px;
+        transition: all 0.3s;
+        margin-top: 8px;
+      }
 
-.delete-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(245, 101, 101, 0.3);
-}
+      .delete-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(245, 101, 101, 0.3);
+      }
 
-.delete-btn:active {
-  transform: translateY(0);
-}
+      .delete-btn:active {
+        transform: translateY(0);
+      }
 
       /* Filters */
       .filters {
@@ -488,7 +488,8 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
         z-index: 1000;
         padding: 20px;
         overflow-y: auto;
@@ -502,24 +503,25 @@
 
       .detail-content {
         background: white;
-        border-radius: 20px;
-        padding: 24px;
+        border-radius: 24px;
+        padding: 0;
         max-width: 500px;
         width: 100%;
         max-height: 90vh;
         overflow-y: auto;
         position: relative;
         animation: slideUp 0.3s ease;
+        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
       }
 
       @keyframes slideUp {
         from {
           opacity: 0;
-          transform: translateY(30px);
+          transform: translateY(50px) scale(0.95);
         }
         to {
           opacity: 1;
-          transform: translateY(0);
+          transform: translateY(0) scale(1);
         }
       }
 
@@ -527,53 +529,147 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 20px;
-        padding-bottom: 16px;
-        border-bottom: 2px solid #e2e8f0;
+        padding: 24px 24px 20px 24px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 24px 24px 0 0;
+        position: sticky;
+        top: 0;
+        z-index: 10;
       }
 
       .detail-header h3 {
-        font-size: 20px;
-        color: #2d3748;
+        font-size: 22px;
         font-weight: 700;
+        margin: 0;
       }
 
       .close-modal {
-        background: #f7fafc;
-        border: none;
-        width: 36px;
-        height: 36px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
         cursor: pointer;
-        font-size: 20px;
+        font-size: 22px;
         display: flex;
         align-items: center;
         justify-content: center;
         transition: all 0.3s;
+        color: white;
+        font-weight: bold;
       }
 
       .close-modal:hover {
-        background: #e2e8f0;
+        background: rgba(255, 255, 255, 0.3);
         transform: rotate(90deg);
       }
 
+      .detail-body {
+        padding: 24px;
+      }
+
       .detail-row {
-        margin-bottom: 16px;
+        margin-bottom: 24px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .detail-row:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
       }
 
       .detail-label {
-        font-size: 12px;
-        font-weight: 600;
-        color: #718096;
+        font-size: 11px;
+        font-weight: 700;
+        color: #9ca3af;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 6px;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .detail-label::before {
+        content: "";
+        width: 3px;
+        height: 12px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 2px;
       }
 
       .detail-value {
+        font-size: 16px;
+        color: #1f2937;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+
+      .detail-value a {
+        color: #667eea;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .detail-value a:hover {
+        color: #764ba2;
+        text-decoration: underline;
+      }
+
+      .detail-actions {
+        padding: 20px 24px 24px 24px;
+        background: #f9fafb;
+        border-radius: 0 0 24px 24px;
+        position: sticky;
+        bottom: 0;
+      }
+
+      .delete-btn {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: white;
+        border: none;
+        padding: 14px 24px;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 700;
         font-size: 15px;
-        color: #2d3748;
-        font-weight: 500;
+        transition: all 0.3s;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+      }
+
+      .delete-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+      }
+
+      .delete-btn:active {
+        transform: translateY(0);
+      }
+
+      /* Special styling for cabin badge in modal */
+      .detail-value .cabin-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      /* Icon styles for detail labels */
+      .detail-icon {
+        font-size: 16px;
+        margin-right: 4px;
       }
 
       /* Desktop styles */
@@ -804,6 +900,90 @@
         }
       }
 
+      .tap-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  color: white;
+  font-size: 14px;
+  margin-left: 8px;
+  animation: tap-bounce 2s infinite;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+@keyframes tap-bounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+/* Add visual feedback for clickable rows */
+tbody tr.clickable {
+  cursor: pointer;
+  position: relative;
+}
+
+tbody tr.clickable::after {
+  content: '';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #667eea;
+  border-bottom: 2px solid #667eea;
+  transform: translateY(-50%) rotate(-45deg);
+  opacity: 0.5;
+}
+
+tbody tr.clickable:active::after {
+  opacity: 1;
+}
+.tap-col {
+  width: 50px;
+  text-align: center;
+  padding: 14px 8px !important;
+}
+
+.tap-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-details-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px;
+  color: white;
+  font-size: 18px;
+  animation: pulse 2s infinite;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+    transform: scale(1.05);
+  }
+}
+
       @media (min-width: 640px) and (max-width: 767px) {
         .stats-grid {
           grid-template-columns: repeat(2, 1fr);
@@ -944,19 +1124,19 @@
           <div class="table-scroll">
             <table id="dataTable" class="mobile-view" style="display: none">
               <thead>
-  <tr>
-    <th class="mobile-col">#</th>
-    <th class="mobile-col">Fecha</th>
-    <th class="mobile-col">Cabaña</th>
-    <th class="mobile-col">Nombre</th>
-    <th>Celular</th>
-    <th>Ciudad</th>
-    <th>Entrada</th>
-    <th>Salida</th>
-    <th>Huéspedes</th>
-    <th>Acciones</th>
-  </tr>
-</thead>
+                <tr>
+                  <th class="mobile-col">#</th>
+                  <th class="mobile-col">Fecha</th>
+                  <th class="mobile-col">Cabaña</th>
+                  <th class="mobile-col">Nombre</th>
+                  <th>Celular</th>
+                  <th>Ciudad</th>
+                  <th>Entrada</th>
+                  <th>Salida</th>
+                  <th>Huéspedes</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
               <tbody id="tableBody"></tbody>
             </table>
           </div>
@@ -988,14 +1168,14 @@
         signOut,
       } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
       import {
-  getFirestore,
-  collection,
-  query,
-  orderBy,
-  getDocs,
-  deleteDoc,
-  doc,
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        getFirestore,
+        collection,
+        query,
+        orderBy,
+        getDocs,
+        deleteDoc,
+        doc,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyACEyCsx-4lhITc8s06QyZPQiS9t3f7I18",
@@ -1147,7 +1327,10 @@
       <td class="mobile-col">${index + 1}</td>
       <td class="mobile-col">${formatDateTime(timestamp)}</td>
       <td class="mobile-col"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></td>
-      <td class="mobile-col">${reg.nombre} ${reg.apellido} ${isMobile ? '<span class="tap-icon">👆</span>' : ""}</td>
+      <td class="mobile-col">
+        ${reg.nombre} ${reg.apellido}
+        ${isMobile ? '<span class="tap-indicator">👉</span>' : ''}
+      </td>
       <td>${reg.celular}</td>
       <td>${reg.ciudad}</td>
       <td>${reg.fechaEntrada}</td>
@@ -1221,30 +1404,36 @@
         }
       };
 
-      window.deleteRegistration = async function(registrationId, event) {
-  event.stopPropagation(); // Prevent row click on mobile
-  
-  if (!confirm('¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.')) {
-    return;
-  }
+      window.deleteRegistration = async function (registrationId, event) {
+        event.stopPropagation(); // Prevent row click on mobile
 
-  try {
-    // Delete from Firestore
-    await deleteDoc(doc(db, 'registrations', registrationId));
-    
-    // Remove from local array
-    allRegistrations = allRegistrations.filter(r => r.id !== registrationId);
-    
-    // Update UI
-    updateStats();
-    displayData(allRegistrations);
-    
-    alert('Registro eliminado exitosamente');
-  } catch (error) {
-    console.error('Error deleting registration:', error);
-    alert('Error al eliminar el registro. Por favor intenta nuevamente.');
-  }
-};
+        if (
+          !confirm(
+            "¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.",
+          )
+        ) {
+          return;
+        }
+
+        try {
+          // Delete from Firestore
+          await deleteDoc(doc(db, "registrations", registrationId));
+
+          // Remove from local array
+          allRegistrations = allRegistrations.filter(
+            (r) => r.id !== registrationId,
+          );
+
+          // Update UI
+          updateStats();
+          displayData(allRegistrations);
+
+          alert("Registro eliminado exitosamente");
+        } catch (error) {
+          console.error("Error deleting registration:", error);
+          alert("Error al eliminar el registro. Por favor intenta nuevamente.");
+        }
+      };
 
       window.applyFilters = function () {
         const cabanaFilter = document.getElementById("cabanaFilter").value;
@@ -1279,83 +1468,87 @@
       };
 
       window.showDetailModal = function (reg) {
-  const isMobile = window.innerWidth < 768;
-  if (!isMobile) return;
+        const isMobile = window.innerWidth < 768;
+        if (!isMobile) return;
 
-  const modal = document.getElementById("detailModal");
-  const detailBody = document.getElementById("detailBody");
-  const timestamp = reg.timestamp
-    ? new Date(reg.timestamp.seconds * 1000)
-    : new Date();
-  const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
+        const modal = document.getElementById("detailModal");
+        const detailBody = document.getElementById("detailBody");
+        const timestamp = reg.timestamp
+          ? new Date(reg.timestamp.seconds * 1000)
+          : new Date();
+        const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
 
-  // Format: 05.01.2026 16:28
-  const formatDateTime = (date) => {
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    return `${day}.${month}.${year} ${hours}:${minutes}`;
-  };
+        // Format: 05.01.2026 16:28
+        const formatDateTime = (date) => {
+          const day = String(date.getDate()).padStart(2, "0");
+          const month = String(date.getMonth() + 1).padStart(2, "0");
+          const year = date.getFullYear();
+          const hours = String(date.getHours()).padStart(2, "0");
+          const minutes = String(date.getMinutes()).padStart(2, "0");
+          return `${day}.${month}.${year} ${hours}:${minutes}`;
+        };
 
-  detailBody.innerHTML = `
+        detailBody.innerHTML = `
     <div class="detail-row">
-        <div class="detail-label">Fecha de Registro</div>
+        <div class="detail-label">📅 Fecha de Registro</div>
         <div class="detail-value">${formatDateTime(timestamp)}</div>
     </div>
     <div class="detail-row">
-        <div class="detail-label">Cabaña</div>
+        <div class="detail-label">🏡 Cabaña</div>
         <div class="detail-value"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></div>
     </div>
     <div class="detail-row">
-        <div class="detail-label">Nombre Completo</div>
+        <div class="detail-label">👤 Nombre Completo</div>
         <div class="detail-value">${reg.nombre} ${reg.apellido}</div>
     </div>
     <div class="detail-row">
-        <div class="detail-label">Celular</div>
-        <div class="detail-value">${reg.celular || "N/A"}</div>
+        <div class="detail-label">📱 Celular</div>
+        <div class="detail-value"><a href="tel:${reg.celular}">${reg.celular || "N/A"}</a></div>
     </div>
     <div class="detail-row">
-        <div class="detail-label">Tipo de ID</div>
+        <div class="detail-label">🆔 Tipo de Identificación</div>
         <div class="detail-value">${reg.tipoId || "N/A"}</div>
     </div>
     <div class="detail-row">
-        <div class="detail-label">Número de ID</div>
+        <div class="detail-label">🔢 Número de Identificación</div>
         <div class="detail-value">${reg.numeroId || "N/A"}</div>
     </div>
     <div class="detail-row">
-        <div class="detail-label">Ciudad</div>
+        <div class="detail-label">📍 Ciudad</div>
         <div class="detail-value">${reg.ciudad || "N/A"}</div>
     </div>
     <div class="detail-row">
-        <div class="detail-label">Total Huéspedes</div>
+        <div class="detail-label">👥 Total de Huéspedes</div>
         <div class="detail-value">${reg.totalHuespedes || "N/A"}</div>
     </div>
     <div class="detail-row">
-        <div class="detail-label">Fecha de Entrada</div>
+        <div class="detail-label">📆 Fecha de Entrada</div>
         <div class="detail-value">${reg.fechaEntrada || "N/A"}</div>
     </div>
     <div class="detail-row">
-        <div class="detail-label">Fecha de Salida</div>
+        <div class="detail-label">📆 Fecha de Salida</div>
         <div class="detail-value">${reg.fechaSalida || "N/A"}</div>
     </div>
-    ${reg.comentario ? `
+    ${
+      reg.comentario
+        ? `
         <div class="detail-row">
-            <div class="detail-label">Comentarios</div>
+            <div class="detail-label">💬 Comentarios</div>
             <div class="detail-value">${reg.comentario}</div>
         </div>
-    ` : ''}
-    <div class="detail-row" style="margin-top: 24px;">
-        <button class="delete-btn" onclick="deleteRegistration('${reg.id}', event); closeDetailModal();" style="width: 100%; margin-top: 0;">
+    `
+        : ""
+    }
+    <div class="detail-actions">
+        <button class="delete-btn" onclick="deleteRegistration('${reg.id}', event); closeDetailModal();">
             🗑️ Eliminar este registro
         </button>
     </div>
   `;
 
-  modal.classList.add("show");
-  document.body.style.overflow = "hidden";
-};
+        modal.classList.add("show");
+        document.body.style.overflow = "hidden";
+      };
 
       window.closeDetailModal = function () {
         const modal = document.getElementById("detailModal");
