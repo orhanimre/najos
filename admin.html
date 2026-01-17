@@ -101,11 +101,16 @@
       }
 
       .header-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 16px;
-      }
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.header-top-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 
       .header-left h1 {
         font-size: 20px;
@@ -676,9 +681,11 @@
 
       /* Desktop styles */
       @media (min-width: 768px) {
-        .header {
-          padding: 24px 30px;
-        }
+  .header-top {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 
         .header-left h1 {
           font-size: 28px;
@@ -1034,15 +1041,17 @@
       <div class="header">
         <div class="header-content">
           <div class="header-top">
-            <div class="header-left">
-              <h1>📊 Panel de Administración</h1>
-              <p>Cabañas MariaMar - Registros de Huéspedes</p>
-            </div>
-            <div class="user-info">
-              <span class="user-email" id="userEmail"></span>
-              <button id="logoutBtn" class="logout-btn">Cerrar Sesión</button>
-            </div>
-          </div>
+  <div class="header-top-row">
+    <div class="user-info">
+      <span class="user-email" id="userEmail"></span>
+      <button id="logoutBtn" class="logout-btn">Cerrar Sesión</button>
+    </div>
+  </div>
+  <div class="header-left">
+    <h1>📊 Panel de Administración</h1>
+    <p>Cabañas MariaMar - Registros de Huéspedes</p>
+  </div>
+</div>
         </div>
       </div>
 
