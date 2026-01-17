@@ -29,36 +29,24 @@
         }
 
         .logo {
-          position: absolute;
-          top: 12px;
-           left: 12px;
-           height: 55px;           /* ⬅️ tamaño correcto */
-          z-index: 20;
-          background: white;
-          padding: 6px;
-        border-radius: 6px;
-       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-     }
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
 
         @media (max-width: 600px) {
-         .logo {
-          height: 42px;       /* ⬅️ más pequeño en celular */
-          top: 10px;
-          left: 10px;
-          padding: 4px;
-     }
-
-    .header {
-        padding-top: 80px;  /* ⬅️ deja espacio al logo */
-    }
-}
-
-
+            .logo {
+                max-width: 200px;
+                margin-bottom: 15px;
+            }
+        }
 
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 40px 30px;
+            padding: 30px 30px 40px 30px;
             text-align: center;
         }
 
@@ -227,10 +215,10 @@
 </head>
 <body>
     <div class="container">
-        <!-- Logo top-left --->
-        <img src="https://i.imgur.com/tWfkFP8.jpg" alt="Logo Cabañas MariaMar" class="logo">
-
         <div class="header">
+            <!-- Logo inside header, centered, no border --->
+            <img src="https://i.imgur.com/tWfkFP8.jpg" alt="Logo Cabañas MariaMar" class="logo">
+            
             <h1>Registro de Huéspedes</h1>
             <p>Cabañas MariaMar</p>
             <div class="cabin-badge">Cabaña MariaMar-1</div>
@@ -554,5 +542,3 @@
     </script>
 </body>
 </html>
-
-<!-- FIN --->
