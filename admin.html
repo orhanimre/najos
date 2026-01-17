@@ -1471,6 +1471,16 @@
         displayData(allRegistrations);
       };
 
+      function formatIdType(idType) {
+        const idTypes = {
+          cc: "Cédula de Ciudadanía (CC)",
+          ce: "Cédula de Extranjería (CE)",
+          ti: "Tarjeta de Identidad (TI)",
+          pasaporte: "Pasaporte",
+        };
+        return idTypes[idType] || idType || "N/A";
+      }
+
       window.showDetailModal = function (reg) {
         const isMobile = window.innerWidth < 768;
         if (!isMobile) return;
@@ -1507,77 +1517,67 @@
         for (let i = 1; i <= 5; i++) {
           if (hasCompanionData(i)) {
             companionsHTML += `
-        <div class="detail-row">
-          <div class="detail-label" data-icon="👤">Acompañante ${i}</div>
-          <div class="detail-value">
-            <strong>Nombre:</strong> ${reg[`acomp${i}Nombre`] || "N/A"} ${reg[`acomp${i}Apellido`] || ""}<br>
-            <strong>ID:</strong> ${reg[`acomp${i}TipoId`] || "N/A"} - ${reg[`acomp${i}NumId`] || "N/A"}
-          </div>
+      <div class="detail-row">
+        <div class="detail-label" data-icon="👤">Acompañante ${i}</div>
+        <div class="detail-value">
+          <strong>Nombre:</strong> ${reg[`acomp${i}Nombre`] || "N/A"} ${reg[`acomp${i}Apellido`] || ""}<br>
+          <strong>Identificación:</strong> ${formatIdType(reg[`acomp${i}TipoId`])} - ${reg[`acomp${i}NumId`] || "N/A"}
         </div>
-      `;
+      </div>
+    `;
           }
         }
 
         detailBody.innerHTML = `
-    <div class="detail-body">
-      <div class="detail-row">
-        <div class="detail-label" data-icon="📅">Fecha de Registro</div>
-        <div class="detail-value">${formatDateTime(timestamp)}</div>
-      </div>
-      <div class="detail-row">
-        <div class="detail-label" data-icon="🏡">Cabaña</div>
-        <div class="detail-value"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></div>
-      </div>
-      <div class="detail-row">
-        <div class="detail-label" data-icon="👤">Nombre Completo</div>
-        <div class="detail-value">${reg.nombre} ${reg.apellido}</div>
-      </div>
-      <div class="detail-row">
-        <div class="detail-label" data-icon="📱">Celular</div>
-        <div class="detail-value"><a href="tel:${reg.celular}">${reg.celular || "N/A"}</a></div>
-      </div>
-      <div class="detail-row">
-        <div class="detail-label" data-icon="🆔">Tipo de Identificación</div>
-        <div class="detail-value">${reg.tipoId || "N/A"}</div>
-      </div>
-      <div class="detail-row">
-        <div class="detail-label" data-icon="🔢">Número de Identificación</div>
-        <div class="detail-value">${reg.numeroId || "N/A"}</div>
-      </div>
-      <div class="detail-row">
-        <div class="detail-label" data-icon="📍">Ciudad</div>
-        <div class="detail-value">${reg.ciudad || "N/A"}</div>
-      </div>
-      <div class="detail-row">
-        <div class="detail-label" data-icon="👥">Total de Huéspedes</div>
-        <div class="detail-value">${reg.totalHuespedes || "N/A"}</div>
-      </div>
-      <div class="detail-row">
-        <div class="detail-label" data-icon="📆">Fecha de Entrada</div>
-        <div class="detail-value">${reg.fechaEntrada || "N/A"}</div>
-      </div>
-      <div class="detail-row">
-        <div class="detail-label" data-icon="📆">Fecha de Salida</div>
-        <div class="detail-value">${reg.fechaSalida || "N/A"}</div>
-      </div>
-      ${companionsHTML}
-      ${
-        reg.comentario
-          ? `
-        <div class="detail-row">
-          <div class="detail-label" data-icon="💬">Comentarios</div>
-          <div class="detail-value">${reg.comentario}</div>
-        </div>
-      `
-          : ""
-      }
+  <div class="detail-body">
+    <div class="detail-row">
+      <div class="detail-label" data-icon="📅">Fecha de Registro</div>
+      <div class="detail-value">${formatDateTime(timestamp)}</div>
     </div>
-    <div class="detail-actions">
-      <button class="delete-btn" onclick="deleteRegistration('${reg.id}', event); closeDetailModal();">
-        🗑️ Eliminar este registro
-      </button>
+    
+    <div class="detail-row">
+      <div class="detail-label" data-icon="🏡">Cabaña</div>
+      <div class="detail-value"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></div>
     </div>
-  `;
+    
+    <div class="detail-row">
+      <div class="detail-label" data-icon="👤">Huésped Principal</div>
+      <div class="detail-value">
+        <strong>${reg.nombre} ${reg.apellido}</strong><br>
+        📱 <a href="tel:${reg.celular}">${reg.celular || "N/A"}</a><br>
+        🆔 ${formatIdType(reg.tipoId)} - ${reg.numeroId || "N/A"}<br>
+        📍 ${reg.ciudad || "N/A"}
+      </div>
+    </div>
+    
+    <div class="detail-row">
+      <div class="detail-label" data-icon="📆">Estadía</div>
+      <div class="detail-value">
+        <strong>Entrada:</strong> ${reg.fechaEntrada || "N/A"}<br>
+        <strong>Salida:</strong> ${reg.fechaSalida || "N/A"}<br>
+        <strong>Huéspedes:</strong> ${reg.totalHuespedes || "N/A"} personas
+      </div>
+    </div>
+    
+    ${companionsHTML}
+    
+    ${
+      reg.comentario
+        ? `
+      <div class="detail-row">
+        <div class="detail-label" data-icon="💬">Comentarios</div>
+        <div class="detail-value">${reg.comentario}</div>
+      </div>
+    `
+        : ""
+    }
+  </div>
+  <div class="detail-actions">
+    <button class="delete-btn" onclick="deleteRegistration('${reg.id}', event); closeDetailModal();">
+      🗑️ Eliminar este registro
+    </button>
+  </div>
+`;
 
         modal.classList.add("show");
         document.body.style.overflow = "hidden";
