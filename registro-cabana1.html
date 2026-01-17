@@ -1038,6 +1038,23 @@
                 input.addEventListener('change', () => checkCompanionFilled(i));
             });
         }
+
+        // Auto-scroll to focused input on mobile
+        const allInputs = document.querySelectorAll('input, select, textarea');
+        allInputs.forEach(input => {
+            input.addEventListener('focus', function(e) {
+                setTimeout(() => {
+                    const element = e.target;
+                    const rect = element.getBoundingClientRect();
+                    const offset = rect.top + window.pageYOffset - 100;
+                    
+                    window.scrollTo({
+                        top: offset,
+                        behavior: 'smooth'
+                    });
+                }, 300);
+            });
+        });
     </script>
 </body>
 </html>
