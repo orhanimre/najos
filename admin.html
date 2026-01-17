@@ -101,16 +101,16 @@
       }
 
       .header-top {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
 
-.header-top-row {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
+      .header-top-row {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
 
       .header-left h1 {
         font-size: 20px;
@@ -681,11 +681,11 @@
 
       /* Desktop styles */
       @media (min-width: 768px) {
-  .header-top {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
+        .header-top {
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+        }
 
         .header-left h1 {
           font-size: 28px;
@@ -934,29 +934,11 @@
         }
       }
 
-      /* Add visual feedback for clickable rows */
       tbody tr.clickable {
         cursor: pointer;
         position: relative;
       }
 
-      tbody tr.clickable::after {
-        content: "";
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 8px;
-        height: 8px;
-        border-right: 2px solid #667eea;
-        border-bottom: 2px solid #667eea;
-        transform: translateY(-50%) rotate(-45deg);
-        opacity: 0.5;
-      }
-
-      tbody tr.clickable:active::after {
-        opacity: 1;
-      }
       .tap-col {
         width: 50px;
         text-align: center;
@@ -1041,17 +1023,17 @@
       <div class="header">
         <div class="header-content">
           <div class="header-top">
-  <div class="header-top-row">
-    <div class="user-info">
-      <span class="user-email" id="userEmail"></span>
-      <button id="logoutBtn" class="logout-btn">Cerrar Sesión</button>
-    </div>
-  </div>
-  <div class="header-left">
-    <h1>📊 Panel de Administración</h1>
-    <p>Cabañas MariaMar - Registros de Huéspedes</p>
-  </div>
-</div>
+            <div class="header-top-row">
+              <div class="user-info">
+                <span class="user-email" id="userEmail"></span>
+                <button id="logoutBtn" class="logout-btn">Cerrar Sesión</button>
+              </div>
+            </div>
+            <div class="header-left">
+              <h1>📊 Panel de Administración</h1>
+              <p>Cabañas MariaMar - Registros de Huéspedes</p>
+            </div>
+          </div>
         </div>
       </div>
 
