@@ -653,13 +653,13 @@
 
                     <div class="form-group">
                         <label for="numeroId">Número de Identificación <span class="required">*</span></label>
-                        <input type="text" id="numeroId" name="numeroId" required placeholder="Ej: 1234567890">
+                        <input type="text" id="numeroId" name="numeroId" required placeholder="Ej: 1234567890" autocomplete="off">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="ciudad">Ciudad de Procedencia <span class="required">*</span></label>
-                    <input type="text" id="ciudad" name="ciudad" required placeholder="Ej: Bogotá, Medellín, Cali">
+                    <input type="text" id="ciudad" name="ciudad" required placeholder="Ej: Bogotá, Medellín, Cali" autocomplete="address-level2">
                 </div>
 
                 <div class="section-header">Detalles de la Reserva</div>
@@ -905,6 +905,20 @@
         const form = document.getElementById('registrationForm');
         const successMessage = document.getElementById('successMessage');
         const errorMessage = document.getElementById('errorMessage');
+
+        // Custom Spanish validation messages
+        const requiredInputs = document.querySelectorAll('[required]');
+        requiredInputs.forEach(input => {
+            input.addEventListener('invalid', function(e) {
+                e.preventDefault();
+                if (input.validity.valueMissing) {
+                    input.setCustomValidity('Por favor complete este campo');
+                }
+            });
+            input.addEventListener('input', function() {
+                input.setCustomValidity('');
+            });
+        });
 
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
