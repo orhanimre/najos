@@ -1024,7 +1024,7 @@
             
             const companionGroup = document.getElementById(`acomp${num}Nombre`).closest('.companion-group');
             
-            if (nombre || apellido || tipoId || numId) {
+            if (nombre && apellido && tipoId && numId) {
                 companionGroup.classList.add('filled');
             } else {
                 companionGroup.classList.remove('filled');
