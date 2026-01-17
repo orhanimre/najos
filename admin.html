@@ -568,49 +568,49 @@
       }
 
       .detail-body {
-  padding: 24px;
-}
+        padding: 24px;
+      }
 
-.detail-row {
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e5e7eb;
-}
+      .detail-row {
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #e5e7eb;
+      }
 
-.detail-row:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
+      .detail-row:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
 
-.detail-label {
-  font-size: 10px;
-  font-weight: 700;
-  color: #9ca3af;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: 8px;
-  margin-left: 32px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+      .detail-label {
+        font-size: 10px;
+        font-weight: 700;
+        color: #9ca3af;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin-bottom: 8px;
+        margin-left: 32px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
 
-.detail-label::before {
-  content: attr(data-icon);
-  position: absolute;
-  left: 24px;
-  font-size: 16px;
-}
+      .detail-label::before {
+        content: attr(data-icon);
+        position: absolute;
+        left: 24px;
+        font-size: 16px;
+      }
 
-.detail-value {
-  font-size: 16px;
-  color: #1f2937;
-  font-weight: 600;
-  line-height: 1.5;
-  word-wrap: break-word;
-  margin-left: 32px;
-}
+      .detail-value {
+        font-size: 16px;
+        color: #1f2937;
+        font-weight: 600;
+        line-height: 1.5;
+        word-wrap: break-word;
+        margin-left: 32px;
+      }
 
       .detail-value a {
         color: #667eea;
@@ -1492,61 +1492,92 @@
           return `${day}.${month}.${year} ${hours}:${minutes}`;
         };
 
+        // Function to check if companion has data
+        const hasCompanionData = (num) => {
+          return (
+            reg[`acomp${num}Nombre`] ||
+            reg[`acomp${num}Apellido`] ||
+            reg[`acomp${num}TipoId`] ||
+            reg[`acomp${num}NumId`]
+          );
+        };
+
+        // Build companions section
+        let companionsHTML = "";
+        for (let i = 1; i <= 5; i++) {
+          if (hasCompanionData(i)) {
+            companionsHTML += `
+        <div class="detail-row">
+          <div class="detail-label" data-icon="👤">Acompañante ${i}</div>
+          <div class="detail-value">
+            <strong>Nombre:</strong> ${reg[`acomp${i}Nombre`] || "N/A"} ${reg[`acomp${i}Apellido`] || ""}<br>
+            <strong>ID:</strong> ${reg[`acomp${i}TipoId`] || "N/A"} - ${reg[`acomp${i}NumId`] || "N/A"}
+          </div>
+        </div>
+      `;
+          }
+        }
+
         detailBody.innerHTML = `
-  <div class="detail-body">
-    <div class="detail-row">
-      <div class="detail-label" data-icon="📅">Fecha de Registro</div>
-      <div class="detail-value">${formatDateTime(timestamp)}</div>
-    </div>
-    <div class="detail-row">
-      <div class="detail-label" data-icon="🏡">Cabaña</div>
-      <div class="detail-value"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></div>
-    </div>
-    <div class="detail-row">
-      <div class="detail-label" data-icon="👤">Nombre Completo</div>
-      <div class="detail-value">${reg.nombre} ${reg.apellido}</div>
-    </div>
-    <div class="detail-row">
-      <div class="detail-label" data-icon="📱">Celular</div>
-      <div class="detail-value"><a href="tel:${reg.celular}">${reg.celular || "N/A"}</a></div>
-    </div>
-    <div class="detail-row">
-      <div class="detail-label" data-icon="🆔">Tipo de Identificación</div>
-      <div class="detail-value">${reg.tipoId || "N/A"}</div>
-    </div>
-    <div class="detail-row">
-      <div class="detail-label" data-icon="🔢">Número de Identificación</div>
-      <div class="detail-value">${reg.numeroId || "N/A"}</div>
-    </div>
-    <div class="detail-row">
-      <div class="detail-label" data-icon="📍">Ciudad</div>
-      <div class="detail-value">${reg.ciudad || "N/A"}</div>
-    </div>
-    <div class="detail-row">
-      <div class="detail-label" data-icon="👥">Total de Huéspedes</div>
-      <div class="detail-value">${reg.totalHuespedes || "N/A"}</div>
-    </div>
-    <div class="detail-row">
-      <div class="detail-label" data-icon="📆">Fecha de Entrada</div>
-      <div class="detail-value">${reg.fechaEntrada || "N/A"}</div>
-    </div>
-    <div class="detail-row">
-      <div class="detail-label" data-icon="📆">Fecha de Salida</div>
-      <div class="detail-value">${reg.fechaSalida || "N/A"}</div>
-    </div>
-    ${reg.comentario ? `
+    <div class="detail-body">
       <div class="detail-row">
-        <div class="detail-label" data-icon="💬">Comentarios</div>
-        <div class="detail-value">${reg.comentario}</div>
+        <div class="detail-label" data-icon="📅">Fecha de Registro</div>
+        <div class="detail-value">${formatDateTime(timestamp)}</div>
       </div>
-    ` : ""}
-  </div>
-  <div class="detail-actions">
-    <button class="delete-btn" onclick="deleteRegistration('${reg.id}', event); closeDetailModal();">
-      🗑️ Eliminar este registro
-    </button>
-  </div>
-`;
+      <div class="detail-row">
+        <div class="detail-label" data-icon="🏡">Cabaña</div>
+        <div class="detail-value"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label" data-icon="👤">Nombre Completo</div>
+        <div class="detail-value">${reg.nombre} ${reg.apellido}</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label" data-icon="📱">Celular</div>
+        <div class="detail-value"><a href="tel:${reg.celular}">${reg.celular || "N/A"}</a></div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label" data-icon="🆔">Tipo de Identificación</div>
+        <div class="detail-value">${reg.tipoId || "N/A"}</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label" data-icon="🔢">Número de Identificación</div>
+        <div class="detail-value">${reg.numeroId || "N/A"}</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label" data-icon="📍">Ciudad</div>
+        <div class="detail-value">${reg.ciudad || "N/A"}</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label" data-icon="👥">Total de Huéspedes</div>
+        <div class="detail-value">${reg.totalHuespedes || "N/A"}</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label" data-icon="📆">Fecha de Entrada</div>
+        <div class="detail-value">${reg.fechaEntrada || "N/A"}</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label" data-icon="📆">Fecha de Salida</div>
+        <div class="detail-value">${reg.fechaSalida || "N/A"}</div>
+      </div>
+      ${companionsHTML}
+      ${
+        reg.comentario
+          ? `
+        <div class="detail-row">
+          <div class="detail-label" data-icon="💬">Comentarios</div>
+          <div class="detail-value">${reg.comentario}</div>
+        </div>
+      `
+          : ""
+      }
+    </div>
+    <div class="detail-actions">
+      <button class="delete-btn" onclick="deleteRegistration('${reg.id}', event); closeDetailModal();">
+        🗑️ Eliminar este registro
+      </button>
+    </div>
+  `;
 
         modal.classList.add("show");
         document.body.style.overflow = "hidden";
