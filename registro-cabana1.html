@@ -260,6 +260,23 @@
             border-radius: 3px;
         }
 
+        .companion-group.filled {
+            border-color: #48bb78;
+            background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%);
+        }
+
+        .companion-group.filled .companion-header {
+            background: #f0fff4;
+        }
+
+        .companion-group.filled .companion-title {
+            color: #48bb78;
+        }
+
+        .companion-group.filled .toggle-icon {
+            color: #48bb78;
+        }
+
         .companion-group {
             background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
             padding: 0;
@@ -885,14 +902,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        window.toggleCompanion = function(num) {
-            const fields = document.getElementById(`fields${num}`);
-            const toggle = document.getElementById(`toggle${num}`);
-            
-            fields.classList.toggle('open');
-            toggle.classList.toggle('open');
-        };
-
         const form = document.getElementById('registrationForm');
         const successMessage = document.getElementById('successMessage');
         const errorMessage = document.getElementById('errorMessage');
@@ -998,6 +1007,37 @@
                 fechaSalida.value = nextDayStr;
             }
         });
+
+        window.toggleCompanion = function(num) {
+            const fields = document.getElementById(`fields${num}`);
+            const toggle = document.getElementById(`toggle${num}`);
+            
+            fields.classList.toggle('open');
+            toggle.classList.toggle('open');
+        };
+
+        function checkCompanionFilled(num) {
+            const nombre = document.getElementById(`acomp${num}Nombre`).value;
+            const apellido = document.getElementById(`acomp${num}Apellido`).value;
+            const tipoId = document.getElementById(`acomp${num}TipoId`).value;
+            const numId = document.getElementById(`acomp${num}NumId`).value;
+            
+            const companionGroup = document.getElementById(`acomp${num}Nombre`).closest('.companion-group');
+            
+            if (nombre || apellido || tipoId || numId) {
+                companionGroup.classList.add('filled');
+            } else {
+                companionGroup.classList.remove('filled');
+            }
+        }
+
+        for (let i = 1; i <= 5; i++) {
+            ['Nombre', 'Apellido', 'TipoId', 'NumId'].forEach(field => {
+                const input = document.getElementById(`acomp${i}${field}`);
+                input.addEventListener('input', () => checkCompanionFilled(i));
+                input.addEventListener('change', () => checkCompanionFilled(i));
+            });
+        }
     </script>
 </body>
 </html>
