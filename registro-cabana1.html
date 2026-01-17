@@ -141,10 +141,39 @@
             border-left: 4px solid #667eea;
         }
 
+        .companion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
         .companion-title {
             font-weight: 600;
             color: #667eea;
-            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .toggle-icon {
+            font-size: 20px;
+            color: #667eea;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-icon.open {
+            transform: rotate(180deg);
+        }
+
+        .companion-fields {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .companion-fields.open {
+            max-height: 600px;
+            margin-top: 16px;
         }
 
         .checkbox-group {
@@ -216,15 +245,12 @@
 <body>
     <div class="container">
         <div class="header">
-            <!-- Logo inside header, centered, no border --->
             <img src="https://i.imgur.com/tWfkFP8.jpg" alt="Logo Cabañas MariaMar" class="logo">
-            
             <h1>Registro de Huéspedes</h1>
             <p>Cabañas MariaMar</p>
             <div class="cabin-badge">Cabaña MariaMar-1</div>
         </div>
 
-        <!-- Panoramic banner image --->
         <img src="https://imgur.com/ifou9Lq.jpg" alt="Cabaña MariaMar-1" class="banner-image">
 
         <div class="form-content">
@@ -291,132 +317,157 @@
                 <div class="section-header">Datos de los Acompañantes</div>
 
                 <div class="companion-group">
-                    <div class="companion-title">Acompañante 1</div>
-                    <div class="form-group">
-                        <label for="acomp1Nombre">Nombre(s)</label>
-                        <input type="text" id="acomp1Nombre" name="acomp1Nombre">
+                    <div class="companion-header" onclick="toggleCompanion(1)">
+                        <div class="companion-title">Acompañante 1</div>
+                        <div class="toggle-icon" id="toggle1">▼</div>
                     </div>
-                    <div class="form-group">
-                        <label for="acomp1Apellido">Apellido(s)</label>
-                        <input type="text" id="acomp1Apellido" name="acomp1Apellido">
-                    </div>
-                    <div class="form-group">
-                        <label for="acomp1TipoId">Tipo de Identificación</label>
-                        <select id="acomp1TipoId" name="acomp1TipoId">
-                            <option value="">Seleccione una opción</option>
-                            <option value="cc">Cédula de Ciudadanía</option>
-                            <option value="ti">Tarjeta de Identidad</option>
-                            <option value="ce">Cédula de Extranjería</option>
-                            <option value="pasaporte">Pasaporte</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="acomp1NumId">Número de Identificación</label>
-                        <input type="text" id="acomp1NumId" name="acomp1NumId">
-                    </div>
-                </div>
-
-                <div class="companion-group">
-                    <div class="companion-title">Acompañante 2</div>
-                    <div class="form-group">
-                        <label for="acomp2Nombre">Nombre(s)</label>
-                        <input type="text" id="acomp2Nombre" name="acomp2Nombre">
-                    </div>
-                    <div class="form-group">
-                        <label for="acomp2Apellido">Apellido(s)</label>
-                        <input type="text" id="acomp2Apellido" name="acomp2Apellido">
-                    </div>
-                    <div class="form-group">
-                        <label for="acomp2TipoId">Tipo de Identificación</label>
-                        <select id="acomp2TipoId" name="acomp2TipoId">
-                            <option value="">Seleccione una opción</option>
-                            <option value="cc">Cédula de Ciudadanía</option>
-                            <option value="ti">Tarjeta de Identidad</option>
-                            <option value="ce">Cédula de Extranjería</option>
-                            <option value="pasaporte">Pasaporte</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="acomp2NumId">Número de Identificación</label>
-                        <input type="text" id="acomp2NumId" name="acomp2NumId">
+                    <div class="companion-fields" id="fields1">
+                        <div class="form-group">
+                            <label for="acomp1Nombre">Nombre(s)</label>
+                            <input type="text" id="acomp1Nombre" name="acomp1Nombre">
+                        </div>
+                        <div class="form-group">
+                            <label for="acomp1Apellido">Apellido(s)</label>
+                            <input type="text" id="acomp1Apellido" name="acomp1Apellido">
+                        </div>
+                        <div class="form-group">
+                            <label for="acomp1TipoId">Tipo de Identificación</label>
+                            <select id="acomp1TipoId" name="acomp1TipoId">
+                                <option value="">Seleccione una opción</option>
+                                <option value="cc">Cédula de Ciudadanía</option>
+                                <option value="ti">Tarjeta de Identidad</option>
+                                <option value="ce">Cédula de Extranjería</option>
+                                <option value="pasaporte">Pasaporte</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="acomp1NumId">Número de Identificación</label>
+                            <input type="text" id="acomp1NumId" name="acomp1NumId">
+                        </div>
                     </div>
                 </div>
 
                 <div class="companion-group">
-                    <div class="companion-title">Acompañante 3</div>
-                    <div class="form-group">
-                        <label for="acomp3Nombre">Nombre(s)</label>
-                        <input type="text" id="acomp3Nombre" name="acomp3Nombre">
+                    <div class="companion-header" onclick="toggleCompanion(2)">
+                        <div class="companion-title">Acompañante 2</div>
+                        <div class="toggle-icon" id="toggle2">▼</div>
                     </div>
-                    <div class="form-group">
-                        <label for="acomp3Apellido">Apellido(s)</label>
-                        <input type="text" id="acomp3Apellido" name="acomp3Apellido">
-                    </div>
-                    <div class="form-group">
-                        <label for="acomp3TipoId">Tipo de Identificación</label>
-                        <select id="acomp3TipoId" name="acomp3TipoId">
-                            <option value="">Seleccione una opción</option>
-                            <option value="cc">Cédula de Ciudadanía</option>
-                            <option value="ti">Tarjeta de Identidad</option>
-                            <option value="ce">Cédula de Extranjería</option>
-                            <option value="pasaporte">Pasaporte</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="acomp3NumId">Número de Identificación</label>
-                        <input type="text" id="acomp3NumId" name="acomp3NumId">
-                    </div>
-                </div>
-
-                <div class="companion-group">
-                    <div class="companion-title">Acompañante 4</div>
-                    <div class="form-group">
-                        <label for="acomp4Nombre">Nombre(s)</label>
-                        <input type="text" id="acomp4Nombre" name="acomp4Nombre">
-                    </div>
-                    <div class="form-group">
-                        <label for="acomp4Apellido">Apellido(s)</label>
-                        <input type="text" id="acomp4Apellido" name="acomp4Apellido">
-                    </div>
-                    <div class="form-group">
-                        <label for="acomp4TipoId">Tipo de Identificación</label>
-                        <select id="acomp4TipoId" name="acomp4TipoId">
-                            <option value="">Seleccione una opción</option>
-                            <option value="cc">Cédula de Ciudadanía</option>
-                            <option value="ti">Tarjeta de Identidad</option>
-                            <option value="ce">Cédula de Extranjería</option>
-                            <option value="pasaporte">Pasaporte</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="acomp4NumId">Número de Identificación</label>
-                        <input type="text" id="acomp4NumId" name="acomp4NumId">
+                    <div class="companion-fields" id="fields2">
+                        <div class="form-group">
+                            <label for="acomp2Nombre">Nombre(s)</label>
+                            <input type="text" id="acomp2Nombre" name="acomp2Nombre">
+                        </div>
+                        <div class="form-group">
+                            <label for="acomp2Apellido">Apellido(s)</label>
+                            <input type="text" id="acomp2Apellido" name="acomp2Apellido">
+                        </div>
+                        <div class="form-group">
+                            <label for="acomp2TipoId">Tipo de Identificación</label>
+                            <select id="acomp2TipoId" name="acomp2TipoId">
+                                <option value="">Seleccione una opción</option>
+                                <option value="cc">Cédula de Ciudadanía</option>
+                                <option value="ti">Tarjeta de Identidad</option>
+                                <option value="ce">Cédula de Extranjería</option>
+                                <option value="pasaporte">Pasaporte</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="acomp2NumId">Número de Identificación</label>
+                            <input type="text" id="acomp2NumId" name="acomp2NumId">
+                        </div>
                     </div>
                 </div>
 
                 <div class="companion-group">
-                    <div class="companion-title">Acompañante 5</div>
-                    <div class="form-group">
-                        <label for="acomp5Nombre">Nombre(s)</label>
-                        <input type="text" id="acomp5Nombre" name="acomp5Nombre">
+                    <div class="companion-header" onclick="toggleCompanion(3)">
+                        <div class="companion-title">Acompañante 3</div>
+                        <div class="toggle-icon" id="toggle3">▼</div>
                     </div>
-                    <div class="form-group">
-                        <label for="acomp5Apellido">Apellido(s)</label>
-                        <input type="text" id="acomp5Apellido" name="acomp5Apellido">
+                    <div class="companion-fields" id="fields3">
+                        <div class="form-group">
+                            <label for="acomp3Nombre">Nombre(s)</label>
+                            <input type="text" id="acomp3Nombre" name="acomp3Nombre">
+                        </div>
+                        <div class="form-group">
+                            <label for="acomp3Apellido">Apellido(s)</label>
+                            <input type="text" id="acomp3Apellido" name="acomp3Apellido">
+                        </div>
+                        <div class="form-group">
+                            <label for="acomp3TipoId">Tipo de Identificación</label>
+                            <select id="acomp3TipoId" name="acomp3TipoId">
+                                <option value="">Seleccione una opción</option>
+                                <option value="cc">Cédula de Ciudadanía</option>
+                                <option value="ti">Tarjeta de Identidad</option>
+                                <option value="ce">Cédula de Extranjería</option>
+                                <option value="pasaporte">Pasaporte</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="acomp3NumId">Número de Identificación</label>
+                            <input type="text" id="acomp3NumId" name="acomp3NumId">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="acomp5TipoId">Tipo de Identificación</label>
-                        <select id="acomp5TipoId" name="acomp5TipoId">
-                            <option value="">Seleccione una opción</option>
-                            <option value="cc">Cédula de Ciudadanía</option>
-                            <option value="ti">Tarjeta de Identidad</option>
-                            <option value="ce">Cédula de Extranjería</option>
-                            <option value="pasaporte">Pasaporte</option>
-                        </select>
+                </div>
+
+                <div class="companion-group">
+                    <div class="companion-header" onclick="toggleCompanion(4)">
+                        <div class="companion-title">Acompañante 4</div>
+                        <div class="toggle-icon" id="toggle4">▼</div>
                     </div>
-                    <div class="form-group">
-                        <label for="acomp5NumId">Número de Identificación</label>
-                        <input type="text" id="acomp5NumId" name="acomp5NumId">
+                    <div class="companion-fields" id="fields4">
+                        <div class="form-group">
+                            <label for="acomp4Nombre">Nombre(s)</label>
+                            <input type="text" id="acomp4Nombre" name="acomp4Nombre">
+                        </div>
+                        <div class="form-group">
+                            <label for="acomp4Apellido">Apellido(s)</label>
+                            <input type="text" id="acomp4Apellido" name="acomp4Apellido">
+                        </div>
+                        <div class="form-group">
+                            <label for="acomp4TipoId">Tipo de Identificación</label>
+                            <select id="acomp4TipoId" name="acomp4TipoId">
+                                <option value="">Seleccione una opción</option>
+                                <option value="cc">Cédula de Ciudadanía</option>
+                                <option value="ti">Tarjeta de Identidad</option>
+                                <option value="ce">Cédula de Extranjería</option>
+                                <option value="pasaporte">Pasaporte</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="acomp4NumId">Número de Identificación</label>
+                            <input type="text" id="acomp4NumId" name="acomp4NumId">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="companion-group">
+                    <div class="companion-header" onclick="toggleCompanion(5)">
+                        <div class="companion-title">Acompañante 5</div>
+                        <div class="toggle-icon" id="toggle5">▼</div>
+                    </div>
+                    <div class="companion-fields" id="fields5">
+                        <div class="form-group">
+                            <label for="acomp5Nombre">Nombre(s)</label>
+                            <input type="text" id="acomp5Nombre" name="acomp5Nombre">
+                        </div>
+                        <div class="form-group">
+                            <label for="acomp5Apellido">Apellido(s)</label>
+                            <input type="text" id="acomp5Apellido" name="acomp5Apellido">
+                        </div>
+                        <div class="form-group">
+                            <label for="acomp5TipoId">Tipo de Identificación</label>
+                            <select id="acomp5TipoId" name="acomp5TipoId">
+                                <option value="">Seleccione una opción</option>
+                                <option value="cc">Cédula de Ciudadanía</option>
+                                <option value="ti">Tarjeta de Identidad</option>
+                                <option value="ce">Cédula de Extranjería</option>
+                                <option value="pasaporte">Pasaporte</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="acomp5NumId">Número de Identificación</label>
+                            <input type="text" id="acomp5NumId" name="acomp5NumId">
+                        </div>
                     </div>
                 </div>
 
@@ -453,6 +504,14 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+        window.toggleCompanion = function(num) {
+            const fields = document.getElementById(`fields${num}`);
+            const toggle = document.getElementById(`toggle${num}`);
+            
+            fields.classList.toggle('open');
+            toggle.classList.toggle('open');
+        };
 
         const form = document.getElementById('registrationForm');
         const successMessage = document.getElementById('successMessage');
