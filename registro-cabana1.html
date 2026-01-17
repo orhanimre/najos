@@ -178,7 +178,6 @@
         input[type="tel"],
         input[type="number"],
         input[type="date"],
-        select,
         textarea {
             width: 100%;
             padding: 14px 18px;
@@ -192,8 +191,24 @@
             appearance: none;
         }
 
+        select {
+            width: 100%;
+            padding: 14px 18px;
+            padding-right: 45px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            background: #fafafa url('data:image/svg+xml;charset=UTF-8,<svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L6 6.5L11 1.5" stroke="%23667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat;
+            background-position: right 18px center;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
         input:focus,
-        select:focus,
         textarea:focus {
             outline: none;
             border-color: #667eea;
@@ -201,10 +216,22 @@
             background: white;
         }
 
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            background-color: white;
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L6 6.5L11 1.5" stroke="%23667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+        }
+
         input:hover:not(:focus),
-        select:hover:not(:focus),
         textarea:hover:not(:focus) {
             border-color: #cbd5e0;
+        }
+
+        select:hover:not(:focus) {
+            border-color: #cbd5e0;
+            background-color: #fafafa;
         }
 
         textarea {
@@ -287,10 +314,6 @@
 
         .toggle-icon.open {
             transform: rotate(180deg);
-        }
-
-        .toggle-icon::before {
-            content: '▼';
         }
 
         .companion-fields {
@@ -494,7 +517,6 @@
                         <select id="tipoId" name="tipoId" required>
                             <option value="">Seleccione una opción</option>
                             <option value="cc">Cédula de Ciudadanía</option>
-                            <option value="ti">Tarjeta de Identidad</option>
                             <option value="ce">Cédula de Extranjería</option>
                             <option value="pasaporte">Pasaporte</option>
                         </select>
@@ -545,7 +567,7 @@
                 <div class="companion-group">
                     <div class="companion-header" onclick="toggleCompanion(1)">
                         <div class="companion-title">Acompañante 1</div>
-                        <div class="toggle-icon" id="toggle1"></div>
+                        <div class="toggle-icon" id="toggle1">▼</div>
                     </div>
                     <div class="companion-fields" id="fields1">
                         <div class="grid-2">
