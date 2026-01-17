@@ -568,46 +568,49 @@
       }
 
       .detail-body {
-        padding: 20px;
-      }
+  padding: 24px;
+}
 
-      .detail-row {
-        margin-bottom: 14px;
-        padding-bottom: 12px;
-        border-bottom: 1px solid #e5e7eb;
-      }
+.detail-row {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
 
-      .detail-row:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-        padding-bottom: 0;
-      }
+.detail-row:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
 
-      .detail-label {
-        font-size: 11px;
-        font-weight: 700;
-        color: #9ca3af;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 6px;
-        display: block;
-      }
+.detail-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 8px;
+  margin-left: 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-      .detail-label::before {
-        content: "";
-        width: 3px;
-        height: 10px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 2px;
-      }
+.detail-label::before {
+  content: attr(data-icon);
+  position: absolute;
+  left: 24px;
+  font-size: 16px;
+}
 
-      .detail-value {
-        font-size: 15px;
-        color: #1f2937;
-        font-weight: 600;
-        line-height: 1.4;
-        word-wrap: break-word;
-      }
+.detail-value {
+  font-size: 16px;
+  color: #1f2937;
+  font-weight: 600;
+  line-height: 1.5;
+  word-wrap: break-word;
+  margin-left: 32px;
+}
 
       .detail-value a {
         color: #667eea;
@@ -1490,62 +1493,60 @@
         };
 
         detailBody.innerHTML = `
+  <div class="detail-body">
     <div class="detail-row">
-        <div class="detail-label">📅 Fecha de Registro</div>
-        <div class="detail-value">${formatDateTime(timestamp)}</div>
-    </div>
-    <div class="detail-row">
-        <div class="detail-label">🏡 Cabaña</div>
-        <div class="detail-value"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></div>
+      <div class="detail-label" data-icon="📅">Fecha de Registro</div>
+      <div class="detail-value">${formatDateTime(timestamp)}</div>
     </div>
     <div class="detail-row">
-        <div class="detail-label">👤 Nombre Completo</div>
-        <div class="detail-value">${reg.nombre} ${reg.apellido}</div>
+      <div class="detail-label" data-icon="🏡">Cabaña</div>
+      <div class="detail-value"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></div>
     </div>
     <div class="detail-row">
-        <div class="detail-label">📱 Celular</div>
-        <div class="detail-value"><a href="tel:${reg.celular}">${reg.celular || "N/A"}</a></div>
+      <div class="detail-label" data-icon="👤">Nombre Completo</div>
+      <div class="detail-value">${reg.nombre} ${reg.apellido}</div>
     </div>
     <div class="detail-row">
-        <div class="detail-label">🆔 Tipo de Identificación</div>
-        <div class="detail-value">${reg.tipoId || "N/A"}</div>
+      <div class="detail-label" data-icon="📱">Celular</div>
+      <div class="detail-value"><a href="tel:${reg.celular}">${reg.celular || "N/A"}</a></div>
     </div>
     <div class="detail-row">
-        <div class="detail-label">🔢 Número de Identificación</div>
-        <div class="detail-value">${reg.numeroId || "N/A"}</div>
+      <div class="detail-label" data-icon="🆔">Tipo de Identificación</div>
+      <div class="detail-value">${reg.tipoId || "N/A"}</div>
     </div>
     <div class="detail-row">
-        <div class="detail-label">📍 Ciudad</div>
-        <div class="detail-value">${reg.ciudad || "N/A"}</div>
+      <div class="detail-label" data-icon="🔢">Número de Identificación</div>
+      <div class="detail-value">${reg.numeroId || "N/A"}</div>
     </div>
     <div class="detail-row">
-        <div class="detail-label">👥 Total de Huéspedes</div>
-        <div class="detail-value">${reg.totalHuespedes || "N/A"}</div>
+      <div class="detail-label" data-icon="📍">Ciudad</div>
+      <div class="detail-value">${reg.ciudad || "N/A"}</div>
     </div>
     <div class="detail-row">
-        <div class="detail-label">📆 Fecha de Entrada</div>
-        <div class="detail-value">${reg.fechaEntrada || "N/A"}</div>
+      <div class="detail-label" data-icon="👥">Total de Huéspedes</div>
+      <div class="detail-value">${reg.totalHuespedes || "N/A"}</div>
     </div>
     <div class="detail-row">
-        <div class="detail-label">📆 Fecha de Salida</div>
-        <div class="detail-value">${reg.fechaSalida || "N/A"}</div>
+      <div class="detail-label" data-icon="📆">Fecha de Entrada</div>
+      <div class="detail-value">${reg.fechaEntrada || "N/A"}</div>
     </div>
-    ${
-      reg.comentario
-        ? `
-        <div class="detail-row">
-            <div class="detail-label">💬 Comentarios</div>
-            <div class="detail-value">${reg.comentario}</div>
-        </div>
-    `
-        : ""
-    }
-    <div class="detail-actions">
-        <button class="delete-btn" onclick="deleteRegistration('${reg.id}', event); closeDetailModal();">
-            🗑️ Eliminar este registro
-        </button>
+    <div class="detail-row">
+      <div class="detail-label" data-icon="📆">Fecha de Salida</div>
+      <div class="detail-value">${reg.fechaSalida || "N/A"}</div>
     </div>
-  `;
+    ${reg.comentario ? `
+      <div class="detail-row">
+        <div class="detail-label" data-icon="💬">Comentarios</div>
+        <div class="detail-value">${reg.comentario}</div>
+      </div>
+    ` : ""}
+  </div>
+  <div class="detail-actions">
+    <button class="delete-btn" onclick="deleteRegistration('${reg.id}', event); closeDetailModal();">
+      🗑️ Eliminar este registro
+    </button>
+  </div>
+`;
 
         modal.classList.add("show");
         document.body.style.overflow = "hidden";
