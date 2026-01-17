@@ -1045,12 +1045,9 @@
             input.addEventListener('focus', function(e) {
                 setTimeout(() => {
                     const element = e.target;
-                    const rect = element.getBoundingClientRect();
-                    const offset = rect.top + window.pageYOffset - 100;
-                    
-                    window.scrollTo({
-                        top: offset,
-                        behavior: 'smooth'
+                    element.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
                     });
                 }, 300);
             });
