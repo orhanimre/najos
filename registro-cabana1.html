@@ -129,11 +129,11 @@
 
         .banner-image {
             width: 100%;
-            height: 280px;
-            object-fit: contain;
+            height: auto;
+            max-height: 500px;
+            object-fit: cover;
             object-position: center center;
             display: block;
-            background: #f7fafc;
         }
 
         .form-content {
@@ -297,8 +297,9 @@
             }
 
             .banner-image {
-                height: 200px;
-                object-fit: contain;
+                height: auto;
+                max-height: 350px;
+                object-fit: cover;
             }
 
             .logo {
@@ -595,7 +596,7 @@
 
         <div class="form-content">
             <div class="section-intro">
-                Por favor complete el siguiente formulario con sus datos. La información proporcionada nos ayudará a mejorar su experiencia durante su estadía.
+                Por favor complete el siguiente formulario con sus datos.
             </div>
 
             <div id="successMessage" class="message success-message"></div>
