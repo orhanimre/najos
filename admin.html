@@ -529,7 +529,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 24px 24px 20px 24px;
+        padding: 20px 20px 16px 20px;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         border-radius: 24px 24px 0 0;
@@ -539,7 +539,7 @@
       }
 
       .detail-header h3 {
-        font-size: 22px;
+        font-size: 20px;
         font-weight: 700;
         margin: 0;
       }
@@ -548,11 +548,11 @@
         background: rgba(255, 255, 255, 0.2);
         backdrop-filter: blur(10px);
         border: 2px solid rgba(255, 255, 255, 0.3);
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
         border-radius: 50%;
         cursor: pointer;
-        font-size: 22px;
+        font-size: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -567,12 +567,12 @@
       }
 
       .detail-body {
-        padding: 24px;
+        padding: 16px 20px;
       }
 
       .detail-row {
-        margin-bottom: 24px;
-        padding-bottom: 20px;
+        margin-bottom: 16px;
+        padding-bottom: 14px;
         border-bottom: 1px solid #f0f0f0;
       }
 
@@ -583,12 +583,12 @@
       }
 
       .detail-label {
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 700;
         color: #9ca3af;
         text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 8px;
+        letter-spacing: 0.8px;
+        margin-bottom: 6px;
         display: flex;
         align-items: center;
         gap: 6px;
@@ -597,16 +597,16 @@
       .detail-label::before {
         content: "";
         width: 3px;
-        height: 12px;
+        height: 10px;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         border-radius: 2px;
       }
 
       .detail-value {
-        font-size: 16px;
+        font-size: 15px;
         color: #1f2937;
         font-weight: 600;
-        line-height: 1.5;
+        line-height: 1.4;
       }
 
       .detail-value a {
@@ -621,7 +621,7 @@
       }
 
       .detail-actions {
-        padding: 20px 24px 24px 24px;
+        padding: 16px 20px 20px 20px;
         background: #f9fafb;
         border-radius: 0 0 24px 24px;
         position: sticky;
@@ -632,17 +632,17 @@
         background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
         color: white;
         border: none;
-        padding: 14px 24px;
+        padding: 12px 20px;
         border-radius: 12px;
         cursor: pointer;
         font-weight: 700;
-        font-size: 15px;
+        font-size: 14px;
         transition: all 0.3s;
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 10px;
+        gap: 8px;
         box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
       }
 
@@ -901,88 +901,90 @@
       }
 
       .tap-indicator {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 50%;
-  color: white;
-  font-size: 14px;
-  margin-left: 8px;
-  animation: tap-bounce 2s infinite;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-}
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        color: white;
+        font-size: 14px;
+        margin-left: 8px;
+        animation: tap-bounce 2s infinite;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+      }
 
-@keyframes tap-bounce {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.15);
-  }
-}
+      @keyframes tap-bounce {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.15);
+        }
+      }
 
-/* Add visual feedback for clickable rows */
-tbody tr.clickable {
-  cursor: pointer;
-  position: relative;
-}
+      /* Add visual feedback for clickable rows */
+      tbody tr.clickable {
+        cursor: pointer;
+        position: relative;
+      }
 
-tbody tr.clickable::after {
-  content: '';
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 8px;
-  height: 8px;
-  border-right: 2px solid #667eea;
-  border-bottom: 2px solid #667eea;
-  transform: translateY(-50%) rotate(-45deg);
-  opacity: 0.5;
-}
+      tbody tr.clickable::after {
+        content: "";
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 8px;
+        height: 8px;
+        border-right: 2px solid #667eea;
+        border-bottom: 2px solid #667eea;
+        transform: translateY(-50%) rotate(-45deg);
+        opacity: 0.5;
+      }
 
-tbody tr.clickable:active::after {
-  opacity: 1;
-}
-.tap-col {
-  width: 50px;
-  text-align: center;
-  padding: 14px 8px !important;
-}
+      tbody tr.clickable:active::after {
+        opacity: 1;
+      }
+      .tap-col {
+        width: 50px;
+        text-align: center;
+        padding: 14px 8px !important;
+      }
 
-.tap-cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+      .tap-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-.view-details-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 10px;
-  color: white;
-  font-size: 18px;
-  animation: pulse 2s infinite;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-}
+      .view-details-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+        color: white;
+        font-size: 18px;
+        animation: pulse 2s infinite;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+      }
 
-@keyframes pulse {
-  0%, 100% {
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-    transform: scale(1);
-  }
-  50% {
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
-    transform: scale(1.05);
-  }
-}
+      @keyframes pulse {
+        0%,
+        100% {
+          box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+          transform: scale(1);
+        }
+        50% {
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+          transform: scale(1.05);
+        }
+      }
 
       @media (min-width: 640px) and (max-width: 767px) {
         .stats-grid {
@@ -1280,56 +1282,56 @@ tbody tr.clickable:active::after {
       }
 
       function displayData(data) {
-  const tableBody = document.getElementById("tableBody");
-  const table = document.getElementById("dataTable");
-  const noData = document.getElementById("noData");
-  const isMobile = window.innerWidth < 768;
+        const tableBody = document.getElementById("tableBody");
+        const table = document.getElementById("dataTable");
+        const noData = document.getElementById("noData");
+        const isMobile = window.innerWidth < 768;
 
-  tableBody.innerHTML = "";
+        tableBody.innerHTML = "";
 
-  if (data.length === 0) {
-    table.style.display = "none";
-    noData.style.display = "block";
-    return;
-  }
-
-  table.style.display = "table";
-  noData.style.display = "none";
-
-  data.forEach((reg, index) => {
-    const row = document.createElement("tr");
-    if (isMobile) {
-      row.classList.add("clickable");
-      row.onclick = (e) => {
-        // Don't open modal if clicking delete button
-        if (!e.target.closest('.delete-btn')) {
-          showDetailModal(reg);
+        if (data.length === 0) {
+          table.style.display = "none";
+          noData.style.display = "block";
+          return;
         }
-      };
-    }
 
-    const timestamp = reg.timestamp
-      ? new Date(reg.timestamp.seconds * 1000)
-      : new Date();
-    const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
+        table.style.display = "table";
+        noData.style.display = "none";
 
-    // Format: 05.01.2026 16:28
-    const formatDateTime = (date) => {
-      const day = String(date.getDate()).padStart(2, "0");
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const year = date.getFullYear();
-      const hours = String(date.getHours()).padStart(2, "0");
-      const minutes = String(date.getMinutes()).padStart(2, "0");
-      return `${day}.${month}.${year} ${hours}:${minutes}`;
-    };
+        data.forEach((reg, index) => {
+          const row = document.createElement("tr");
+          if (isMobile) {
+            row.classList.add("clickable");
+            row.onclick = (e) => {
+              // Don't open modal if clicking delete button
+              if (!e.target.closest(".delete-btn")) {
+                showDetailModal(reg);
+              }
+            };
+          }
 
-    row.innerHTML = `
+          const timestamp = reg.timestamp
+            ? new Date(reg.timestamp.seconds * 1000)
+            : new Date();
+          const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
+
+          // Format: 05.01.2026 16:28
+          const formatDateTime = (date) => {
+            const day = String(date.getDate()).padStart(2, "0");
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const year = date.getFullYear();
+            const hours = String(date.getHours()).padStart(2, "0");
+            const minutes = String(date.getMinutes()).padStart(2, "0");
+            return `${day}.${month}.${year} ${hours}:${minutes}`;
+          };
+
+          row.innerHTML = `
       <td class="mobile-col">${index + 1}</td>
       <td class="mobile-col">${formatDateTime(timestamp)}</td>
       <td class="mobile-col"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></td>
       <td class="mobile-col">
         ${reg.nombre} ${reg.apellido}
-        ${isMobile ? '<span class="tap-indicator">👉</span>' : ''}
+        ${isMobile ? '<span class="tap-indicator">👉</span>' : ""}
       </td>
       <td>${reg.celular}</td>
       <td>${reg.ciudad}</td>
@@ -1338,9 +1340,9 @@ tbody tr.clickable:active::after {
       <td>${reg.totalHuespedes}</td>
       <td><button class="delete-btn" onclick="deleteRegistration('${reg.id}', event)">🗑️ Eliminar</button></td>
     `;
-    tableBody.appendChild(row);
-  });
-}
+          tableBody.appendChild(row);
+        });
+      }
 
       window.setDatePreset = function (preset) {
         const today = new Date();
