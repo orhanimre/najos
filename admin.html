@@ -12,80 +12,12 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
             min-height: 100vh;
         }
 
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .header-left {
-            flex: 1;
-        }
-
-        .header-left h1 {
-            font-size: 18px;
-            margin-bottom: 3px;
-            white-space: nowrap;
-        }
-
-        .header-left p {
-            opacity: 0.9;
-            font-size: 11px;
-        }
-
-        .user-info {
-            text-align: right;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-
-        .user-email {
-            font-size: 10px;
-            opacity: 0.9;
-            display: block;
-            word-break: break-word;
-            max-width: 180px;
-            text-align: right;
-        }
-
-        .logout-btn {
-            background: rgba(255,255,255,0.2);
-            border: 2px solid white;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            font-size: 11px;
-            white-space: nowrap;
-        }
-
-        .logout-btn:hover {
-            background: white;
-            color: #667eea;
-        }
-
+        /* Login Screen */
         .login-container {
             display: flex;
             align-items: center;
@@ -97,38 +29,45 @@
 
         .login-box {
             background: white;
-            padding: 40px 25px;
-            border-radius: 16px;
+            padding: 40px 30px;
+            border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             text-align: center;
-            max-width: 400px;
+            max-width: 420px;
             width: 100%;
+        }
+
+        .login-logo {
+            font-size: 48px;
+            margin-bottom: 20px;
         }
 
         .login-box h2 {
             color: #2d3748;
-            margin-bottom: 10px;
-            font-size: 24px;
+            margin-bottom: 12px;
+            font-size: 26px;
+            font-weight: 700;
         }
 
         .login-box p {
             color: #718096;
-            margin-bottom: 30px;
-            font-size: 14px;
+            margin-bottom: 32px;
+            font-size: 15px;
+            line-height: 1.6;
         }
 
         .google-btn {
             background: white;
             border: 2px solid #e2e8f0;
-            padding: 14px 24px;
-            border-radius: 8px;
+            padding: 16px 28px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             width: 100%;
             transition: all 0.3s;
         }
@@ -136,87 +75,178 @@
         .google-btn:hover {
             border-color: #667eea;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
         }
 
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-left h1 {
+            font-size: 20px;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .header-left p {
+            opacity: 0.9;
+            font-size: 13px;
+            font-weight: 300;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .user-email {
+            font-size: 12px;
+            opacity: 0.9;
+            display: none;
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .logout-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        /* Container */
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 15px;
+            padding: 20px;
         }
 
+        /* Stats Grid */
         .stats-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .stats-row {
             display: grid;
-            gap: 12px;
-        }
-
-        .stats-row.full-width {
             grid-template-columns: 1fr;
-        }
-
-        .stats-row.three-cols {
-            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
         }
 
         .stat-card {
             background: white;
-            padding: 16px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .stat-card.centered {
-            text-align: center;
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
         }
 
         .stat-card h3 {
             color: #718096;
-            font-size: 11px;
-            font-weight: 500;
-            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .stat-card .number {
-            font-size: 24px;
+            font-size: 36px;
             font-weight: 700;
-            color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
+        .stat-card.cabin-1 .number {
+            background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-card.cabin-2 .number {
+            background: linear-gradient(135deg, #00cc00 0%, #00a300 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-card.cabin-3 .number {
+            background: linear-gradient(135deg, #cc0066 0%, #a30052 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Filters */
         .filters {
             background: white;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
         }
 
-        .filter-row {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 10px;
+        .filter-section {
+            margin-bottom: 16px;
+        }
+
+        .filter-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 8px;
+            display: block;
         }
 
         .date-presets {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: 10px;
         }
 
         .preset-btn {
-            padding: 10px;
+            padding: 12px;
             background: #f7fafc;
             color: #4a5568;
             border: 2px solid #e2e8f0;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
             font-size: 13px;
@@ -224,30 +254,31 @@
         }
 
         .preset-btn.active {
-            background: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border-color: #667eea;
         }
 
-        .preset-btn:hover {
+        .preset-btn:hover:not(.active) {
             border-color: #667eea;
+            background: #edf2f7;
         }
 
         .custom-dates {
             display: none;
-            gap: 10px;
-            margin-top: 10px;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 12px;
         }
 
         .custom-dates.show {
             display: grid;
-            grid-template-columns: 1fr 1fr;
         }
 
         .date-input-group {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 6px;
         }
 
         .date-input-group label {
@@ -258,67 +289,99 @@
 
         .filter-buttons {
             display: none;
-            gap: 8px;
-            margin-top: 10px;
+            gap: 10px;
+            margin-top: 16px;
         }
 
         .filter-buttons.show {
             display: flex;
         }
 
-        .filters select, .filters input {
+        select, input[type="date"] {
             width: 100%;
-            padding: 10px 12px;
+            padding: 12px 16px;
             border: 2px solid #e2e8f0;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 14px;
+            background: #fafafa;
+            transition: all 0.3s;
         }
 
-        .filters button {
+        select:focus, input[type="date"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-primary {
             flex: 1;
-            padding: 10px 15px;
-            background: #667eea;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
             font-size: 14px;
+            transition: all 0.3s;
         }
 
-        .filters button:hover {
-            background: #5568d3;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
         }
 
-        .filters button:last-child {
+        .btn-secondary {
+            flex: 1;
+            padding: 12px 20px;
             background: #718096;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
         }
 
-        .filters button:last-child:hover {
+        .btn-secondary:hover {
             background: #4a5568;
+            transform: translateY(-2px);
         }
 
         .export-btn {
             width: 100%;
-            padding: 12px 20px;
-            background: #48bb78;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
-            margin-bottom: 15px;
-            font-size: 14px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .export-btn:hover {
-            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(72, 187, 120, 0.3);
         }
 
+        /* Table */
         .table-container {
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .table-scroll {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
         }
@@ -326,29 +389,33 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 800px;
+            min-width: 900px;
         }
 
         thead {
-            background: #f7fafc;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
         }
 
         th {
-            padding: 12px 10px;
+            padding: 16px 12px;
             text-align: left;
-            font-weight: 600;
-            color: #4a5568;
-            font-size: 11px;
+            font-weight: 700;
+            color: #2d3748;
+            font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             white-space: nowrap;
         }
 
         td {
-            padding: 12px 10px;
+            padding: 16px 12px;
             border-top: 1px solid #e2e8f0;
-            color: #2d3748;
-            font-size: 13px;
+            color: #4a5568;
+            font-size: 14px;
+        }
+
+        tbody tr {
+            transition: background 0.2s;
         }
 
         tbody tr:hover {
@@ -357,10 +424,10 @@
 
         .cabin-badge {
             display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
             white-space: nowrap;
         }
 
@@ -368,171 +435,110 @@
         .cabin-2 { background: #e6ffe6; color: #00cc00; }
         .cabin-3 { background: #ffe6f2; color: #cc0066; }
 
-        .loading {
+        .loading, .no-data {
             text-align: center;
-            padding: 40px 20px;
+            padding: 60px 20px;
             color: #718096;
-            font-size: 14px;
+            font-size: 15px;
         }
 
-        .no-data {
-            text-align: center;
-            padding: 40px 20px;
-            color: #718096;
-            font-size: 14px;
-        }
-
-        #loginScreen {
-            display: block;
-        }
-
-        #dashboardScreen {
-            display: none;
-        }
+        #loginScreen { display: block; }
+        #dashboardScreen { display: none; }
 
         /* Desktop styles */
         @media (min-width: 768px) {
             .header {
-                padding: 30px;
-            }
-
-            .header-top {
-                flex-direction: row;
-                align-items: center;
+                padding: 24px 30px;
             }
 
             .header-left h1 {
                 font-size: 28px;
-                margin-bottom: 8px;
+                margin-bottom: 6px;
             }
 
             .header-left p {
                 font-size: 16px;
             }
 
-            .user-info {
-                flex-direction: row;
-                align-items: center;
-                gap: 15px;
-            }
-
             .user-email {
+                display: block;
                 font-size: 14px;
-                max-width: none;
             }
 
             .logout-btn {
-                padding: 8px 16px;
+                padding: 10px 20px;
                 font-size: 14px;
             }
 
             .container {
-                padding: 30px 20px;
+                padding: 32px 24px;
             }
 
             .stats-grid {
-                flex-direction: row;
-            }
-
-            .stats-row {
-                display: contents;
-            }
-
-            .stats-grid {
-                display: grid;
                 grid-template-columns: repeat(4, 1fr);
                 gap: 20px;
-                margin-bottom: 30px;
+                margin-bottom: 32px;
             }
 
             .stat-card {
-                padding: 24px;
+                padding: 28px;
             }
 
             .stat-card h3 {
                 font-size: 14px;
-                margin-bottom: 8px;
+                margin-bottom: 12px;
             }
 
             .stat-card .number {
-                font-size: 32px;
+                font-size: 42px;
             }
 
             .filters {
-                padding: 20px;
-                margin-bottom: 20px;
+                padding: 24px;
+                margin-bottom: 24px;
             }
 
-            .filter-row {
-                flex-direction: row;
-                align-items: center;
-                margin-bottom: 0;
+            .filter-section {
+                margin-bottom: 20px;
             }
 
             .date-presets {
                 grid-template-columns: repeat(4, 1fr);
+                gap: 12px;
             }
 
             .custom-dates.show {
-                display: flex;
-            }
-
-            .filter-buttons {
-                width: auto;
-            }
-
-            .filters select, .filters input {
-                width: auto;
-                min-width: 180px;
-            }
-
-            .filters button {
-                flex: 0 0 auto;
-                padding: 10px 20px;
+                grid-template-columns: 1fr 1fr;
             }
 
             .export-btn {
                 width: auto;
-                float: right;
-                margin-bottom: 20px;
+                margin-left: auto;
+                display: flex;
+            }
+
+            .login-box {
+                padding: 50px 40px;
+            }
+
+            .login-box h2 {
+                font-size: 30px;
             }
 
             th {
-                padding: 15px;
+                padding: 18px 16px;
                 font-size: 13px;
             }
 
             td {
-                padding: 15px;
+                padding: 18px 16px;
                 font-size: 14px;
-            }
-
-            .cabin-badge {
-                padding: 4px 12px;
-                font-size: 12px;
-            }
-
-            .login-box {
-                padding: 50px;
-            }
-
-            .login-box h2 {
-                font-size: 28px;
-            }
-
-            .login-box p {
-                font-size: 16px;
-            }
-
-            .google-btn {
-                font-size: 16px;
             }
         }
 
-        /* Tablet landscape */
         @media (min-width: 640px) and (max-width: 767px) {
-            .stats-row.three-cols {
-                grid-template-columns: repeat(3, 1fr);
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -541,9 +547,10 @@
     <!-- Login Screen -->
     <div id="loginScreen" class="login-container">
         <div class="login-box">
-            <h2>🏡 Cabañas MariaMar</h2>
+            <div class="login-logo">🏡</div>
+            <h2>Cabañas MariaMar</h2>
             <p>Panel de Administración</p>
-            <p style="margin-top: 20px; color: #718096;">Inicia sesión con tu cuenta de Google para acceder al panel</p>
+            <p>Inicia sesión con tu cuenta de Google para acceder al panel de control</p>
             <button id="loginBtn" class="google-btn">
                 <svg width="20" height="20" viewBox="0 0 20 20">
                     <path fill="#4285F4" d="M19.6 10.23c0-.82-.1-1.42-.25-2.05H10v3.72h5.5c-.15.96-.74 2.31-2.04 3.22v2.45h3.16c1.89-1.73 2.98-4.3 2.98-7.34z"/>
@@ -575,30 +582,27 @@
 
         <div class="container">
             <div class="stats-grid">
-                <div class="stats-row full-width">
-                    <div class="stat-card centered">
-                        <h3>Total Registros</h3>
-                        <div class="number" id="totalRegistros">-</div>
-                    </div>
+                <div class="stat-card">
+                    <h3>Total Registros</h3>
+                    <div class="number" id="totalRegistros">-</div>
                 </div>
-                <div class="stats-row three-cols">
-                    <div class="stat-card">
-                        <h3>Cabaña 1</h3>
-                        <div class="number" id="totalCabana1">-</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Cabaña 2</h3>
-                        <div class="number" id="totalCabana2">-</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Cabaña 3</h3>
-                        <div class="number" id="totalCabana3">-</div>
-                    </div>
+                <div class="stat-card cabin-1">
+                    <h3>Cabaña 1</h3>
+                    <div class="number" id="totalCabana1">-</div>
+                </div>
+                <div class="stat-card cabin-2">
+                    <h3>Cabaña 2</h3>
+                    <div class="number" id="totalCabana2">-</div>
+                </div>
+                <div class="stat-card cabin-3">
+                    <h3>Cabaña 3</h3>
+                    <div class="number" id="totalCabana3">-</div>
                 </div>
             </div>
 
             <div class="filters">
-                <div class="filter-row">
+                <div class="filter-section">
+                    <label class="filter-label">Filtrar por Cabaña</label>
                     <select id="cabanaFilter" onchange="applyFilters()">
                         <option value="">Todas las Cabañas</option>
                         <option value="Cabaña MariaMar-1">Cabaña 1</option>
@@ -607,52 +611,60 @@
                     </select>
                 </div>
                 
-                <div class="date-presets">
-                    <button class="preset-btn" onclick="setDatePreset('week')">Esta Semana</button>
-                    <button class="preset-btn" onclick="setDatePreset('month')">Este Mes</button>
-                    <button class="preset-btn" onclick="setDatePreset('year')">Este Año</button>
-                    <button class="preset-btn" onclick="toggleCustomDates()">Personalizado</button>
-                </div>
-
-                <div id="customDates" class="custom-dates">
-                    <div class="date-input-group">
-                        <label>Desde</label>
-                        <input type="date" id="fechaDesde">
+                <div class="filter-section">
+                    <label class="filter-label">Filtrar por Fecha</label>
+                    <div class="date-presets">
+                        <button class="preset-btn" onclick="setDatePreset('week')">Esta Semana</button>
+                        <button class="preset-btn" onclick="setDatePreset('month')">Este Mes</button>
+                        <button class="preset-btn" onclick="setDatePreset('year')">Este Año</button>
+                        <button class="preset-btn" onclick="toggleCustomDates()">Personalizado</button>
                     </div>
-                    <div class="date-input-group">
-                        <label>Hasta</label>
-                        <input type="date" id="fechaHasta">
-                    </div>
-                </div>
 
-                <div id="filterButtons" class="filter-buttons">
-                    <button onclick="applyFilters()">Aplicar Filtros</button>
-                    <button onclick="clearFilters()">Limpiar</button>
+                    <div id="customDates" class="custom-dates">
+                        <div class="date-input-group">
+                            <label>Desde</label>
+                            <input type="date" id="fechaDesde">
+                        </div>
+                        <div class="date-input-group">
+                            <label>Hasta</label>
+                            <input type="date" id="fechaHasta">
+                        </div>
+                    </div>
+
+                    <div id="filterButtons" class="filter-buttons">
+                        <button class="btn-primary" onclick="applyFilters()">Aplicar Filtros</button>
+                        <button class="btn-secondary" onclick="clearFilters()">Limpiar</button>
+                    </div>
                 </div>
             </div>
 
-            <button class="export-btn" onclick="exportToCSV()">📥 Exportar a CSV</button>
+            <button class="export-btn" onclick="exportToCSV()">
+                <span>📥</span>
+                <span>Exportar a CSV</span>
+            </button>
 
             <div class="table-container">
                 <div id="loading" class="loading">Cargando datos...</div>
-                <table id="dataTable" style="display: none;">
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Cabaña</th>
-                            <th>Nombre Completo</th>
-                            <th>Celular</th>
-                            <th>Ciudad</th>
-                            <th>Entrada</th>
-                            <th>Salida</th>
-                            <th>Huéspedes</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                    </tbody>
-                </table>
+                <div class="table-scroll">
+                    <table id="dataTable" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Cabaña</th>
+                                <th>Nombre Completo</th>
+                                <th>Celular</th>
+                                <th>Ciudad</th>
+                                <th>Entrada</th>
+                                <th>Salida</th>
+                                <th>Huéspedes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                        </tbody>
+                    </table>
+                </div>
                 <div id="noData" class="no-data" style="display: none;">
-                    No hay registros disponibles
+                    No hay registros disponibles con los filtros seleccionados
                 </div>
             </div>
         </div>
@@ -679,12 +691,9 @@
         const provider = new GoogleAuthProvider();
 
         let allRegistrations = [];
-        let activePreset = null;
 
-        // Auth State Observer
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Check if user is authorized
                 const authorizedEmails = ['orhanimre@gmail.com', 'marizulynaranjo@gmail.com'];
                 
                 if (!authorizedEmails.includes(user.email)) {
@@ -693,19 +702,16 @@
                     return;
                 }
                 
-                // User is signed in and authorized
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboardScreen').style.display = 'block';
                 document.getElementById('userEmail').textContent = user.email;
                 loadData();
             } else {
-                // User is signed out
                 document.getElementById('loginScreen').style.display = 'flex';
                 document.getElementById('dashboardScreen').style.display = 'none';
             }
         });
 
-        // Login
         document.getElementById('loginBtn').addEventListener('click', async () => {
             try {
                 await signInWithPopup(auth, provider);
@@ -715,7 +721,6 @@
             }
         });
 
-        // Logout
         document.getElementById('logoutBtn').addEventListener('click', async () => {
             try {
                 await signOut(auth);
@@ -741,7 +746,7 @@
                 
             } catch (error) {
                 console.error('Error loading data:', error);
-                document.getElementById('loading').innerHTML = 'Error al cargar los datos: ' + error.message;
+                document.getElementById('loading').innerHTML = 'Error al cargar los datos';
             }
         }
 
@@ -794,12 +799,7 @@
             const today = new Date();
             let startDate, endDate;
             
-            // Clear all active states
-            document.querySelectorAll('.preset-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Hide custom dates and filter buttons
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById('customDates').classList.remove('show');
             document.getElementById('filterButtons').classList.remove('show');
             
@@ -828,7 +828,6 @@
             if (startDate && endDate) {
                 document.getElementById('fechaDesde').value = startDate;
                 document.getElementById('fechaHasta').value = endDate;
-                activePreset = preset;
                 applyFilters();
             }
         };
@@ -838,20 +837,15 @@
             const filterButtons = document.getElementById('filterButtons');
             const isShowing = customDates.classList.contains('show');
             
-            // Clear all active states
-            document.querySelectorAll('.preset-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
             
             if (!isShowing) {
                 customDates.classList.add('show');
                 filterButtons.classList.add('show');
                 document.querySelectorAll('.preset-btn')[3].classList.add('active');
-                activePreset = 'custom';
             } else {
                 customDates.classList.remove('show');
                 filterButtons.classList.remove('show');
-                activePreset = null;
             }
         };
 
@@ -881,13 +875,7 @@
             document.getElementById('fechaHasta').value = '';
             document.getElementById('customDates').classList.remove('show');
             document.getElementById('filterButtons').classList.remove('show');
-            
-            // Clear all active states
-            document.querySelectorAll('.preset-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            activePreset = null;
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
             displayData(allRegistrations);
         };
 
@@ -898,7 +886,12 @@
             
             let csv = headers.join(',') + '\n';
             
-            allRegistrations.forEach(reg => {
+            const cabanaFilter = document.getElementById('cabanaFilter').value;
+            const dataToExport = cabanaFilter ? 
+                allRegistrations.filter(r => r.cabana === cabanaFilter) : 
+                allRegistrations;
+            
+            dataToExport.forEach(reg => {
                 const timestamp = reg.timestamp ? new Date(reg.timestamp.seconds * 1000).toLocaleDateString('es-CO') : '';
                 const row = [
                     timestamp,
