@@ -1541,21 +1541,21 @@
     </div>
     
     <div class="detail-row">
+      <div class="detail-label" data-icon="📆">Estadía</div>
+      <div class="detail-value">
+        <strong>Entrada:</strong> ${reg.fechaEntrada || "N/A"}<br>
+        <strong>Salida:</strong> ${reg.fechaSalida || "N/A"}<br>
+        <strong>Huéspedes:</strong> ${reg.totalHuespedes || "N/A"} personas
+      </div>
+    </div>
+    
+    <div class="detail-row">
       <div class="detail-label" data-icon="👤">Huésped Principal</div>
       <div class="detail-value">
         <strong>${reg.nombre} ${reg.apellido}</strong><br>
         📱 <a href="tel:${reg.celular}">${reg.celular || "N/A"}</a><br>
         🆔 ${formatIdType(reg.tipoId)} - ${reg.numeroId || "N/A"}<br>
         📍 ${reg.ciudad || "N/A"}
-      </div>
-    </div>
-    
-    <div class="detail-row">
-      <div class="detail-label" data-icon="📆">Estadía</div>
-      <div class="detail-value">
-        <strong>Entrada:</strong> ${reg.fechaEntrada || "N/A"}<br>
-        <strong>Salida:</strong> ${reg.fechaSalida || "N/A"}<br>
-        <strong>Huéspedes:</strong> ${reg.totalHuespedes || "N/A"} personas
       </div>
     </div>
     
