@@ -1154,171 +1154,171 @@
     </div>
 
     <script type="module">
-            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-            import {
-              getAuth,
-              signInWithPopup,
-              GoogleAuthProvider,
-              onAuthStateChanged,
-              signOut,
-            } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-            import {
-              getFirestore,
-              collection,
-              query,
-              orderBy,
-              getDocs,
-              deleteDoc,
-              doc,
-            } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        getAuth,
+        signInWithPopup,
+        GoogleAuthProvider,
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+      import {
+        getFirestore,
+        collection,
+        query,
+        orderBy,
+        getDocs,
+        deleteDoc,
+        doc,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-            const firebaseConfig = {
-              apiKey: "AIzaSyACEyCsx-4lhITc8s06QyZPQiS9t3f7I18",
-              authDomain: "cabanas-mariamar.firebaseapp.com",
-              projectId: "cabanas-mariamar",
-              storageBucket: "cabanas-mariamar.firebasestorage.app",
-              messagingSenderId: "578365907890",
-              appId: "1:578365907890:web:d1561f04e29ed64e97faab",
-              measurementId: "G-R3XMD9DPBP",
+      const firebaseConfig = {
+        apiKey: "AIzaSyACEyCsx-4lhITc8s06QyZPQiS9t3f7I18",
+        authDomain: "cabanas-mariamar.firebaseapp.com",
+        projectId: "cabanas-mariamar",
+        storageBucket: "cabanas-mariamar.firebasestorage.app",
+        messagingSenderId: "578365907890",
+        appId: "1:578365907890:web:d1561f04e29ed64e97faab",
+        measurementId: "G-R3XMD9DPBP",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      const provider = new GoogleAuthProvider();
+
+      let allRegistrations = [];
+
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const authorizedEmails = [
+            "orhanimre@gmail.com",
+            "marizulynaranjo@gmail.com",
+          ];
+
+          if (!authorizedEmails.includes(user.email)) {
+            alert("No tienes permisos para acceder a este panel.");
+            signOut(auth);
+            return;
+          }
+
+          document.getElementById("loginScreen").style.display = "none";
+          document.getElementById("dashboardScreen").style.display = "block";
+          document.getElementById("userEmail").textContent = user.email;
+          loadData();
+        } else {
+          document.getElementById("loginScreen").style.display = "flex";
+          document.getElementById("dashboardScreen").style.display = "none";
+        }
+      });
+
+      document
+        .getElementById("loginBtn")
+        .addEventListener("click", async () => {
+          try {
+            await signInWithPopup(auth, provider);
+          } catch (error) {
+            console.error("Error signing in:", error);
+            alert("Error al iniciar sesión. Por favor intenta nuevamente.");
+          }
+        });
+
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", async () => {
+          try {
+            await signOut(auth);
+          } catch (error) {
+            console.error("Error signing out:", error);
+          }
+        });
+
+      async function loadData() {
+        try {
+          const q = query(
+            collection(db, "registrations"),
+            orderBy("timestamp", "desc"),
+          );
+          const querySnapshot = await getDocs(q);
+
+          allRegistrations = [];
+          querySnapshot.forEach((doc) => {
+            allRegistrations.push({ id: doc.id, ...doc.data() });
+          });
+
+          updateStats();
+          displayData(allRegistrations);
+
+          document.getElementById("loading").style.display = "none";
+        } catch (error) {
+          console.error("Error loading data:", error);
+          document.getElementById("loading").innerHTML =
+            "Error al cargar los datos";
+        }
+      }
+
+      function updateStats() {
+        document.getElementById("totalRegistros").textContent =
+          allRegistrations.length;
+        document.getElementById("totalCabana1").textContent =
+          allRegistrations.filter(
+            (r) => r.cabana === "Cabaña MariaMar-1",
+          ).length;
+        document.getElementById("totalCabana2").textContent =
+          allRegistrations.filter(
+            (r) => r.cabana === "Cabaña MariaMar-2",
+          ).length;
+        document.getElementById("totalCabana3").textContent =
+          allRegistrations.filter(
+            (r) => r.cabana === "Cabaña MariaMar-3",
+          ).length;
+      }
+
+      function displayData(data) {
+        const tableBody = document.getElementById("tableBody");
+        const table = document.getElementById("dataTable");
+        const noData = document.getElementById("noData");
+        const isMobile = window.innerWidth < 768;
+
+        tableBody.innerHTML = "";
+
+        if (data.length === 0) {
+          table.style.display = "none";
+          noData.style.display = "block";
+          return;
+        }
+
+        table.style.display = "table";
+        noData.style.display = "none";
+
+        data.forEach((reg, index) => {
+          const row = document.createElement("tr");
+          if (isMobile) {
+            row.classList.add("clickable");
+            row.onclick = (e) => {
+              // Don't open modal if clicking delete button
+              if (!e.target.closest(".delete-btn")) {
+                showDetailModal(reg);
+              }
             };
+          }
 
-            const app = initializeApp(firebaseConfig);
-            const auth = getAuth(app);
-            const db = getFirestore(app);
-            const provider = new GoogleAuthProvider();
+          const timestamp = reg.timestamp
+            ? new Date(reg.timestamp.seconds * 1000)
+            : new Date();
+          const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
 
-            let allRegistrations = [];
+          // Format: 05.01.2026 16:28
+          const formatDateTime = (date) => {
+            const day = String(date.getDate()).padStart(2, "0");
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const year = date.getFullYear();
+            const hours = String(date.getHours()).padStart(2, "0");
+            const minutes = String(date.getMinutes()).padStart(2, "0");
+            return `${day}.${month}.${year} ${hours}:${minutes}`;
+          };
 
-            onAuthStateChanged(auth, (user) => {
-              if (user) {
-                const authorizedEmails = [
-                  "orhanimre@gmail.com",
-                  "marizulynaranjo@gmail.com",
-                ];
-
-                if (!authorizedEmails.includes(user.email)) {
-                  alert("No tienes permisos para acceder a este panel.");
-                  signOut(auth);
-                  return;
-                }
-
-                document.getElementById("loginScreen").style.display = "none";
-                document.getElementById("dashboardScreen").style.display = "block";
-                document.getElementById("userEmail").textContent = user.email;
-                loadData();
-              } else {
-                document.getElementById("loginScreen").style.display = "flex";
-                document.getElementById("dashboardScreen").style.display = "none";
-              }
-            });
-
-            document
-              .getElementById("loginBtn")
-              .addEventListener("click", async () => {
-                try {
-                  await signInWithPopup(auth, provider);
-                } catch (error) {
-                  console.error("Error signing in:", error);
-                  alert("Error al iniciar sesión. Por favor intenta nuevamente.");
-                }
-              });
-
-            document
-              .getElementById("logoutBtn")
-              .addEventListener("click", async () => {
-                try {
-                  await signOut(auth);
-                } catch (error) {
-                  console.error("Error signing out:", error);
-                }
-              });
-
-            async function loadData() {
-              try {
-                const q = query(
-                  collection(db, "registrations"),
-                  orderBy("timestamp", "desc"),
-                );
-                const querySnapshot = await getDocs(q);
-
-                allRegistrations = [];
-                querySnapshot.forEach((doc) => {
-                  allRegistrations.push({ id: doc.id, ...doc.data() });
-                });
-
-                updateStats();
-                displayData(allRegistrations);
-
-                document.getElementById("loading").style.display = "none";
-              } catch (error) {
-                console.error("Error loading data:", error);
-                document.getElementById("loading").innerHTML =
-                  "Error al cargar los datos";
-              }
-            }
-
-            function updateStats() {
-              document.getElementById("totalRegistros").textContent =
-                allRegistrations.length;
-              document.getElementById("totalCabana1").textContent =
-                allRegistrations.filter(
-                  (r) => r.cabana === "Cabaña MariaMar-1",
-                ).length;
-              document.getElementById("totalCabana2").textContent =
-                allRegistrations.filter(
-                  (r) => r.cabana === "Cabaña MariaMar-2",
-                ).length;
-              document.getElementById("totalCabana3").textContent =
-                allRegistrations.filter(
-                  (r) => r.cabana === "Cabaña MariaMar-3",
-                ).length;
-            }
-
-            function displayData(data) {
-              const tableBody = document.getElementById("tableBody");
-              const table = document.getElementById("dataTable");
-              const noData = document.getElementById("noData");
-              const isMobile = window.innerWidth < 768;
-
-              tableBody.innerHTML = "";
-
-              if (data.length === 0) {
-                table.style.display = "none";
-                noData.style.display = "block";
-                return;
-              }
-
-              table.style.display = "table";
-              noData.style.display = "none";
-
-              data.forEach((reg, index) => {
-                const row = document.createElement("tr");
-                if (isMobile) {
-                  row.classList.add("clickable");
-                  row.onclick = (e) => {
-                    // Don't open modal if clicking delete button
-                    if (!e.target.closest(".delete-btn")) {
-                      showDetailModal(reg);
-                    }
-                  };
-                }
-
-                const timestamp = reg.timestamp
-                  ? new Date(reg.timestamp.seconds * 1000)
-                  : new Date();
-                const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
-
-                // Format: 05.01.2026 16:28
-                const formatDateTime = (date) => {
-                  const day = String(date.getDate()).padStart(2, "0");
-                  const month = String(date.getMonth() + 1).padStart(2, "0");
-                  const year = date.getFullYear();
-                  const hours = String(date.getHours()).padStart(2, "0");
-                  const minutes = String(date.getMinutes()).padStart(2, "0");
-                  return `${day}.${month}.${year} ${hours}:${minutes}`;
-                };
-
-                row.innerHTML = `
+          row.innerHTML = `
             <td class="mobile-col">${index + 1}</td>
             <td class="mobile-col">${formatDateTime(timestamp)}</td>
             <td class="mobile-col"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></td>
@@ -1333,181 +1333,181 @@
             <td>${reg.totalHuespedes}</td>
             <td><button class="delete-btn" onclick="deleteRegistration('${reg.id}', event)">🗑️ Eliminar</button></td>
           `;
-                tableBody.appendChild(row);
-              });
-            }
+          tableBody.appendChild(row);
+        });
+      }
 
-            window.setDatePreset = function (preset) {
-              const today = new Date();
-              let startDate, endDate;
+      window.setDatePreset = function (preset) {
+        const today = new Date();
+        let startDate, endDate;
 
-              document
-                .querySelectorAll(".preset-btn")
-                .forEach((btn) => btn.classList.remove("active"));
-              document.getElementById("customDates").classList.remove("show");
-              document.getElementById("filterButtons").classList.remove("show");
+        document
+          .querySelectorAll(".preset-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        document.getElementById("customDates").classList.remove("show");
+        document.getElementById("filterButtons").classList.remove("show");
 
-              switch (preset) {
-                case "week":
-                  const firstDay = new Date(today);
-                  firstDay.setDate(today.getDate() - today.getDay());
-                  startDate = firstDay.toISOString().split("T")[0];
-                  endDate = today.toISOString().split("T")[0];
-                  document.querySelectorAll(".preset-btn")[0].classList.add("active");
-                  break;
+        switch (preset) {
+          case "week":
+            const firstDay = new Date(today);
+            firstDay.setDate(today.getDate() - today.getDay());
+            startDate = firstDay.toISOString().split("T")[0];
+            endDate = today.toISOString().split("T")[0];
+            document.querySelectorAll(".preset-btn")[0].classList.add("active");
+            break;
 
-                case "month":
-                  startDate = new Date(today.getFullYear(), today.getMonth(), 1)
-                    .toISOString()
-                    .split("T")[0];
-                  endDate = today.toISOString().split("T")[0];
-                  document.querySelectorAll(".preset-btn")[1].classList.add("active");
-                  break;
+          case "month":
+            startDate = new Date(today.getFullYear(), today.getMonth(), 1)
+              .toISOString()
+              .split("T")[0];
+            endDate = today.toISOString().split("T")[0];
+            document.querySelectorAll(".preset-btn")[1].classList.add("active");
+            break;
 
-                case "year":
-                  startDate = new Date(today.getFullYear(), 0, 1)
-                    .toISOString()
-                    .split("T")[0];
-                  endDate = today.toISOString().split("T")[0];
-                  document.querySelectorAll(".preset-btn")[2].classList.add("active");
-                  break;
-              }
+          case "year":
+            startDate = new Date(today.getFullYear(), 0, 1)
+              .toISOString()
+              .split("T")[0];
+            endDate = today.toISOString().split("T")[0];
+            document.querySelectorAll(".preset-btn")[2].classList.add("active");
+            break;
+        }
 
-              if (startDate && endDate) {
-                document.getElementById("fechaDesde").value = startDate;
-                document.getElementById("fechaHasta").value = endDate;
-                applyFilters();
-              }
-            };
+        if (startDate && endDate) {
+          document.getElementById("fechaDesde").value = startDate;
+          document.getElementById("fechaHasta").value = endDate;
+          applyFilters();
+        }
+      };
 
-            window.toggleCustomDates = function () {
-              const customDates = document.getElementById("customDates");
-              const filterButtons = document.getElementById("filterButtons");
-              const isShowing = customDates.classList.contains("show");
+      window.toggleCustomDates = function () {
+        const customDates = document.getElementById("customDates");
+        const filterButtons = document.getElementById("filterButtons");
+        const isShowing = customDates.classList.contains("show");
 
-              document
-                .querySelectorAll(".preset-btn")
-                .forEach((btn) => btn.classList.remove("active"));
+        document
+          .querySelectorAll(".preset-btn")
+          .forEach((btn) => btn.classList.remove("active"));
 
-              if (!isShowing) {
-                customDates.classList.add("show");
-                filterButtons.classList.add("show");
-                document.querySelectorAll(".preset-btn")[3].classList.add("active");
-              } else {
-                customDates.classList.remove("show");
-                filterButtons.classList.remove("show");
-              }
-            };
+        if (!isShowing) {
+          customDates.classList.add("show");
+          filterButtons.classList.add("show");
+          document.querySelectorAll(".preset-btn")[3].classList.add("active");
+        } else {
+          customDates.classList.remove("show");
+          filterButtons.classList.remove("show");
+        }
+      };
 
-            window.deleteRegistration = async function (registrationId, event) {
-              event.stopPropagation(); // Prevent row click on mobile
+      window.deleteRegistration = async function (registrationId, event) {
+        event.stopPropagation(); // Prevent row click on mobile
 
-              if (
-                !confirm(
-                  "¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.",
-                )
-              ) {
-                return;
-              }
+        if (
+          !confirm(
+            "¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.",
+          )
+        ) {
+          return;
+        }
 
-              try {
-                // Delete from Firestore
-                await deleteDoc(doc(db, "registrations", registrationId));
+        try {
+          // Delete from Firestore
+          await deleteDoc(doc(db, "registrations", registrationId));
 
-                // Remove from local array
-                allRegistrations = allRegistrations.filter(
-                  (r) => r.id !== registrationId,
-                );
+          // Remove from local array
+          allRegistrations = allRegistrations.filter(
+            (r) => r.id !== registrationId,
+          );
 
-                // Update UI
-                updateStats();
-                displayData(allRegistrations);
+          // Update UI
+          updateStats();
+          displayData(allRegistrations);
 
-                alert("Registro eliminado exitosamente");
-              } catch (error) {
-                console.error("Error deleting registration:", error);
-                alert("Error al eliminar el registro. Por favor intenta nuevamente.");
-              }
-            };
+          alert("Registro eliminado exitosamente");
+        } catch (error) {
+          console.error("Error deleting registration:", error);
+          alert("Error al eliminar el registro. Por favor intenta nuevamente.");
+        }
+      };
 
-            window.applyFilters = function () {
-              const cabanaFilter = document.getElementById("cabanaFilter").value;
-              const fechaDesde = document.getElementById("fechaDesde").value;
-              const fechaHasta = document.getElementById("fechaHasta").value;
+      window.applyFilters = function () {
+        const cabanaFilter = document.getElementById("cabanaFilter").value;
+        const fechaDesde = document.getElementById("fechaDesde").value;
+        const fechaHasta = document.getElementById("fechaHasta").value;
 
-              let filtered = allRegistrations;
+        let filtered = allRegistrations;
 
-              if (cabanaFilter) {
-                filtered = filtered.filter((r) => r.cabana === cabanaFilter);
-              }
+        if (cabanaFilter) {
+          filtered = filtered.filter((r) => r.cabana === cabanaFilter);
+        }
 
-              if (fechaDesde && fechaHasta) {
-                filtered = filtered.filter((r) => {
-                  return r.fechaEntrada >= fechaDesde && r.fechaEntrada <= fechaHasta;
-                });
-              }
+        if (fechaDesde && fechaHasta) {
+          filtered = filtered.filter((r) => {
+            return r.fechaEntrada >= fechaDesde && r.fechaEntrada <= fechaHasta;
+          });
+        }
 
-              displayData(filtered);
-            };
+        displayData(filtered);
+      };
 
-            window.clearFilters = function () {
-              document.getElementById("cabanaFilter").value = "";
-              document.getElementById("fechaDesde").value = "";
-              document.getElementById("fechaHasta").value = "";
-              document.getElementById("customDates").classList.remove("show");
-              document.getElementById("filterButtons").classList.remove("show");
-              document
-                .querySelectorAll(".preset-btn")
-                .forEach((btn) => btn.classList.remove("active"));
-              displayData(allRegistrations);
-            };
+      window.clearFilters = function () {
+        document.getElementById("cabanaFilter").value = "";
+        document.getElementById("fechaDesde").value = "";
+        document.getElementById("fechaHasta").value = "";
+        document.getElementById("customDates").classList.remove("show");
+        document.getElementById("filterButtons").classList.remove("show");
+        document
+          .querySelectorAll(".preset-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        displayData(allRegistrations);
+      };
 
-            function formatIdType(idType) {
-              const idTypes = {
-                cc: "CC",
-                ce: "CE",
-                ti: "TI",
-                pasaporte: "PP",
-              };
-              return idTypes[idType] || idType || "N/A";
-            }
+      function formatIdType(idType) {
+        const idTypes = {
+          cc: "CC",
+          ce: "CE",
+          ti: "TI",
+          pasaporte: "PP",
+        };
+        return idTypes[idType] || idType || "N/A";
+      }
 
-            window.showDetailModal = function (reg) {
-              const isMobile = window.innerWidth < 768;
-              if (!isMobile) return;
+      window.showDetailModal = function (reg) {
+        const isMobile = window.innerWidth < 768;
+        if (!isMobile) return;
 
-              const modal = document.getElementById("detailModal");
-              const detailBody = document.getElementById("detailBody");
-              const timestamp = reg.timestamp
-                ? new Date(reg.timestamp.seconds * 1000)
-                : new Date();
-              const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
+        const modal = document.getElementById("detailModal");
+        const detailBody = document.getElementById("detailBody");
+        const timestamp = reg.timestamp
+          ? new Date(reg.timestamp.seconds * 1000)
+          : new Date();
+        const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
 
-              // Format: 05.01.2026 16:28
-              const formatDateTime = (date) => {
-                const day = String(date.getDate()).padStart(2, "0");
-                const month = String(date.getMonth() + 1).padStart(2, "0");
-                const year = date.getFullYear();
-                const hours = String(date.getHours()).padStart(2, "0");
-                const minutes = String(date.getMinutes()).padStart(2, "0");
-                return `${day}.${month}.${year} ${hours}:${minutes}`;
-              };
+        // Format: 05.01.2026 16:28
+        const formatDateTime = (date) => {
+          const day = String(date.getDate()).padStart(2, "0");
+          const month = String(date.getMonth() + 1).padStart(2, "0");
+          const year = date.getFullYear();
+          const hours = String(date.getHours()).padStart(2, "0");
+          const minutes = String(date.getMinutes()).padStart(2, "0");
+          return `${day}.${month}.${year} ${hours}:${minutes}`;
+        };
 
-              // Function to check if companion has data
-              const hasCompanionData = (num) => {
-                return (
-                  reg[`acomp${num}Nombre`] ||
-                  reg[`acomp${num}Apellido`] ||
-                  reg[`acomp${num}TipoId`] ||
-                  reg[`acomp${num}NumId`]
-                );
-              };
+        // Function to check if companion has data
+        const hasCompanionData = (num) => {
+          return (
+            reg[`acomp${num}Nombre`] ||
+            reg[`acomp${num}Apellido`] ||
+            reg[`acomp${num}TipoId`] ||
+            reg[`acomp${num}NumId`]
+          );
+        };
 
-              // Build companions section
-              let companionsHTML = "";
-              for (let i = 1; i <= 5; i++) {
-                if (hasCompanionData(i)) {
-                  companionsHTML += `
+        // Build companions section
+        let companionsHTML = "";
+        for (let i = 1; i <= 5; i++) {
+          if (hasCompanionData(i)) {
+            companionsHTML += `
             <div class="detail-row">
               <div class="detail-label" data-icon="👤">Acompañante ${i}</div>
               <div class="detail-value">
@@ -1516,10 +1516,10 @@
               </div>
             </div>
           `;
-                }
-              }
+          }
+        }
 
-              detailBody.innerHTML = `
+        detailBody.innerHTML = `
         <div class="detail-body">
           <div class="detail-row">
             <div class="detail-label" data-icon="📅">Fecha de Registro</div>
@@ -1570,154 +1570,154 @@
         </div>
       `;
 
-              modal.classList.add("show");
-              document.body.style.overflow = "hidden";
-            };
+        modal.classList.add("show");
+        document.body.style.overflow = "hidden";
+      };
 
-            window.closeDetailModal = function () {
-              const modal = document.getElementById("detailModal");
-              modal.classList.remove("show");
-              document.body.style.overflow = "";
-            };
+      window.closeDetailModal = function () {
+        const modal = document.getElementById("detailModal");
+        modal.classList.remove("show");
+        document.body.style.overflow = "";
+      };
 
-            // Close modal when clicking outside
-            document
-              .getElementById("detailModal")
-              .addEventListener("click", function (e) {
-                if (e.target === this) {
-                  closeDetailModal();
-                }
-              });
+      // Close modal when clicking outside
+      document
+        .getElementById("detailModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeDetailModal();
+          }
+        });
 
-              window.exportToExcel = function () {
-  const headers = [
-    "Fecha Registro",
-    "Cabaña",
-    "Nombre",
-    "Apellido",
-    "Celular",
-    "Cédula",
-    "Número ID",
-    "Ciudad",
-    "Total Huéspedes",
-    "Fecha Entrada",
-    "Hora Entrada",
-    "Fecha Salida",
-    "Hora Salida",
-    "Acomp 1 Nombre",
-    "Acomp 1 Apellido",
-    "Acomp 1 Cédula",
-    "Acomp 1 Num ID",
-    "Acomp 2 Nombre",
-    "Acomp 2 Apellido",
-    "Acomp 2 Cédula",
-    "Acomp 2 Num ID",
-    "Acomp 3 Nombre",
-    "Acomp 3 Apellido",
-    "Acomp 3 Cédula",
-    "Acomp 3 Num ID",
-    "Acomp 4 Nombre",
-    "Acomp 4 Apellido",
-    "Acomp 4 Cédula",
-    "Acomp 4 Num ID",
-    "Acomp 5 Nombre",
-    "Acomp 5 Apellido",
-    "Acomp 5 Cédula",
-    "Acomp 5 Num ID",
-    "Comentario",
-    "Acepta Datos",
-  ];
+      window.exportToExcel = function () {
+        const headers = [
+          "Fecha Registro",
+          "Cabaña",
+          "Nombre",
+          "Apellido",
+          "Celular",
+          "Cédula",
+          "Número ID",
+          "Ciudad",
+          "Total Huéspedes",
+          "Fecha Entrada",
+          "Hora Entrada",
+          "Fecha Salida",
+          "Hora Salida",
+          "Acomp 1 Nombre",
+          "Acomp 1 Apellido",
+          "Acomp 1 Cédula",
+          "Acomp 1 Num ID",
+          "Acomp 2 Nombre",
+          "Acomp 2 Apellido",
+          "Acomp 2 Cédula",
+          "Acomp 2 Num ID",
+          "Acomp 3 Nombre",
+          "Acomp 3 Apellido",
+          "Acomp 3 Cédula",
+          "Acomp 3 Num ID",
+          "Acomp 4 Nombre",
+          "Acomp 4 Apellido",
+          "Acomp 4 Cédula",
+          "Acomp 4 Num ID",
+          "Acomp 5 Nombre",
+          "Acomp 5 Apellido",
+          "Acomp 5 Cédula",
+          "Acomp 5 Num ID",
+          "Comentario",
+          "Acepta Datos",
+        ];
 
-  const cabanaFilter = document.getElementById("cabanaFilter").value;
-  const dataToExport = cabanaFilter
-    ? allRegistrations.filter((r) => r.cabana === cabanaFilter)
-    : allRegistrations;
+        const cabanaFilter = document.getElementById("cabanaFilter").value;
+        const dataToExport = cabanaFilter
+          ? allRegistrations.filter((r) => r.cabana === cabanaFilter)
+          : allRegistrations;
 
-  // Format timestamp: 17.01.2026 17:06:18
-  const formatTimestamp = (timestamp) => {
-    if (!timestamp) return "";
-    const date = new Date(timestamp.seconds * 1000);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    const seconds = String(date.getSeconds()).padStart(2, "0");
-    return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
-  };
+        // Format timestamp: 17.01.2026 17:06:18
+        const formatTimestamp = (timestamp) => {
+          if (!timestamp) return "";
+          const date = new Date(timestamp.seconds * 1000);
+          const day = String(date.getDate()).padStart(2, "0");
+          const month = String(date.getMonth() + 1).padStart(2, "0");
+          const year = date.getFullYear();
+          const hours = String(date.getHours()).padStart(2, "0");
+          const minutes = String(date.getMinutes()).padStart(2, "0");
+          const seconds = String(date.getSeconds()).padStart(2, "0");
+          return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+        };
 
-  // Convert ID type to uppercase
-  const formatIdType = (idType) => {
-    return idType ? idType.toUpperCase() : "";
-  };
+        // Convert ID type to uppercase
+        const formatIdType = (idType) => {
+          return idType ? idType.toUpperCase() : "";
+        };
 
-  // Create TSV (Tab-Separated Values)
-  let tsv = "";
-  
-  // Add headers
-  tsv += headers.join("\t") + "\n";
+        // Create TSV (Tab-Separated Values)
+        let tsv = "";
 
-  // Add data rows
-  dataToExport.forEach((reg) => {
-    const row = [
-      formatTimestamp(reg.timestamp),
-      reg.cabana || "",
-      reg.nombre || "",
-      reg.apellido || "",
-      reg.celular || "",
-      formatIdType(reg.tipoId),
-      reg.numeroId || "",
-      reg.ciudad || "",
-      reg.totalHuespedes || "",
-      reg.fechaEntrada || "",
-      reg.horaEntrada || "",
-      reg.fechaSalida || "",
-      reg.horaSalida || "",
-      reg.acomp1Nombre || "",
-      reg.acomp1Apellido || "",
-      formatIdType(reg.acomp1TipoId),
-      reg.acomp1NumId || "",
-      reg.acomp2Nombre || "",
-      reg.acomp2Apellido || "",
-      formatIdType(reg.acomp2TipoId),
-      reg.acomp2NumId || "",
-      reg.acomp3Nombre || "",
-      reg.acomp3Apellido || "",
-      formatIdType(reg.acomp3TipoId),
-      reg.acomp3NumId || "",
-      reg.acomp4Nombre || "",
-      reg.acomp4Apellido || "",
-      formatIdType(reg.acomp4TipoId),
-      reg.acomp4NumId || "",
-      reg.acomp5Nombre || "",
-      reg.acomp5Apellido || "",
-      formatIdType(reg.acomp5TipoId),
-      reg.acomp5NumId || "",
-      (reg.comentario || "").replace(/\t/g, " "),
-      reg.consent ? "Sí" : "No",
-    ];
-    
-    tsv += row.join("\t") + "\n";
-  });
+        // Add headers
+        tsv += headers.join("\t") + "\n";
 
-  // Create blob and download
-  const blob = new Blob([tsv], {
-    type: "text/tab-separated-values;charset=utf-8;"
-  });
+        // Add data rows
+        dataToExport.forEach((reg) => {
+          const row = [
+            formatTimestamp(reg.timestamp),
+            reg.cabana || "",
+            reg.nombre || "",
+            reg.apellido || "",
+            reg.celular || "",
+            formatIdType(reg.tipoId),
+            reg.numeroId || "",
+            reg.ciudad || "",
+            reg.totalHuespedes || "",
+            reg.fechaEntrada || "",
+            reg.horaEntrada || "-", // ✅ NEW - shows dash when empty
+            reg.fechaSalida || "",
+            reg.horaSalida || "-", // ✅ NEW - shows dash when empty
+            reg.acomp1Nombre || "",
+            reg.acomp1Apellido || "",
+            formatIdType(reg.acomp1TipoId),
+            reg.acomp1NumId || "",
+            reg.acomp2Nombre || "",
+            reg.acomp2Apellido || "",
+            formatIdType(reg.acomp2TipoId),
+            reg.acomp2NumId || "",
+            reg.acomp3Nombre || "",
+            reg.acomp3Apellido || "",
+            formatIdType(reg.acomp3TipoId),
+            reg.acomp3NumId || "",
+            reg.acomp4Nombre || "",
+            reg.acomp4Apellido || "",
+            formatIdType(reg.acomp4TipoId),
+            reg.acomp4NumId || "",
+            reg.acomp5Nombre || "",
+            reg.acomp5Apellido || "",
+            formatIdType(reg.acomp5TipoId),
+            reg.acomp5NumId || "",
+            (reg.comentario || "").replace(/\t/g, " "),
+            reg.consent ? "Sí" : "No",
+          ];
 
-  const link = document.createElement("a");
-  const url = URL.createObjectURL(blob);
-  link.setAttribute("href", url);
-  link.setAttribute(
-    "download",
-    `registros_cabanas_${new Date().toISOString().split("T")[0]}.tsv`
-  );
-  link.style.visibility = "hidden";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
-};
+          tsv += row.join("\t") + "\n";
+        });
+
+        // Create blob and download
+        const blob = new Blob([tsv], {
+          type: "text/tab-separated-values;charset=utf-8;",
+        });
+
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute(
+          "download",
+          `registros_cabanas_${new Date().toISOString().split("T")[0]}.tsv`,
+        );
+        link.style.visibility = "hidden";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      };
     </script>
   </body>
 </html>
