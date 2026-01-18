@@ -472,9 +472,20 @@
         gap: 20px;
       }
 
+      .grid-2-keep {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
       @media (max-width: 600px) {
         .grid-2 {
           grid-template-columns: 1fr;
+        }
+
+        .grid-2-keep {
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
         }
 
         .form-content {
@@ -741,7 +752,7 @@
             <div class="helper-text">Máximo 6 personas</div>
           </div>
 
-          <div class="grid-2">
+          <div class="grid-2-keep">
             <div class="form-group">
               <label for="fechaEntrada"
                 >Fecha de Entrada <span class="required">*</span></label
@@ -762,7 +773,7 @@
             </div>
           </div>
 
-          <div class="grid-2">
+          <div class="grid-2-keep">
             <div class="form-group">
               <label for="fechaSalida"
                 >Fecha de Salida <span class="required">*</span></label
