@@ -1532,13 +1532,13 @@
     </div>
     
     <div class="detail-row">
-      <div class="detail-label" data-icon="📆">Estadía</div>
-      <div class="detail-value">
-        <strong>Entrada:</strong> ${reg.fechaEntrada || "N/A"}<br>
-        <strong>Salida:</strong> ${reg.fechaSalida || "N/A"}<br>
-        <strong>Huéspedes:</strong> ${reg.totalHuespedes || "N/A"} personas
-      </div>
-    </div>
+  <div class="detail-label" data-icon="📆">Estadía</div>
+  <div class="detail-value">
+    <strong>Entrada:</strong> ${reg.fechaEntrada || "N/A"} ${reg.horaEntrada ? `a las ${reg.horaEntrada}` : ""}<br>
+    <strong>Salida:</strong> ${reg.fechaSalida || "N/A"} ${reg.horaSalida ? `a las ${reg.horaSalida}` : ""}<br>
+    <strong>Huéspedes:</strong> ${reg.totalHuespedes || "N/A"} personas
+  </div>
+</div>
     
     <div class="detail-row">
       <div class="detail-label" data-icon="👤">Huésped Principal</div>
@@ -1589,22 +1589,23 @@
           }
         });
 
-      window.exportToCSV = function () {
-        const headers = [
-          "Fecha Registro",
-          "Cabaña",
-          "Nombre",
-          "Apellido",
-          "Celular",
-          "Tipo ID",
-          "Número ID",
-          "Ciudad",
-          "Total Huéspedes",
-          "Fecha Entrada",
-          "Fecha Salida",
-          "Comentario",
-          "Acepta Datos",
-        ];
+      const headers = [
+    "Fecha Registro",
+    "Cabaña",
+    "Nombre",
+    "Apellido",
+    "Celular",
+    "Tipo ID",
+    "Número ID",
+    "Ciudad",
+    "Total Huéspedes",
+    "Fecha Entrada",
+    "Hora Entrada",
+    "Fecha Salida",
+    "Hora Salida",
+    "Comentario",
+    "Acepta Datos",
+];
 
         let csv = headers.join(",") + "\n";
 
@@ -1618,22 +1619,22 @@
             ? new Date(reg.timestamp.seconds * 1000).toLocaleDateString("es-CO")
             : "";
           const row = [
-            timestamp,
-            reg.cabana || "",
-            reg.nombre || "",
-            reg.apellido || "",
-            reg.celular || "",
-            reg.tipoId || "",
-            reg.numeroId || "",
-            reg.ciudad || "",
-            reg.totalHuespedes || "",
-            reg.fechaEntrada || "",
-            reg.fechaSalida || "",
-            (reg.comentario || "").replace(/,/g, ";"),
-            reg.consent ? "Sí" : "No",
-          ];
-          csv += row.join(",") + "\n";
-        });
+    timestamp,
+    reg.cabana || "",
+    reg.nombre || "",
+    reg.apellido || "",
+    reg.celular || "",
+    reg.tipoId || "",
+    reg.numeroId || "",
+    reg.ciudad || "",
+    reg.totalHuespedes || "",
+    reg.fechaEntrada || "",
+    reg.horaEntrada || "",
+    reg.fechaSalida || "",
+    reg.horaSalida || "",
+    (reg.comentario || "").replace(/,/g, ";"),
+    reg.consent ? "Sí" : "No",
+];
 
         const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
         const link = document.createElement("a");

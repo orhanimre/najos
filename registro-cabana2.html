@@ -176,21 +176,22 @@
         }
 
         input[type="text"],
-        input[type="tel"],
-        input[type="number"],
-        input[type="date"],
-        textarea {
-            width: 100%;
-            padding: 14px 18px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            background: #fafafa;
-            -webkit-appearance: none;
-            appearance: none;
-        }
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+textarea {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    background: #fafafa;
+    -webkit-appearance: none;
+    appearance: none;
+}
 
         select {
             width: 100%;
@@ -608,7 +609,7 @@
             </div>
         </div>
 
-        <img src="https://imgur.com/ifou9Lq.jpg" alt="Cabaña MariaMar-1" class="banner-image">
+        <img src="https://imgur.com/21Ay90Q.jpg" alt="Cabaña MariaMar-2" class="banner-image">
 
         <div class="form-content">
             <div class="section-intro">
@@ -670,16 +671,28 @@
                 </div>
 
                 <div class="grid-2">
-                    <div class="form-group">
-                        <label for="fechaEntrada">Fecha de Entrada <span class="required">*</span></label>
-                        <input type="date" id="fechaEntrada" name="fechaEntrada" required>
-                    </div>
+    <div class="form-group">
+        <label for="fechaEntrada">Fecha de Entrada <span class="required">*</span></label>
+        <input type="date" id="fechaEntrada" name="fechaEntrada" required>
+    </div>
 
-                    <div class="form-group">
-                        <label for="fechaSalida">Fecha de Salida <span class="required">*</span></label>
-                        <input type="date" id="fechaSalida" name="fechaSalida" required>
-                    </div>
-                </div>
+    <div class="form-group">
+        <label for="horaEntrada">Hora de Entrada <span class="required">*</span></label>
+        <input type="time" id="horaEntrada" name="horaEntrada" required>
+    </div>
+</div>
+
+<div class="grid-2">
+    <div class="form-group">
+        <label for="fechaSalida">Fecha de Salida <span class="required">*</span></label>
+        <input type="date" id="fechaSalida" name="fechaSalida" required>
+    </div>
+
+    <div class="form-group">
+        <label for="horaSalida">Hora de Salida <span class="required">*</span></label>
+        <input type="time" id="horaSalida" name="horaSalida" required>
+    </div>
+</div>
 
                 <div class="form-group">
                     <label for="comentario">Comentarios o Solicitudes Especiales</label>
@@ -924,18 +937,20 @@
             
             const formData = new FormData(form);
             const data = {
-                cabana: 'Cabaña MariaMar-2',
-                timestamp: serverTimestamp(),
-                nombre: formData.get('nombre'),
-                apellido: formData.get('apellido'),
-                celular: formData.get('celular'),
-                tipoId: formData.get('tipoId'),
-                numeroId: formData.get('numeroId'),
-                ciudad: formData.get('ciudad'),
-                totalHuespedes: Number(formData.get('totalHuespedes') || 0),
-                fechaEntrada: formData.get('fechaEntrada'),
-                fechaSalida: formData.get('fechaSalida'),
-                comentario: formData.get('comentario'),
+    cabana: 'Cabaña MariaMar-1',
+    timestamp: serverTimestamp(),
+    nombre: formData.get('nombre'),
+    apellido: formData.get('apellido'),
+    celular: formData.get('celular'),
+    tipoId: formData.get('tipoId'),
+    numeroId: formData.get('numeroId'),
+    ciudad: formData.get('ciudad'),
+    totalHuespedes: Number(formData.get('totalHuespedes') || 0),
+    fechaEntrada: formData.get('fechaEntrada'),
+    horaEntrada: formData.get('horaEntrada'),
+    fechaSalida: formData.get('fechaSalida'),
+    horaSalida: formData.get('horaSalida'),
+    comentario: formData.get('comentario'),
                 acomp1Nombre: formData.get('acomp1Nombre'),
                 acomp1Apellido: formData.get('acomp1Apellido'),
                 acomp1TipoId: formData.get('acomp1TipoId'),

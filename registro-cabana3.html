@@ -1,178 +1,396 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro Cabaña 1 - Cabañas MariaMar</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+      }
+
+      .logo {
+        width: 100%;
+        max-width: 350px;
+        height: auto;
+        display: block;
+        margin: 0 auto 25px auto;
+        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+      }
+
+      @media (max-width: 600px) {
+        .logo {
+          max-width: 180px;
+          margin-bottom: 15px;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+          padding: 10px;
         }
 
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-        }
-
-        .logo {
-            width: 100%;
-            max-width: 350px;
-            height: auto;
-            display: block;
-            margin: 0 auto 25px auto;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
-        }
-
-        @media (max-width: 600px) {
-            .logo {
-                max-width: 180px;
-                margin-bottom: 15px;
-            }
-
-            body {
-                padding: 10px;
-            }
-
-            .container {
-                border-radius: 16px;
-            }
-
-            .header {
-                padding: 30px 20px 40px 20px;
-            }
-
-            .header h1 {
-                font-size: 24px;
-            }
-
-            .header p {
-                font-size: 16px;
-            }
-
-            .cabin-badge {
-                font-size: 14px;
-                padding: 8px 16px;
-            }
-
-            .banner-image {
-                height: 250px;
-            }
-
-            .logo {
-                max-width: 200px;
-            }
+          border-radius: 16px;
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 30px 50px 30px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
-            opacity: 0.3;
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 1;
+          padding: 30px 20px 40px 20px;
         }
 
         .header h1 {
-            font-size: 32px;
-            margin-bottom: 8px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
+          font-size: 24px;
         }
 
         .header p {
-            font-size: 18px;
-            opacity: 0.95;
-            font-weight: 300;
+          font-size: 16px;
         }
 
         .cabin-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.25);
-            backdrop-filter: blur(10px);
-            padding: 12px 24px;
-            border-radius: 30px;
-            margin-top: 20px;
-            font-weight: 600;
-            font-size: 16px;
-            border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          font-size: 14px;
+          padding: 8px 16px;
         }
 
         .banner-image {
-            width: 100%;
-            height: auto;
-            max-height: 500px;
-            object-fit: cover;
-            object-position: center center;
-            display: block;
+          height: 250px;
+        }
+
+        .logo {
+          max-width: 200px;
+        }
+      }
+
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px 30px 50px 30px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+        opacity: 0.3;
+      }
+
+      .header-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .header h1 {
+        font-size: 32px;
+        margin-bottom: 8px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+
+      .header p {
+        font-size: 18px;
+        opacity: 0.95;
+        font-weight: 300;
+      }
+
+      .cabin-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px);
+        padding: 12px 24px;
+        border-radius: 30px;
+        margin-top: 20px;
+        font-weight: 600;
+        font-size: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .banner-image {
+        width: 100%;
+        height: auto;
+        max-height: 500px;
+        object-fit: cover;
+        object-position: center center;
+        display: block;
+      }
+
+      .form-content {
+        padding: 50px 40px;
+      }
+
+      @media (max-width: 600px) {
+        .form-content {
+          padding: 40px 25px;
+        }
+      }
+
+      .section-intro {
+        text-align: center;
+        margin-bottom: 40px;
+        color: #4a5568;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      .form-section {
+        margin-bottom: 40px;
+      }
+
+      .form-group {
+        margin-bottom: 24px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        color: #2d3748;
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.2px;
+      }
+
+      .required {
+        color: #f56565;
+      }
+
+      input[type="text"],
+      input[type="tel"],
+      input[type="number"],
+      input[type="date"],
+      input[type="time"],
+      textarea {
+        width: 100%;
+        padding: 14px 18px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        font-family: inherit;
+        background: #fafafa;
+        -webkit-appearance: none;
+        appearance: none;
+      }
+
+      select {
+        width: 100%;
+        padding: 14px 18px;
+        padding-right: 45px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        font-family: inherit;
+        background: #fafafa
+          url('data:image/svg+xml;charset=UTF-8,<svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L6 6.5L11 1.5" stroke="%23667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+          no-repeat;
+        background-position: right 18px center;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        cursor: pointer;
+      }
+
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        background: white;
+      }
+
+      select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        background-color: white;
+        background-image: url('data:image/svg+xml;charset=UTF-8,<svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L6 6.5L11 1.5" stroke="%23667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+      }
+
+      input:hover:not(:focus),
+      textarea:hover:not(:focus) {
+        border-color: #cbd5e0;
+      }
+
+      select:hover:not(:focus) {
+        border-color: #cbd5e0;
+        background-color: #fafafa;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 120px;
+      }
+
+      .section-header {
+        font-size: 22px;
+        font-weight: 700;
+        color: #2d3748;
+        margin: 50px 0 25px 0;
+        padding-bottom: 12px;
+        border-bottom: 3px solid #667eea;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .section-header::before {
+        content: "";
+        width: 6px;
+        height: 28px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 3px;
+      }
+
+      .companion-group.filled {
+        border-color: #48bb78;
+        background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%);
+      }
+
+      .companion-group.filled .companion-header {
+        background: #f0fff4;
+      }
+
+      .companion-group.filled .companion-title {
+        color: #48bb78;
+      }
+
+      .companion-group.filled .toggle-icon {
+        color: #48bb78;
+      }
+
+      .companion-group {
+        background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        padding: 0;
+        border-radius: 16px;
+        margin-bottom: 20px;
+        border: 2px solid #e2e8f0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      @media (max-width: 600px) {
+        body {
+          padding: 10px;
+        }
+
+        .container {
+          border-radius: 16px;
+        }
+
+        .header {
+          padding: 30px 20px 40px 20px;
+        }
+
+        .header h1 {
+          font-size: 24px;
+        }
+
+        .header p {
+          font-size: 16px;
+        }
+
+        .cabin-badge {
+          font-size: 14px;
+          padding: 8px 16px;
+        }
+
+        .banner-image {
+          height: auto;
+          max-height: 350px;
+          object-fit: cover;
+        }
+
+        .logo {
+          max-width: 200px;
         }
 
         .form-content {
-            padding: 50px 40px;
+          padding: 25px 18px;
         }
 
-        @media (max-width: 600px) {
-            .form-content {
-                padding: 40px 25px;
-            }
+        .section-header {
+          font-size: 19px;
+          margin: 25px 0 15px 0;
+          padding-bottom: 10px;
         }
 
-        .section-intro {
-            text-align: center;
-            margin-bottom: 40px;
-            color: #4a5568;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .form-section {
-            margin-bottom: 40px;
+        .section-header::before {
+          width: 5px;
+          height: 24px;
         }
 
         .form-group {
-            margin-bottom: 24px;
+          margin-bottom: 16px;
+        }
+
+        .section-intro {
+          margin-bottom: 20px;
+          font-size: 14px;
+        }
+
+        .companion-header {
+          padding: 14px 18px;
+        }
+
+        .companion-title {
+          font-size: 15px;
+        }
+
+        .companion-fields.open {
+          padding: 18px;
+        }
+
+        .companion-group {
+          margin-bottom: 14px;
+        }
+
+        .submit-btn {
+          padding: 16px;
+          font-size: 16px;
+          margin-top: 25px;
+        }
+
+        .checkbox-group {
+          padding: 16px 18px;
+          margin-bottom: 0;
+        }
+
+        .helper-text {
+          font-size: 12px;
+          margin-top: 5px;
         }
 
         label {
-            display: block;
-            margin-bottom: 10px;
-            color: #2d3748;
-            font-weight: 600;
-            font-size: 14px;
-            letter-spacing: 0.2px;
-        }
-
-        .required {
-            color: #f56565;
+          margin-bottom: 8px;
+          font-size: 13px;
         }
 
         input[type="text"],
@@ -180,891 +398,873 @@
         input[type="number"],
         input[type="date"],
         textarea {
-            width: 100%;
-            padding: 14px 18px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            background: #fafafa;
-            -webkit-appearance: none;
-            appearance: none;
+          padding: 12px 16px;
         }
 
         select {
-            width: 100%;
-            padding: 14px 18px;
-            padding-right: 45px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            background: #fafafa url('data:image/svg+xml;charset=UTF-8,<svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L6 6.5L11 1.5" stroke="%23667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat;
-            background-position: right 18px center;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            cursor: pointer;
+          padding: 12px 16px;
+          padding-right: 40px;
+        }
+      }
+
+      .companion-group:hover {
+        border-color: #cbd5e0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+
+      .companion-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+        padding: 20px 24px;
+        background: white;
+        transition: background 0.2s ease;
+      }
+
+      .companion-header:hover {
+        background: #f7fafc;
+      }
+
+      .companion-title {
+        font-weight: 700;
+        color: #667eea;
+        font-size: 17px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .companion-title::before {
+        content: "👤";
+        font-size: 20px;
+      }
+
+      .toggle-icon {
+        font-size: 18px;
+        color: #667eea;
+        transition: transform 0.3s ease;
+        font-weight: bold;
+        min-width: 30px;
+        text-align: center;
+      }
+
+      .toggle-icon.open {
+        transform: rotate(180deg);
+      }
+
+      .companion-fields {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease;
+        padding: 0 24px;
+      }
+
+      .companion-fields.open {
+        max-height: 700px;
+        padding: 24px;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      @media (max-width: 600px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
         }
 
-        input:focus,
-        textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-            background: white;
-        }
-
-        select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-            background-color: white;
-            background-image: url('data:image/svg+xml;charset=UTF-8,<svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L6 6.5L11 1.5" stroke="%23667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
-        }
-
-        input:hover:not(:focus),
-        textarea:hover:not(:focus) {
-            border-color: #cbd5e0;
-        }
-
-        select:hover:not(:focus) {
-            border-color: #cbd5e0;
-            background-color: #fafafa;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 120px;
+        .form-content {
+          padding: 30px 20px;
         }
 
         .section-header {
-            font-size: 22px;
-            font-weight: 700;
-            color: #2d3748;
-            margin: 50px 0 25px 0;
-            padding-bottom: 12px;
-            border-bottom: 3px solid #667eea;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .section-header::before {
-            content: '';
-            width: 6px;
-            height: 28px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 3px;
-        }
-
-        .companion-group.filled {
-            border-color: #48bb78;
-            background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%);
-        }
-
-        .companion-group.filled .companion-header {
-            background: #f0fff4;
-        }
-
-        .companion-group.filled .companion-title {
-            color: #48bb78;
-        }
-
-        .companion-group.filled .toggle-icon {
-            color: #48bb78;
-        }
-
-        .companion-group {
-            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-            padding: 0;
-            border-radius: 16px;
-            margin-bottom: 20px;
-            border: 2px solid #e2e8f0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-
-            .container {
-                border-radius: 16px;
-            }
-
-            .header {
-                padding: 30px 20px 40px 20px;
-            }
-
-            .header h1 {
-                font-size: 24px;
-            }
-
-            .header p {
-                font-size: 16px;
-            }
-
-            .cabin-badge {
-                font-size: 14px;
-                padding: 8px 16px;
-            }
-
-            .banner-image {
-                height: auto;
-                max-height: 350px;
-                object-fit: cover;
-            }
-
-            .logo {
-                max-width: 200px;
-            }
-
-            .form-content {
-                padding: 25px 18px;
-            }
-
-            .section-header {
-                font-size: 19px;
-                margin: 25px 0 15px 0;
-                padding-bottom: 10px;
-            }
-
-            .section-header::before {
-                width: 5px;
-                height: 24px;
-            }
-
-            .form-group {
-                margin-bottom: 16px;
-            }
-
-            .section-intro {
-                margin-bottom: 20px;
-                font-size: 14px;
-            }
-
-            .companion-header {
-                padding: 14px 18px;
-            }
-
-            .companion-title {
-                font-size: 15px;
-            }
-
-            .companion-fields.open {
-                padding: 18px;
-            }
-
-            .companion-group {
-                margin-bottom: 14px;
-            }
-
-            .submit-btn {
-                padding: 16px;
-                font-size: 16px;
-                margin-top: 25px;
-            }
-
-            .checkbox-group {
-                padding: 16px 18px;
-                margin-bottom: 0;
-            }
-
-            .helper-text {
-                font-size: 12px;
-                margin-top: 5px;
-            }
-
-            label {
-                margin-bottom: 8px;
-                font-size: 13px;
-            }
-
-            input[type="text"],
-            input[type="tel"],
-            input[type="number"],
-            input[type="date"],
-            textarea {
-                padding: 12px 16px;
-            }
-
-            select {
-                padding: 12px 16px;
-                padding-right: 40px;
-            }
-        }
-
-        .companion-group:hover {
-            border-color: #cbd5e0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+          font-size: 20px;
+          margin: 40px 0 20px 0;
         }
 
         .companion-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            user-select: none;
-            padding: 20px 24px;
-            background: white;
-            transition: background 0.2s ease;
-        }
-
-        .companion-header:hover {
-            background: #f7fafc;
+          padding: 16px 20px;
         }
 
         .companion-title {
-            font-weight: 700;
-            color: #667eea;
-            font-size: 17px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .companion-title::before {
-            content: '👤';
-            font-size: 20px;
-        }
-
-        .toggle-icon {
-            font-size: 18px;
-            color: #667eea;
-            transition: transform 0.3s ease;
-            font-weight: bold;
-            min-width: 30px;
-            text-align: center;
-        }
-
-        .toggle-icon.open {
-            transform: rotate(180deg);
-        }
-
-        .companion-fields {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease;
-            padding: 0 24px;
-        }
-
-        .companion-fields.open {
-            max-height: 700px;
-            padding: 24px;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        @media (max-width: 600px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-
-            .form-content {
-                padding: 30px 20px;
-            }
-
-            .section-header {
-                font-size: 20px;
-                margin: 40px 0 20px 0;
-            }
-
-            .companion-header {
-                padding: 16px 20px;
-            }
-
-            .companion-title {
-                font-size: 16px;
-            }
-
-            .submit-btn {
-                padding: 16px;
-                font-size: 16px;
-            }
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: start;
-            gap: 16px;
-            padding: 20px 24px;
-            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-            border-radius: 16px;
-            border: 2px solid #e2e8f0;
-            transition: all 0.3s ease;
-        }
-
-        .checkbox-group:hover {
-            border-color: #cbd5e0;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
-            cursor: pointer;
-            margin-top: 2px;
-            accent-color: #667eea;
-        }
-
-        .checkbox-group label {
-            margin: 0;
-            cursor: pointer;
-            flex: 1;
-            font-weight: 500;
+          font-size: 16px;
         }
 
         .submit-btn {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            font-size: 17px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 40px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+          padding: 16px;
+          font-size: 16px;
         }
+      }
 
-        .submit-btn:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 28px rgba(102, 126, 234, 0.5);
-        }
+      .checkbox-group {
+        display: flex;
+        align-items: start;
+        gap: 16px;
+        padding: 20px 24px;
+        background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        border-radius: 16px;
+        border: 2px solid #e2e8f0;
+        transition: all 0.3s ease;
+      }
 
-        .submit-btn:active:not(:disabled) {
-            transform: translateY(-1px);
-        }
+      .checkbox-group:hover {
+        border-color: #cbd5e0;
+      }
 
-        .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
+      .checkbox-group input[type="checkbox"] {
+        width: 22px;
+        height: 22px;
+        cursor: pointer;
+        margin-top: 2px;
+        accent-color: #667eea;
+      }
 
-        .message {
-            padding: 18px 24px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            text-align: center;
-            display: none;
-            font-weight: 600;
-            animation: slideDown 0.3s ease;
-        }
+      .checkbox-group label {
+        margin: 0;
+        cursor: pointer;
+        flex: 1;
+        font-weight: 500;
+      }
 
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+      .submit-btn {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 16px;
+        font-size: 17px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 40px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+      }
 
-        .success-message {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
-        }
+      .submit-btn:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 28px rgba(102, 126, 234, 0.5);
+      }
 
-        .error-message {
-            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
-        }
+      .submit-btn:active:not(:disabled) {
+        transform: translateY(-1px);
+      }
 
-        .input-icon {
-            position: relative;
-        }
+      .submit-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
 
-        .helper-text {
-            font-size: 13px;
-            color: #718096;
-            margin-top: 6px;
-            font-weight: 400;
+      .message {
+        padding: 18px 24px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        text-align: center;
+        display: none;
+        font-weight: 600;
+        animation: slideDown 0.3s ease;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
         }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .success-message {
+        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
+      }
+
+      .error-message {
+        background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
+      }
+
+      .input-icon {
+        position: relative;
+      }
+
+      .helper-text {
+        font-size: 13px;
+        color: #718096;
+        margin-top: 6px;
+        font-weight: 400;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="header">
-            <div class="header-content">
-                <img src="https://i.imgur.com/tWfkFP8.jpg" alt="Logo Cabañas MariaMar" class="logo">
-                <h1>Registro de Huéspedes</h1>
-                <div class="cabin-badge">🏡 Cabaña MariaMar-3</div>
-            </div>
+      <div class="header">
+        <div class="header-content">
+          <img
+            src="https://i.imgur.com/tWfkFP8.jpg"
+            alt="Logo Cabañas MariaMar"
+            class="logo"
+          />
+          <h1>Registro de Huéspedes</h1>
+          <div class="cabin-badge">🏡 Cabaña MariaMar-3</div>
+        </div>
+      </div>
+
+      <img
+        src="https://imgur.com/QLnvbcu.jpg"
+        alt="Cabaña MariaMar-3"
+        class="banner-image"
+      />
+
+      <div class="form-content">
+        <div class="section-intro">
+          Por favor complete el siguiente formulario con sus datos.
         </div>
 
-        <img src="https://imgur.com/QLnvbcu.jpg" alt="Cabaña MariaMar-3" class="banner-image">
+        <div id="successMessage" class="message success-message"></div>
+        <div id="errorMessage" class="message error-message"></div>
 
-        <div class="form-content">
-            <div class="section-intro">
-                Por favor complete el siguiente formulario con sus datos.
+        <form id="registrationForm">
+          <div class="section-header">Información Principal</div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="nombre"
+                >Nombre(s) <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                required
+                placeholder="Ej: Juan Carlos"
+                autocomplete="given-name"
+              />
             </div>
 
-            <div id="successMessage" class="message success-message"></div>
-            <div id="errorMessage" class="message error-message"></div>
+            <div class="form-group">
+              <label for="apellido"
+                >Apellido(s) <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                id="apellido"
+                name="apellido"
+                required
+                placeholder="Ej: García López"
+                autocomplete="family-name"
+              />
+            </div>
+          </div>
 
-            <form id="registrationForm">
-                <div class="section-header">Información Principal</div>
-                
-                <div class="grid-2">
-                    <div class="form-group">
-                        <label for="nombre">Nombre(s) <span class="required">*</span></label>
-                        <input type="text" id="nombre" name="nombre" required placeholder="Ej: Juan Carlos" autocomplete="given-name">
-                    </div>
+          <div class="form-group">
+            <label for="celular">Celular <span class="required">*</span></label>
+            <input
+              type="tel"
+              id="celular"
+              name="celular"
+              required
+              placeholder="Ej: 300 123 4567"
+              autocomplete="tel"
+            />
+            <div class="helper-text">Número de contacto durante su estadía</div>
+          </div>
 
-                    <div class="form-group">
-                        <label for="apellido">Apellido(s) <span class="required">*</span></label>
-                        <input type="text" id="apellido" name="apellido" required placeholder="Ej: García López" autocomplete="family-name">
-                    </div>
-                </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="tipoId"
+                >Tipo de Identificación <span class="required">*</span></label
+              >
+              <select id="tipoId" name="tipoId" required>
+                <option value="">Seleccione una opción</option>
+                <option value="cc">Cédula de Ciudadanía</option>
+                <option value="ce">Cédula de Extranjería</option>
+                <option value="pasaporte">Pasaporte</option>
+              </select>
+            </div>
 
+            <div class="form-group">
+              <label for="numeroId"
+                >Número de Identificación <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                id="numeroId"
+                name="numeroId"
+                required
+                placeholder="Ej: 1234567890"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="ciudad"
+              >Ciudad de Procedencia <span class="required">*</span></label
+            >
+            <input
+              type="text"
+              id="ciudad"
+              name="ciudad"
+              required
+              placeholder="Ej: Bogotá, Medellín, Cali"
+              autocomplete="address-level2"
+            />
+          </div>
+
+          <div class="section-header">Detalles de la Reserva</div>
+
+          <div class="form-group">
+            <label for="totalHuespedes"
+              >Número Total de Huéspedes <span class="required">*</span></label
+            >
+            <input
+              type="number"
+              id="totalHuespedes"
+              name="totalHuespedes"
+              min="1"
+              max="6"
+              required
+              placeholder="Ej: 2"
+            />
+            <div class="helper-text">Máximo 6 personas</div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="fechaEntrada"
+                >Fecha de Entrada <span class="required">*</span></label
+              >
+              <input
+                type="date"
+                id="fechaEntrada"
+                name="fechaEntrada"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="horaEntrada"
+                >Hora de Entrada <span class="required">*</span></label
+              >
+              <input type="time" id="horaEntrada" name="horaEntrada" required />
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="fechaSalida"
+                >Fecha de Salida <span class="required">*</span></label
+              >
+              <input type="date" id="fechaSalida" name="fechaSalida" required />
+            </div>
+
+            <div class="form-group">
+              <label for="horaSalida"
+                >Hora de Salida <span class="required">*</span></label
+              >
+              <input type="time" id="horaSalida" name="horaSalida" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="comentario">Comentarios o Solicitudes Especiales</label>
+            <textarea
+              id="comentario"
+              name="comentario"
+              placeholder="¿Tiene alguna solicitud especial o comentario que quiera compartir?"
+            ></textarea>
+          </div>
+
+          <div class="section-header">Datos de los Acompañantes</div>
+
+          <p style="color: #718096; margin-bottom: 24px; font-size: 14px">
+            Complete la información de las personas que lo acompañarán
+            (opcional)
+          </p>
+
+          <div class="companion-group">
+            <div class="companion-header" onclick="toggleCompanion(1)">
+              <div class="companion-title">Acompañante 1</div>
+              <div class="toggle-icon" id="toggle1">▼</div>
+            </div>
+            <div class="companion-fields" id="fields1">
+              <div class="grid-2">
                 <div class="form-group">
-                    <label for="celular">Celular <span class="required">*</span></label>
-                    <input type="tel" id="celular" name="celular" required placeholder="Ej: 300 123 4567" autocomplete="tel">
-                    <div class="helper-text">Número de contacto durante su estadía</div>
+                  <label for="acomp1Nombre">Nombre(s)</label>
+                  <input
+                    type="text"
+                    id="acomp1Nombre"
+                    name="acomp1Nombre"
+                    placeholder="Nombre"
+                  />
                 </div>
-
-                <div class="grid-2">
-                    <div class="form-group">
-                        <label for="tipoId">Tipo de Identificación <span class="required">*</span></label>
-                        <select id="tipoId" name="tipoId" required>
-                            <option value="">Seleccione una opción</option>
-                            <option value="cc">Cédula de Ciudadanía</option>
-                            <option value="ce">Cédula de Extranjería</option>
-                            <option value="pasaporte">Pasaporte</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="numeroId">Número de Identificación <span class="required">*</span></label>
-                        <input type="text" id="numeroId" name="numeroId" required placeholder="Ej: 1234567890" autocomplete="off">
-                    </div>
-                </div>
-
                 <div class="form-group">
-                    <label for="ciudad">Ciudad de Procedencia <span class="required">*</span></label>
-                    <input type="text" id="ciudad" name="ciudad" required placeholder="Ej: Bogotá, Medellín, Cali" autocomplete="address-level2">
+                  <label for="acomp1Apellido">Apellido(s)</label>
+                  <input
+                    type="text"
+                    id="acomp1Apellido"
+                    name="acomp1Apellido"
+                    placeholder="Apellido"
+                  />
                 </div>
-
-                <div class="section-header">Detalles de la Reserva</div>
-
+              </div>
+              <div class="grid-2">
                 <div class="form-group">
-                    <label for="totalHuespedes">Número Total de Huéspedes <span class="required">*</span></label>
-                    <input type="number" id="totalHuespedes" name="totalHuespedes" min="1" max="6" required placeholder="Ej: 2">
-                    <div class="helper-text">Máximo 6 personas</div>
+                  <label for="acomp1TipoId">Tipo de Identificación</label>
+                  <select id="acomp1TipoId" name="acomp1TipoId">
+                    <option value="">Seleccione una opción</option>
+                    <option value="cc">Cédula de Ciudadanía</option>
+                    <option value="ti">Tarjeta de Identidad</option>
+                    <option value="ce">Cédula de Extranjería</option>
+                    <option value="pasaporte">Pasaporte</option>
+                  </select>
                 </div>
-
-                <div class="grid-2">
-                    <div class="form-group">
-                        <label for="fechaEntrada">Fecha de Entrada <span class="required">*</span></label>
-                        <input type="date" id="fechaEntrada" name="fechaEntrada" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="fechaSalida">Fecha de Salida <span class="required">*</span></label>
-                        <input type="date" id="fechaSalida" name="fechaSalida" required>
-                    </div>
-                </div>
-
                 <div class="form-group">
-                    <label for="comentario">Comentarios o Solicitudes Especiales</label>
-                    <textarea id="comentario" name="comentario" placeholder="¿Tiene alguna solicitud especial o comentario que quiera compartir?"></textarea>
+                  <label for="acomp1NumId">Número de Identificación</label>
+                  <input
+                    type="text"
+                    id="acomp1NumId"
+                    name="acomp1NumId"
+                    placeholder="Número"
+                  />
                 </div>
+              </div>
+            </div>
+          </div>
 
-                <div class="section-header">Datos de los Acompañantes</div>
-
-                <p style="color: #718096; margin-bottom: 24px; font-size: 14px;">
-                    Complete la información de las personas que lo acompañarán (opcional)
-                </p>
-
-                <div class="companion-group">
-                    <div class="companion-header" onclick="toggleCompanion(1)">
-                        <div class="companion-title">Acompañante 1</div>
-                        <div class="toggle-icon" id="toggle1">▼</div>
-                    </div>
-                    <div class="companion-fields" id="fields1">
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label for="acomp1Nombre">Nombre(s)</label>
-                                <input type="text" id="acomp1Nombre" name="acomp1Nombre" placeholder="Nombre">
-                            </div>
-                            <div class="form-group">
-                                <label for="acomp1Apellido">Apellido(s)</label>
-                                <input type="text" id="acomp1Apellido" name="acomp1Apellido" placeholder="Apellido">
-                            </div>
-                        </div>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label for="acomp1TipoId">Tipo de Identificación</label>
-                                <select id="acomp1TipoId" name="acomp1TipoId">
-                                    <option value="">Seleccione una opción</option>
-                                    <option value="cc">Cédula de Ciudadanía</option>
-                                    <option value="ti">Tarjeta de Identidad</option>
-                                    <option value="ce">Cédula de Extranjería</option>
-                                    <option value="pasaporte">Pasaporte</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="acomp1NumId">Número de Identificación</label>
-                                <input type="text" id="acomp1NumId" name="acomp1NumId" placeholder="Número">
-                            </div>
-                        </div>
-                    </div>
+          <div class="companion-group">
+            <div class="companion-header" onclick="toggleCompanion(2)">
+              <div class="companion-title">Acompañante 2</div>
+              <div class="toggle-icon" id="toggle2">▼</div>
+            </div>
+            <div class="companion-fields" id="fields2">
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="acomp2Nombre">Nombre(s)</label>
+                  <input
+                    type="text"
+                    id="acomp2Nombre"
+                    name="acomp2Nombre"
+                    placeholder="Nombre"
+                  />
                 </div>
-
-                <div class="companion-group">
-                    <div class="companion-header" onclick="toggleCompanion(2)">
-                        <div class="companion-title">Acompañante 2</div>
-                        <div class="toggle-icon" id="toggle2">▼</div>
-                    </div>
-                    <div class="companion-fields" id="fields2">
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label for="acomp2Nombre">Nombre(s)</label>
-                                <input type="text" id="acomp2Nombre" name="acomp2Nombre" placeholder="Nombre">
-                            </div>
-                            <div class="form-group">
-                                <label for="acomp2Apellido">Apellido(s)</label>
-                                <input type="text" id="acomp2Apellido" name="acomp2Apellido" placeholder="Apellido">
-                            </div>
-                        </div>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label for="acomp2TipoId">Tipo de Identificación</label>
-                                <select id="acomp2TipoId" name="acomp2TipoId">
-                                    <option value="">Seleccione una opción</option>
-                                    <option value="cc">Cédula de Ciudadanía</option>
-                                    <option value="ti">Tarjeta de Identidad</option>
-                                    <option value="ce">Cédula de Extranjería</option>
-                                    <option value="pasaporte">Pasaporte</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="acomp2NumId">Número de Identificación</label>
-                                <input type="text" id="acomp2NumId" name="acomp2NumId" placeholder="Número">
-                            </div>
-                        </div>
-                    </div>
+                <div class="form-group">
+                  <label for="acomp2Apellido">Apellido(s)</label>
+                  <input
+                    type="text"
+                    id="acomp2Apellido"
+                    name="acomp2Apellido"
+                    placeholder="Apellido"
+                  />
                 </div>
-
-                <div class="companion-group">
-                    <div class="companion-header" onclick="toggleCompanion(3)">
-                        <div class="companion-title">Acompañante 3</div>
-                        <div class="toggle-icon" id="toggle3">▼</div>
-                    </div>
-                    <div class="companion-fields" id="fields3">
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label for="acomp3Nombre">Nombre(s)</label>
-                                <input type="text" id="acomp3Nombre" name="acomp3Nombre" placeholder="Nombre">
-                            </div>
-                            <div class="form-group">
-                                <label for="acomp3Apellido">Apellido(s)</label>
-                                <input type="text" id="acomp3Apellido" name="acomp3Apellido" placeholder="Apellido">
-                            </div>
-                        </div>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label for="acomp3TipoId">Tipo de Identificación</label>
-                                <select id="acomp3TipoId" name="acomp3TipoId">
-                                    <option value="">Seleccione una opción</option>
-                                    <option value="cc">Cédula de Ciudadanía</option>
-                                    <option value="ti">Tarjeta de Identidad</option>
-                                    <option value="ce">Cédula de Extranjería</option>
-                                    <option value="pasaporte">Pasaporte</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="acomp3NumId">Número de Identificación</label>
-                                <input type="text" id="acomp3NumId" name="acomp3NumId" placeholder="Número">
-                            </div>
-                        </div>
-                    </div>
+              </div>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="acomp2TipoId">Tipo de Identificación</label>
+                  <select id="acomp2TipoId" name="acomp2TipoId">
+                    <option value="">Seleccione una opción</option>
+                    <option value="cc">Cédula de Ciudadanía</option>
+                    <option value="ti">Tarjeta de Identidad</option>
+                    <option value="ce">Cédula de Extranjería</option>
+                    <option value="pasaporte">Pasaporte</option>
+                  </select>
                 </div>
-
-                <div class="companion-group">
-                    <div class="companion-header" onclick="toggleCompanion(4)">
-                        <div class="companion-title">Acompañante 4</div>
-                        <div class="toggle-icon" id="toggle4">▼</div>
-                    </div>
-                    <div class="companion-fields" id="fields4">
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label for="acomp4Nombre">Nombre(s)</label>
-                                <input type="text" id="acomp4Nombre" name="acomp4Nombre" placeholder="Nombre">
-                            </div>
-                            <div class="form-group">
-                                <label for="acomp4Apellido">Apellido(s)</label>
-                                <input type="text" id="acomp4Apellido" name="acomp4Apellido" placeholder="Apellido">
-                            </div>
-                        </div>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label for="acomp4TipoId">Tipo de Identificación</label>
-                                <select id="acomp4TipoId" name="acomp4TipoId">
-                                    <option value="">Seleccione una opción</option>
-                                    <option value="cc">Cédula de Ciudadanía</option>
-                                    <option value="ti">Tarjeta de Identidad</option>
-                                    <option value="ce">Cédula de Extranjería</option>
-                                    <option value="pasaporte">Pasaporte</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="acomp4NumId">Número de Identificación</label>
-                                <input type="text" id="acomp4NumId" name="acomp4NumId" placeholder="Número">
-                            </div>
-                        </div>
-                    </div>
+                <div class="form-group">
+                  <label for="acomp2NumId">Número de Identificación</label>
+                  <input
+                    type="text"
+                    id="acomp2NumId"
+                    name="acomp2NumId"
+                    placeholder="Número"
+                  />
                 </div>
+              </div>
+            </div>
+          </div>
 
-                <div class="companion-group">
-                    <div class="companion-header" onclick="toggleCompanion(5)">
-                        <div class="companion-title">Acompañante 5</div>
-                        <div class="toggle-icon" id="toggle5">▼</div>
-                    </div>
-                    <div class="companion-fields" id="fields5">
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label for="acomp5Nombre">Nombre(s)</label>
-                                <input type="text" id="acomp5Nombre" name="acomp5Nombre" placeholder="Nombre">
-                            </div>
-                            <div class="form-group">
-                                <label for="acomp5Apellido">Apellido(s)</label>
-                                <input type="text" id="acomp5Apellido" name="acomp5Apellido" placeholder="Apellido">
-                            </div>
-                        </div>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label for="acomp5TipoId">Tipo de Identificación</label>
-                                <select id="acomp5TipoId" name="acomp5TipoId">
-                                    <option value="">Seleccione una opción</option>
-                                    <option value="cc">Cédula de Ciudadanía</option>
-                                    <option value="ti">Tarjeta de Identidad</option>
-                                    <option value="ce">Cédula de Extranjería</option>
-                                    <option value="pasaporte">Pasaporte</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="acomp5NumId">Número de Identificación</label>
-                                <input type="text" id="acomp5NumId" name="acomp5NumId" placeholder="Número">
-                            </div>
-                        </div>
-                    </div>
+          <div class="companion-group">
+            <div class="companion-header" onclick="toggleCompanion(3)">
+              <div class="companion-title">Acompañante 3</div>
+              <div class="toggle-icon" id="toggle3">▼</div>
+            </div>
+            <div class="companion-fields" id="fields3">
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="acomp3Nombre">Nombre(s)</label>
+                  <input
+                    type="text"
+                    id="acomp3Nombre"
+                    name="acomp3Nombre"
+                    placeholder="Nombre"
+                  />
                 </div>
-
-                <div class="section-header">Consentimiento</div>
-
-                <div class="checkbox-group">
-                    <input type="checkbox" id="consent" name="consent" required>
-                    <label for="consent">
-                        ¿Aceptas tratamiento de tus datos personales por Cabañas MariaMar? <span class="required">*</span>
-                        <br><small style="color: #718096; margin-top: 6px; display: block; font-weight: 400;">
-                            Al marcar esta casilla, autorizas el tratamiento de tus datos personales conforme a nuestra política de privacidad.
-                        </small>
-                    </label>
+                <div class="form-group">
+                  <label for="acomp3Apellido">Apellido(s)</label>
+                  <input
+                    type="text"
+                    id="acomp3Apellido"
+                    name="acomp3Apellido"
+                    placeholder="Apellido"
+                  />
                 </div>
+              </div>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="acomp3TipoId">Tipo de Identificación</label>
+                  <select id="acomp3TipoId" name="acomp3TipoId">
+                    <option value="">Seleccione una opción</option>
+                    <option value="cc">Cédula de Ciudadanía</option>
+                    <option value="ti">Tarjeta de Identidad</option>
+                    <option value="ce">Cédula de Extranjería</option>
+                    <option value="pasaporte">Pasaporte</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="acomp3NumId">Número de Identificación</label>
+                  <input
+                    type="text"
+                    id="acomp3NumId"
+                    name="acomp3NumId"
+                    placeholder="Número"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
 
-                <button type="submit" class="submit-btn">✓ Enviar Registro</button>
-            </form>
-        </div>
+          <div class="companion-group">
+            <div class="companion-header" onclick="toggleCompanion(4)">
+              <div class="companion-title">Acompañante 4</div>
+              <div class="toggle-icon" id="toggle4">▼</div>
+            </div>
+            <div class="companion-fields" id="fields4">
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="acomp4Nombre">Nombre(s)</label>
+                  <input
+                    type="text"
+                    id="acomp4Nombre"
+                    name="acomp4Nombre"
+                    placeholder="Nombre"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="acomp4Apellido">Apellido(s)</label>
+                  <input
+                    type="text"
+                    id="acomp4Apellido"
+                    name="acomp4Apellido"
+                    placeholder="Apellido"
+                  />
+                </div>
+              </div>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="acomp4TipoId">Tipo de Identificación</label>
+                  <select id="acomp4TipoId" name="acomp4TipoId">
+                    <option value="">Seleccione una opción</option>
+                    <option value="cc">Cédula de Ciudadanía</option>
+                    <option value="ti">Tarjeta de Identidad</option>
+                    <option value="ce">Cédula de Extranjería</option>
+                    <option value="pasaporte">Pasaporte</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="acomp4NumId">Número de Identificación</label>
+                  <input
+                    type="text"
+                    id="acomp4NumId"
+                    name="acomp4NumId"
+                    placeholder="Número"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="companion-group">
+            <div class="companion-header" onclick="toggleCompanion(5)">
+              <div class="companion-title">Acompañante 5</div>
+              <div class="toggle-icon" id="toggle5">▼</div>
+            </div>
+            <div class="companion-fields" id="fields5">
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="acomp5Nombre">Nombre(s)</label>
+                  <input
+                    type="text"
+                    id="acomp5Nombre"
+                    name="acomp5Nombre"
+                    placeholder="Nombre"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="acomp5Apellido">Apellido(s)</label>
+                  <input
+                    type="text"
+                    id="acomp5Apellido"
+                    name="acomp5Apellido"
+                    placeholder="Apellido"
+                  />
+                </div>
+              </div>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label for="acomp5TipoId">Tipo de Identificación</label>
+                  <select id="acomp5TipoId" name="acomp5TipoId">
+                    <option value="">Seleccione una opción</option>
+                    <option value="cc">Cédula de Ciudadanía</option>
+                    <option value="ti">Tarjeta de Identidad</option>
+                    <option value="ce">Cédula de Extranjería</option>
+                    <option value="pasaporte">Pasaporte</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="acomp5NumId">Número de Identificación</label>
+                  <input
+                    type="text"
+                    id="acomp5NumId"
+                    name="acomp5NumId"
+                    placeholder="Número"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-header">Consentimiento</div>
+
+          <div class="checkbox-group">
+            <input type="checkbox" id="consent" name="consent" required />
+            <label for="consent">
+              ¿Aceptas tratamiento de tus datos personales por Cabañas MariaMar?
+              <span class="required">*</span> <br /><small
+                style="
+                  color: #718096;
+                  margin-top: 6px;
+                  display: block;
+                  font-weight: 400;
+                "
+              >
+                Al marcar esta casilla, autorizas el tratamiento de tus datos
+                personales conforme a nuestra política de privacidad.
+              </small>
+            </label>
+          </div>
+
+          <button type="submit" class="submit-btn">✓ Enviar Registro</button>
+        </form>
+      </div>
     </div>
 
     <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+        serverTimestamp,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyACEyCsx-4lhITc8s06QyZPQiS9t3f7I18",
-            authDomain: "cabanas-mariamar.firebaseapp.com",
-            projectId: "cabanas-mariamar",
-            storageBucket: "cabanas-mariamar.firebasestorage.app",
-            messagingSenderId: "578365907890",
-            appId: "1:578365907890:web:d1561f04e29ed64e97faab",
-            measurementId: "G-R3XMD9DPBP"
+      const firebaseConfig = {
+        apiKey: "AIzaSyACEyCsx-4lhITc8s06QyZPQiS9t3f7I18",
+        authDomain: "cabanas-mariamar.firebaseapp.com",
+        projectId: "cabanas-mariamar",
+        storageBucket: "cabanas-mariamar.firebasestorage.app",
+        messagingSenderId: "578365907890",
+        appId: "1:578365907890:web:d1561f04e29ed64e97faab",
+        measurementId: "G-R3XMD9DPBP",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const form = document.getElementById("registrationForm");
+      const successMessage = document.getElementById("successMessage");
+      const errorMessage = document.getElementById("errorMessage");
+
+      // Custom Spanish validation messages
+      const requiredInputs = document.querySelectorAll("[required]");
+      requiredInputs.forEach((input) => {
+        input.addEventListener("invalid", function (e) {
+          e.preventDefault();
+          if (input.validity.valueMissing) {
+            input.setCustomValidity("Por favor complete este campo");
+          }
+        });
+        input.addEventListener("input", function () {
+          input.setCustomValidity("");
+        });
+      });
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const data = {
+          cabana: "Cabaña MariaMar-1",
+          timestamp: serverTimestamp(),
+          nombre: formData.get("nombre"),
+          apellido: formData.get("apellido"),
+          celular: formData.get("celular"),
+          tipoId: formData.get("tipoId"),
+          numeroId: formData.get("numeroId"),
+          ciudad: formData.get("ciudad"),
+          totalHuespedes: Number(formData.get("totalHuespedes") || 0),
+          fechaEntrada: formData.get("fechaEntrada"),
+          horaEntrada: formData.get("horaEntrada"),
+          fechaSalida: formData.get("fechaSalida"),
+          horaSalida: formData.get("horaSalida"),
+          comentario: formData.get("comentario"),
+          acomp1Nombre: formData.get("acomp1Nombre"),
+          acomp1Apellido: formData.get("acomp1Apellido"),
+          acomp1TipoId: formData.get("acomp1TipoId"),
+          acomp1NumId: formData.get("acomp1NumId"),
+          acomp2Nombre: formData.get("acomp2Nombre"),
+          acomp2Apellido: formData.get("acomp2Apellido"),
+          acomp2TipoId: formData.get("acomp2TipoId"),
+          acomp2NumId: formData.get("acomp2NumId"),
+          acomp3Nombre: formData.get("acomp3Nombre"),
+          acomp3Apellido: formData.get("acomp3Apellido"),
+          acomp3TipoId: formData.get("acomp3TipoId"),
+          acomp3NumId: formData.get("acomp3NumId"),
+          acomp4Nombre: formData.get("acomp4Nombre"),
+          acomp4Apellido: formData.get("acomp4Apellido"),
+          acomp4TipoId: formData.get("acomp4TipoId"),
+          acomp4NumId: formData.get("acomp4NumId"),
+          acomp5Nombre: formData.get("acomp5Nombre"),
+          acomp5Apellido: formData.get("acomp5Apellido"),
+          acomp5TipoId: formData.get("acomp5TipoId"),
+          acomp5NumId: formData.get("acomp5NumId"),
+          consent: formData.get("consent") === "on",
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        const submitBtn = form.querySelector(".submit-btn");
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = "Enviando...";
+        submitBtn.disabled = true;
 
-        const form = document.getElementById('registrationForm');
-        const successMessage = document.getElementById('successMessage');
-        const errorMessage = document.getElementById('errorMessage');
+        try {
+          await addDoc(collection(db, "registrations"), data);
 
-        // Custom Spanish validation messages
-        const requiredInputs = document.querySelectorAll('[required]');
-        requiredInputs.forEach(input => {
-            input.addEventListener('invalid', function(e) {
-                e.preventDefault();
-                if (input.validity.valueMissing) {
-                    input.setCustomValidity('Por favor complete este campo');
-                }
-            });
-            input.addEventListener('input', function() {
-                input.setCustomValidity('');
-            });
-        });
+          successMessage.textContent =
+            "¡Registro enviado exitosamente! Gracias por completar el formulario.";
+          successMessage.style.display = "block";
+          errorMessage.style.display = "none";
 
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(form);
-            const data = {
-                cabana: 'Cabaña MariaMar-3',
-                timestamp: serverTimestamp(),
-                nombre: formData.get('nombre'),
-                apellido: formData.get('apellido'),
-                celular: formData.get('celular'),
-                tipoId: formData.get('tipoId'),
-                numeroId: formData.get('numeroId'),
-                ciudad: formData.get('ciudad'),
-                totalHuespedes: Number(formData.get('totalHuespedes') || 0),
-                fechaEntrada: formData.get('fechaEntrada'),
-                fechaSalida: formData.get('fechaSalida'),
-                comentario: formData.get('comentario'),
-                acomp1Nombre: formData.get('acomp1Nombre'),
-                acomp1Apellido: formData.get('acomp1Apellido'),
-                acomp1TipoId: formData.get('acomp1TipoId'),
-                acomp1NumId: formData.get('acomp1NumId'),
-                acomp2Nombre: formData.get('acomp2Nombre'),
-                acomp2Apellido: formData.get('acomp2Apellido'),
-                acomp2TipoId: formData.get('acomp2TipoId'),
-                acomp2NumId: formData.get('acomp2NumId'),
-                acomp3Nombre: formData.get('acomp3Nombre'),
-                acomp3Apellido: formData.get('acomp3Apellido'),
-                acomp3TipoId: formData.get('acomp3TipoId'),
-                acomp3NumId: formData.get('acomp3NumId'),
-                acomp4Nombre: formData.get('acomp4Nombre'),
-                acomp4Apellido: formData.get('acomp4Apellido'),
-                acomp4TipoId: formData.get('acomp4TipoId'),
-                acomp4NumId: formData.get('acomp4NumId'),
-                acomp5Nombre: formData.get('acomp5Nombre'),
-                acomp5Apellido: formData.get('acomp5Apellido'),
-                acomp5TipoId: formData.get('acomp5TipoId'),
-                acomp5NumId: formData.get('acomp5NumId'),
-                consent: formData.get('consent') === 'on'
-            };
-            
-            const submitBtn = form.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Enviando...';
-            submitBtn.disabled = true;
-            
-            try {
-                await addDoc(collection(db, 'registrations'), data);
-                
-                successMessage.textContent = '¡Registro enviado exitosamente! Gracias por completar el formulario.';
-                successMessage.style.display = 'block';
-                errorMessage.style.display = 'none';
-                
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                form.reset();
-                
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 5000);
-                
-            } catch (error) {
-                console.error('Error:', error);
-                errorMessage.textContent = 'Error al enviar el formulario. Por favor intenta nuevamente.';
-                errorMessage.style.display = 'block';
-                successMessage.style.display = 'none';
-                
-                setTimeout(() => {
-                    errorMessage.style.display = 'none';
-                }, 5000);
-            } finally {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }
-        });
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          form.reset();
 
-        const today = new Date().toISOString().split('T')[0];
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const tomorrowStr = tomorrow.toISOString().split('T')[0];
-        
-        const fechaEntrada = document.getElementById('fechaEntrada');
-        const fechaSalida = document.getElementById('fechaSalida');
-        
-        fechaEntrada.setAttribute('min', today);
-        fechaEntrada.value = today;
-        
-        fechaSalida.setAttribute('min', tomorrowStr);
-        fechaSalida.value = tomorrowStr;
-        
-        fechaEntrada.addEventListener('change', function() {
-            const checkIn = this.value;
-            const checkInDate = new Date(checkIn);
-            const nextDay = new Date(checkInDate);
-            nextDay.setDate(nextDay.getDate() + 1);
-            const nextDayStr = nextDay.toISOString().split('T')[0];
-            
-            fechaSalida.setAttribute('min', nextDayStr);
-            
-            if (fechaSalida.value && fechaSalida.value <= checkIn) {
-                fechaSalida.value = nextDayStr;
-            }
-        });
+          setTimeout(() => {
+            successMessage.style.display = "none";
+          }, 5000);
+        } catch (error) {
+          console.error("Error:", error);
+          errorMessage.textContent =
+            "Error al enviar el formulario. Por favor intenta nuevamente.";
+          errorMessage.style.display = "block";
+          successMessage.style.display = "none";
 
-        window.toggleCompanion = function(num) {
-            const fields = document.getElementById(`fields${num}`);
-            const toggle = document.getElementById(`toggle${num}`);
-            
-            fields.classList.toggle('open');
-            toggle.classList.toggle('open');
-        };
-
-        function checkCompanionFilled(num) {
-            const nombre = document.getElementById(`acomp${num}Nombre`).value;
-            const apellido = document.getElementById(`acomp${num}Apellido`).value;
-            const tipoId = document.getElementById(`acomp${num}TipoId`).value;
-            const numId = document.getElementById(`acomp${num}NumId`).value;
-            
-            const companionGroup = document.getElementById(`acomp${num}Nombre`).closest('.companion-group');
-            
-            if (nombre && apellido && tipoId && numId) {
-                companionGroup.classList.add('filled');
-            } else {
-                companionGroup.classList.remove('filled');
-            }
+          setTimeout(() => {
+            errorMessage.style.display = "none";
+          }, 5000);
+        } finally {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
         }
+      });
 
-        for (let i = 1; i <= 5; i++) {
-            ['Nombre', 'Apellido', 'TipoId', 'NumId'].forEach(field => {
-                const input = document.getElementById(`acomp${i}${field}`);
-                input.addEventListener('input', () => checkCompanionFilled(i));
-                input.addEventListener('change', () => checkCompanionFilled(i));
-            });
+      const today = new Date().toISOString().split("T")[0];
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowStr = tomorrow.toISOString().split("T")[0];
+
+      const fechaEntrada = document.getElementById("fechaEntrada");
+      const fechaSalida = document.getElementById("fechaSalida");
+      const horaEntrada = document.getElementById("horaEntrada");
+      const horaSalida = document.getElementById("horaSalida");
+
+      fechaEntrada.setAttribute("min", today);
+      fechaEntrada.value = today;
+
+      fechaSalida.setAttribute("min", tomorrowStr);
+      fechaSalida.value = tomorrowStr;
+
+      horaEntrada.value = "14:00"; // Default check-in 3 PM
+      horaSalida.value = "13:00"; // Default check-out 12 PM
+
+      fechaEntrada.addEventListener("change", function () {
+        const checkIn = this.value;
+        const checkInDate = new Date(checkIn);
+        const nextDay = new Date(checkInDate);
+        nextDay.setDate(nextDay.getDate() + 1);
+        const nextDayStr = nextDay.toISOString().split("T")[0];
+
+        fechaSalida.setAttribute("min", nextDayStr);
+
+        if (fechaSalida.value && fechaSalida.value <= checkIn) {
+          fechaSalida.value = nextDayStr;
         }
+      });
 
-        // Auto-scroll to focused input on mobile
-        const allInputs = document.querySelectorAll('input, select, textarea');
-        allInputs.forEach(input => {
-            input.addEventListener('focus', function(e) {
-                setTimeout(() => {
-                    const element = e.target;
-                    element.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'nearest'
-                    });
-                }, 300);
-            });
+      window.toggleCompanion = function (num) {
+        const fields = document.getElementById(`fields${num}`);
+        const toggle = document.getElementById(`toggle${num}`);
+
+        fields.classList.toggle("open");
+        toggle.classList.toggle("open");
+      };
+
+      function checkCompanionFilled(num) {
+        const nombre = document.getElementById(`acomp${num}Nombre`).value;
+        const apellido = document.getElementById(`acomp${num}Apellido`).value;
+        const tipoId = document.getElementById(`acomp${num}TipoId`).value;
+        const numId = document.getElementById(`acomp${num}NumId`).value;
+
+        const companionGroup = document
+          .getElementById(`acomp${num}Nombre`)
+          .closest(".companion-group");
+
+        if (nombre && apellido && tipoId && numId) {
+          companionGroup.classList.add("filled");
+        } else {
+          companionGroup.classList.remove("filled");
+        }
+      }
+
+      for (let i = 1; i <= 5; i++) {
+        ["Nombre", "Apellido", "TipoId", "NumId"].forEach((field) => {
+          const input = document.getElementById(`acomp${i}${field}`);
+          input.addEventListener("input", () => checkCompanionFilled(i));
+          input.addEventListener("change", () => checkCompanionFilled(i));
         });
+      }
+
+      // Auto-scroll to focused input on mobile
+      const allInputs = document.querySelectorAll("input, select, textarea");
+      allInputs.forEach((input) => {
+        input.addEventListener("focus", function (e) {
+          setTimeout(() => {
+            const element = e.target;
+            element.scrollIntoView({
+              behavior: "smooth",
+              block: "nearest",
+            });
+          }, 300);
+        });
+      });
     </script>
-</body>
+  </body>
 </html>
