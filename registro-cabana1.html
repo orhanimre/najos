@@ -300,13 +300,19 @@
     }
 
     .companion-card {
-      background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%);
-      border: 2px solid #48bb78;
+      background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+      border: 2px solid #cbd5e0;
       border-radius: 16px;
       padding: 20px;
       margin-bottom: 16px;
       position: relative;
       animation: slideIn 0.3s ease;
+      transition: all 0.3s ease;
+    }
+
+    .companion-card.filled {
+      background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%);
+      border: 2px solid #48bb78;
     }
 
     @keyframes slideIn {
@@ -329,11 +335,16 @@
 
     .companion-title {
       font-weight: 700;
-      color: #48bb78;
+      color: #4a5568;
       font-size: 16px;
       display: flex;
       align-items: center;
       gap: 8px;
+      transition: color 0.3s ease;
+    }
+
+    .companion-card.filled .companion-title {
+      color: #48bb78;
     }
 
     .remove-companion {
@@ -733,7 +744,6 @@
           <div class="form-group">
             <label for="comentario">Comentarios o Solicitudes Especiales</label>
             <textarea id="comentario" name="comentario" placeholder="¿Celebración especial? ¿Necesitas algo en particular? ¡Cuéntanos! 🎉"></textarea>
-            <div class="helper-text">Cumpleaños, aniversarios, alergias alimentarias, etc.</div>
           </div>
         </div>
 
@@ -799,6 +809,7 @@
     // State
     let currentStep = 1;
     let companions = [];
+    let companionFilledStatus = {}; // Track filled status of each companion
     const maxCompanions = 5;
 
     // Elements
@@ -826,11 +837,15 @@
     const horaSalida = document.getElementById("horaSalida");
 
     fechaEntrada.setAttribute("min", today);
-    fechaEntrada.value = today;
     fechaSalida.setAttribute("min", tomorrowStr);
-    fechaSalida.value = tomorrowStr;
-    horaEntrada.value = "14:00";
-    horaSalida.value = "13:00";
+    
+    // Set default values immediately
+    setTimeout(() => {
+      fechaEntrada.value = today;
+      fechaSalida.value = tomorrowStr;
+      horaEntrada.value = "14:00";
+      horaSalida.value = "13:00";
+    }, 0);
 
     fechaEntrada.addEventListener("change", function() {
       const checkIn = this.value;
@@ -852,249 +867,312 @@
       document.querySelectorAll(".progress-step").forEach((step, index) => {
         const stepNum = index + 1;
         step.classList.remove("active", "completed");
-        if (stepNum < currentStep) {
-          step.classList.add("completed");
-          step.querySelector(".progress-circle").textContent = "✓";
-        } else if (stepNum === currentStep) {
-          step.classList.add("active");
-          step.querySelector(".progress-circle").textContent = stepNum;
-        } else {
-          step.querySelector(".progress-circle").textContent = stepNum;
-        }
-      });
+        if (stepNum < currentStep) {step.classList.add("completed");
+step.querySelector(".progress-circle").textContent = "✓";
+} else if (stepNum === currentStep) {
+step.classList.add("active");
+step.querySelector(".progress-circle").textContent = stepNum;
+} else {
+step.querySelector(".progress-circle").textContent = stepNum;
+}
+});
+}
+function showStep(step) {
+  document.querySelectorAll(".step-container").forEach(container => {
+    container.classList.remove("active");
+  });
+  document.querySelector(`.step-container[data-step="${step}"]`).classList.add("active");
+
+  btnBack.style.display = step === 1 ? "none" : "block";
+  btnNext.style.display = step === 3 ? "none" : "block";
+  btnSubmit.style.display = step === 3 ? "block" : "none";
+
+  if (step === 3) {
+    updateSummary();
+    summaryBox.style.display = "block";
+  } else {
+    summaryBox.style.display = "none";
+  }
+
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function validateStep(step) {
+  const stepContainer = document.querySelector(`.step-container[data-step="${step}"]`);
+  const requiredInputs = stepContainer.querySelectorAll("[required]");
+  
+  for (let input of requiredInputs) {
+    if (!input.value.trim()) {
+      input.focus();
+      input.reportValidity();
+      return false;
     }
+  }
+  return true;
+}
 
-    function showStep(step) {
-      document.querySelectorAll(".step-container").forEach(container => {
-        container.classList.remove("active");
-      });
-      document.querySelector(`.step-container[data-step="${step}"]`).classList.add("active");
+btnNext.addEventListener("click", () => {
+  if (validateStep(currentStep)) {
+    currentStep++;
+    showStep(currentStep);
+  }
+});
 
-      btnBack.style.display = step === 1 ? "none" : "block";
-      btnNext.style.display = step === 3 ? "none" : "block";
-      btnSubmit.style.display = step === 3 ? "block" : "none";
+btnBack.addEventListener("click", () => {
+  currentStep--;
+  showStep(currentStep);
+});
 
-      if (step === 3) {
-        updateSummary();
-        summaryBox.style.display = "block";
-      } else {
-        summaryBox.style.display = "none";
-      }
+// Check if all companion fields are filled
+function checkCompanionFilled(index) {
+  const card = document.querySelector(`[data-companion-index="${index}"]`);
+  if (!card) return false;
 
-      updateProgress();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+  const nombre = card.querySelector(`[name="acomp${index}Nombre"]`).value.trim();
+  const apellido = card.querySelector(`[name="acomp${index}Apellido"]`).value.trim();
+  const tipoId = card.querySelector(`[name="acomp${index}TipoId"]`).value;
+  const numId = card.querySelector(`[name="acomp${index}NumId"]`).value.trim();
 
-    function validateStep(step) {
-      const stepContainer = document.querySelector(`.step-container[data-step="${step}"]`);
-      const requiredInputs = stepContainer.querySelectorAll("[required]");
-      
-      for (let input of requiredInputs) {
-        if (!input.value.trim()) {
-          input.focus();
-          input.reportValidity();
-          return false;
-        }
-      }
-      return true;
-    }
+  const isFilled = nombre && apellido && tipoId && numId;
+  
+  if (isFilled) {
+    card.classList.add("filled");
+    companionFilledStatus[index] = true;
+  } else {
+    card.classList.remove("filled");
+    companionFilledStatus[index] = false;
+  }
 
-    btnNext.addEventListener("click", () => {
-      if (validateStep(currentStep)) {
-        currentStep++;
-        showStep(currentStep);
-      }
+  // Update summary whenever status changes
+  if (currentStep === 3) {
+    updateSummary();
+  }
+
+  return isFilled;
+}
+
+// Companion Management
+function createCompanionCard(index) {
+  const card = document.createElement("div");
+  card.className = "companion-card";
+  card.dataset.companionIndex = index;
+  card.innerHTML = `
+    <div class="companion-header">
+      <div class="companion-title">👤 Acompañante ${index + 1}</div>
+      <button type="button" class="remove-companion" onclick="window.removeCompanion(${index})">✕ Eliminar</button>
+    </div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Nombre(s)</label>
+        <input type="text" name="acomp${index}Nombre" placeholder="Nombre" class="companion-field" data-companion="${index}" />
+      </div>
+      <div class="form-group">
+        <label>Apellido(s)</label>
+        <input type="text" name="acomp${index}Apellido" placeholder="Apellido" class="companion-field" data-companion="${index}" />
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Tipo de Identificación</label>
+        <select name="acomp${index}TipoId" class="companion-field" data-companion="${index}">
+          <option value="">Seleccione</option>
+          <option value="cc">Cédula de Ciudadanía</option>
+          <option value="ti">Tarjeta de Identidad</option>
+          <option value="ce">Cédula de Extranjería</option>
+          <option value="pasaporte">Pasaporte</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Número de Identificación</label>
+        <input type="text" name="acomp${index}NumId" placeholder="Número" class="companion-field" data-companion="${index}" />
+      </div>
+    </div>
+  `;
+  
+  // Add event listeners to all fields in this companion card
+  setTimeout(() => {
+    const fields = card.querySelectorAll('.companion-field');
+    fields.forEach(field => {
+      field.addEventListener('input', () => checkCompanionFilled(index));
+      field.addEventListener('change', () => checkCompanionFilled(index));
     });
+  }, 0);
+  
+  return card;
+}
 
-    btnBack.addEventListener("click", () => {
-      currentStep--;
-      showStep(currentStep);
-    });
-
-    // Companion Management
-    function createCompanionCard(index) {
-      const card = document.createElement("div");
-      card.className = "companion-card";
-      card.dataset.companionIndex = index;
-      card.innerHTML = `
-        <div class="companion-header">
-          <div class="companion-title">👤 Acompañante ${index + 1}</div>
-          <button type="button" class="remove-companion" onclick="window.removeCompanion(${index})">✕ Eliminar</button>
-        </div>
-        <div class="grid-2">
-          <div class="form-group">
-            <label>Nombre(s)</label>
-            <input type="text" name="acomp${index}Nombre" placeholder="Nombre" />
-          </div>
-          <div class="form-group">
-            <label>Apellido(s)</label>
-            <input type="text" name="acomp${index}Apellido" placeholder="Apellido" />
-          </div>
-        </div>
-        <div class="grid-2">
-          <div class="form-group">
-            <label>Tipo de Identificación</label>
-            <select name="acomp${index}TipoId">
-              <option value="">Seleccione</option>
-              <option value="cc">Cédula de Ciudadanía</option>
-              <option value="ti">Tarjeta de Identidad</option>
-              <option value="ce">Cédula de Extranjería</option>
-              <option value="pasaporte">Pasaporte</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Número de Identificación</label>
-            <input type="text" name="acomp${index}NumId" placeholder="Número" />
-          </div>
-        </div>
-      `;
-      return card;
+addCompanionBtn.addEventListener("click", () => {
+  if (companions.length < maxCompanions) {
+    const index = companions.length;
+    companions.push(index);
+    companionFilledStatus[index] = false;
+    const card = createCompanionCard(index);
+    companionsContainer.appendChild(card);
+    
+    if (companions.length >= maxCompanions) {
+      addCompanionBtn.disabled = true;
+      addCompanionBtn.innerHTML = "✓ Máximo de acompañantes alcanzado";
     }
+  }
+});
 
-    addCompanionBtn.addEventListener("click", () => {
-      if (companions.length < maxCompanions) {
-        const index = companions.length;
-        companions.push(index);
-        const card = createCompanionCard(index);
-        companionsContainer.appendChild(card);
-        
-        if (companions.length >= maxCompanions) {
-          addCompanionBtn.disabled = true;
-          addCompanionBtn.innerHTML = "✓ Máximo de acompañantes alcanzado";
-        }
-      }
-    });
+window.removeCompanion = function(index) {
+  const card = document.querySelector(`[data-companion-index="${index}"]`);
+  if (card) {
+    card.remove();
+    companions = companions.filter(i => i !== index);
+    delete companionFilledStatus[index];
+    
+    addCompanionBtn.disabled = false;
+    addCompanionBtn.innerHTML = '<span>➕ Agregar Acompañante</span>';
+    
+    // Update summary after removal
+    if (currentStep === 3) {
+      updateSummary();
+    }
+  }
+};
 
-    window.removeCompanion = function(index) {
-      const card = document.querySelector(`[data-companion-index="${index}"]`);
-      if (card) {
-        card.remove();
-        companions = companions.filter(i => i !== index);
-        
-        addCompanionBtn.disabled = false;
-        addCompanionBtn.innerHTML = '<span>➕ Agregar Acompañante</span>';
-      }
-    };
+// Summary
+function updateSummary() {
+  const formData = new FormData(form);
+  const nombre = formData.get("nombre");
+  const apellido = formData.get("apellido");
+  const totalHuespedes = formData.get("totalHuespedes");
+  const fechaEntradaVal = formData.get("fechaEntrada");
+  const fechaSalidaVal = formData.get("fechaSalida");
+  const horaEntradaVal = formData.get("horaEntrada");
+  const horaSalidaVal = formData.get("horaSalida");
 
-    // Summary
-    function updateSummary() {
-      const formData = new FormData(form);
-      const nombre = formData.get("nombre");
-      const apellido = formData.get("apellido");
-      const totalHuespedes = formData.get("totalHuespedes");
-      const fechaEntradaVal = formData.get("fechaEntrada");
-      const fechaSalidaVal = formData.get("fechaSalida");
-      const horaEntradaVal = formData.get("horaEntrada");
-      const horaSalidaVal = formData.get("horaSalida");
+  // Count only filled companions
+  const filledCompanions = Object.values(companionFilledStatus).filter(status => status === true).length;
 
-      summaryContent.innerHTML = `
+  let summaryHTML = `
+    <div class="summary-item">
+      <span class="summary-label">Huésped Principal:</span>
+      <span class="summary-value">${nombre} ${apellido}</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">Total Huéspedes:</span>
+      <span class="summary-value">${totalHuespedes} persona(s)</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">Check-in:</span>
+      <span class="summary-value">${fechaEntradaVal} a las ${horaEntradaVal}</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">Check-out:</span>
+      <span class="summary-value">${fechaSalidaVal} a las ${horaSalidaVal}</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">Acompañantes:</span>
+      <span class="summary-value">${filledCompanions} registrado(s)</span>
+    </div>
+  `;
+
+  // Add individual companion details for filled companions
+  companions.forEach((idx) => {
+    if (companionFilledStatus[idx]) {
+      const nombre = formData.get(`acomp${idx}Nombre`);
+      const apellido = formData.get(`acomp${idx}Apellido`);
+      summaryHTML += `
         <div class="summary-item">
-          <span class="summary-label">Huésped Principal:</span>
+          <span class="summary-label">Acompañante ${idx + 1}:</span>
           <span class="summary-value">${nombre} ${apellido}</span>
         </div>
-        <div class="summary-item">
-          <span class="summary-label">Total Huéspedes:</span>
-          <span class="summary-value">${totalHuespedes} persona(s)</span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Check-in:</span>
-          <span class="summary-value">${fechaEntradaVal} a las ${horaEntradaVal}</span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Check-out:</span>
-          <span class="summary-value">${fechaSalidaVal} a las ${horaSalidaVal}</span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Acompañantes:</span>
-          <span class="summary-value">${companions.length} registrado(s)</span>
-        </div>
       `;
     }
+  });
 
-    // Form Submission
-    form.addEventListener("submit", async function(e) {
-      e.preventDefault();
+  summaryContent.innerHTML = summaryHTML;
+}
 
-      const formData = new FormData(form);
-      const data = {
-        cabana: "Cabaña MariaMar-1",
-        timestamp: serverTimestamp(),
-        nombre: formData.get("nombre"),
-        apellido: formData.get("apellido"),
-        celular: formData.get("celular"),
-        tipoId: formData.get("tipoId"),
-        numeroId: formData.get("numeroId"),
-        ciudad: formData.get("ciudad"),
-        totalHuespedes: Number(formData.get("totalHuespedes") || 0),
-        fechaEntrada: formData.get("fechaEntrada"),
-        horaEntrada: formData.get("horaEntrada"),
-        fechaSalida: formData.get("fechaSalida"),
-        horaSalida: formData.get("horaSalida"),
-        comentario: formData.get("comentario"),
-        consent: formData.get("consent") === "on",
-      };
+// Form Submission
+form.addEventListener("submit", async function(e) {
+  e.preventDefault();
 
-      // Add companion data
-      companions.forEach((idx) => {
-        data[`acomp${idx}Nombre`] = formData.get(`acomp${idx}Nombre`) || "";
-        data[`acomp${idx}Apellido`] = formData.get(`acomp${idx}Apellido`) || "";
-        data[`acomp${idx}TipoId`] = formData.get(`acomp${idx}TipoId`) || "";
-        data[`acomp${idx}NumId`] = formData.get(`acomp${idx}NumId`) || "";
-      });
+  const formData = new FormData(form);
+  const data = {
+    cabana: "Cabaña MariaMar-1",
+    timestamp: serverTimestamp(),
+    nombre: formData.get("nombre"),
+    apellido: formData.get("apellido"),
+    celular: formData.get("celular"),
+    tipoId: formData.get("tipoId"),
+    numeroId: formData.get("numeroId"),
+    ciudad: formData.get("ciudad"),
+    totalHuespedes: Number(formData.get("totalHuespedes") || 0),
+    fechaEntrada: formData.get("fechaEntrada"),
+    horaEntrada: formData.get("horaEntrada"),
+    fechaSalida: formData.get("fechaSalida"),
+    horaSalida: formData.get("horaSalida"),
+    comentario: formData.get("comentario"),
+    consent: formData.get("consent") === "on",
+  };
 
-      btnSubmit.textContent = "Enviando...";
-      btnSubmit.disabled = true;
+  // Add companion data
+  companions.forEach((idx) => {
+    data[`acomp${idx}Nombre`] = formData.get(`acomp${idx}Nombre`) || "";
+    data[`acomp${idx}Apellido`] = formData.get(`acomp${idx}Apellido`) || "";
+    data[`acomp${idx}TipoId`] = formData.get(`acomp${idx}TipoId`) || "";
+    data[`acomp${idx}NumId`] = formData.get(`acomp${idx}NumId`) || "";
+  });
 
-      try {
-        await addDoc(collection(db, "registrations"), data);
+  btnSubmit.textContent = "Enviando...";
+  btnSubmit.disabled = true;
 
-        successMessage.innerHTML = "🎉 ¡Registro completado! Te esperamos con arena, sol y buenas vibras. Te enviaremos detalles por WhatsApp pronto.";
-        successMessage.style.display = "block";
-        errorMessage.style.display = "none";
+  try {
+    await addDoc(collection(db, "registrations"), data);
 
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        
-        setTimeout(() => {
-          form.reset();
-          companions = [];
-          companionsContainer.innerHTML = "";
-          addCompanionBtn.disabled = false;
-          addCompanionBtn.innerHTML = '<span>➕ Agregar Acompañante</span>';
-          currentStep = 1;
-          showStep(1);
-          successMessage.style.display = "none";
-        }, 5000);
-      } catch (error) {
-        console.error("Error:", error);
-        errorMessage.textContent = "Error al enviar. Por favor intenta nuevamente o contáctanos por WhatsApp.";
-        errorMessage.style.display = "block";
-        successMessage.style.display = "none";
-        
-        setTimeout(() => {
-          errorMessage.style.display = "none";
-        }, 5000);
-      } finally {
-        btnSubmit.textContent = "✓ Enviar Registro";
-        btnSubmit.disabled = false;
-      }
-    });
+    successMessage.innerHTML = "🎉 ¡Registro completado! Te esperamos con arena, sol y buenas vibras. Te enviaremos detalles por WhatsApp pronto.";
+    successMessage.style.display = "block";
+    errorMessage.style.display = "none";
 
-    // Custom validation messages
-    const requiredInputs = document.querySelectorAll("[required]");
-    requiredInputs.forEach((input) => {
-      input.addEventListener("invalid", function(e) {
-        e.preventDefault();
-        if (input.validity.valueMissing) {
-          input.setCustomValidity("Por favor complete este campo");
-        }
-      });
-      input.addEventListener("input", function() {
-        input.setCustomValidity("");
-      });
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    
+    setTimeout(() => {
+      form.reset();
+      companions = [];
+      companionFilledStatus = {};
+      companionsContainer.innerHTML = "";
+      addCompanionBtn.disabled = false;
+      addCompanionBtn.innerHTML = '<span>➕ Agregar Acompañante</span>';
+      currentStep = 1;
+      showStep(1);
+      successMessage.style.display = "none";
+    }, 5000);
+  } catch (error) {
+    console.error("Error:", error);
+    errorMessage.textContent = "Error al enviar. Por favor intenta nuevamente o contáctanos por WhatsApp.";
+    errorMessage.style.display = "block";
+    successMessage.style.display = "none";
+    
+    setTimeout(() => {
+      errorMessage.style.display = "none";
+    }, 5000);
+  } finally {
+    btnSubmit.textContent = "✓ Enviar Registro";
+    btnSubmit.disabled = false;
+  }
+});
 
-    // Initialize
-    updateProgress();
+// Custom validation messages
+const requiredInputs = document.querySelectorAll("[required]");
+requiredInputs.forEach((input) => {
+  input.addEventListener("invalid", function(e) {
+    e.preventDefault();
+    if (input.validity.valueMissing) {
+      input.setCustomValidity("Por favor complete este campo");
+    }
+  });
+  input.addEventListener("input", function() {
+    input.setCustomValidity("");
+  });
+});
+
+// Initialize
+updateProgress();
   </script>
 </body>
 </html>
