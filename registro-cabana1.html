@@ -610,6 +610,13 @@
         grid-template-columns: 1fr;
       }
 
+      /* Keep date and time fields on same line on mobile */
+      .grid-2:has(#fechaEntrada),
+      .grid-2:has(#fechaSalida) {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
       .step-navigation {
         flex-direction: column-reverse;
         gap: 12px;
@@ -862,21 +869,22 @@
     // Step Navigation
     function updateProgress() {
       const progress = ((currentStep - 1) / 2) * 100;
-      progressFill.style.width = progress + "%";
+progressFill.style.width = progress + "%";
+  document.querySelectorAll(".progress-step").forEach((step, index) => {
+    const stepNum = index + 1;
+    step.classList.remove("active", "completed");
+    if (stepNum < currentStep) {
+      step.classList.add("completed");
+      step.querySelector(".progress-circle").textContent = "✓";
+    } else if (stepNum === currentStep) {
+      step.classList.add("active");
+      step.querySelector(".progress-circle").textContent = stepNum;
+    } else {
+      step.querySelector(".progress-circle").textContent = stepNum;
+    }
+  });
+}
 
-      document.querySelectorAll(".progress-step").forEach((step, index) => {
-        const stepNum = index + 1;
-        step.classList.remove("active", "completed");
-        if (stepNum < currentStep) {step.classList.add("completed");
-step.querySelector(".progress-circle").textContent = "✓";
-} else if (stepNum === currentStep) {
-step.classList.add("active");
-step.querySelector(".progress-circle").textContent = stepNum;
-} else {
-step.querySelector(".progress-circle").textContent = stepNum;
-}
-});
-}
 function showStep(step) {
   document.querySelectorAll(".step-container").forEach(container => {
     container.classList.remove("active");
