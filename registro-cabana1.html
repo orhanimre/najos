@@ -81,6 +81,15 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
+    .banner-image {
+      width: 100%;
+      height: auto;
+      max-height: 500px;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+    }
+
     /* Progress Bar */
     .progress-container {
       padding: 30px 40px 20px;
@@ -565,6 +574,12 @@
         padding: 8px 16px;
       }
 
+      .banner-image {
+        height: auto;
+        max-height: 350px;
+        object-fit: cover;
+      }
+
       .logo {
         max-width: 200px;
       }
@@ -640,6 +655,12 @@
         <div class="cabin-badge">🏡 Cabaña MariaMar-1</div>
       </div>
     </div>
+
+    <img
+      src="https://imgur.com/dVlUrNm.jpg"
+      alt="Cabaña MariaMar-1"
+      class="banner-image"
+    />
 
     <!-- Progress Bar -->
     <div class="progress-container">
@@ -857,19 +878,18 @@
     fechaEntrada.addEventListener("change", function() {
       const checkIn = this.value;
       const checkInDate = new Date(checkIn);
-      const nextDay = new Date(checkInDate);
-      nextDay.setDate(nextDay.getDate() + 1);
-      const nextDayStr = nextDay.toISOString().split("T")[0];
-      fechaSalida.setAttribute("min", nextDayStr);
-      if (fechaSalida.value && fechaSalida.value <= checkIn) {
-        fechaSalida.value = nextDayStr;
-      }
-    });
-
-    // Step Navigation
-    function updateProgress() {
-      const progress = ((currentStep - 1) / 2) * 100;
-progressFill.style.width = progress + "%";
+const nextDay = new Date(checkInDate);
+nextDay.setDate(nextDay.getDate() + 1);
+const nextDayStr = nextDay.toISOString().split("T")[0];
+fechaSalida.setAttribute("min", nextDayStr);
+if (fechaSalida.value && fechaSalida.value <= checkIn) {
+fechaSalida.value = nextDayStr;
+}
+});
+// Step Navigation
+function updateProgress() {
+  const progress = ((currentStep - 1) / 2) * 100;
+  progressFill.style.width = progress + "%";
   document.querySelectorAll(".progress-step").forEach((step, index) => {
     const stepNum = index + 1;
     step.classList.remove("active", "completed");
