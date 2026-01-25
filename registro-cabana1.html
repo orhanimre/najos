@@ -787,11 +787,21 @@
                   required
                 />
               </div>
-              
-<div class="form-group">
-  <label for="horaEntrada">Hora de Entrada <span class="required">*</span></label>
-  <input type="time" id="horaEntrada" name="horaEntrada" min="14:00" max="21:00" required />
-</div>
+
+              <div class="form-group">
+                <label for="horaEntrada"
+                  >Hora de Entrada <span class="required">*</span></label
+                >
+                <input
+                  type="time"
+                  id="horaEntrada"
+                  name="horaEntrada"
+                  min="14:00"
+                  max="21:00"
+                  required
+                />
+                <div class="helper-text">Entre 2:00 PM y 9:00 PM</div>
+              </div>
             </div>
 
             <div class="grid-2">
@@ -806,11 +816,20 @@
                   required
                 />
               </div>
-              
+
               <div class="form-group">
-  <label for="horaSalida">Hora de Salida <span class="required">*</span></label>
-  <input type="time" id="horaSalida" name="horaSalida" max="13:00" required />
-</div>
+                <label for="horaSalida"
+                  >Hora de Salida <span class="required">*</span></label
+                >
+                <input
+                  type="time"
+                  id="horaSalida"
+                  name="horaSalida"
+                  max="13:00"
+                  required
+                />
+                <div class="helper-text">Antes de 1:00 PM</div>
+              </div>
             </div>
           </div>
 
@@ -977,6 +996,25 @@
         }
       });
 
+      // Validate time inputs
+      horaEntrada.addEventListener("change", function () {
+        const time = this.value;
+        if (time < "14:00" || time > "21:00") {
+          alert(
+            "La hora de entrada debe ser entre 2:00 PM (14:00) y 9:00 PM (21:00)",
+          );
+          this.value = "14:00";
+        }
+      });
+
+      horaSalida.addEventListener("change", function () {
+        const time = this.value;
+        if (time > "13:00") {
+          alert("La hora de salida debe ser antes de 1:00 PM (13:00)");
+          this.value = "13:00";
+        }
+      });
+
       // Consent checkbox color change
       consentCheckbox.addEventListener("change", function () {
         if (this.checked) {
@@ -986,12 +1024,22 @@
         }
       });
 
-      // Auto-generate companions based on total companions
+      // Auto-generate companions based on total companions with validation
       totalHuespedesInput.addEventListener("input", function () {
-        const numCompanions = Math.max(
-          0,
-          Math.min(parseInt(this.value) || 0, maxCompanions),
-        );
+        let numCompanions = parseInt(this.value) || 0;
+
+        // Check if exceeds maximum
+        if (numCompanions > maxCompanions) {
+          alert(`Máximo ${maxCompanions} acompañantes permitidos`);
+          this.value = maxCompanions;
+          numCompanions = maxCompanions;
+        }
+
+        // Ensure non-negative
+        if (numCompanions < 0) {
+          this.value = 0;
+          numCompanions = 0;
+        }
 
         // Clear existing companions
         companionsContainer.innerHTML = "";
