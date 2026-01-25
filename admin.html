@@ -1927,13 +1927,6 @@ window.closeConfirmModal = function() {
   registrationToDelete = null;
 };
 
-window.closeConfirmModal = function() {
-  const modal = document.getElementById("confirmModal");
-  modal.classList.remove("show");
-  document.body.style.overflow = "";
-  registrationToDelete = null;
-};
-
       window.applyFilters = function () {
         const cabanaFilter = document.getElementById("cabanaFilter").value;
         const fechaDesde = document.getElementById("fechaDesde").value;
@@ -2110,7 +2103,7 @@ window.closeConfirmModal = function() {
     </div>
     
     <div class="detail-actions">
-      <button class="delete-btn" onclick="deleteRegistration('${reg.id}', event)">
+      <button class="delete-btn" onclick="event.stopPropagation(); deleteRegistration('${reg.id}', event)">
   🗑️ Eliminar Registro
 </button>
     </div>
