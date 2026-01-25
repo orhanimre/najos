@@ -787,17 +787,11 @@
                   required
                 />
               </div>
-              <div class="form-group">
-                <label for="horaEntrada"
-                  >Hora de Entrada <span class="required">*</span></label
-                >
-                <input
-                  type="time"
-                  id="horaEntrada"
-                  name="horaEntrada"
-                  required
-                />
-              </div>
+              
+<div class="form-group">
+  <label for="horaEntrada">Hora de Entrada <span class="required">*</span></label>
+  <input type="time" id="horaEntrada" name="horaEntrada" min="14:00" max="21:00" required />
+</div>
             </div>
 
             <div class="grid-2">
@@ -812,23 +806,11 @@
                   required
                 />
               </div>
+              
               <div class="form-group">
-                <label for="horaSalida"
-                  >Hora de Salida <span class="required">*</span></label
-                >
-                <input type="time" id="horaSalida" name="horaSalida" required />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="comentario"
-                >Comentarios o Solicitudes Especiales</label
-              >
-              <textarea
-                id="comentario"
-                name="comentario"
-                placeholder="Hora de llegada, parqueadero, otras solicitudes... ¡Cuéntanos! 🎉"
-              ></textarea>
+  <label for="horaSalida">Hora de Salida <span class="required">*</span></label>
+  <input type="time" id="horaSalida" name="horaSalida" max="13:00" required />
+</div>
             </div>
           </div>
 
@@ -851,12 +833,12 @@
                 id="totalHuespedes"
                 name="totalHuespedes"
                 min="0"
-                max="5"
+                max="3"
                 required
                 placeholder="Ej: 2"
               />
               <div class="helper-text">
-                Máximo 5 acompañantes (sin incluirte a ti)
+                Máximo 3 acompañantes (sin incluirte a ti)
               </div>
             </div>
 
@@ -942,7 +924,7 @@
       let currentStep = 1;
       let companions = [];
       let companionFilledStatus = {};
-      const maxCompanions = 5;
+      const maxCompanions = 3;
 
       // Elements
       const form = document.getElementById("registrationForm");
@@ -1255,7 +1237,6 @@
           horaEntrada: formData.get("horaEntrada"),
           fechaSalida: formData.get("fechaSalida"),
           horaSalida: formData.get("horaSalida"),
-          comentario: formData.get("comentario"),
           consent: formData.get("consent") === "on",
         };
 
