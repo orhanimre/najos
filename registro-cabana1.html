@@ -356,51 +356,6 @@
       color: #48bb78;
     }
 
-    .remove-companion {
-      background: #fc8181;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 13px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.2s ease;
-    }
-
-    .remove-companion:hover {
-      background: #f56565;
-      transform: scale(1.05);
-    }
-
-    .add-companion-btn {
-      width: 100%;
-      padding: 16px;
-      background: white;
-      border: 2px dashed #cbd5e0;
-      border-radius: 12px;
-      color: #667eea;
-      font-weight: 600;
-      font-size: 15px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .add-companion-btn:hover:not(:disabled) {
-      border-color: #667eea;
-      background: #f7fafc;
-      transform: translateY(-2px);
-    }
-
-    .add-companion-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
     /* Checkbox */
     .checkbox-group {
       display: flex;
@@ -411,6 +366,12 @@
       border-radius: 16px;
       border: 2px solid #fc8181;
       margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .checkbox-group.checked {
+      background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%);
+      border: 2px solid #48bb78;
     }
 
     .checkbox-group input[type="checkbox"] {
@@ -692,7 +653,7 @@
         <div class="step-container active" data-step="1">
           <div class="step-intro">
             <h2>🌴 ¡Bienvenidos a Cabaña MariaMar!</h2>
-            <p>Solo necesitamos unos datos básicos para prepararte una llegada perfecta al paraíso.</p>
+            <p>Solo necesitamos unos datos básicos para prepararte una llegada perfecta el registro.</p>
           </div>
 
           <div class="grid-2">
@@ -741,12 +702,6 @@
             <p>Cuéntanos los detalles de tu estadía para que todo esté listo cuando llegues.</p>
           </div>
 
-          <div class="form-group">
-            <label for="totalHuespedes">Número Total de Huéspedes <span class="required">*</span></label>
-            <input type="number" id="totalHuespedes" name="totalHuespedes" min="1" max="6" required placeholder="Ej: 2" />
-            <div class="helper-text">Máximo 6 personas por cabaña</div>
-          </div>
-
           <div class="grid-2">
             <div class="form-group">
               <label for="fechaEntrada">Fecha de Entrada <span class="required">*</span></label>
@@ -771,25 +726,27 @@
 
           <div class="form-group">
             <label for="comentario">Comentarios o Solicitudes Especiales</label>
-            <textarea id="comentario" name="comentario" placeholder="¿Celebración especial? ¿Necesitas algo en particular? ¡Cuéntanos! 🎉"></textarea>
+            <textarea id="comentario" name="comentario" placeholder="Hora de llegada, parqueadero, otras solicitudes... ¡Cuéntanos! 🎉"></textarea>
           </div>
         </div>
 
         <!-- Step 3: Companions & Consent -->
         <div class="step-container" data-step="3">
           <div class="step-intro">
-            <h2>👨‍👩‍👧‍👦 Casi listos... ¿quién más se une a la aventura?</h2>
-            <p>Agrega la información de tus acompañantes (opcional) y confirma tu registro.</p>
+            <h2>👨‍👩‍👧‍👦 Casi listos... completa los datos de tu grupo</h2>
+            <p>Indica cuántos huéspedes son en total y completa la información de tus acompañantes.</p>
+          </div>
+
+          <div class="form-group">
+            <label for="totalHuespedes">Número Total de Huéspedes <span class="required">*</span></label>
+            <input type="number" id="totalHuespedes" name="totalHuespedes" min="1" max="6" required placeholder="Ej: 2" />
+            <div class="helper-text">Máximo 6 personas por cabaña (incluido tú)</div>
           </div>
 
           <div class="companions-container" id="companionsContainer"></div>
 
-          <button type="button" class="add-companion-btn" id="addCompanionBtn">
-            <span>➕ Agregar Acompañante</span>
-          </button>
-
           <div style="margin-top: 40px;">
-            <div class="checkbox-group">
+            <div class="checkbox-group" id="consentGroup">
               <input type="checkbox" id="consent" name="consent" required />
               <label for="consent">
                 Autorizo el tratamiento de mis datos personales por Cabañas MariaMar conforme a la ley colombiana.
@@ -837,7 +794,7 @@
     // State
     let currentStep = 1;
     let companions = [];
-    let companionFilledStatus = {}; // Track filled status of each companion
+    let companionFilledStatus = {};
     const maxCompanions = 5;
 
     // Elements
@@ -848,10 +805,12 @@
     const progressFill = document.getElementById("progressFill");
     const successMessage = document.getElementById("successMessage");
     const errorMessage = document.getElementById("errorMessage");
-    const addCompanionBtn = document.getElementById("addCompanionBtn");
     const companionsContainer = document.getElementById("companionsContainer");
     const summaryBox = document.getElementById("summaryBox");
     const summaryContent = document.getElementById("summaryContent");
+    const totalHuespedesInput = document.getElementById("totalHuespedes");
+    const consentCheckbox = document.getElementById("consent");
+    const consentGroup = document.getElementById("consentGroup");
 
     // Initialize dates
     const today = new Date().toISOString().split("T")[0];
@@ -878,14 +837,41 @@
     fechaEntrada.addEventListener("change", function() {
       const checkIn = this.value;
       const checkInDate = new Date(checkIn);
-const nextDay = new Date(checkInDate);
-nextDay.setDate(nextDay.getDate() + 1);
-const nextDayStr = nextDay.toISOString().split("T")[0];
-fechaSalida.setAttribute("min", nextDayStr);
-if (fechaSalida.value && fechaSalida.value <= checkIn) {
-fechaSalida.value = nextDayStr;
-}
+      const nextDay = new Date(checkInDate);
+      nextDay.setDate(nextDay.getDate() + 1);
+      const nextDayStr = nextDay.toISOString().split("T")[0];
+      fechaSalida.setAttribute("min", nextDayStr);
+      if (fechaSalida.value && fechaSalida.value <= checkIn) {
+        fechaSalida.value = nextDayStr;
+      }
+    });
+
+    // Consent checkbox color change
+    consentCheckbox.addEventListener("change", function() {
+      if (this.checked) {
+        consentGroup.classList.add("checked");
+      } else {
+        consentGroup.classList.remove("checked");
+      }
+    });
+
+    // Auto-generate companions based on total guests
+    totalHuespedesInput.addEventListener("input", function() {
+      const totalGuests = parseInt(this.value) || 0;
+      const numCompanions = Math.max(0, Math.min(totalGuests - 1, maxCompanions)); // -1 because main guest is not a companion
+      
+      // Clear existing companions
+      companionsContainer.innerHTML = "";
+      companions = [];companionFilledStatus = {};
+  // Create companion cards
+  for (let i = 0; i < numCompanions; i++) {
+    companions.push(i);
+    companionFilledStatus[i] = false;
+    const card = createCompanionCard(i);
+    companionsContainer.appendChild(card);
+  }
 });
+
 // Step Navigation
 function updateProgress() {
   const progress = ((currentStep - 1) / 2) * 100;
@@ -988,7 +974,6 @@ function createCompanionCard(index) {
   card.innerHTML = `
     <div class="companion-header">
       <div class="companion-title">👤 Acompañante ${index + 1}</div>
-      <button type="button" class="remove-companion" onclick="window.removeCompanion(${index})">✕ Eliminar</button>
     </div>
     <div class="grid-2">
       <div class="form-group">
@@ -1029,38 +1014,6 @@ function createCompanionCard(index) {
   
   return card;
 }
-
-addCompanionBtn.addEventListener("click", () => {
-  if (companions.length < maxCompanions) {
-    const index = companions.length;
-    companions.push(index);
-    companionFilledStatus[index] = false;
-    const card = createCompanionCard(index);
-    companionsContainer.appendChild(card);
-    
-    if (companions.length >= maxCompanions) {
-      addCompanionBtn.disabled = true;
-      addCompanionBtn.innerHTML = "✓ Máximo de acompañantes alcanzado";
-    }
-  }
-});
-
-window.removeCompanion = function(index) {
-  const card = document.querySelector(`[data-companion-index="${index}"]`);
-  if (card) {
-    card.remove();
-    companions = companions.filter(i => i !== index);
-    delete companionFilledStatus[index];
-    
-    addCompanionBtn.disabled = false;
-    addCompanionBtn.innerHTML = '<span>➕ Agregar Acompañante</span>';
-    
-    // Update summary after removal
-    if (currentStep === 3) {
-      updateSummary();
-    }
-  }
-};
 
 // Summary
 function updateSummary() {
@@ -1164,8 +1117,7 @@ form.addEventListener("submit", async function(e) {
       companions = [];
       companionFilledStatus = {};
       companionsContainer.innerHTML = "";
-      addCompanionBtn.disabled = false;
-      addCompanionBtn.innerHTML = '<span>➕ Agregar Acompañante</span>';
+      consentGroup.classList.remove("checked");
       currentStep = 1;
       showStep(1);
       successMessage.style.display = "none";
