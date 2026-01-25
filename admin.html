@@ -1870,8 +1870,10 @@ tbody tr.clickable:active {
 
       let registrationToDelete = null;
 
-window.deleteRegistration = async function (registrationId, event) {
-  event.stopPropagation(); // Prevent row click on mobile
+window.deleteRegistration = function (registrationId, event) {
+  if (event) {
+    event.stopPropagation(); // Prevent row click on mobile
+  }
   
   // Store the ID and show custom modal
   registrationToDelete = registrationId;
@@ -1885,9 +1887,10 @@ window.showConfirmModal = function() {
   
   // Remove any existing event listeners and add new one
   const deleteBtn = document.getElementById("confirmDeleteBtn");
-  deleteBtn.replaceWith(deleteBtn.cloneNode(true));
+  const newDeleteBtn = deleteBtn.cloneNode(true);
+  deleteBtn.replaceWith(newDeleteBtn);
   
-  document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
+  newDeleteBtn.addEventListener("click", async function() {
     closeConfirmModal();
     
     if (!registrationToDelete) return;
