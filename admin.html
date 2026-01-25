@@ -1600,7 +1600,7 @@ tbody tr.clickable:active {
           <button class="confirm-btn confirm-btn-cancel" onclick="closeConfirmModal()">
             Cancelar
           </button>
-          <button class="confirm-btn confirm-btn-delete" onclick="confirmDelete()">
+          <button class="confirm-btn confirm-btn-delete" id="confirmDeleteBtn">
   Eliminar
 </button>
         </div>
@@ -1882,35 +1882,46 @@ window.showConfirmModal = function() {
   const modal = document.getElementById("confirmModal");
   modal.classList.add("show");
   document.body.style.overflow = "hidden";
+  
+  // Remove any existing event listeners and add new one
+  const deleteBtn = document.getElementById("confirmDeleteBtn");
+  deleteBtn.replaceWith(deleteBtn.cloneNode(true));
+  
+  document.getElementById("confirmDeleteBtn").addEventListener("click", async function() {
+    closeConfirmModal();
+    
+    if (!registrationToDelete) return;
+    
+    try {
+      // Delete from Firestore
+      const docRef = doc(db, "registrations", registrationToDelete);
+      await deleteDoc(docRef);
+
+      // Remove from local array
+      allRegistrations = allRegistrations.filter(
+        (r) => r.id !== registrationToDelete,
+      );
+
+      // Update UI
+      updateStats();
+      displayData(allRegistrations);
+      
+      // Close detail modal if open
+      closeDetailModal();
+      
+      registrationToDelete = null;
+    } catch (error) {
+      console.error("Error deleting registration:", error);
+      alert("Error al eliminar el registro. Por favor intenta nuevamente.");
+    }
+  });
 };
 
-// Separate function for actual deletion
-window.confirmDelete = async function() {
-  closeConfirmModal();
-  
-  if (!registrationToDelete) return;
-  
-  try {
-    // Delete from Firestore
-    await deleteDoc(doc(db, "registrations", registrationToDelete));
-
-    // Remove from local array
-    allRegistrations = allRegistrations.filter(
-      (r) => r.id !== registrationToDelete,
-    );
-
-    // Update UI
-    updateStats();
-    displayData(allRegistrations);
-    
-    // Close detail modal if open
-    closeDetailModal();
-    
-    registrationToDelete = null;
-  } catch (error) {
-    console.error("Error deleting registration:", error);
-    alert("Error al eliminar el registro. Por favor intenta nuevamente.");
-  }
+window.closeConfirmModal = function() {
+  const modal = document.getElementById("confirmModal");
+  modal.classList.remove("show");
+  document.body.style.overflow = "";
+  registrationToDelete = null;
 };
 
 window.closeConfirmModal = function() {
