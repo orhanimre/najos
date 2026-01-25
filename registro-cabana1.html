@@ -88,15 +88,112 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       }
 
-      .banner-image {
-        margin: 15px auto 30px auto;
+      .banner-container {
+        margin: 20px auto 35px auto;
         width: calc(100% - 40px);
+        position: relative;
+        overflow: hidden;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        animation: fadeInScale 0.8s ease-out;
+      }
+
+      @keyframes fadeInScale {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .banner-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(102, 126, 234, 0.15) 0%,
+          transparent 30%,
+          transparent 70%,
+          rgba(118, 75, 162, 0.15) 100%
+        );
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .banner-container::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          45deg,
+          transparent 30%,
+          rgba(255, 255, 255, 0.1) 50%,
+          transparent 70%
+        );
+        animation: shimmer 3s infinite;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%) translateY(-100%);
+        }
+        100% {
+          transform: translateX(100%) translateY(100%);
+        }
+      }
+
+      .banner-image {
+        width: 100%;
         height: auto;
         max-height: 500px;
         object-fit: cover;
         object-position: center center;
         display: block;
-        border-radius: 16px;
+        transition: transform 0.6s ease;
+        cursor: pointer;
+      }
+
+      .banner-image:hover {
+        transform: scale(1.05);
+      }
+
+      .banner-badge {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 12px 20px;
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 14px;
+        color: #667eea;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        z-index: 3;
+        animation: slideInRight 0.8s ease-out 0.3s backwards;
+      }
+
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
       }
 
       /* Progress Bar */
@@ -850,11 +947,20 @@
           padding: 8px 16px;
         }
 
-        .banner-image {
-          height: auto;
-          max-height: 350px;
-          object-fit: cover;
-        }
+        .banner-container {
+  margin: 15px auto 25px auto;
+}
+
+.banner-image {
+  max-height: 350px;
+}
+
+.banner-badge {
+  bottom: 15px;
+  right: 15px;
+  padding: 10px 16px;
+  font-size: 13px;
+}
 
         .logo {
           max-width: 200px;
@@ -936,11 +1042,15 @@
         </div>
       </div>
 
-      <img
-        src="https://imgur.com/dVlUrNm.jpg"
-        alt="Cabaña MariaMar-1"
-        class="banner-image"
-      />
+      <div class="banner-container">
+        <img
+          src="https://imgur.com/dVlUrNm.jpg"
+          alt="Cabaña MariaMar-1"
+          class="banner-image"
+          onclick="showBannerLightbox()"
+        />
+        <div class="banner-badge">🌊 Vista al Mar</div>
+      </div>
 
       <!-- Progress Bar -->
       <div class="progress-container">
@@ -948,17 +1058,23 @@
           <div class="progress-line">
             <div class="progress-line-fill" id="progressFill"></div>
           </div>
+
           <div class="progress-step active" data-step="1">
             <div class="progress-circle">1</div>
-            <div class="progress-label">Bienvenidos 🌴</div>
+            <div class="progress-label">Bienvenidos</div>
+            <div class="progress-icon">🌴</div>
           </div>
+
           <div class="progress-step" data-step="2">
             <div class="progress-circle">2</div>
-            <div class="progress-label">Tu Estadía 🏖️</div>
+            <div class="progress-label">Tu Estadía</div>
+            <div class="progress-icon">🏖️</div>
           </div>
+
           <div class="progress-step" data-step="3">
             <div class="progress-circle">3</div>
-            <div class="progress-label">Confirmación ✓</div>
+            <div class="progress-label">Confirmación</div>
+            <div class="progress-icon">✓</div>
           </div>
         </div>
       </div>
@@ -1479,6 +1595,19 @@
             showStep(1);
           }, 300);
         }
+      };
+
+      // Show banner in lightbox
+      window.showBannerLightbox = function () {
+        const lightboxHTML = `
+    <div class="lightbox-overlay" onclick="this.remove()">
+      <div class="lightbox-content" onclick="event.stopPropagation()">
+        <button class="lightbox-close" onclick="this.closest('.lightbox-overlay').remove()">×</button>
+        <img src="https://imgur.com/dVlUrNm.jpg" alt="Cabaña MariaMar-1" class="lightbox-image" />
+      </div>
+    </div>
+  `;
+        document.body.insertAdjacentHTML("beforeend", lightboxHTML);
       };
 
       // Show map in lightbox
