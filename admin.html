@@ -635,23 +635,33 @@
         border-top: 1px solid #e5e7eb;
       }
 
-      .delete-btn {
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-        color: white;
-        border: none;
-        padding: 12px 20px;
-        border-radius: 12px;
-        cursor: pointer;
-        font-weight: 700;
-        font-size: 14px;
-        transition: all 0.3s;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-      }
+      .detail-actions .delete-btn {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 15px;
+  transition: all 0.3s;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  line-height: 1;
+}
+
+.detail-actions .delete-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+}
+
+.detail-actions .delete-btn:active {
+  transform: translateY(0);
+}
 
       .delete-btn:hover {
         transform: translateY(-2px);
@@ -661,6 +671,110 @@
       .delete-btn:active {
         transform: translateY(0);
       }
+
+      /* Custom Confirmation Modal */
+.confirm-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 10000;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-modal.show {
+  display: flex;
+}
+
+.confirm-content {
+  background: white;
+  border-radius: 20px;
+  padding: 0;
+  max-width: 400px;
+  width: calc(100% - 32px);
+  overflow: hidden;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+}
+
+.confirm-header {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  padding: 24px;
+  text-align: center;
+}
+
+.confirm-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.confirm-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.confirm-body {
+  padding: 24px;
+  text-align: center;
+}
+
+.confirm-message {
+  font-size: 15px;
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 12px;
+  padding: 20px 24px;
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+}
+
+.confirm-btn {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.confirm-btn-cancel {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.confirm-btn-cancel:hover {
+  background: #e5e7eb;
+}
+
+.confirm-btn-delete {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.confirm-btn-delete:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+}
+
+.confirm-btn-delete:active {
+  transform: translateY(0);
+}
 
       /* Enhanced Info Cards */
       .info-card {
@@ -1459,6 +1573,41 @@ tbody tr.clickable:active {
       </div>
     </div>
 
+    <!-- Detail Modal -->
+    <div id="detailModal" class="detail-modal">
+      <div class="detail-content">
+        <div class="detail-header">
+          <h3>Detalles del Registro</h3>
+          <button class="close-modal" onclick="closeDetailModal()">✕</button>
+        </div>
+        <div id="detailBody"></div>
+      </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="confirm-modal">
+      <div class="confirm-content">
+        <div class="confirm-header">
+          <div class="confirm-icon">⚠️</div>
+          <h3 class="confirm-title">Confirmar Eliminación</h3>
+        </div>
+        <div class="confirm-body">
+          <p class="confirm-message">
+            ¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.
+          </p>
+        </div>
+        <div class="confirm-actions">
+          <button class="confirm-btn confirm-btn-cancel" onclick="closeConfirmModal()">
+            Cancelar
+          </button>
+          <button class="confirm-btn confirm-btn-delete" id="confirmDeleteBtn">
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import {
@@ -1719,36 +1868,55 @@ tbody tr.clickable:active {
         }
       };
 
-      window.deleteRegistration = async function (registrationId, event) {
-        event.stopPropagation(); // Prevent row click on mobile
+      let registrationToDelete = null;
 
-        if (
-          !confirm(
-            "¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.",
-          )
-        ) {
-          return;
-        }
+window.deleteRegistration = async function (registrationId, event) {
+  event.stopPropagation(); // Prevent row click on mobile
+  
+  // Store the ID and show custom modal
+  registrationToDelete = registrationId;
+  showConfirmModal();
+};
 
-        try {
-          // Delete from Firestore
-          await deleteDoc(doc(db, "registrations", registrationId));
+window.showConfirmModal = function() {
+  const modal = document.getElementById("confirmModal");
+  modal.classList.add("show");
+  document.body.style.overflow = "hidden";
+  
+  // Set up the delete button click handler
+  document.getElementById("confirmDeleteBtn").onclick = async function() {
+    closeConfirmModal();
+    
+    try {
+      // Delete from Firestore
+      await deleteDoc(doc(db, "registrations", registrationToDelete));
 
-          // Remove from local array
-          allRegistrations = allRegistrations.filter(
-            (r) => r.id !== registrationId,
-          );
+      // Remove from local array
+      allRegistrations = allRegistrations.filter(
+        (r) => r.id !== registrationToDelete,
+      );
 
-          // Update UI
-          updateStats();
-          displayData(allRegistrations);
+      // Update UI
+      updateStats();
+      displayData(allRegistrations);
+      
+      // Close detail modal if open
+      closeDetailModal();
+      
+      registrationToDelete = null;
+    } catch (error) {
+      console.error("Error deleting registration:", error);
+      alert("Error al eliminar el registro. Por favor intenta nuevamente.");
+    }
+  };
+};
 
-          alert("Registro eliminado exitosamente");
-        } catch (error) {
-          console.error("Error deleting registration:", error);
-          alert("Error al eliminar el registro. Por favor intenta nuevamente.");
-        }
-      };
+window.closeConfirmModal = function() {
+  const modal = document.getElementById("confirmModal");
+  modal.classList.remove("show");
+  document.body.style.overflow = "";
+  registrationToDelete = null;
+};
 
       window.applyFilters = function () {
         const cabanaFilter = document.getElementById("cabanaFilter").value;
