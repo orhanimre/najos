@@ -492,51 +492,85 @@
       }
 
       /* Number Stepper */
-      .stepper-container {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        background: #f7fafc;
-        border: 2px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 8px;
-        max-width: 200px;
-      }
+.stepper-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 16px 20px;
+  max-width: 280px;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
 
-      .stepper-btn {
-        width: 44px;
-        height: 44px;
-        border: none;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        font-size: 20px;
-        font-weight: 700;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+.stepper-btn {
+  width: 50px;
+  height: 50px;
+  border: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
 
-      .stepper-btn:hover:not(:disabled) {
-        transform: scale(1.05);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-      }
+.stepper-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+}
 
-      .stepper-btn:disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-      }
+.stepper-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
 
-      .stepper-value {
-        flex: 1;
-        text-align: center;
-        font-size: 24px;
-        font-weight: 700;
-        color: #2d3748;
-        min-width: 50px;
-      }
+.stepper-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.stepper-value {
+  flex: 1;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #667eea;
+  min-width: 60px;
+  background: white;
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+  .stepper-container {
+    max-width: 100%;
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .stepper-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 22px;
+  }
+
+  .stepper-value {
+    font-size: 28px;
+    min-width: 50px;
+    padding: 6px 12px;
+  }
+}
 
       /* Messages */
       .message {
