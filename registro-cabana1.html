@@ -1517,29 +1517,41 @@
       };
 
       // Download image function
-      window.downloadImage = async function (imageUrl, filename) {
-        try {
-          // Fetch the image
-          const response = await fetch(imageUrl);
-          const blob = await response.blob();
-
-          // Create a temporary link and trigger download
-          const url = window.URL.createObjectURL(blob);
-          const link = document.createElement("a");
-          link.href = url;
-          link.download = filename;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          window.URL.revokeObjectURL(url);
-
-          // Show success toast
-          showToast("✅ Mapa descargado exitosamente");
-        } catch (error) {
-          // If fetch fails (CORS issues), open in new tab as fallback
-          window.open(imageUrl, "_blank");
-          showToast("📱 Abre el mapa y mantén presionado para guardarlo");
-        }
+      window.downloadImage = function (imageUrl, filename) {
+        // Open image in new tab with instructions
+        const instructionModal = `
+    <div class="lightbox-overlay" onclick="this.remove()">
+      <div class="modal-content" style="max-width: 400px;" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="this.parentElement.parentElement.remove()">×</button>
+        <div style="font-size: 48px; margin-bottom: 20px;">📸</div>
+        <div style="font-size: 20px; font-weight: 700; margin-bottom: 15px; color: white;">
+          Guardar en Galería
+        </div>
+        <div style="font-size: 15px; line-height: 1.6; margin-bottom: 25px; color: white; opacity: 0.95;">
+          Para guardar el mapa en tu galería:
+          <br><br>
+          1️⃣ Mantén presionada la imagen<br>
+          2️⃣ Selecciona "Guardar imagen"<br>
+          3️⃣ ¡Listo! Estará en tu galería
+        </div>
+        <button onclick="window.open('${imageUrl}', '_blank'); this.closest('.lightbox-overlay').remove();" style="
+          background: white;
+          color: #48bb78;
+          padding: 14px 28px;
+          border-radius: 12px;
+          border: none;
+          font-weight: 700;
+          font-size: 16px;
+          cursor: pointer;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+          font-family: inherit;
+        ">
+          📱 Abrir Mapa
+        </button>
+      </div>
+    </div>
+  `;
+        document.body.insertAdjacentHTML("beforeend", instructionModal);
       };
 
       // Close success modal function
