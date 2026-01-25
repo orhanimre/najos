@@ -1745,9 +1745,9 @@
             </div>
           </div>
           <div class="guest-count">
-            <span class="guest-icon">👥</span>
-            <span class="guest-text">${reg.totalHuespedes || 0} ${reg.totalHuespedes === 1 ? "persona" : "personas"}</span>
-          </div>
+  <span class="guest-icon">👥</span>
+  <span class="guest-text">${(reg.totalHuespedes || 0) + 1} ${(reg.totalHuespedes || 0) + 1 === 1 ? "persona" : "personas"}</span>
+</div>
         </div>
       </div>
 
