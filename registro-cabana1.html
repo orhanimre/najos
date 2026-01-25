@@ -1482,33 +1482,22 @@
       window.showMapModal = function (imageUrl, mapNumber) {
         const lightboxHTML = `
     <div class="lightbox-overlay" onclick="this.remove()">
-      <div class="lightbox-content" onclick="event.stopPropagation()">
+      <div class="lightbox-content" onclick="event.stopPropagagation()">
         <button class="lightbox-close" onclick="this.closest('.lightbox-overlay').remove()">×</button>
         <img src="${imageUrl}" alt="Mapa de Sitios" class="lightbox-image" />
         <div style="
-          display: flex;
-          gap: 12px;
-          justify-content: center;
+          background: rgba(255, 255, 255, 0.95);
+          color: #2d3748;
+          padding: 16px 20px;
+          border-radius: 12px;
           margin-top: 20px;
+          text-align: center;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         ">
-          <button onclick="downloadImage('${imageUrl}', 'Mapa-Vista-${mapNumber}.jpg')" style="
-            background: white;
-            color: #667eea;
-            padding: 12px 24px;
-            border-radius: 10px;
-            border: none;
-            font-weight: 700;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            font-size: 15px;
-            font-family: inherit;
-          " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-            📥 Descargar Mapa
-          </button>
+          <div style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">📸 Para guardar el mapa:</div>
+          <div style="font-size: 14px; color: #4a5568; line-height: 1.5;">
+            Mantén presionada la imagen y selecciona<br>"Guardar imagen" o "Descargar imagen"
+          </div>
         </div>
       </div>
     </div>
