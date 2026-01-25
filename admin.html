@@ -1503,19 +1503,19 @@
           );
         };
 
-        // Build companions section
+        // Build companions section - check indexes 0, 1, 2 (as used in registration form)
         let companionsHTML = "";
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 0; i <= 2; i++) {
           if (hasCompanionData(i)) {
             companionsHTML += `
-            <div class="detail-row">
-              <div class="detail-label" data-icon="👤">Acompañante ${i}</div>
-              <div class="detail-value">
-                <strong>Nombre:</strong> ${reg[`acomp${i}Nombre`] || "N/A"} ${reg[`acomp${i}Apellido`] || ""}<br>
-                <strong>Identificación:</strong> ${formatIdType(reg[`acomp${i}TipoId`])} - ${reg[`acomp${i}NumId`] || "N/A"}
-              </div>
-            </div>
-          `;
+    <div class="detail-row">
+      <div class="detail-label" data-icon="👤">Acompañante ${i + 1}</div>
+      <div class="detail-value">
+        <strong>Nombre:</strong> ${reg[`acomp${i}Nombre`] || "N/A"} ${reg[`acomp${i}Apellido`] || ""}<br>
+        <strong>Identificación:</strong> ${formatIdType(reg[`acomp${i}TipoId`])} - ${reg[`acomp${i}NumId`] || "N/A"}
+      </div>
+    </div>
+  `;
           }
         }
 
