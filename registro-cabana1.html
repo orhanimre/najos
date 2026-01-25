@@ -1479,12 +1479,34 @@
       };
 
       // Show map in lightbox
-      window.showMapModal = function (imageUrl) {
+      window.showMapModal = function (imageUrl, mapNumber) {
         const lightboxHTML = `
     <div class="lightbox-overlay" onclick="this.remove()">
       <div class="lightbox-content" onclick="event.stopPropagation()">
         <button class="lightbox-close" onclick="this.closest('.lightbox-overlay').remove()">×</button>
         <img src="${imageUrl}" alt="Mapa de Sitios" class="lightbox-image" />
+        <div style="
+          display: flex;
+          gap: 12px;
+          justify-content: center;
+          margin-top: 20px;
+        ">
+          <a href="${imageUrl}" download="Mapa-Sitios-${mapNumber}.jpg" style="
+            background: white;
+            color: #667eea;
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+          " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+            📥 Descargar Mapa
+          </a>
+        </div>
       </div>
     </div>
   `;
@@ -1710,13 +1732,16 @@
         Te esperamos con arena, sol y buenas vibras.
       </div>
       <div class="modal-divider">
-        <div class="modal-maps-title">📍 Descubre los sitios de interés cercanos:</div>
-        <button type="button" onclick="showMapModal('https://i.imgur.com/1Nwxp1r.jpg')" class="modal-map-btn" style="cursor: pointer; border: none;">
-  🗺️ Ver Mapa de Sitios 1
-</button>
-<button type="button" onclick="showMapModal('https://i.imgur.com/7NskU8K.jpg')" class="modal-map-btn" style="cursor: pointer; border: none;">
-  🗺️ Ver Mapa de Sitios 2
-</button>
+        <div class="modal-maps-title">📍 Mapas de Sitios de Interés</div>
+        <p style="font-size: 14px; margin-bottom: 15px; opacity: 0.9;">
+          Consulta los dos tipos de mapas con ubicaciones de playas, tiendas y restaurantes
+        </p>
+        <button type="button" onclick="showMapModal('https://i.imgur.com/1Nwxp1r.jpg', 'Normal')" class="modal-map-btn" style="cursor: pointer; border: none;">
+          🗺️ Mapa Vista Normal
+        </button>
+        <button type="button" onclick="showMapModal('https://i.imgur.com/7NskU8K.jpg', 'Satelite')" class="modal-map-btn" style="cursor: pointer; border: none;">
+          🛰️ Mapa Vista Satélite
+        </button>
       </div>
     </div>
   </div>
