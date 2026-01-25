@@ -662,6 +662,184 @@
         transform: translateY(0);
       }
 
+      /* Enhanced Info Cards */
+      .info-card {
+        background: #ffffff;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      }
+
+      .info-card-header {
+        background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .info-icon {
+        font-size: 18px;
+      }
+
+      .info-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #4b5563;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .info-card-content {
+        padding: 16px;
+      }
+
+      .info-card-content.compact {
+        padding: 12px 16px;
+      }
+
+      .info-line {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #374151;
+      }
+
+      .info-line:last-child {
+        margin-bottom: 0;
+      }
+
+      .info-label {
+        font-weight: 600;
+        color: #6b7280;
+        min-width: 60px;
+      }
+
+      .info-value {
+        font-weight: 600;
+        color: #1f2937;
+      }
+
+      .contact-link {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .contact-link:hover {
+        text-decoration: underline;
+      }
+
+      /* Stay Section */
+      .stay-row {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 12px;
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .stay-item {
+        text-align: center;
+      }
+
+      .stay-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: #9ca3af;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+      }
+
+      .stay-value {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 2px;
+      }
+
+      .stay-time {
+        font-size: 13px;
+        font-weight: 600;
+        color: #667eea;
+      }
+
+      .stay-divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #667eea;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .guest-count {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 8px 12px;
+        background: linear-gradient(135deg, #ebf8ff 0%, #e6fffa 100%);
+        border-radius: 8px;
+      }
+
+      .guest-icon {
+        font-size: 16px;
+      }
+
+      .guest-text {
+        font-size: 14px;
+        font-weight: 700;
+        color: #1f2937;
+      }
+
+      /* Guest Name */
+      .guest-name {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      /* Companions */
+      .companion-item {
+        padding: 12px 0;
+        border-bottom: 1px solid #f3f4f6;
+      }
+
+      .companion-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .companion-number {
+        font-size: 12px;
+        font-weight: 700;
+        color: #667eea;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+      }
+
+      .companion-info {
+        padding-left: 12px;
+      }
+
+      .info-name {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 6px;
+      }
+
       /* Special styling for cabin badge in modal */
       .detail-value .cabin-badge {
         display: inline-flex;
@@ -1483,7 +1661,7 @@
           : new Date();
         const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
 
-        // Format: 05.01.2026 16:28
+        // Format: 25.01.2026 13:14
         const formatDateTime = (date) => {
           const day = String(date.getDate()).padStart(2, "0");
           const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -1491,6 +1669,13 @@
           const hours = String(date.getHours()).padStart(2, "0");
           const minutes = String(date.getMinutes()).padStart(2, "0");
           return `${day}.${month}.${year} ${hours}:${minutes}`;
+        };
+
+        // Format date for stay
+        const formatDate = (dateStr) => {
+          if (!dateStr) return "N/A";
+          const [year, month, day] = dateStr.split("-");
+          return `${day}.${month}.${year}`;
         };
 
         // Function to check if companion has data
@@ -1503,72 +1688,107 @@
           );
         };
 
-        // Build companions section - check indexes 0, 1, 2 (as used in registration form)
+        // Build companions section with same style as principal guest
         let companionsHTML = "";
         for (let i = 0; i <= 2; i++) {
           if (hasCompanionData(i)) {
             companionsHTML += `
-    <div class="detail-row">
-      <div class="detail-label" data-icon="👤">Acompañante ${i + 1}</div>
-      <div class="detail-value">
-        <strong>Nombre:</strong> ${reg[`acomp${i}Nombre`] || "N/A"} ${reg[`acomp${i}Apellido`] || ""}<br>
-        <strong>Identificación:</strong> ${formatIdType(reg[`acomp${i}TipoId`])} - ${reg[`acomp${i}NumId`] || "N/A"}
-      </div>
-    </div>
-  `;
+        <div class="companion-item">
+          <div class="companion-number">👤 Acompañante ${i + 1}</div>
+          <div class="companion-info">
+            <div class="info-name">${reg[`acomp${i}Nombre`] || ""} ${reg[`acomp${i}Apellido`] || ""}</div>
+            <div class="info-line">🆔 ${formatIdType(reg[`acomp${i}TipoId`])} - ${reg[`acomp${i}NumId`] || "N/A"}</div>
+          </div>
+        </div>
+      `;
           }
         }
 
         detailBody.innerHTML = `
-        <div class="detail-body">
-          <div class="detail-row">
-            <div class="detail-label" data-icon="📅">Fecha de Registro</div>
-            <div class="detail-value">${formatDateTime(timestamp)}</div>
+    <div class="detail-body">
+      <!-- Registration Info Card -->
+      <div class="info-card">
+        <div class="info-card-header">
+          <span class="info-icon">📅</span>
+          <span class="info-title">Información de Registro</span>
+        </div>
+        <div class="info-card-content">
+          <div class="info-line">
+            <span class="info-label">Fecha:</span>
+            <span class="info-value">${formatDateTime(timestamp)}</span>
           </div>
-
-          <div class="detail-row">
-            <div class="detail-label" data-icon="🏡">Cabaña</div>
-            <div class="detail-value"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></div>
+          <div class="info-line">
+            <span class="info-label">Cabaña:</span>
+            <span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span>
           </div>
-
-          <div class="detail-row">
-        <div class="detail-label" data-icon="📆">Estadía</div>
-        <div class="detail-value">
-          <strong>Entrada:</strong> ${reg.fechaEntrada || "N/A"} ${reg.horaEntrada ? `a las ${reg.horaEntrada}` : ""}<br>
-          <strong>Salida:</strong> ${reg.fechaSalida || "N/A"} ${reg.horaSalida ? `a las ${reg.horaSalida}` : ""}<br>
-          <strong>Huéspedes:</strong> ${reg.totalHuespedes || "N/A"} personas
         </div>
       </div>
 
-          <div class="detail-row">
-            <div class="detail-label" data-icon="👤">Huésped Principal</div>
-            <div class="detail-value">
-              <strong>${reg.nombre} ${reg.apellido}</strong><br>
-              📱 <a href="tel:${reg.celular}">${reg.celular || "N/A"}</a><br>
-              🆔 ${formatIdType(reg.tipoId)} - ${reg.numeroId || "N/A"}<br>
-              📍 ${reg.ciudad || "N/A"}
+      <!-- Stay Info Card -->
+      <div class="info-card">
+        <div class="info-card-header">
+          <span class="info-icon">🏖️</span>
+          <span class="info-title">Estadía</span>
+        </div>
+        <div class="info-card-content compact">
+          <div class="stay-row">
+            <div class="stay-item">
+              <div class="stay-label">Entrada</div>
+              <div class="stay-value">${formatDate(reg.fechaEntrada)}</div>
+              <div class="stay-time">${reg.horaEntrada || "-"}</div>
+            </div>
+            <div class="stay-divider">→</div>
+            <div class="stay-item">
+              <div class="stay-label">Salida</div>
+              <div class="stay-value">${formatDate(reg.fechaSalida)}</div>
+              <div class="stay-time">${reg.horaSalida || "-"}</div>
             </div>
           </div>
-
-          ${companionsHTML}
-
-          ${
-            reg.comentario
-              ? `
-            <div class="detail-row">
-              <div class="detail-label" data-icon="💬">Comentarios</div>
-              <div class="detail-value">${reg.comentario}</div>
-            </div>
-          `
-              : ""
-          }
+          <div class="guest-count">
+            <span class="guest-icon">👥</span>
+            <span class="guest-text">${reg.totalHuespedes || 0} ${reg.totalHuespedes === 1 ? "persona" : "personas"}</span>
+          </div>
         </div>
-        <div class="detail-actions">
-          <button class="delete-btn" onclick="deleteRegistration('${reg.id}', event); closeDetailModal();">
-            🗑️ Eliminar este registro
-          </button>
+      </div>
+
+      <!-- Principal Guest Card -->
+      <div class="info-card">
+        <div class="info-card-header">
+          <span class="info-icon">👤</span>
+          <span class="info-title">Huésped Principal</span>
         </div>
-      `;
+        <div class="info-card-content">
+          <div class="guest-name">${reg.nombre} ${reg.apellido}</div>
+          <div class="info-line">📱 <a href="tel:${reg.celular}" class="contact-link">${reg.celular || "N/A"}</a></div>
+          <div class="info-line">🆔 ${formatIdType(reg.tipoId)} - ${reg.numeroId || "N/A"}</div>
+          <div class="info-line">📍 ${reg.ciudad || "N/A"}</div>
+        </div>
+      </div>
+
+      <!-- Companions Card -->
+      ${
+        companionsHTML
+          ? `
+        <div class="info-card">
+          <div class="info-card-header">
+            <span class="info-icon">👥</span>
+            <span class="info-title">Acompañantes</span>
+          </div>
+          <div class="info-card-content">
+            ${companionsHTML}
+          </div>
+        </div>
+      `
+          : ""
+      }
+    </div>
+    
+    <div class="detail-actions">
+      <button class="delete-btn" onclick="deleteRegistration('${reg.id}', event); closeDetailModal();">
+        🗑️ Eliminar Registro
+      </button>
+    </div>
+  `;
 
         modal.classList.add("show");
         document.body.style.overflow = "hidden";
