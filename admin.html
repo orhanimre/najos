@@ -1876,63 +1876,47 @@ window.deleteDoc = deleteDoc;
         }
       };
 
-      let registrationToDelete = null;
-
-window.deleteRegistration = function (registrationId, event) {
+      window.deleteRegistration = function (registrationId, event) {
   if (event) {
-    event.stopPropagation(); // Prevent row click on mobile
+    event.stopPropagation();
   }
   
-  // Store the ID and show custom modal
-  registrationToDelete = registrationId;
-  showConfirmModal();
-};
-
-window.showConfirmModal = function() {
   const modal = document.getElementById("confirmModal");
   modal.classList.add("show");
   document.body.style.overflow = "hidden";
   
-  // Remove any existing event listeners and add new one
   const deleteBtn = document.getElementById("confirmDeleteBtn");
   const newDeleteBtn = deleteBtn.cloneNode(true);
   deleteBtn.replaceWith(newDeleteBtn);
   
-  newDeleteBtn.addEventListener("click", async function() {
-    closeConfirmModal();
-    
-    if (!registrationToDelete) return;
+  document.getElementById("confirmDeleteBtn").onclick = async function() {
+    const confirmModal = document.getElementById("confirmModal");
+    confirmModal.classList.remove("show");
+    document.body.style.overflow = "";
     
     try {
-      // Delete from Firestore - use window.doc and window.deleteDoc
-      const docRef = window.doc(window.db, "registrations", registrationToDelete);
-      await window.deleteDoc(docRef);
-
-      // Remove from local array
-      allRegistrations = allRegistrations.filter(
-        (r) => r.id !== registrationToDelete,
-      );
-
-      // Update UI
+      await deleteDoc(doc(db, "registrations", registrationId));
+      
+      allRegistrations = allRegistrations.filter(r => r.id !== registrationId);
+      
       updateStats();
       displayData(allRegistrations);
       
-      // Close detail modal if open
-      closeDetailModal();
-      
-      registrationToDelete = null;
+      const detailModal = document.getElementById("detailModal");
+      if (detailModal.classList.contains("show")) {
+        detailModal.classList.remove("show");
+        document.body.style.overflow = "";
+      }
     } catch (error) {
-      console.error("Error deleting registration:", error);
-      alert("Error al eliminar el registro. Por favor intenta nuevamente.");
+      console.error("Error:", error);
+      alert("Error al eliminar el registro.");
     }
-  });
+  };
 };
 
 window.closeConfirmModal = function() {
-  const modal = document.getElementById("confirmModal");
-  modal.classList.remove("show");
+  document.getElementById("confirmModal").classList.remove("show");
   document.body.style.overflow = "";
-  registrationToDelete = null;
 };
 
       window.applyFilters = function () {
