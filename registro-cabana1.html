@@ -768,6 +768,62 @@
         box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
       }
 
+      /* Image Lightbox */
+      .lightbox-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.95);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10001;
+        padding: 20px;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .lightbox-content {
+        max-width: 95%;
+        max-height: 95vh;
+        position: relative;
+      }
+
+      .lightbox-image {
+        width: 100%;
+        height: auto;
+        max-height: 90vh;
+        object-fit: contain;
+        border-radius: 12px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+      }
+
+      .lightbox-close {
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        background: white;
+        border: none;
+        color: #2d3748;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 24px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        transition: all 0.2s ease;
+      }
+
+      .lightbox-close:hover {
+        background: #f56565;
+        color: white;
+        transform: rotate(90deg);
+      }
+
       /* Mobile Responsive */
       @media (max-width: 600px) {
         body {
@@ -1421,6 +1477,19 @@
         }
       };
 
+      // Show map in lightbox
+      window.showMapModal = function (imageUrl) {
+        const lightboxHTML = `
+    <div class="lightbox-overlay" onclick="this.remove()">
+      <div class="lightbox-content" onclick="event.stopPropagation()">
+        <button class="lightbox-close" onclick="this.closest('.lightbox-overlay').remove()">×</button>
+        <img src="${imageUrl}" alt="Mapa de Sitios" class="lightbox-image" />
+      </div>
+    </div>
+  `;
+        document.body.insertAdjacentHTML("beforeend", lightboxHTML);
+      };
+
       btnNext.addEventListener("click", () => {
         if (validateStep(currentStep)) {
           currentStep++;
@@ -1615,16 +1684,16 @@
       <div class="modal-icon">🎉</div>
       <div class="modal-title">¡Registro Completado!</div>
       <div class="modal-text">
-        Te esperamos con arena, sol y buenas vibras. Te enviaremos detalles por WhatsApp pronto.
+        Te esperamos con arena, sol y buenas vibras.
       </div>
       <div class="modal-divider">
         <div class="modal-maps-title">📍 Descubre los sitios de interés cercanos:</div>
-        <a href="https://imgur.com/1Nwxp1r" target="_blank" class="modal-map-btn">
+        <button onclick="showMapModal('https://i.imgur.com/1Nwxp1r.jpg')" class="modal-map-btn" style="cursor: pointer;">
           🗺️ Ver Mapa de Sitios 1
-        </a>
-        <a href="https://imgur.com/7NskU8K" target="_blank" class="modal-map-btn">
+        </button>
+        <button onclick="showMapModal('https://i.imgur.com/7NskU8K.jpg')" class="modal-map-btn" style="cursor: pointer;">
           🗺️ Ver Mapa de Sitios 2
-        </a>
+        </button>
       </div>
     </div>
   </div>
