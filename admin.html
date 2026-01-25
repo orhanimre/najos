@@ -243,22 +243,25 @@
       }
 
       .stat-card.cabin-1 .number {
-        background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-      .stat-card.cabin-2 .number {
-        background: linear-gradient(135deg, #00cc00 0%, #00a300 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
+.stat-card.cabin-2 .number {
+  background: linear-gradient(135deg, #00cc00 0%, #00a300 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-      .stat-card.cabin-3 .number {
-        background: linear-gradient(135deg, #cc0066 0%, #a30052 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
+.stat-card.cabin-3 .number {
+  background: linear-gradient(135deg, #cc0066 0%, #a30052 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
       .delete-btn {
         background: linear-gradient(135deg, #f56565 0%, #c53030 100%);
@@ -1643,6 +1646,11 @@ tbody tr.clickable:active {
       const provider = new GoogleAuthProvider();
 
       let allRegistrations = [];
+
+      // Make db, doc, and deleteDoc available globally for window functions
+window.db = db;
+window.doc = doc;
+window.deleteDoc = deleteDoc;
 
       onAuthStateChanged(auth, (user) => {
         if (user) {
