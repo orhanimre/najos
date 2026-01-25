@@ -40,6 +40,7 @@
         display: block;
         margin: 0 auto 25px auto;
         filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+        border-radius: 16px;
       }
 
       .header {
@@ -1504,38 +1505,6 @@
   `;
         document.body.insertAdjacentHTML("beforeend", lightboxHTML);
       };
-
-      // Download image function
-window.downloadImage = function(imageUrl, filename) {
-  // Open image in new tab
-  window.open(imageUrl, '_blank');
-  
-  // Show instruction toast
-  const toast = document.createElement("div");
-  toast.innerHTML = `
-    <div style="font-size: 18px; margin-bottom: 8px;">📸 Para guardar:</div>
-    <div style="font-size: 14px;">Mantén presionada la imagen y selecciona "Guardar imagen"</div>
-  `;
-  toast.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-    color: white;
-    padding: 20px 24px;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(72, 187, 120, 0.4);
-    z-index: 10000;
-    font-weight: 600;
-    animation: slideUp 0.3s ease;
-    text-align: center;
-    max-width: 90%;
-    line-height: 1.5;
-  `;
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 5000);
-};
 
       // Close success modal function
       window.closeSuccessModal = function () {
