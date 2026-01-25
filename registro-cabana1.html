@@ -1517,42 +1517,36 @@
       };
 
       // Download image function
-      window.downloadImage = function (imageUrl, filename) {
-        // Open image in new tab with instructions
-        const instructionModal = `
-    <div class="lightbox-overlay" onclick="this.remove()">
-      <div class="modal-content" style="max-width: 400px;" onclick="event.stopPropagation()">
-        <button class="modal-close" onclick="this.parentElement.parentElement.remove()">×</button>
-        <div style="font-size: 48px; margin-bottom: 20px;">📸</div>
-        <div style="font-size: 20px; font-weight: 700; margin-bottom: 15px; color: white;">
-          Guardar en Galería
-        </div>
-        <div style="font-size: 15px; line-height: 1.6; margin-bottom: 25px; color: white; opacity: 0.95;">
-          Para guardar el mapa en tu galería:
-          <br><br>
-          1️⃣ Mantén presionada la imagen<br>
-          2️⃣ Selecciona "Guardar imagen"<br>
-          3️⃣ ¡Listo! Estará en tu galería
-        </div>
-        <button onclick="window.open('${imageUrl}', '_blank'); this.closest('.lightbox-overlay').remove();" style="
-          background: white;
-          color: #48bb78;
-          padding: 14px 28px;
-          border-radius: 12px;
-          border: none;
-          font-weight: 700;
-          font-size: 16px;
-          cursor: pointer;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-          font-family: inherit;
-        ">
-          📱 Abrir Mapa
-        </button>
-      </div>
-    </div>
+window.downloadImage = function(imageUrl, filename) {
+  // Open image in new tab
+  window.open(imageUrl, '_blank');
+  
+  // Show instruction toast
+  const toast = document.createElement("div");
+  toast.innerHTML = `
+    <div style="font-size: 18px; margin-bottom: 8px;">📸 Para guardar:</div>
+    <div style="font-size: 14px;">Mantén presionada la imagen y selecciona "Guardar imagen"</div>
   `;
-        document.body.insertAdjacentHTML("beforeend", instructionModal);
-      };
+  toast.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    color: white;
+    padding: 20px 24px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(72, 187, 120, 0.4);
+    z-index: 10000;
+    font-weight: 600;
+    animation: slideUp 0.3s ease;
+    text-align: center;
+    max-width: 90%;
+    line-height: 1.5;
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 5000);
+};
 
       // Close success modal function
       window.closeSuccessModal = function () {
