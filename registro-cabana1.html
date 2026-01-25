@@ -1491,26 +1491,55 @@
           justify-content: center;
           margin-top: 20px;
         ">
-          <a href="${imageUrl}" download="Mapa-Sitios-${mapNumber}.jpg" style="
+          <button onclick="downloadImage('${imageUrl}', 'Mapa-Vista-${mapNumber}.jpg')" style="
             background: white;
             color: #667eea;
             padding: 12px 24px;
             border-radius: 10px;
-            text-decoration: none;
+            border: none;
             font-weight: 700;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             display: inline-flex;
             align-items: center;
             gap: 8px;
             transition: all 0.2s ease;
+            cursor: pointer;
+            font-size: 15px;
+            font-family: inherit;
           " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
             📥 Descargar Mapa
-          </a>
+          </button>
         </div>
       </div>
     </div>
   `;
         document.body.insertAdjacentHTML("beforeend", lightboxHTML);
+      };
+
+      // Download image function
+      window.downloadImage = async function (imageUrl, filename) {
+        try {
+          // Fetch the image
+          const response = await fetch(imageUrl);
+          const blob = await response.blob();
+
+          // Create a temporary link and trigger download
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+
+          // Show success toast
+          showToast("✅ Mapa descargado exitosamente");
+        } catch (error) {
+          // If fetch fails (CORS issues), open in new tab as fallback
+          window.open(imageUrl, "_blank");
+          showToast("📱 Abre el mapa y mantén presionado para guardarlo");
+        }
       };
 
       // Close success modal function
