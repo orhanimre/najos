@@ -1565,10 +1565,20 @@
         const requiredInputs = stepContainer.querySelectorAll("[required]");
 
         for (let input of requiredInputs) {
-          if (!input.value.trim()) {
-            input.focus();
-            input.reportValidity();
-            return false;
+          if (input.tagName === "SELECT") {
+            if (!input.value || input.value === "") {
+              input.focus();
+              input.reportValidity();
+              showToast("⚠️ Por favor completa todos los campos obligatorios");
+              return false;
+            }
+          } else {
+            if (!input.value.trim()) {
+              input.focus();
+              input.reportValidity();
+              showToast("⚠️ Por favor completa todos los campos obligatorios");
+              return false;
+            }
           }
         }
         return true;
@@ -1717,18 +1727,18 @@
     </div>
     <div class="grid-2">
       <div class="form-group">
-        <label>Nombre(s)</label>
-        <input type="text" name="acomp${index}Nombre" placeholder="Nombre" class="companion-field" data-companion="${index}" />
+        <label>Nombre(s) <span class="required">*</span></label>
+        <input type="text" name="acomp${index}Nombre" placeholder="Nombre" class="companion-field" data-companion="${index}" required />
       </div>
       <div class="form-group">
-        <label>Apellido(s)</label>
-        <input type="text" name="acomp${index}Apellido" placeholder="Apellido" class="companion-field" data-companion="${index}" />
+        <label>Apellido(s) <span class="required">*</span></label>
+        <input type="text" name="acomp${index}Apellido" placeholder="Apellido" class="companion-field" data-companion="${index}" required />
       </div>
     </div>
     <div class="grid-2">
       <div class="form-group">
-        <label>Tipo de Identificación</label>
-        <select name="acomp${index}TipoId" class="companion-field" data-companion="${index}">
+        <label>Tipo de Identificación <span class="required">*</span></label>
+        <select name="acomp${index}TipoId" class="companion-field" data-companion="${index}" required>
           <option value="">Seleccione</option>
           <option value="cc">Cédula de Ciudadanía</option>
           <option value="ti">Tarjeta de Identidad</option>
@@ -1737,8 +1747,8 @@
         </select>
       </div>
       <div class="form-group">
-        <label>Número de Identificación</label>
-        <input type="text" name="acomp${index}NumId" placeholder="Número" class="companion-field" data-companion="${index}" />
+        <label>Número de Identificación <span class="required">*</span></label>
+        <input type="text" name="acomp${index}NumId" placeholder="Número" class="companion-field" data-companion="${index}" required />
       </div>
     </div>
   `;
