@@ -491,6 +491,53 @@
         font-size: 14px;
       }
 
+      /* Number Stepper */
+      .stepper-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #f7fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 8px;
+        max-width: 200px;
+      }
+
+      .stepper-btn {
+        width: 44px;
+        height: 44px;
+        border: none;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        font-size: 20px;
+        font-weight: 700;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .stepper-btn:hover:not(:disabled) {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      }
+
+      .stepper-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .stepper-value {
+        flex: 1;
+        text-align: center;
+        font-size: 24px;
+        font-weight: 700;
+        color: #2d3748;
+        min-width: 50px;
+      }
+
       /* Messages */
       .message {
         padding: 18px 24px;
@@ -847,14 +894,21 @@
                 >Número Total de Acompañantes
                 <span class="required">*</span></label
               >
+              <div class="stepper-container">
+                <button type="button" class="stepper-btn" id="decreaseBtn">
+                  −
+                </button>
+                <div class="stepper-value" id="stepperValue">0</div>
+                <button type="button" class="stepper-btn" id="increaseBtn">
+                  +
+                </button>
+              </div>
               <input
-                type="number"
+                type="hidden"
                 id="totalHuespedes"
                 name="totalHuespedes"
-                min="0"
-                max="3"
+                value="0"
                 required
-                placeholder="Ej: 2"
               />
               <div class="helper-text">
                 Máximo 3 acompañantes (sin incluirte a ti)
@@ -945,6 +999,26 @@
       let companionFilledStatus = {};
       const maxCompanions = 3;
 
+      function showToast(message) {
+        const toast = document.createElement("div");
+        toast.innerHTML = message;
+        toast.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
+    z-index: 9999;
+    font-weight: 600;
+    animation: slideInRight 0.3s ease;
+  `;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      }
+
       // Elements
       const form = document.getElementById("registrationForm");
       const btnNext = document.getElementById("btnNext");
@@ -1000,9 +1074,7 @@
       horaEntrada.addEventListener("change", function () {
         const time = this.value;
         if (time < "14:00" || time > "21:00") {
-          alert(
-            "La hora de entrada debe ser entre 2:00 PM (14:00) y 9:00 PM (21:00)",
-          );
+          showToast("⏰ La hora de entrada debe ser entre 2:00 PM y 9:00 PM");
           this.value = "14:00";
         }
       });
@@ -1010,7 +1082,7 @@
       horaSalida.addEventListener("change", function () {
         const time = this.value;
         if (time > "13:00") {
-          alert("La hora de salida debe ser antes de 1:00 PM (13:00)");
+          showToast("⏰ La hora de salida debe ser antes de 1:00 PM");
           this.value = "13:00";
         }
       });
@@ -1024,22 +1096,24 @@
         }
       });
 
-      // Auto-generate companions based on total companions with validation
-      totalHuespedesInput.addEventListener("input", function () {
-        let numCompanions = parseInt(this.value) || 0;
+      // Stepper functionality
+      const decreaseBtn = document.getElementById("decreaseBtn");
+      const increaseBtn = document.getElementById("increaseBtn");
+      const stepperValue = document.getElementById("stepperValue");
+      let currentCompanionCount = 0;
 
-        // Check if exceeds maximum
-        if (numCompanions > maxCompanions) {
-          alert(`Máximo ${maxCompanions} acompañantes permitidos`);
-          this.value = maxCompanions;
-          numCompanions = maxCompanions;
-        }
+      function updateStepperButtons() {
+        decreaseBtn.disabled = currentCompanionCount <= 0;
+        increaseBtn.disabled = currentCompanionCount >= maxCompanions;
+      }
 
-        // Ensure non-negative
-        if (numCompanions < 0) {
-          this.value = 0;
-          numCompanions = 0;
-        }
+      function updateCompanions(newCount) {
+        currentCompanionCount = newCount;
+        stepperValue.textContent = newCount;
+        totalHuespedesInput.value = newCount;
+
+        // Update button states
+        updateStepperButtons();
 
         // Clear existing companions
         companionsContainer.innerHTML = "";
@@ -1047,13 +1121,30 @@
         companionFilledStatus = {};
 
         // Create companion cards
-        for (let i = 0; i < numCompanions; i++) {
+        for (let i = 0; i < newCount; i++) {
           companions.push(i);
           companionFilledStatus[i] = false;
           const card = createCompanionCard(i);
           companionsContainer.appendChild(card);
         }
+      }
+
+      decreaseBtn.addEventListener("click", function () {
+        if (currentCompanionCount > 0) {
+          updateCompanions(currentCompanionCount - 1);
+        }
       });
+
+      increaseBtn.addEventListener("click", function () {
+        if (currentCompanionCount < maxCompanions) {
+          updateCompanions(currentCompanionCount + 1);
+        } else {
+          showToast(`👥 Máximo ${maxCompanions} acompañantes permitidos`);
+        }
+      });
+
+      // Initialize stepper
+      updateStepperButtons();
 
       // Step Navigation
       function updateProgress() {
