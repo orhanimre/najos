@@ -226,13 +226,13 @@
       }
 
       .stat-card .number {
-        font-size: 36px;
-        font-weight: 700;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
+  font-size: 36px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
       .stat-card.total .number {
         font-size: 48px;
@@ -1904,9 +1904,9 @@ window.showConfirmModal = function() {
     if (!registrationToDelete) return;
     
     try {
-      // Delete from Firestore
-      const docRef = doc(db, "registrations", registrationToDelete);
-      await deleteDoc(docRef);
+      // Delete from Firestore - use window.doc and window.deleteDoc
+      const docRef = window.doc(window.db, "registrations", registrationToDelete);
+      await window.deleteDoc(docRef);
 
       // Remove from local array
       allRegistrations = allRegistrations.filter(
