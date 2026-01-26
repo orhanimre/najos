@@ -2149,60 +2149,133 @@ window.closeConfirmModal = function() {
       }
 
       window.showDetailModal = function (reg) {
-        const isMobile = window.innerWidth < 768;
-        if (!isMobile) return;
+  const isMobile = window.innerWidth < 768;
+  if (!isMobile) return;
 
-        const modal = document.getElementById("detailModal");
-        const detailBody = document.getElementById("detailBody");
-        const timestamp = reg.timestamp
-          ? new Date(reg.timestamp.seconds * 1000)
-          : new Date();
-        const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
+  const modal = document.getElementById("detailModal");
+  const detailBody = document.getElementById("detailBody");
+  const timestamp = reg.timestamp
+    ? new Date(reg.timestamp.seconds * 1000)
+    : new Date();
+  const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
 
-        // Format: 25.01.2026 13:14
-        const formatDateTime = (date) => {
-          const day = String(date.getDate()).padStart(2, "0");
-          const month = String(date.getMonth() + 1).padStart(2, "0");
-          const year = date.getFullYear();
-          const hours = String(date.getHours()).padStart(2, "0");
-          const minutes = String(date.getMinutes()).padStart(2, "0");
-          return `${day}.${month}.${year} ${hours}:${minutes}`;
-        };
+  const formatDateTime = (date) => {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    return `${day}.${month}.${year} ${hours}:${minutes}`;
+  };
 
-        // Format date for stay
-        const formatDate = (dateStr) => {
-          if (!dateStr) return "N/A";
-          const [year, month, day] = dateStr.split("-");
-          return `${day}.${month}.${year}`;
-        };
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "N/A";
+    const [year, month, day] = dateStr.split("-");
+    return `${day}.${month}.${year}`;
+  };
 
-        // Function to check if companion has data
-        const hasCompanionData = (num) => {
-          return (
-            reg[`acomp${num}Nombre`] ||
-            reg[`acomp${num}Apellido`] ||
-            reg[`acomp${num}TipoId`] ||
-            reg[`acomp${num}NumId`]
-          );
-        };
+  const hasCompanionData = (num) => {
+    return (
+      reg[`acomp${num}Nombre`] ||
+      reg[`acomp${num}Apellido`] ||
+      reg[`acomp${num}TipoId`] ||
+      reg[`acomp${num}NumId`]
+    );
+  };
 
-        // Build companions section with same style as principal guest
-        let companionsHTML = "";
-        for (let i = 0; i <= 2; i++) {
-          if (hasCompanionData(i)) {
-            companionsHTML += `
-        <div class="companion-item">
-          <div class="companion-number">👤 Acompañante ${i + 1}</div>
-          <div class="companion-info">
-            <div class="info-name">${reg[`acomp${i}Nombre`] || ""} ${reg[`acomp${i}Apellido`] || ""}</div>
-            <div class="info-line">🆔 ${formatIdType(reg[`acomp${i}TipoId`])} - ${reg[`acomp${i}NumId`] || "N/A"}</div>
+  let companionsHTML = "";
+  for (let i = 0; i <= 2; i++) {
+    if (hasCompanionData(i)) {
+      companionsHTML += `
+    <div class="companion-item">
+      <div class="companion-number">👤 Acompañante ${i + 1}</div>
+      <div class="companion-info">
+        <div class="info-name">${reg[`acomp${i}Nombre`] || ""} ${reg[`acomp${i}Apellido`] || ""}</div>
+        <div class="info-line">🆔 ${formatIdType(reg[`acomp${i}TipoId`])} - ${reg[`acomp${i}NumId`] || "N/A"}</div>
+      </div>
+    </div>
+  `;
+    }
+  }
+
+  detailBody.innerHTML = `
+    <div class="detail-body">
+      <div class="info-card">
+        <div class="info-card-header">
+          <span class="info-icon">📅</span>
+          <span class="info-title">Registro</span>
+        </div>
+        <div class="info-card-content compact">
+          <div class="info-line">📅 ${formatDateTime(timestamp)}</div>
+          <div class="info-line">🏡 <span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-header">
+          <span class="info-icon">👤</span>
+          <span class="info-title">Huésped Principal</span>
+        </div>
+        <div class="info-card-content">
+          <div class="guest-name">${reg.nombre} ${reg.apellido}</div>
+          <div class="info-line">🆔 ${formatIdType(reg.tipoId)} - ${reg.numeroId}</div>
+          <div class="info-line">📱 <a href="tel:${reg.celular}" class="contact-link">${reg.celular}</a></div>
+          <div class="info-line">🏙️ ${reg.ciudad}</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-header">
+          <span class="info-icon">📆</span>
+          <span class="info-title">Estadía</span>
+        </div>
+        <div class="info-card-content">
+          <div class="stay-row">
+            <div class="stay-item">
+              <div class="stay-label">Entrada</div>
+              <div class="stay-value">${formatDate(reg.fechaEntrada)}</div>
+              <div class="stay-time">${reg.horaEntrada || '—'}</div>
+            </div>
+            <div class="stay-divider">→</div>
+            <div class="stay-item">
+              <div class="stay-label">Salida</div>
+              <div class="stay-value">${formatDate(reg.fechaSalida)}</div>
+              <div class="stay-time">${reg.horaSalida || '—'}</div>
+            </div>
+          </div>
+          <div class="guest-count">
+            <span class="guest-icon">👥</span>
+            <span class="guest-text">${(reg.totalHuespedes || 0) + 1} Huéspedes</span>
           </div>
         </div>
-      `;
-          }
-        }
+      </div>
 
-        <div class="detail-actions">
+      ${companionsHTML ? `
+      <div class="info-card">
+        <div class="info-card-header">
+          <span class="info-icon">👥</span>
+          <span class="info-title">Acompañantes</span>
+        </div>
+        <div class="info-card-content">
+          ${companionsHTML}
+        </div>
+      </div>
+      ` : ''}
+
+      ${reg.comentario ? `
+      <div class="info-card">
+        <div class="info-card-header">
+          <span class="info-icon">💬</span>
+          <span class="info-title">Comentario</span>
+        </div>
+        <div class="info-card-content">
+          <p style="color: #4a5568; line-height: 1.6;">${reg.comentario}</p>
+        </div>
+      </div>
+      ` : ''}
+    </div>
+
+    <div class="detail-actions">
       <button class="history-btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 14px 24px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 15px; transition: all 0.3s; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); margin-bottom: 12px;" onclick="event.stopPropagation(); checkGuestHistory('${reg.numeroId}', '${reg.nombre}', '${reg.apellido}')">
         📊 Ver Historial de Visitas
       </button>
@@ -2212,9 +2285,9 @@ window.closeConfirmModal = function() {
     </div>
   `;
 
-        modal.classList.add("show");
-        document.body.style.overflow = "hidden";
-      };
+  modal.classList.add("show");
+  document.body.style.overflow = "hidden";
+};
 
       window.closeDetailModal = function () {
         const modal = document.getElementById("detailModal");
