@@ -2011,27 +2011,40 @@ window.switchViewFromDropdown = function() {
     document.body.style.overflow = "";
     
     try {
-      // Find the registration
-      const registration = allRegistrations.find(r => r.id === registrationId);
-      
-      if (registration) {
-        // Add to archive with additional metadata
-        await setDoc(doc(db, "archived_registrations", registrationId), {
-          ...registration,
-          archivedAt: serverTimestamp(),
-          archivedBy: auth.currentUser?.email || 'unknown'
-        });
+      if (currentView === 'active') {
+        // ARCHIVING: Moving from active to archive
+        const registration = allRegistrations.find(r => r.id === registrationId);
         
-        // Delete from active registrations
-        await deleteDoc(doc(db, "registrations", registrationId));
+        if (registration) {
+          // Add to archive with additional metadata
+          await setDoc(doc(db, "archived_registrations", registrationId), {
+            ...registration,
+            archivedAt: serverTimestamp(),
+            archivedBy: auth.currentUser?.email || 'unknown'
+          });
+          
+          // Delete from active registrations
+          await deleteDoc(doc(db, "registrations", registrationId));
+          
+          // Update local arrays
+          allRegistrations = allRegistrations.filter(r => r.id !== registrationId);
+          allArchived.unshift({
+            ...registration,
+            id: registrationId,
+            archivedAt: { seconds: Date.now() / 1000 }
+          });
+        }
+      } else {
+        // PERMANENT DELETE: Deleting from archive
+        const registration = allArchived.find(r => r.id === registrationId);
         
-        // Update local arrays
-        allRegistrations = allRegistrations.filter(r => r.id !== registrationId);
-        allArchived.unshift({
-          ...registration,
-          id: registrationId,
-          archivedAt: { seconds: Date.now() / 1000 }
-        });
+        if (registration) {
+          // Permanently delete from archive
+          await deleteDoc(doc(db, "archived_registrations", registrationId));
+          
+          // Update local array
+          allArchived = allArchived.filter(r => r.id !== registrationId);
+        }
       }
       
       updateStats();
@@ -2044,7 +2057,7 @@ window.switchViewFromDropdown = function() {
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Error al archivar el registro.");
+      alert(currentView === 'active' ? "Error al archivar el registro." : "Error al eliminar el registro.");
     }
   };
 };
