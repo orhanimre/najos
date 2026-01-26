@@ -2595,32 +2595,23 @@ function showSearchResults(count) {
     "Cabaña",
     "Nombre Completo",
     "Celular",
-    "Cédula",
-    "Número ID",
+    "ID",
     "Ciudad",
     "Total Huéspedes",
-    "Fecha Entrada",
-    "Hora Entrada",
-    "Fecha Salida",
-    "Hora Salida",
-    "Acomp 0 Nombre Completo",
-    "Acomp 0 Cédula",
-    "Acomp 0 Num ID",
-    "Acomp 1 Nombre Completo",
-    "Acomp 1 Cédula",
-    "Acomp 1 Num ID",
-    "Acomp 2 Nombre Completo",
-    "Acomp 2 Cédula",
-    "Acomp 2 Num ID",
-    "Acomp 3 Nombre Completo",
-    "Acomp 3 Cédula",
-    "Acomp 3 Num ID",
-    "Acomp 4 Nombre Completo",
-    "Acomp 4 Cédula",
-    "Acomp 4 Num ID",
-    "Acomp 5 Nombre Completo",
-    "Acomp 5 Cédula",
-    "Acomp 5 Num ID",
+    "Entrada",
+    "Salida",
+    "Acomp 1",
+    "Acomp 1 ID",
+    "Acomp 2",
+    "Acomp 2 ID",
+    "Acomp 3",
+    "Acomp 3 ID",
+    "Acomp 4",
+    "Acomp 4 ID",
+    "Acomp 5",
+    "Acomp 5 ID",
+    "Acomp 6",
+    "Acomp 6 ID",
     "Comentario",
     "Acepta Datos",
   ];
@@ -2644,9 +2635,20 @@ function showSearchResults(count) {
     return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
   };
 
-  // Convert ID type to uppercase
-  const formatIdType = (idType) => {
-    return idType ? idType.toUpperCase() : "";
+  // Format date and time together: 17.01.2026 14:00
+  const formatDateTime = (date, time) => {
+    if (!date) return "";
+    const [year, month, day] = date.split("-");
+    const formattedDate = `${day}.${month}.${year}`;
+    return time && time !== "-" ? `${formattedDate} ${time}` : formattedDate;
+  };
+
+  // Combine ID type and number: CC 1234567
+  const formatID = (idType, idNumber) => {
+    const type = idType ? idType.toUpperCase() : "";
+    const number = idNumber || "";
+    if (!type && !number) return "";
+    return `${type} ${number}`.trim();
   };
 
   // Combine first and last name
@@ -2669,32 +2671,23 @@ function showSearchResults(count) {
       reg.cabana || "",
       getFullName(reg.nombre, reg.apellido),
       reg.celular || "",
-      formatIdType(reg.tipoId),
-      reg.numeroId || "",
+      formatID(reg.tipoId, reg.numeroId),
       reg.ciudad || "",
       reg.totalHuespedes || "",
-      reg.fechaEntrada || "",
-      reg.horaEntrada || "-",
-      reg.fechaSalida || "",
-      reg.horaSalida || "-",
+      formatDateTime(reg.fechaEntrada, reg.horaEntrada),
+      formatDateTime(reg.fechaSalida, reg.horaSalida),
       getFullName(reg.acomp0Nombre, reg.acomp0Apellido),
-      formatIdType(reg.acomp0TipoId),
-      reg.acomp0NumId || "",
+      formatID(reg.acomp0TipoId, reg.acomp0NumId),
       getFullName(reg.acomp1Nombre, reg.acomp1Apellido),
-      formatIdType(reg.acomp1TipoId),
-      reg.acomp1NumId || "",
+      formatID(reg.acomp1TipoId, reg.acomp1NumId),
       getFullName(reg.acomp2Nombre, reg.acomp2Apellido),
-      formatIdType(reg.acomp2TipoId),
-      reg.acomp2NumId || "",
+      formatID(reg.acomp2TipoId, reg.acomp2NumId),
       getFullName(reg.acomp3Nombre, reg.acomp3Apellido),
-      formatIdType(reg.acomp3TipoId),
-      reg.acomp3NumId || "",
+      formatID(reg.acomp3TipoId, reg.acomp3NumId),
       getFullName(reg.acomp4Nombre, reg.acomp4Apellido),
-      formatIdType(reg.acomp4TipoId),
-      reg.acomp4NumId || "",
+      formatID(reg.acomp4TipoId, reg.acomp4NumId),
       getFullName(reg.acomp5Nombre, reg.acomp5Apellido),
-      formatIdType(reg.acomp5TipoId),
-      reg.acomp5NumId || "",
+      formatID(reg.acomp5TipoId, reg.acomp5NumId),
       (reg.comentario || "").replace(/\t/g, " "),
       reg.consent ? "Sí" : "No",
     ];
