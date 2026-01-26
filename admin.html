@@ -1834,21 +1834,24 @@ window.switchViewFromDropdown = function() {
 };
 
       function updateStats() {
-        document.getElementById("totalRegistros").textContent =
-          allRegistrations.length;
-        document.getElementById("totalCabana1").textContent =
-          allRegistrations.filter(
-            (r) => r.cabana === "Cabaña MariaMar-1",
-          ).length;
-        document.getElementById("totalCabana2").textContent =
-          allRegistrations.filter(
-            (r) => r.cabana === "Cabaña MariaMar-2",
-          ).length;
-        document.getElementById("totalCabana3").textContent =
-          allRegistrations.filter(
-            (r) => r.cabana === "Cabaña MariaMar-3",
-          ).length;
-      }
+  // Use the current view's data
+  const dataSource = currentView === 'active' ? allRegistrations : allArchived;
+  
+  document.getElementById("totalRegistros").textContent =
+    dataSource.length;
+  document.getElementById("totalCabana1").textContent =
+    dataSource.filter(
+      (r) => r.cabana === "Cabaña MariaMar-1",
+    ).length;
+  document.getElementById("totalCabana2").textContent =
+    dataSource.filter(
+      (r) => r.cabana === "Cabaña MariaMar-2",
+    ).length;
+  document.getElementById("totalCabana3").textContent =
+    dataSource.filter(
+      (r) => r.cabana === "Cabaña MariaMar-3",
+    ).length;
+}
 
       function displayData(data) {
         const tableBody = document.getElementById("tableBody");
