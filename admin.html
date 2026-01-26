@@ -486,6 +486,229 @@
         transform: rotate(90deg);
       }
 
+      /* Calendar View Button */
+.calendar-view-btn {
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.3s;
+  width: 100%;
+}
+
+.calendar-view-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
+}
+
+/* Calendar Modal */
+.calendar-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 10001;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.calendar-modal.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-content {
+  background: white;
+  border-radius: 20px;
+  padding: 0;
+  max-width: 900px;
+  width: calc(100% - 32px);
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 20px 20px 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.calendar-header h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.calendar-body {
+  padding: 24px;
+}
+
+.calendar-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.calendar-nav button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.calendar-nav button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.calendar-nav h4 {
+  font-size: 18px;
+  color: #1f2937;
+  font-weight: 700;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.calendar-day-header {
+  text-align: center;
+  font-weight: 700;
+  font-size: 12px;
+  color: #667eea;
+  padding: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  padding: 4px;
+  background: white;
+}
+
+.calendar-day.other-month {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.calendar-day.reserved {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-color: #f59e0b;
+  font-weight: 700;
+}
+
+.calendar-day.reserved:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.calendar-day.today {
+  border-color: #667eea;
+  border-width: 3px;
+  font-weight: 700;
+}
+
+.calendar-day-number {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.calendar-day-indicator {
+  font-size: 8px;
+  margin-top: 2px;
+}
+
+.reservation-popup {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1f2937;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  margin-bottom: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.calendar-day.reserved:hover .reservation-popup {
+  opacity: 1;
+}
+
+.reservation-popup::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: #1f2937;
+}
+
+@media (max-width: 768px) {
+  .calendar-grid {
+    gap: 4px;
+  }
+  
+  .calendar-day {
+    padding: 2px;
+  }
+  
+  .calendar-day-number {
+    font-size: 12px;
+  }
+  
+  .calendar-day-header {
+    font-size: 10px;
+    padding: 4px;
+  }
+}
+
       /* Filters */
 .filters {
   background: white;
@@ -1732,25 +1955,34 @@ tbody tr.clickable:active {
       <div class="container">
         
         <div class="stats-grid">
-          <div class="stat-card total total-card">
-            <h3>Total Registros</h3>
-            <div class="number" id="totalRegistros">-</div>
-          </div>
-          <div class="cabins-row">
-            <div class="stat-card cabin cabin-1">
-              <h3>Cabaña 1</h3>
-              <div class="number" id="totalCabana1">-</div>
-            </div>
-            <div class="stat-card cabin cabin-2">
-              <h3>Cabaña 2</h3>
-              <div class="number" id="totalCabana2">-</div>
-            </div>
-            <div class="stat-card cabin cabin-3">
-              <h3>Cabaña 3</h3>
-              <div class="number" id="totalCabana3">-</div>
-            </div>
-          </div>
-        </div>
+  <div class="stat-card total total-card">
+    <h3>Total Registros</h3>
+    <div class="number" id="totalRegistros">-</div>
+  </div>
+  <div class="cabins-row">
+    <div class="stat-card cabin cabin-1">
+      <h3>Cabaña 1</h3>
+      <div class="number" id="totalCabana1">-</div>
+      <button class="calendar-view-btn" onclick="openCalendarModal('Cabaña MariaMar-1')">
+        📅 Ver Calendario
+      </button>
+    </div>
+    <div class="stat-card cabin cabin-2">
+      <h3>Cabaña 2</h3>
+      <div class="number" id="totalCabana2">-</div>
+      <button class="calendar-view-btn" onclick="openCalendarModal('Cabaña MariaMar-2')">
+        📅 Ver Calendario
+      </button>
+    </div>
+    <div class="stat-card cabin cabin-3">
+      <h3>Cabaña 3</h3>
+      <div class="number" id="totalCabana3">-</div>
+      <button class="calendar-view-btn" onclick="openCalendarModal('Cabaña MariaMar-3')">
+        📅 Ver Calendario
+      </button>
+    </div>
+  </div>
+</div>
 
         <div class="filters">
           <div class="filter-section">
@@ -1781,15 +2013,15 @@ tbody tr.clickable:active {
             </div>
 
             <div id="customDates" class="custom-dates">
-              <div class="date-input-group">
-                <label>Desde</label>
-                <input type="date" id="fechaDesde" />
-              </div>
-              <div class="date-input-group">
-                <label>Hasta</label>
-                <input type="date" id="fechaHasta" />
-              </div>
-            </div>
+  <div class="date-input-group">
+    <label>Desde</label>
+    <input type="date" id="fechaDesde" onchange="handleDateChange('desde')" />
+  </div>
+  <div class="date-input-group">
+    <label>Hasta</label>
+    <input type="date" id="fechaHasta" onchange="handleDateChange('hasta')" />
+  </div>
+</div>
 
             <div id="filterButtons" class="filter-buttons">
               <button class="btn-primary" onclick="applyFilters()">
@@ -1897,6 +2129,24 @@ tbody tr.clickable:active {
       </div>
     </div>
   </div>
+
+  <!-- Calendar Modal -->
+<div id="calendarModal" class="calendar-modal">
+  <div class="calendar-content">
+    <div class="calendar-header">
+      <h3 id="calendarTitle">Calendario</h3>
+      <button class="close-modal" onclick="closeCalendarModal()">✕</button>
+    </div>
+    <div class="calendar-body">
+      <div class="calendar-nav">
+        <button onclick="changeMonth(-1)">‹ Anterior</button>
+        <h4 id="currentMonthYear"></h4>
+        <button onclick="changeMonth(1)">Siguiente ›</button>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+  </div>
+</div>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -2202,23 +2452,43 @@ window.switchViewFromDropdown = function() {
       };
 
       window.toggleCustomDates = function () {
-        const customDates = document.getElementById("customDates");
-        const filterButtons = document.getElementById("filterButtons");
-        const isShowing = customDates.classList.contains("show");
+  const customDates = document.getElementById("customDates");
+  const filterButtons = document.getElementById("filterButtons");
+  const isShowing = customDates.classList.contains("show");
 
-        document
-          .querySelectorAll(".preset-btn")
-          .forEach((btn) => btn.classList.remove("active"));
+  document
+    .querySelectorAll(".preset-btn")
+    .forEach((btn) => btn.classList.remove("active"));
 
-        if (!isShowing) {
-          customDates.classList.add("show");
-          filterButtons.classList.add("show");
-          document.querySelectorAll(".preset-btn")[3].classList.add("active");
-        } else {
-          customDates.classList.remove("show");
-          filterButtons.classList.remove("show");
-        }
-      };
+  if (!isShowing) {
+    customDates.classList.add("show");
+    filterButtons.classList.add("show");
+    document.querySelectorAll(".preset-btn")[3].classList.add("active");
+    // Auto-focus on "Desde" input
+    setTimeout(() => {
+      document.getElementById("fechaDesde").focus();
+    }, 100);
+  } else {
+    customDates.classList.remove("show");
+    filterButtons.classList.remove("show");
+  }
+};
+
+// NEW FUNCTION - Add this function
+window.handleDateChange = function(field) {
+  const fechaDesde = document.getElementById("fechaDesde").value;
+  const fechaHasta = document.getElementById("fechaHasta").value;
+  
+  if (field === 'desde' && fechaDesde) {
+    // Auto-focus to "Hasta" when "Desde" is selected
+    document.getElementById("fechaHasta").focus();
+  }
+  
+  // Auto-apply filters when both dates are selected
+  if (fechaDesde && fechaHasta) {
+    applyFilters();
+  }
+};
 
       window.deleteRegistration = function (registrationId, event) {
   if (event) {
@@ -2713,6 +2983,129 @@ function showSearchResults(count) {
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 };
+
+// Calendar functionality
+let currentCalendarDate = new Date();
+let currentCalendarCabin = '';
+
+window.openCalendarModal = function(cabinName) {
+  currentCalendarCabin = cabinName;
+  currentCalendarDate = new Date();
+  
+  const modal = document.getElementById('calendarModal');
+  const cabinNum = cabinName.slice(-1);
+  document.getElementById('calendarTitle').textContent = `Calendario - Cabaña ${cabinNum}`;
+  
+  renderCalendar();
+  modal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeCalendarModal = function() {
+  const modal = document.getElementById('calendarModal');
+  modal.classList.remove('show');
+  document.body.style.overflow = '';
+};
+
+window.changeMonth = function(direction) {
+  currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
+  renderCalendar();
+};
+
+function renderCalendar() {
+  const year = currentCalendarDate.getFullYear();
+  const month = currentCalendarDate.getMonth();
+  
+  // Update month/year display
+  const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  document.getElementById('currentMonthYear').textContent = `${monthNames[month]} ${year}`;
+  
+  const grid = document.getElementById('calendarGrid');
+  grid.innerHTML = '';
+  
+  // Add day headers
+  const dayHeaders = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  dayHeaders.forEach(day => {
+    const header = document.createElement('div');
+    header.className = 'calendar-day-header';
+    header.textContent = day;
+    grid.appendChild(header);
+  });
+  
+  // Get first day of month and total days
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysInPrevMonth = new Date(year, month, 0).getDate();
+  
+  // Get reservations for current cabin and view
+  const reservations = currentView === 'active' ? allRegistrations : allArchived;
+  const cabinReservations = reservations.filter(r => r.cabana === currentCalendarCabin);
+  
+  // Add previous month's days
+  for (let i = firstDay - 1; i >= 0; i--) {
+    const day = document.createElement('div');
+    day.className = 'calendar-day other-month';
+    day.innerHTML = `<span class="calendar-day-number">${daysInPrevMonth - i}</span>`;
+    grid.appendChild(day);
+  }
+  
+  // Add current month's days
+  const today = new Date();
+  for (let i = 1; i <= daysInMonth; i++) {
+    const day = document.createElement('div');
+    day.className = 'calendar-day';
+    
+    const currentDate = new Date(year, month, i);
+    const dateStr = currentDate.toISOString().split('T')[0];
+    
+    // Check if this date has a reservation
+    const reservation = cabinReservations.find(r => {
+      const entryDate = new Date(r.fechaEntrada);
+      const exitDate = new Date(r.fechaSalida);
+      return currentDate >= entryDate && currentDate <= exitDate;
+    });
+    
+    if (reservation) {
+      day.classList.add('reserved');
+      const guestName = `${reservation.nombre} ${reservation.apellido}`;
+      day.innerHTML = `
+        <span class="calendar-day-number">${i}</span>
+        <span class="calendar-day-indicator">🏠</span>
+        <div class="reservation-popup">${guestName}</div>
+      `;
+    } else {
+      day.innerHTML = `<span class="calendar-day-number">${i}</span>`;
+    }
+    
+    // Mark today
+    if (today.getDate() === i && 
+        today.getMonth() === month && 
+        today.getFullYear() === year) {
+      day.classList.add('today');
+    }
+    
+    grid.appendChild(day);
+  }
+  
+  // Add next month's days to complete grid
+  const totalCells = grid.children.length - 7; // Subtract headers
+  const remainingCells = 42 - totalCells; // 6 rows × 7 days = 42
+  for (let i = 1; i <= remainingCells; i++) {
+    const day = document.createElement('div');
+    day.className = 'calendar-day other-month';
+    day.innerHTML = `<span class="calendar-day-number">${i}</span>`;
+    grid.appendChild(day);
+  }
+}
+
+// Close calendar modal when clicking outside
+document.addEventListener('click', function(e) {
+  const modal = document.getElementById('calendarModal');
+  if (e.target === modal) {
+    closeCalendarModal();
+  }
+});
     </script>
   </body>
 </html>
