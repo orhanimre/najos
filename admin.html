@@ -156,39 +156,55 @@
         color: #667eea;
       }
 
-      /* Navigation Tabs */
-.nav-tabs {
-  display: flex;
-  gap: 8px;
-  margin-top: 16px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.nav-tab {
-  background: rgba(255, 255, 255, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 14px;
-  white-space: nowrap;
-  transition: all 0.3s;
+      /* Navigation Dropdown */
+.nav-dropdown-container {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  margin-top: 16px;
 }
 
-.nav-tab:hover {
-  background: rgba(255, 255, 255, 0.25);
+.nav-dropdown-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  opacity: 0.9;
 }
 
-.nav-tab.active {
-  background: white;
+.nav-dropdown {
+  flex: 1;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.95);
   color: #667eea;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 45px;
+}
+
+.nav-dropdown:hover {
+  background: white;
   border-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.nav-dropdown:focus {
+  outline: none;
+  border-color: white;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+@media (min-width: 768px) {
+  .nav-dropdown {
+    max-width: 300px;
+  }
 }
 
       /* Container */
@@ -1490,16 +1506,14 @@ tbody tr.clickable:active {
         <h1>📊 Panel de Administración</h1>
         <p>Cabañas MariaMar - Registros de Huéspedes</p>
       </div>
-      <!-- 👇 ADD THESE NAVIGATION TABS HERE 👇 -->
-      <div class="nav-tabs">
-        <button class="nav-tab active" onclick="switchView('active')">
-          📋 Registros Activos
-        </button>
-        <button class="nav-tab" onclick="switchView('archive')">
-          📦 Archivo
-        </button>
-      </div>
-      <!-- 👆 NEW NAVIGATION TABS END HERE 👆 -->
+      <!-- Navigation Dropdown -->
+<div class="nav-dropdown-container">
+  <label class="nav-dropdown-label">Vista:</label>
+  <select id="viewSelector" class="nav-dropdown" onchange="switchViewFromDropdown()">
+    <option value="active">📋 Registros Activos</option>
+    <option value="archive">📦 Archivo</option>
+  </select>
+</div>
     </div>
   </div>
 </div>
@@ -1791,14 +1805,11 @@ tbody tr.clickable:active {
 window.switchView = function(view) {
   currentView = view;
   
-  // Update tab active state
-  document.querySelectorAll('.nav-tab').forEach((tab, index) => {
-    if ((index === 0 && view === 'active') || (index === 1 && view === 'archive')) {
-      tab.classList.add('active');
-    } else {
-      tab.classList.remove('active');
-    }
-  });
+  // Update dropdown selection
+  const dropdown = document.getElementById('viewSelector');
+  if (dropdown) {
+    dropdown.value = view;
+  }
 
   // Clear filters
   clearFilters();
@@ -1814,6 +1825,12 @@ window.switchView = function(view) {
       ? 'Exportar a Excel' 
       : 'Exportar Archivo a Excel';
   }
+};
+
+// New function for dropdown change
+window.switchViewFromDropdown = function() {
+  const dropdown = document.getElementById('viewSelector');
+  switchView(dropdown.value);
 };
 
       function updateStats() {
