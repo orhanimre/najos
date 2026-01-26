@@ -362,22 +362,36 @@
       }
 
       .date-presets {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-      }
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
 
-      .preset-btn {
-        padding: 12px;
-        background: #f7fafc;
-        color: #4a5568;
-        border: 2px solid #e2e8f0;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 13px;
-        transition: all 0.3s;
-      }
+.preset-btn {
+  padding: 10px 6px;
+  background: #f7fafc;
+  color: #4a5568;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 11px;
+  transition: all 0.3s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 768px) {
+  .date-presets {
+    gap: 10px;
+  }
+  
+  .preset-btn {
+    padding: 12px;
+    font-size: 13px;
+  }
+}
 
       .preset-btn.active {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -538,6 +552,87 @@
       .expand-icon.expanded {
         transform: rotate(90deg);
       }
+
+      /* Search Container */
+.search-container {
+  margin-bottom: 20px;
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 14px 16px;
+  transition: all 0.3s;
+}
+
+.search-box:focus-within {
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+  border: 2px solid #667eea;
+  padding: 12px 14px;
+}
+
+.search-icon {
+  font-size: 20px;
+  margin-right: 12px;
+  color: #9ca3af;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  color: #1f2937;
+  background: transparent;
+  font-weight: 500;
+}
+
+.search-input::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.clear-search {
+  background: #f3f4f6;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  margin-left: 8px;
+}
+
+.clear-search:hover {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.search-results-info {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: #f0f9ff;
+  border-left: 4px solid #667eea;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1e40af;
+  font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  .search-input {
+    font-size: 16px;
+  }
+}
 
       /* Modal for mobile details */
       .detail-modal {
@@ -1519,6 +1614,20 @@ tbody tr.clickable:active {
 </div>
 
       <div class="container">
+        <!-- Search Bar -->
+        <div class="search-container">
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input 
+              type="text" 
+              id="searchInput" 
+              class="search-input" 
+              placeholder="Buscar por nombre, apellido, ciudad, cédula..."
+              oninput="performSearch()"
+            />
+            <button class="clear-search" id="clearSearchBtn" onclick="clearSearch()" style="display: none;">✕</button>
+          </div>
+        </div>
         <div class="stats-grid">
           <div class="stat-card total total-card">
             <h3>Total Registros</h3>
@@ -2068,23 +2177,7 @@ window.closeConfirmModal = function() {
 };
 
       window.applyFilters = function () {
-  const cabanaFilter = document.getElementById("cabanaFilter").value;
-  const fechaDesde = document.getElementById("fechaDesde").value;
-  const fechaHasta = document.getElementById("fechaHasta").value;
-
-  let filtered = currentView === 'active' ? allRegistrations : allArchived;
-
-  if (cabanaFilter) {
-    filtered = filtered.filter((r) => r.cabana === cabanaFilter);
-  }
-
-  if (fechaDesde && fechaHasta) {
-    filtered = filtered.filter((r) => {
-      return r.fechaEntrada >= fechaDesde && r.fechaEntrada <= fechaHasta;
-    });
-  }
-
-  displayData(filtered);
+  applyFiltersAndSearch();
 };
 
       window.clearFilters = function () {
@@ -2096,6 +2189,10 @@ window.closeConfirmModal = function() {
   document
     .querySelectorAll(".preset-btn")
     .forEach((btn) => btn.classList.remove("active"));
+  
+  // Also clear search
+  clearSearch();
+  
   displayData(currentView === 'active' ? allRegistrations : allArchived);
 };
 
@@ -2252,6 +2349,112 @@ window.closeConfirmModal = function() {
         modal.classList.add("show");
         document.body.style.overflow = "hidden";
       };
+
+      // Search functionality
+let searchTerm = '';
+
+window.performSearch = function() {
+  const input = document.getElementById('searchInput');
+  const clearBtn = document.getElementById('clearSearchBtn');
+  searchTerm = input.value.toLowerCase().trim();
+  
+  // Show/hide clear button
+  if (searchTerm) {
+    clearBtn.style.display = 'flex';
+  } else {
+    clearBtn.style.display = 'none';
+  }
+  
+  applyFiltersAndSearch();
+};
+
+window.clearSearch = function() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('clearSearchBtn').style.display = 'none';
+  searchTerm = '';
+  applyFiltersAndSearch();
+};
+
+window.applyFiltersAndSearch = function() {
+  const cabanaFilter = document.getElementById("cabanaFilter").value;
+  const fechaDesde = document.getElementById("fechaDesde").value;
+  const fechaHasta = document.getElementById("fechaHasta").value;
+
+  let filtered = currentView === 'active' ? allRegistrations : allArchived;
+
+  // Apply cabin filter
+  if (cabanaFilter) {
+    filtered = filtered.filter((r) => r.cabana === cabanaFilter);
+  }
+
+  // Apply date filter
+  if (fechaDesde && fechaHasta) {
+    filtered = filtered.filter((r) => {
+      return r.fechaEntrada >= fechaDesde && r.fechaEntrada <= fechaHasta;
+    });
+  }
+
+  // Apply search filter
+  if (searchTerm) {
+    filtered = filtered.filter((r) => {
+      // Search in multiple fields
+      const nombre = (r.nombre || '').toLowerCase();
+      const apellido = (r.apellido || '').toLowerCase();
+      const ciudad = (r.ciudad || '').toLowerCase();
+      const numeroId = (r.numeroId || '').toLowerCase();
+      const tipoId = (r.tipoId || '').toLowerCase();
+      const celular = (r.celular || '').toLowerCase();
+      
+      // Also search in companions
+      let companionMatch = false;
+      for (let i = 0; i <= 5; i++) {
+        const compNombre = (r[`acomp${i}Nombre`] || '').toLowerCase();
+        const compApellido = (r[`acomp${i}Apellido`] || '').toLowerCase();
+        const compNumId = (r[`acomp${i}NumId`] || '').toLowerCase();
+        
+        if (compNombre.includes(searchTerm) || 
+            compApellido.includes(searchTerm) || 
+            compNumId.includes(searchTerm)) {
+          companionMatch = true;
+          break;
+        }
+      }
+      
+      return nombre.includes(searchTerm) || 
+             apellido.includes(searchTerm) || 
+             ciudad.includes(searchTerm) || 
+             numeroId.includes(searchTerm) || 
+             tipoId.includes(searchTerm) ||
+             celular.includes(searchTerm) ||
+             companionMatch;
+    });
+  }
+
+  displayData(filtered);
+  
+  // Show search results info
+  showSearchResults(filtered.length);
+};
+
+function showSearchResults(count) {
+  const container = document.querySelector('.search-container');
+  let resultsInfo = document.getElementById('searchResultsInfo');
+  
+  if (searchTerm) {
+    if (!resultsInfo) {
+      resultsInfo = document.createElement('div');
+      resultsInfo.id = 'searchResultsInfo';
+      resultsInfo.className = 'search-results-info';
+      container.appendChild(resultsInfo);
+    }
+    resultsInfo.textContent = `🔍 ${count} resultado${count !== 1 ? 's' : ''} encontrado${count !== 1 ? 's' : ''} para "${document.getElementById('searchInput').value}"`;
+    resultsInfo.style.display = 'block';
+  } else {
+    if (resultsInfo) {
+      resultsInfo.style.display = 'none';
+    }
+  }
+}
 
       window.closeDetailModal = function () {
         const modal = document.getElementById("detailModal");
