@@ -1621,17 +1621,14 @@ tbody tr.clickable:active {
         signOut,
       } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
       import {
-  getFirestore,
-  collection,
-  query,
-  orderBy,
-  getDocs,
-  deleteDoc,
-  doc,
-  addDoc,
-  serverTimestamp,
-  where,
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        getFirestore,
+        collection,
+        query,
+        orderBy,
+        getDocs,
+        deleteDoc,
+        doc,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyACEyCsx-4lhITc8s06QyZPQiS9t3f7I18",
@@ -1898,24 +1895,6 @@ window.deleteDoc = deleteDoc;
     document.body.style.overflow = "";
     
     try {
-      // Find the registration data
-      const registration = allRegistrations.find(r => r.id === registrationId);
-      
-      if (registration) {
-        // Create archive record with deletion metadata
-        const archiveData = {
-          ...registration,
-          archivedAt: serverTimestamp(),
-          archivedBy: auth.currentUser.email,
-          reason: 'manual_deletion',
-          originalId: registrationId
-        };
-        
-        // Add to archive collection
-        await addDoc(collection(db, "archived_registrations"), archiveData);
-      }
-      
-      // Delete from active registrations
       await deleteDoc(doc(db, "registrations", registrationId));
       
       allRegistrations = allRegistrations.filter(r => r.id !== registrationId);
@@ -1928,177 +1907,11 @@ window.deleteDoc = deleteDoc;
         detailModal.classList.remove("show");
         document.body.style.overflow = "";
       }
-      
-      // Show success message
-      alert("✅ Registro archivado correctamente");
-      
     } catch (error) {
       console.error("Error:", error);
       alert("Error al eliminar el registro.");
     }
   };
-};
-
-window.checkGuestHistory = async function(numeroId, nombre, apellido) {
-  try {
-    // Show loading
-    const loadingHTML = `
-      <div class="modal-overlay" id="historyModal" style="display: flex;">
-        <div class="detail-content" style="max-width: 600px;">
-          <div class="detail-header">
-            <h3>🔍 Buscando Historial...</h3>
-            <button class="close-modal" onclick="closeHistoryModal()">✕</button>
-          </div>
-          <div class="detail-body" style="text-align: center; padding: 40px;">
-            <div style="font-size: 48px; margin-bottom: 20px;">⏳</div>
-            <p>Revisando registros...</p>
-          </div>
-        </div>
-      </div>
-    `;
-    document.body.insertAdjacentHTML("beforeend", loadingHTML);
-    
-    // Search in active registrations
-    const activeQuery = query(
-      collection(db, "registrations"),
-      where("numeroId", "==", numeroId)
-    );
-    const activeSnapshot = await getDocs(activeQuery);
-    
-    // Search in archived registrations
-    const archivedQuery = query(
-      collection(db, "archived_registrations"),
-      where("numeroId", "==", numeroId)
-    );
-    const archivedSnapshot = await getDocs(archivedQuery);
-    
-    const activeVisits = [];
-    const archivedVisits = [];
-    
-    activeSnapshot.forEach(doc => {
-      activeVisits.push({ id: doc.id, ...doc.data() });
-    });
-    
-    archivedSnapshot.forEach(doc => {
-      archivedVisits.push({ id: doc.id, ...doc.data() });
-    });
-    
-    const totalVisits = activeVisits.length + archivedVisits.length;
-    
-    // Format dates
-    const formatDate = (timestamp) => {
-      if (!timestamp) return "N/A";
-      const date = new Date(timestamp.seconds * 1000);
-      return date.toLocaleDateString('es-CO');
-    };
-    
-    // Build history HTML
-    let historyHTML = `
-      <div class="modal-overlay" id="historyModal" style="display: flex;">
-        <div class="detail-content" style="max-width: 700px; max-height: 90vh; overflow-y: auto;">
-          <div class="detail-header">
-            <h3>📊 Historial de Visitas</h3>
-            <button class="close-modal" onclick="closeHistoryModal()">✕</button>
-          </div>
-          <div class="detail-body">
-            <div style="text-align: center; margin-bottom: 24px; padding: 20px; background: linear-gradient(135deg, #ebf8ff 0%, #e6fffa 100%); border-radius: 12px;">
-              <h2 style="font-size: 24px; color: #2d3748; margin-bottom: 8px;">${nombre} ${apellido}</h2>
-              <p style="color: #4a5568; font-size: 14px; margin-bottom: 12px;">ID: ${numeroId}</p>
-              <div style="font-size: 48px; font-weight: 700; color: #667eea; margin-bottom: 8px;">${totalVisits}</div>
-              <div style="font-size: 16px; color: #4a5568; font-weight: 600;">
-                ${totalVisits === 1 ? 'Visita Registrada' : 'Visitas Registradas'}
-              </div>
-            </div>
-    `;
-    
-    if (totalVisits === 0) {
-      historyHTML += `
-        <div style="text-align: center; padding: 40px; color: #718096;">
-          <div style="font-size: 48px; margin-bottom: 16px;">🔍</div>
-          <p style="font-size: 16px;">No se encontraron visitas previas para este huésped.</p>
-        </div>
-      `;
-    } else {
-      // Active visits
-      if (activeVisits.length > 0) {
-        historyHTML += `
-          <div style="margin-bottom: 24px;">
-            <h4 style="font-size: 16px; color: #48bb78; margin-bottom: 12px; font-weight: 700;">
-              ✅ Registros Activos (${activeVisits.length})
-            </h4>
-        `;
-        
-        activeVisits.forEach(visit => {
-          historyHTML += `
-            <div style="background: #f0fff4; border-left: 4px solid #48bb78; padding: 16px; margin-bottom: 12px; border-radius: 8px;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                <strong style="color: #2d3748;">${visit.cabana}</strong>
-                <span style="color: #48bb78; font-weight: 600;">${formatDate(visit.timestamp)}</span>
-              </div>
-              <div style="font-size: 14px; color: #4a5568;">
-                <div>📅 Entrada: ${visit.fechaEntrada} - Salida: ${visit.fechaSalida}</div>
-                <div>👥 Huéspedes: ${(visit.totalHuespedes || 0) + 1}</div>
-              </div>
-            </div>
-          `;
-        });
-        
-        historyHTML += `</div>`;
-      }
-      
-      // Archived visits
-      if (archivedVisits.length > 0) {
-        historyHTML += `
-          <div>
-            <h4 style="font-size: 16px; color: #718096; margin-bottom: 12px; font-weight: 700;">
-              📦 Registros Archivados (${archivedVisits.length})
-            </h4>
-        `;
-        
-        archivedVisits.forEach(visit => {
-          historyHTML += `
-            <div style="background: #f7fafc; border-left: 4px solid #cbd5e0; padding: 16px; margin-bottom: 12px; border-radius: 8px;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                <strong style="color: #2d3748;">${visit.cabana}</strong>
-                <span style="color: #718096; font-weight: 600;">${formatDate(visit.timestamp)}</span>
-              </div>
-              <div style="font-size: 14px; color: #4a5568;">
-                <div>📅 Entrada: ${visit.fechaEntrada} - Salida: ${visit.fechaSalida}</div>
-                <div>👥 Huéspedes: ${(visit.totalHuespedes || 0) + 1}</div>
-                ${visit.archivedAt ? `<div style="color: #9ca3af; margin-top: 4px;">🗄️ Archivado: ${formatDate(visit.archivedAt)}</div>` : ''}
-              </div>
-            </div>
-          `;
-        });
-        
-        historyHTML += `</div>`;
-      }
-    }
-    
-    historyHTML += `
-          </div>
-        </div>
-      </div>
-    `;
-    
-    // Remove loading and show results
-    document.getElementById("historyModal").remove();
-    document.body.insertAdjacentHTML("beforeend", historyHTML);
-    
-  } catch (error) {
-    console.error("Error fetching history:", error);
-    const modal = document.getElementById("historyModal");
-    if (modal) modal.remove();
-    alert("Error al buscar el historial del huésped.");
-  }
-};
-
-window.closeHistoryModal = function() {
-  const modal = document.getElementById("historyModal");
-  if (modal) {
-    modal.remove();
-  }
-  document.body.style.overflow = "";
 };
 
 window.closeConfirmModal = function() {
@@ -2149,68 +1962,107 @@ window.closeConfirmModal = function() {
       }
 
       window.showDetailModal = function (reg) {
-  const isMobile = window.innerWidth < 768;
-  if (!isMobile) return;
+        const isMobile = window.innerWidth < 768;
+        if (!isMobile) return;
 
-  const modal = document.getElementById("detailModal");
-  const detailBody = document.getElementById("detailBody");
-  const timestamp = reg.timestamp
-    ? new Date(reg.timestamp.seconds * 1000)
-    : new Date();
-  const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
+        const modal = document.getElementById("detailModal");
+        const detailBody = document.getElementById("detailBody");
+        const timestamp = reg.timestamp
+          ? new Date(reg.timestamp.seconds * 1000)
+          : new Date();
+        const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
 
-  const formatDateTime = (date) => {
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    return `${day}.${month}.${year} ${hours}:${minutes}`;
-  };
+        // Format: 25.01.2026 13:14
+        const formatDateTime = (date) => {
+          const day = String(date.getDate()).padStart(2, "0");
+          const month = String(date.getMonth() + 1).padStart(2, "0");
+          const year = date.getFullYear();
+          const hours = String(date.getHours()).padStart(2, "0");
+          const minutes = String(date.getMinutes()).padStart(2, "0");
+          return `${day}.${month}.${year} ${hours}:${minutes}`;
+        };
 
-  const formatDate = (dateStr) => {
-    if (!dateStr) return "N/A";
-    const [year, month, day] = dateStr.split("-");
-    return `${day}.${month}.${year}`;
-  };
+        // Format date for stay
+        const formatDate = (dateStr) => {
+          if (!dateStr) return "N/A";
+          const [year, month, day] = dateStr.split("-");
+          return `${day}.${month}.${year}`;
+        };
 
-  const hasCompanionData = (num) => {
-    return (
-      reg[`acomp${num}Nombre`] ||
-      reg[`acomp${num}Apellido`] ||
-      reg[`acomp${num}TipoId`] ||
-      reg[`acomp${num}NumId`]
-    );
-  };
+        // Function to check if companion has data
+        const hasCompanionData = (num) => {
+          return (
+            reg[`acomp${num}Nombre`] ||
+            reg[`acomp${num}Apellido`] ||
+            reg[`acomp${num}TipoId`] ||
+            reg[`acomp${num}NumId`]
+          );
+        };
 
-  let companionsHTML = "";
-  for (let i = 0; i <= 2; i++) {
-    if (hasCompanionData(i)) {
-      companionsHTML += `
-    <div class="companion-item">
-      <div class="companion-number">👤 Acompañante ${i + 1}</div>
-      <div class="companion-info">
-        <div class="info-name">${reg[`acomp${i}Nombre`] || ""} ${reg[`acomp${i}Apellido`] || ""}</div>
-        <div class="info-line">🆔 ${formatIdType(reg[`acomp${i}TipoId`])} - ${reg[`acomp${i}NumId`] || "N/A"}</div>
-      </div>
-    </div>
-  `;
-    }
-  }
+        // Build companions section with same style as principal guest
+        let companionsHTML = "";
+        for (let i = 0; i <= 2; i++) {
+          if (hasCompanionData(i)) {
+            companionsHTML += `
+        <div class="companion-item">
+          <div class="companion-number">👤 Acompañante ${i + 1}</div>
+          <div class="companion-info">
+            <div class="info-name">${reg[`acomp${i}Nombre`] || ""} ${reg[`acomp${i}Apellido`] || ""}</div>
+            <div class="info-line">🆔 ${formatIdType(reg[`acomp${i}TipoId`])} - ${reg[`acomp${i}NumId`] || "N/A"}</div>
+          </div>
+        </div>
+      `;
+          }
+        }
 
-  detailBody.innerHTML = `
+        detailBody.innerHTML = `
     <div class="detail-body">
+      <!-- Registration Info Card -->
       <div class="info-card">
         <div class="info-card-header">
           <span class="info-icon">📅</span>
-          <span class="info-title">Registro</span>
+          <span class="info-title">Información de Registro</span>
         </div>
-        <div class="info-card-content compact">
-          <div class="info-line">📅 ${formatDateTime(timestamp)}</div>
-          <div class="info-line">🏡 <span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></div>
+        <div class="info-card-content">
+          <div class="info-line">
+            <span class="info-label">Fecha:</span>
+            <span class="info-value">${formatDateTime(timestamp)}</span>
+          </div>
+          <div class="info-line">
+            <span class="info-label">Cabaña:</span>
+            <span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span>
+          </div>
         </div>
       </div>
 
+      <!-- Stay Info Card -->
+      <div class="info-card">
+        <div class="info-card-header">
+          <span class="info-icon">🏖️</span>
+          <span class="info-title">Estadía</span>
+        </div>
+        <div class="info-card-content compact">
+          <div class="stay-row">
+            <div class="stay-item">
+              <div class="stay-label">Entrada</div>
+              <div class="stay-value">${formatDate(reg.fechaEntrada)}</div>
+              <div class="stay-time">${reg.horaEntrada || "-"}</div>
+            </div>
+            <div class="stay-divider">→</div>
+            <div class="stay-item">
+              <div class="stay-label">Salida</div>
+              <div class="stay-value">${formatDate(reg.fechaSalida)}</div>
+              <div class="stay-time">${reg.horaSalida || "-"}</div>
+            </div>
+          </div>
+          <div class="guest-count">
+  <span class="guest-icon">👥</span>
+  <span class="guest-text">${(reg.totalHuespedes || 0) + 1} ${(reg.totalHuespedes || 0) + 1 === 1 ? "persona" : "personas"}</span>
+</div>
+        </div>
+      </div>
+
+      <!-- Principal Guest Card -->
       <div class="info-card">
         <div class="info-card-header">
           <span class="info-icon">👤</span>
@@ -2218,76 +2070,40 @@ window.closeConfirmModal = function() {
         </div>
         <div class="info-card-content">
           <div class="guest-name">${reg.nombre} ${reg.apellido}</div>
-          <div class="info-line">🆔 ${formatIdType(reg.tipoId)} - ${reg.numeroId}</div>
-          <div class="info-line">📱 <a href="tel:${reg.celular}" class="contact-link">${reg.celular}</a></div>
-          <div class="info-line">🏙️ ${reg.ciudad}</div>
+          <div class="info-line">📱 <a href="tel:${reg.celular}" class="contact-link">${reg.celular || "N/A"}</a></div>
+          <div class="info-line">🆔 ${formatIdType(reg.tipoId)} - ${reg.numeroId || "N/A"}</div>
+          <div class="info-line">📍 ${reg.ciudad || "N/A"}</div>
         </div>
       </div>
 
-      <div class="info-card">
-        <div class="info-card-header">
-          <span class="info-icon">📆</span>
-          <span class="info-title">Estadía</span>
-        </div>
-        <div class="info-card-content">
-          <div class="stay-row">
-            <div class="stay-item">
-              <div class="stay-label">Entrada</div>
-              <div class="stay-value">${formatDate(reg.fechaEntrada)}</div>
-              <div class="stay-time">${reg.horaEntrada || '—'}</div>
-            </div>
-            <div class="stay-divider">→</div>
-            <div class="stay-item">
-              <div class="stay-label">Salida</div>
-              <div class="stay-value">${formatDate(reg.fechaSalida)}</div>
-              <div class="stay-time">${reg.horaSalida || '—'}</div>
-            </div>
+      <!-- Companions Card -->
+      ${
+        companionsHTML
+          ? `
+        <div class="info-card">
+          <div class="info-card-header">
+            <span class="info-icon">👥</span>
+            <span class="info-title">Acompañantes</span>
           </div>
-          <div class="guest-count">
-            <span class="guest-icon">👥</span>
-            <span class="guest-text">${(reg.totalHuespedes || 0) + 1} Huéspedes</span>
+          <div class="info-card-content">
+            ${companionsHTML}
           </div>
         </div>
-      </div>
-
-      ${companionsHTML ? `
-      <div class="info-card">
-        <div class="info-card-header">
-          <span class="info-icon">👥</span>
-          <span class="info-title">Acompañantes</span>
-        </div>
-        <div class="info-card-content">
-          ${companionsHTML}
-        </div>
-      </div>
-      ` : ''}
-
-      ${reg.comentario ? `
-      <div class="info-card">
-        <div class="info-card-header">
-          <span class="info-icon">💬</span>
-          <span class="info-title">Comentario</span>
-        </div>
-        <div class="info-card-content">
-          <p style="color: #4a5568; line-height: 1.6;">${reg.comentario}</p>
-        </div>
-      </div>
-      ` : ''}
+      `
+          : ""
+      }
     </div>
-
+    
     <div class="detail-actions">
-      <button class="history-btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 14px 24px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 15px; transition: all 0.3s; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); margin-bottom: 12px;" onclick="event.stopPropagation(); checkGuestHistory('${reg.numeroId}', '${reg.nombre}', '${reg.apellido}')">
-        📊 Ver Historial de Visitas
-      </button>
       <button class="delete-btn" onclick="event.stopPropagation(); deleteRegistration('${reg.id}', event)">
-        🗑️ Eliminar Registro
-      </button>
+  🗑️ Eliminar Registro
+</button>
     </div>
   `;
 
-  modal.classList.add("show");
-  document.body.style.overflow = "hidden";
-};
+        modal.classList.add("show");
+        document.body.style.overflow = "hidden";
+      };
 
       window.closeDetailModal = function () {
         const modal = document.getElementById("detailModal");
