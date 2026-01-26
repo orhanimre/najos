@@ -2673,7 +2673,7 @@ function showSearchResults(count) {
       reg.celular || "",
       formatID(reg.tipoId, reg.numeroId),
       reg.ciudad || "",
-      reg.totalHuespedes || "",
+      (reg.totalHuespedes || 0) + 1,
       formatDateTime(reg.fechaEntrada, reg.horaEntrada),
       formatDateTime(reg.fechaSalida, reg.horaSalida),
       getFullName(reg.acomp0Nombre, reg.acomp0Apellido),
