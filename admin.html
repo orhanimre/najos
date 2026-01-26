@@ -405,15 +405,15 @@
       }
 
       .custom-dates {
-        display: none;
-        grid-template-columns: 1fr;
-        gap: 12px;
-        margin-top: 12px;
-      }
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
 
-      .custom-dates.show {
-        display: grid;
-      }
+.custom-dates.show {
+  display: grid;
+}
 
       .date-input-group {
         display: flex;
@@ -1208,10 +1208,6 @@
           gap: 12px;
         }
 
-        .custom-dates.show {
-          grid-template-columns: 1fr 1fr;
-        }
-
         .export-btn {
           width: auto;
           margin-left: auto;
@@ -1614,20 +1610,7 @@ tbody tr.clickable:active {
 </div>
 
       <div class="container">
-        <!-- Search Bar -->
-        <div class="search-container">
-          <div class="search-box">
-            <span class="search-icon">🔍</span>
-            <input 
-              type="text" 
-              id="searchInput" 
-              class="search-input" 
-              placeholder="Buscar por nombre, apellido, ciudad, cédula..."
-              oninput="performSearch()"
-            />
-            <button class="clear-search" id="clearSearchBtn" onclick="clearSearch()" style="display: none;">✕</button>
-          </div>
-        </div>
+        
         <div class="stats-grid">
           <div class="stat-card total total-card">
             <h3>Total Registros</h3>
@@ -1695,6 +1678,22 @@ tbody tr.clickable:active {
               <button class="btn-secondary" onclick="clearFilters()">
                 Limpiar
               </button>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+              <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input 
+                  type="text" 
+                  id="searchInput" 
+                  class="search-input" 
+                  placeholder="Buscar por nombre, apellido, ciudad, cédula..."
+                  oninput="performSearch()"
+                />
+                <button class="clear-search" id="clearSearchBtn" onclick="clearSearch()" style="display: none;">✕</button>
+              </div>
+              <div id="searchResultsInfo" class="search-results-info" style="display: none;"></div>
             </div>
           </div>
         </div>
@@ -2190,7 +2189,6 @@ window.closeConfirmModal = function() {
     .querySelectorAll(".preset-btn")
     .forEach((btn) => btn.classList.remove("active"));
   
-  // Also clear search
   clearSearch();
   
   displayData(currentView === 'active' ? allRegistrations : allArchived);
