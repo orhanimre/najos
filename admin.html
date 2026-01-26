@@ -1759,17 +1759,23 @@ tbody tr.clickable:active {
       allRegistrations.push({ id: doc.id, ...doc.data() });
     });
 
-    // Load archived registrations
-    const archiveQ = query(
-      collection(db, "archived_registrations"),
-      orderBy("archivedAt", "desc"),
-    );
-    const archiveSnapshot = await getDocs(archiveQ);
-
+    // Load archived registrations (with error handling)
     allArchived = [];
-    archiveSnapshot.forEach((doc) => {
-      allArchived.push({ id: doc.id, ...doc.data() });
-    });
+    try {
+      const archiveQ = query(
+        collection(db, "archived_registrations"),
+        orderBy("archivedAt", "desc"),
+      );
+      const archiveSnapshot = await getDocs(archiveQ);
+
+      archiveSnapshot.forEach((doc) => {
+        allArchived.push({ id: doc.id, ...doc.data() });
+      });
+    } catch (archiveError) {
+      // Archive collection doesn't exist yet - this is fine
+      console.log("No archived data yet:", archiveError.message);
+      allArchived = [];
+    }
 
     updateStats();
     displayData(currentView === 'active' ? allRegistrations : allArchived);
