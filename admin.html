@@ -573,17 +573,26 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 10px;
+  padding: 12px;
+  border-radius: 12px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 20px;
   transition: all 0.3s;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .calendar-nav button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.calendar-nav button:active {
+  transform: scale(0.95);
 }
 
 .calendar-nav h4 {
@@ -676,8 +685,21 @@
   transition: opacity 0.3s;
 }
 
-.calendar-day.reserved:hover .reservation-popup {
+/* Desktop hover */
+@media (min-width: 769px) {
+  .calendar-day.reserved:hover .reservation-popup {
+    opacity: 1;
+  }
+}
+
+/* Mobile tap/active */
+.calendar-day.reserved.show-popup .reservation-popup {
   opacity: 1;
+}
+
+/* Mobile indicator */
+.calendar-day.reserved {
+  cursor: pointer;
 }
 
 .reservation-popup::after {
@@ -2139,10 +2161,10 @@ tbody tr.clickable:active {
     </div>
     <div class="calendar-body">
       <div class="calendar-nav">
-        <button onclick="changeMonth(-1)">‹ Anterior</button>
-        <h4 id="currentMonthYear"></h4>
-        <button onclick="changeMonth(1)">Siguiente ›</button>
-      </div>
+  <button onclick="changeMonth(-1)" aria-label="Mes anterior">←</button>
+  <h4 id="currentMonthYear"></h4>
+  <button onclick="changeMonth(1)" aria-label="Mes siguiente">→</button>
+</div>
       <div class="calendar-grid" id="calendarGrid"></div>
     </div>
   </div>
@@ -3067,16 +3089,27 @@ function renderCalendar() {
     });
     
     if (reservation) {
-      day.classList.add('reserved');
-      const guestName = `${reservation.nombre} ${reservation.apellido}`;
-      day.innerHTML = `
-        <span class="calendar-day-number">${i}</span>
-        <span class="calendar-day-indicator">🏠</span>
-        <div class="reservation-popup">${guestName}</div>
-      `;
-    } else {
-      day.innerHTML = `<span class="calendar-day-number">${i}</span>`;
-    }
+  day.classList.add('reserved');
+  const guestName = `${reservation.nombre} ${reservation.apellido}`;
+  day.innerHTML = `
+    <span class="calendar-day-number">${i}</span>
+    <span class="calendar-day-indicator">🏠</span>
+    <div class="reservation-popup">${guestName}</div>
+  `;
+  
+  // Add click handler for mobile to show guest name
+  day.addEventListener('click', function(e) {
+    e.stopPropagation();
+    // Remove show-popup from all other days
+    document.querySelectorAll('.calendar-day.show-popup').forEach(d => {
+      if (d !== this) d.classList.remove('show-popup');
+    });
+    // Toggle show-popup on this day
+    this.classList.toggle('show-popup');
+  });
+} else {
+  day.innerHTML = `<span class="calendar-day-number">${i}</span>`;
+}
     
     // Mark today
     if (today.getDate() === i && 
@@ -3098,6 +3131,15 @@ function renderCalendar() {
     grid.appendChild(day);
   }
 }
+
+// Close popup when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.calendar-day.reserved')) {
+    document.querySelectorAll('.calendar-day.show-popup').forEach(d => {
+      d.classList.remove('show-popup');
+    });
+  }
+});
 
 // Close calendar modal when clicking outside
 document.addEventListener('click', function(e) {
