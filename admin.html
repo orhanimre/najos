@@ -156,6 +156,41 @@
         color: #667eea;
       }
 
+      /* Navigation Tabs */
+.nav-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.nav-tab {
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-tab:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.nav-tab.active {
+  background: white;
+  color: #667eea;
+  border-color: white;
+}
+
       /* Container */
       .container {
         max-width: 1400px;
@@ -1443,21 +1478,31 @@ tbody tr.clickable:active {
     <!-- Dashboard Screen -->
     <div id="dashboardScreen">
       <div class="header">
-        <div class="header-content">
-          <div class="header-top">
-            <div class="header-top-row">
-              <div class="user-info">
-                <span class="user-email" id="userEmail"></span>
-                <button id="logoutBtn" class="logout-btn">Cerrar Sesión</button>
-              </div>
-            </div>
-            <div class="header-left">
-              <h1>📊 Panel de Administración</h1>
-              <p>Cabañas MariaMar - Registros de Huéspedes</p>
-            </div>
-          </div>
+  <div class="header-content">
+    <div class="header-top">
+      <div class="header-top-row">
+        <div class="user-info">
+          <span class="user-email" id="userEmail"></span>
+          <button id="logoutBtn" class="logout-btn">Cerrar Sesión</button>
         </div>
       </div>
+      <div class="header-left">
+        <h1>📊 Panel de Administración</h1>
+        <p>Cabañas MariaMar - Registros de Huéspedes</p>
+      </div>
+      <!-- 👇 ADD THESE NAVIGATION TABS HERE 👇 -->
+      <div class="nav-tabs">
+        <button class="nav-tab active" onclick="switchView('active')">
+          📋 Registros Activos
+        </button>
+        <button class="nav-tab" onclick="switchView('archive')">
+          📦 Archivo
+        </button>
+      </div>
+      <!-- 👆 NEW NAVIGATION TABS END HERE 👆 -->
+    </div>
+  </div>
+</div>
 
       <div class="container">
         <div class="stats-grid">
@@ -1621,14 +1666,16 @@ tbody tr.clickable:active {
         signOut,
       } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
       import {
-        getFirestore,
-        collection,
-        query,
-        orderBy,
-        getDocs,
-        deleteDoc,
-        doc,
-      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  getFirestore,
+  collection,
+  query,
+  orderBy,
+  getDocs,
+  deleteDoc,
+  doc,
+  setDoc,
+  serverTimestamp,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyACEyCsx-4lhITc8s06QyZPQiS9t3f7I18",
@@ -1646,11 +1693,13 @@ tbody tr.clickable:active {
       const provider = new GoogleAuthProvider();
 
       let allRegistrations = [];
+      let allArchived = [];
+      let currentView = 'active'; // 'active' or 'archive'
 
       // Make db, doc, and deleteDoc available globally for window functions
-window.db = db;
-window.doc = doc;
-window.deleteDoc = deleteDoc;
+      window.db = db;
+      window.doc = doc;
+      window.deleteDoc = deleteDoc;
 
       onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -1697,28 +1746,69 @@ window.deleteDoc = deleteDoc;
         });
 
       async function loadData() {
-        try {
-          const q = query(
-            collection(db, "registrations"),
-            orderBy("timestamp", "desc"),
-          );
-          const querySnapshot = await getDocs(q);
+  try {
+    // Load active registrations
+    const q = query(
+      collection(db, "registrations"),
+      orderBy("timestamp", "desc"),
+    );
+    const querySnapshot = await getDocs(q);
 
-          allRegistrations = [];
-          querySnapshot.forEach((doc) => {
-            allRegistrations.push({ id: doc.id, ...doc.data() });
-          });
+    allRegistrations = [];
+    querySnapshot.forEach((doc) => {
+      allRegistrations.push({ id: doc.id, ...doc.data() });
+    });
 
-          updateStats();
-          displayData(allRegistrations);
+    // Load archived registrations
+    const archiveQ = query(
+      collection(db, "archived_registrations"),
+      orderBy("archivedAt", "desc"),
+    );
+    const archiveSnapshot = await getDocs(archiveQ);
 
-          document.getElementById("loading").style.display = "none";
-        } catch (error) {
-          console.error("Error loading data:", error);
-          document.getElementById("loading").innerHTML =
-            "Error al cargar los datos";
-        }
-      }
+    allArchived = [];
+    archiveSnapshot.forEach((doc) => {
+      allArchived.push({ id: doc.id, ...doc.data() });
+    });
+
+    updateStats();
+    displayData(currentView === 'active' ? allRegistrations : allArchived);
+
+    document.getElementById("loading").style.display = "none";
+  } catch (error) {
+    console.error("Error loading data:", error);
+    document.getElementById("loading").innerHTML =
+      "Error al cargar los datos";
+  }
+}
+
+window.switchView = function(view) {
+  currentView = view;
+  
+  // Update tab active state
+  document.querySelectorAll('.nav-tab').forEach((tab, index) => {
+    if ((index === 0 && view === 'active') || (index === 1 && view === 'archive')) {
+      tab.classList.add('active');
+    } else {
+      tab.classList.remove('active');
+    }
+  });
+
+  // Clear filters
+  clearFilters();
+
+  // Update stats and display
+  updateStats();
+  displayData(currentView === 'active' ? allRegistrations : allArchived);
+
+  // Update export button text
+  const exportBtn = document.querySelector('.export-btn span:last-child');
+  if (exportBtn) {
+    exportBtn.textContent = currentView === 'active' 
+      ? 'Exportar a Excel' 
+      : 'Exportar Archivo a Excel';
+  }
+};
 
       function updateStats() {
         document.getElementById("totalRegistros").textContent =
@@ -1895,12 +1985,31 @@ window.deleteDoc = deleteDoc;
     document.body.style.overflow = "";
     
     try {
-      await deleteDoc(doc(db, "registrations", registrationId));
+      // Find the registration
+      const registration = allRegistrations.find(r => r.id === registrationId);
       
-      allRegistrations = allRegistrations.filter(r => r.id !== registrationId);
+      if (registration) {
+        // Add to archive with additional metadata
+        await setDoc(doc(db, "archived_registrations", registrationId), {
+          ...registration,
+          archivedAt: serverTimestamp(),
+          archivedBy: auth.currentUser?.email || 'unknown'
+        });
+        
+        // Delete from active registrations
+        await deleteDoc(doc(db, "registrations", registrationId));
+        
+        // Update local arrays
+        allRegistrations = allRegistrations.filter(r => r.id !== registrationId);
+        allArchived.unshift({
+          ...registration,
+          id: registrationId,
+          archivedAt: { seconds: Date.now() / 1000 }
+        });
+      }
       
       updateStats();
-      displayData(allRegistrations);
+      displayData(currentView === 'active' ? allRegistrations : allArchived);
       
       const detailModal = document.getElementById("detailModal");
       if (detailModal.classList.contains("show")) {
@@ -1909,7 +2018,7 @@ window.deleteDoc = deleteDoc;
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Error al eliminar el registro.");
+      alert("Error al archivar el registro.");
     }
   };
 };
@@ -1920,36 +2029,36 @@ window.closeConfirmModal = function() {
 };
 
       window.applyFilters = function () {
-        const cabanaFilter = document.getElementById("cabanaFilter").value;
-        const fechaDesde = document.getElementById("fechaDesde").value;
-        const fechaHasta = document.getElementById("fechaHasta").value;
+  const cabanaFilter = document.getElementById("cabanaFilter").value;
+  const fechaDesde = document.getElementById("fechaDesde").value;
+  const fechaHasta = document.getElementById("fechaHasta").value;
 
-        let filtered = allRegistrations;
+  let filtered = currentView === 'active' ? allRegistrations : allArchived;
 
-        if (cabanaFilter) {
-          filtered = filtered.filter((r) => r.cabana === cabanaFilter);
-        }
+  if (cabanaFilter) {
+    filtered = filtered.filter((r) => r.cabana === cabanaFilter);
+  }
 
-        if (fechaDesde && fechaHasta) {
-          filtered = filtered.filter((r) => {
-            return r.fechaEntrada >= fechaDesde && r.fechaEntrada <= fechaHasta;
-          });
-        }
+  if (fechaDesde && fechaHasta) {
+    filtered = filtered.filter((r) => {
+      return r.fechaEntrada >= fechaDesde && r.fechaEntrada <= fechaHasta;
+    });
+  }
 
-        displayData(filtered);
-      };
+  displayData(filtered);
+};
 
       window.clearFilters = function () {
-        document.getElementById("cabanaFilter").value = "";
-        document.getElementById("fechaDesde").value = "";
-        document.getElementById("fechaHasta").value = "";
-        document.getElementById("customDates").classList.remove("show");
-        document.getElementById("filterButtons").classList.remove("show");
-        document
-          .querySelectorAll(".preset-btn")
-          .forEach((btn) => btn.classList.remove("active"));
-        displayData(allRegistrations);
-      };
+  document.getElementById("cabanaFilter").value = "";
+  document.getElementById("fechaDesde").value = "";
+  document.getElementById("fechaHasta").value = "";
+  document.getElementById("customDates").classList.remove("show");
+  document.getElementById("filterButtons").classList.remove("show");
+  document
+    .querySelectorAll(".preset-btn")
+    .forEach((btn) => btn.classList.remove("active"));
+  displayData(currentView === 'active' ? allRegistrations : allArchived);
+};
 
       function formatIdType(idType) {
         const idTypes = {
@@ -2160,9 +2269,10 @@ window.closeConfirmModal = function() {
         ];
 
         const cabanaFilter = document.getElementById("cabanaFilter").value;
-        const dataToExport = cabanaFilter
-          ? allRegistrations.filter((r) => r.cabana === cabanaFilter)
-          : allRegistrations;
+        const sourceData = currentView === 'active' ? allRegistrations : allArchived;
+const dataToExport = cabanaFilter
+  ? sourceData.filter((r) => r.cabana === cabanaFilter)
+  : sourceData;
 
         // Format timestamp: 17.01.2026 17:06:18
         const formatTimestamp = (timestamp) => {
