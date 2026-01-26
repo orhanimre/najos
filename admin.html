@@ -731,6 +731,89 @@
   }
 }
 
+/* Random color generation for different guests */
+.calendar-day.reserved-1 {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-color: #f59e0b;
+}
+
+.calendar-day.reserved-2 {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  border-color: #3b82f6;
+}
+
+.calendar-day.reserved-3 {
+  background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+  border-color: #ec4899;
+}
+
+.calendar-day.reserved-4 {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  border-color: #10b981;
+}
+
+.calendar-day.reserved-5 {
+  background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+  border-color: #6366f1;
+}
+
+.calendar-day.reserved-6 {
+  background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+  border-color: #f97316;
+}
+
+.calendar-day.reserved-7 {
+  background: linear-gradient(135deg, #fae8ff 0%, #f5d0fe 100%);
+  border-color: #d946ef;
+}
+
+.calendar-day.reserved-8 {
+  background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
+  border-color: #14b8a6;
+}
+
+/* Reservation overlay bar */
+.reservation-overlay {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  transform: translateY(-50%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.reservation-overlay.start {
+  border-radius: 4px 0 0 4px;
+  left: 50%;
+}
+
+.reservation-overlay.end {
+  border-radius: 0 4px 4px 0;
+  right: 50%;
+}
+
+.reservation-overlay.single {
+  border-radius: 4px;
+  left: 10%;
+  right: 10%;
+}
+
+.reservation-overlay.middle {
+  border-radius: 0;
+}
+
+/* Overlay colors matching the reserved colors */
+.overlay-1 { background: #f59e0b; }
+.overlay-2 { background: #3b82f6; }
+.overlay-3 { background: #ec4899; }
+.overlay-4 { background: #10b981; }
+.overlay-5 { background: #6366f1; }
+.overlay-6 { background: #f97316; }
+.overlay-7 { background: #d946ef; }
+.overlay-8 { background: #14b8a6; }
+
       /* Filters */
 .filters {
   background: white;
@@ -3064,6 +3147,18 @@ function renderCalendar() {
   const reservations = currentView === 'active' ? allRegistrations : allArchived;
   const cabinReservations = reservations.filter(r => r.cabana === currentCalendarCabin);
   
+  // Create a map of guest IDs to color indices
+  const guestColorMap = new Map();
+  let colorIndex = 1;
+  
+  cabinReservations.forEach(reservation => {
+    const guestKey = `${reservation.nombre}-${reservation.apellido}-${reservation.fechaEntrada}`;
+    if (!guestColorMap.has(guestKey)) {
+      guestColorMap.set(guestKey, colorIndex);
+      colorIndex = (colorIndex % 8) + 1; // Cycle through 8 colors
+    }
+  });
+  
   // Add previous month's days
   for (let i = firstDay - 1; i >= 0; i--) {
     const day = document.createElement('div');
@@ -3079,37 +3174,61 @@ function renderCalendar() {
     day.className = 'calendar-day';
     
     const currentDate = new Date(year, month, i);
-    const dateStr = currentDate.toISOString().split('T')[0];
     
-    // Check if this date has a reservation
-    const reservation = cabinReservations.find(r => {
+    // Find all reservations for this date
+    const reservationsOnThisDay = cabinReservations.filter(r => {
       const entryDate = new Date(r.fechaEntrada);
       const exitDate = new Date(r.fechaSalida);
       return currentDate >= entryDate && currentDate <= exitDate;
     });
     
-    if (reservation) {
-  day.classList.add('reserved');
-  const guestName = `${reservation.nombre} ${reservation.apellido}`;
-  day.innerHTML = `
-    <span class="calendar-day-number">${i}</span>
-    <span class="calendar-day-indicator">🏠</span>
-    <div class="reservation-popup">${guestName}</div>
-  `;
-  
-  // Add click handler for mobile to show guest name
-  day.addEventListener('click', function(e) {
-    e.stopPropagation();
-    // Remove show-popup from all other days
-    document.querySelectorAll('.calendar-day.show-popup').forEach(d => {
-      if (d !== this) d.classList.remove('show-popup');
-    });
-    // Toggle show-popup on this day
-    this.classList.toggle('show-popup');
-  });
-} else {
-  day.innerHTML = `<span class="calendar-day-number">${i}</span>`;
-}
+    if (reservationsOnThisDay.length > 0) {
+      // Use the first reservation for this day
+      const reservation = reservationsOnThisDay[0];
+      const guestKey = `${reservation.nombre}-${reservation.apellido}-${reservation.fechaEntrada}`;
+      const colorIdx = guestColorMap.get(guestKey);
+      
+      day.classList.add('reserved');
+      day.classList.add(`reserved-${colorIdx}`);
+      
+      const guestName = `${reservation.nombre} ${reservation.apellido}`;
+      
+      // Determine overlay position
+      const entryDate = new Date(reservation.fechaEntrada);
+      const exitDate = new Date(reservation.fechaSalida);
+      const isStart = currentDate.getTime() === entryDate.getTime();
+      const isEnd = currentDate.getTime() === exitDate.getTime();
+      const isSingle = isStart && isEnd;
+      
+      let overlayClass = 'middle';
+      if (isSingle) {
+        overlayClass = 'single';
+      } else if (isStart) {
+        overlayClass = 'start';
+      } else if (isEnd) {
+        overlayClass = 'end';
+      }
+      
+      day.innerHTML = `
+        <span class="calendar-day-number">${i}</span>
+        <span class="calendar-day-indicator">🏠</span>
+        <div class="reservation-overlay ${overlayClass} overlay-${colorIdx}"></div>
+        <div class="reservation-popup">${guestName}<br><small>${reservation.fechaEntrada} - ${reservation.fechaSalida}</small></div>
+      `;
+      
+      // Add click handler for mobile to show guest name
+      day.addEventListener('click', function(e) {
+        e.stopPropagation();
+        // Remove show-popup from all other days
+        document.querySelectorAll('.calendar-day.show-popup').forEach(d => {
+          if (d !== this) d.classList.remove('show-popup');
+        });
+        // Toggle show-popup on this day
+        this.classList.toggle('show-popup');
+      });
+    } else {
+      day.innerHTML = `<span class="calendar-day-number">${i}</span>`;
+    }
     
     // Mark today
     if (today.getDate() === i && 
