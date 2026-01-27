@@ -619,6 +619,7 @@
 }
 
 .calendar-day {
+  position: relative;
   aspect-ratio: 1;
   display: flex;
   flex-direction: column;
@@ -628,25 +629,14 @@
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s;
-  position: relative;
   padding: 4px;
   background: white;
+  min-height: 60px;
 }
 
 .calendar-day.other-month {
   opacity: 0.3;
   pointer-events: none;
-}
-
-.calendar-day.reserved {
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border-color: #f59e0b;
-  font-weight: 700;
-}
-
-.calendar-day.reserved:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
 }
 
 .calendar-day.today {
@@ -659,11 +649,6 @@
   font-size: 14px;
   font-weight: 600;
   color: #1f2937;
-}
-
-.calendar-day-indicator {
-  font-size: 8px;
-  margin-top: 2px;
 }
 
 .reservation-popup {
@@ -714,11 +699,12 @@
 
 @media (max-width: 768px) {
   .calendar-grid {
-    gap: 4px;
+    gap: 2px;
   }
   
   .calendar-day {
     padding: 2px;
+    min-height: 50px;
   }
   
   .calendar-day-number {
@@ -727,103 +713,74 @@
   
   .calendar-day-header {
     font-size: 10px;
-    padding: 4px;
+    padding: 8px 2px;
   }
+
+  .reservation-bar {
+    height: 4px;
+  }
+
+  .reservation-bar:nth-child(2) { bottom: 30px; }
+  .reservation-bar:nth-child(3) { bottom: 24px; }
+  .reservation-bar:nth-child(4) { bottom: 18px; }
+  .reservation-bar:nth-child(5) { bottom: 12px; }
 }
 
-/* Random color generation for different guests */
-.calendar-day.reserved-1 {
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border-color: #f59e0b;
+/* ENHANCED: Colored horizontal bars for reservations */
+.calendar-day.reserved {
+  background: #fafafa;
 }
 
-.calendar-day.reserved-2 {
-  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-  border-color: #3b82f6;
-}
-
-.calendar-day.reserved-3 {
-  background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
-  border-color: #ec4899;
-}
-
-.calendar-day.reserved-4 {
-  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-  border-color: #10b981;
-}
-
-.calendar-day.reserved-5 {
-  background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
-  border-color: #6366f1;
-}
-
-.calendar-day.reserved-6 {
-  background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
-  border-color: #f97316;
-}
-
-.calendar-day.reserved-7 {
-  background: linear-gradient(135deg, #fae8ff 0%, #f5d0fe 100%);
-  border-color: #d946ef;
-}
-
-.calendar-day.reserved-8 {
-  background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
-  border-color: #14b8a6;
-}
-
-/* Reservation overlay - continuous bar across dates */
-.calendar-day.reserved::before {
-  content: '';
+.reservation-bar {
   position: absolute;
-  top: 4px;
   left: 0;
   right: 0;
   height: 6px;
-  z-index: 0;
-  pointer-events: none;
+  z-index: 1;
+  transition: all 0.2s;
 }
 
-.calendar-day.reserved.reservation-start::before {
+.reservation-bar.bar-start {
   border-radius: 6px 0 0 6px;
-  left: 8px;
+  left: 50%;
 }
 
-.calendar-day.reserved.reservation-end::before {
+.reservation-bar.bar-end {
   border-radius: 0 6px 6px 0;
-  right: 8px;
+  right: 50%;
 }
 
-.calendar-day.reserved.reservation-single::before {
-  border-radius: 6px;
-  left: 8px;
-  right: 8px;
-}
-
-.calendar-day.reserved.reservation-middle::before {
+.reservation-bar.bar-middle {
   border-radius: 0;
 }
 
-/* Day number should appear above the overlay */
+.reservation-bar.bar-single {
+  border-radius: 6px;
+  left: 20%;
+  right: 20%;
+}
+
+/* Multiple bar positioning */
+.reservation-bar:nth-child(2) { bottom: 36px; }
+.reservation-bar:nth-child(3) { bottom: 28px; }
+.reservation-bar:nth-child(4) { bottom: 20px; }
+.reservation-bar:nth-child(5) { bottom: 12px; }
+
+/* Reservation colors - vibrant like flight booking */
+.reservation-color-1 { background: #3b82f6; }
+.reservation-color-2 { background: #10b981; }
+.reservation-color-3 { background: #f59e0b; }
+.reservation-color-4 { background: #ec4899; }
+.reservation-color-5 { background: #8b5cf6; }
+.reservation-color-6 { background: #ef4444; }
+.reservation-color-7 { background: #14b8a6; }
+.reservation-color-8 { background: #f97316; }
+
+/* Keep day number above bars */
 .calendar-day-number {
   position: relative;
   z-index: 2;
 }
-
-.calendar-day-indicator {
-  position: relative;
-  z-index: 2;
-}
-
-/* Overlay colors using ::before pseudo-element */
-.calendar-day.reserved.reserved-1::before { background: #f59e0b; }
-.calendar-day.reserved.reserved-2::before { background: #3b82f6; }
-.calendar-day.reserved.reserved-3::before { background: #ec4899; }
-.calendar-day.reserved.reserved-4::before { background: #10b981; }
-.calendar-day.reserved.reserved-5::before { background: #6366f1; }
-.calendar-day.reserved.reserved-6::before { background: #f97316; }
-.calendar-day.reserved.reserved-7::before { background: #d946ef; }
-.calendar-day.reserved.reserved-8::before { background: #14b8a6; }
 
       /* Filters */
 .filters {
@@ -3132,7 +3089,6 @@ function renderCalendar() {
   const year = currentCalendarDate.getFullYear();
   const month = currentCalendarDate.getMonth();
   
-  // Update month/year display
   const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
                       'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   document.getElementById('currentMonthYear').textContent = `${monthNames[month]} ${year}`;
@@ -3140,7 +3096,6 @@ function renderCalendar() {
   const grid = document.getElementById('calendarGrid');
   grid.innerHTML = '';
   
-  // Add day headers
   const dayHeaders = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   dayHeaders.forEach(day => {
     const header = document.createElement('div');
@@ -3149,16 +3104,14 @@ function renderCalendar() {
     grid.appendChild(header);
   });
   
-  // Get first day of month and total days
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const daysInPrevMonth = new Date(year, month, 0).getDate();
   
-  // Get reservations for current cabin and view
   const reservations = currentView === 'active' ? allRegistrations : allArchived;
   const cabinReservations = reservations.filter(r => r.cabana === currentCalendarCabin);
   
-  // Create a map of guest IDs to color indices
+  // Create color map for each unique guest
   const guestColorMap = new Map();
   let colorIndex = 1;
   
@@ -3166,7 +3119,7 @@ function renderCalendar() {
     const guestKey = `${reservation.nombre}-${reservation.apellido}-${reservation.fechaEntrada}`;
     if (!guestColorMap.has(guestKey)) {
       guestColorMap.set(guestKey, colorIndex);
-      colorIndex = (colorIndex % 8) + 1; // Cycle through 8 colors
+      colorIndex = (colorIndex % 8) + 1;
     }
   });
   
@@ -3186,61 +3139,62 @@ function renderCalendar() {
     
     const currentDate = new Date(year, month, i);
     
-    // Find all reservations for this date
+    // Find ALL reservations for this date
     const reservationsOnThisDay = cabinReservations.filter(r => {
       const entryDate = new Date(r.fechaEntrada);
       const exitDate = new Date(r.fechaSalida);
       return currentDate >= entryDate && currentDate <= exitDate;
     });
     
+    // Build day content
+    let dayContent = `<span class="calendar-day-number">${i}</span>`;
+    
     if (reservationsOnThisDay.length > 0) {
-      // Use the first reservation for this day
-      const reservation = reservationsOnThisDay[0];
-      const guestKey = `${reservation.nombre}-${reservation.apellido}-${reservation.fechaEntrada}`;
-      const colorIdx = guestColorMap.get(guestKey);
-      
       day.classList.add('reserved');
-      day.classList.add(`reserved-${colorIdx}`);
       
-      const guestName = `${reservation.nombre} ${reservation.apellido}`;
+      // Add colored bars for EACH reservation
+      reservationsOnThisDay.forEach((reservation, index) => {
+        const guestKey = `${reservation.nombre}-${reservation.apellido}-${reservation.fechaEntrada}`;
+        const colorIdx = guestColorMap.get(guestKey);
+        const guestName = `${reservation.nombre} ${reservation.apellido}`;
+        
+        const entryDate = new Date(reservation.fechaEntrada);
+        const exitDate = new Date(reservation.fechaSalida);
+        const isStart = currentDate.getTime() === entryDate.getTime();
+        const isEnd = currentDate.getTime() === exitDate.getTime();
+        const isSingle = isStart && isEnd;
+
+        let barClass = 'bar-middle';
+        if (isSingle) {
+          barClass = 'bar-single';
+        } else if (isStart) {
+          barClass = 'bar-start';
+        } else if (isEnd) {
+          barClass = 'bar-end';
+        }
+
+        // Add horizontal colored bar
+        dayContent += `<div class="reservation-bar reservation-color-${colorIdx} ${barClass}"></div>`;
+      });
       
-      // Determine overlay position
-const entryDate = new Date(reservation.fechaEntrada);
-const exitDate = new Date(reservation.fechaSalida);
-const isStart = currentDate.getTime() === entryDate.getTime();
-const isEnd = currentDate.getTime() === exitDate.getTime();
-const isSingle = isStart && isEnd;
-
-let positionClass = 'reservation-middle';
-if (isSingle) {
-  positionClass = 'reservation-single';
-} else if (isStart) {
-  positionClass = 'reservation-start';
-} else if (isEnd) {
-  positionClass = 'reservation-end';
-}
-
-day.classList.add(positionClass);
-
-day.innerHTML = `
-  <span class="calendar-day-number">${i}</span>
-  <span class="calendar-day-indicator">🏠</span>
-  <div class="reservation-popup">${guestName}<br><small>${reservation.fechaEntrada} - ${reservation.fechaSalida}</small></div>
-`;
+      // Add popup with first guest's info
+      const firstReservation = reservationsOnThisDay[0];
+      const firstName = `${firstReservation.nombre} ${firstReservation.apellido}`;
+      const moreGuests = reservationsOnThisDay.length > 1 ? `<br><small>+${reservationsOnThisDay.length - 1} más</small>` : '';
       
-      // Add click handler for mobile to show guest name
+      dayContent += `<div class="reservation-popup">${firstName}<br><small>${firstReservation.fechaEntrada} - ${firstReservation.fechaSalida}</small>${moreGuests}</div>`;
+      
+      // Click handler for mobile
       day.addEventListener('click', function(e) {
         e.stopPropagation();
-        // Remove show-popup from all other days
         document.querySelectorAll('.calendar-day.show-popup').forEach(d => {
           if (d !== this) d.classList.remove('show-popup');
         });
-        // Toggle show-popup on this day
         this.classList.toggle('show-popup');
       });
-    } else {
-      day.innerHTML = `<span class="calendar-day-number">${i}</span>`;
     }
+    
+    day.innerHTML = dayContent;
     
     // Mark today
     if (today.getDate() === i && 
@@ -3252,9 +3206,9 @@ day.innerHTML = `
     grid.appendChild(day);
   }
   
-  // Add next month's days to complete grid
-  const totalCells = grid.children.length - 7; // Subtract headers
-  const remainingCells = 42 - totalCells; // 6 rows × 7 days = 42
+  // Add next month's days
+  const totalCells = grid.children.length - 7;
+  const remainingCells = 42 - totalCells;
   for (let i = 1; i <= remainingCells; i++) {
     const day = document.createElement('div');
     day.className = 'calendar-day other-month';
