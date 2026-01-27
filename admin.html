@@ -340,26 +340,33 @@
 
 .custom-dates {
   display: none;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
   margin-top: 16px;
   padding: 16px;
   background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
   border-radius: 16px;
   border: 2px solid #e2e8f0;
-  box-sizing: border-box;
 }
 
 .custom-dates.show {
-  display: grid;
+  display: block;
 }
 
 .date-input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-width: 0;
-  flex: 1;
+  margin-bottom: 12px;
+}
+
+.date-input-group:last-child {
+  margin-bottom: 0;
+}
+
+.date-input-group label {
+  font-size: 13px;
+  color: #667eea;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 8px;
 }
 
 input[type="date"] {
@@ -373,7 +380,6 @@ input[type="date"] {
   color: #1f2937;
   transition: all 0.3s;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  min-height: 44px;
   box-sizing: border-box;
 }
 
@@ -2629,7 +2635,11 @@ window.switchViewFromDropdown = function() {
   const today = new Date();
   let startDate, endDate;
 
-  // Clear any previous search
+  // STEP 1: Clear the date fields FIRST
+  document.getElementById("fechaDesde").value = "";
+  document.getElementById("fechaHasta").value = "";
+
+  // STEP 2: Clear any previous search
   searchTerm = '';
   document.getElementById('searchInput').value = '';
   document.getElementById('clearSearchBtn').style.display = 'none';
@@ -2638,9 +2648,11 @@ window.switchViewFromDropdown = function() {
     searchResultsInfo.style.display = 'none';
   }
 
-  // FIRST: Clear the date input fields BEFORE doing anything else
-  document.getElementById("fechaDesde").value = "";
-  document.getElementById("fechaHasta").value = "";
+  // STEP 3: Reset preset button styles and hide personalizado
+  document
+    .querySelectorAll(".preset-btn")
+    .forEach((btn) => btn.classList.remove("active"));
+  document.getElementById("customDates").classList.remove("show");
   
   // Reset preset button styles and hide personalizado
   document
