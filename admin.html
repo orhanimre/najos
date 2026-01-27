@@ -486,7 +486,7 @@
         transform: rotate(90deg);
       }
 
-      /* Calendar View Button */
+/* Calendar View Button */
 .calendar-view-btn {
   margin-top: 12px;
   padding: 10px 16px;
@@ -630,10 +630,10 @@
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s;
-  padding: 2px;
+  padding: 8px;
   background: white;
-  min-height: 45px;
-  max-height: 60px;
+  min-height: 50px;
+  max-height: 70px;
 }
 
 .calendar-day.other-month {
@@ -647,65 +647,84 @@
   font-weight: 700;
 }
 
-.calendar-day.reserved {
-  background: #fafafa;
-  cursor: pointer;
-}
-
 .calendar-day-number {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: #1f2937;
   position: relative;
   z-index: 2;
-  margin-bottom: 2px;
 }
 
-/* Reservation Bars */
-.reservation-bar {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 5px;
-  z-index: 1;
-  transition: all 0.2s;
+/* Reservation background colors - FULL CELL BACKGROUND */
+.calendar-day.reserved {
+  cursor: pointer;
+  color: white;
 }
 
-.reservation-bar.bar-start {
-  border-radius: 4px 0 0 4px;
-  left: 50%;
+.calendar-day.reserved .calendar-day-number {
+  color: white;
+  font-weight: 700;
 }
 
-.reservation-bar.bar-end {
-  border-radius: 0 4px 4px 0;
-  right: 50%;
-}
+/* Full color for START and END days */
+.calendar-day.reservation-start-1,
+.calendar-day.reservation-end-1 { background: #3b82f6; }
 
-.reservation-bar.bar-middle {
-  border-radius: 0;
-}
+.calendar-day.reservation-start-2,
+.calendar-day.reservation-end-2 { background: #10b981; }
 
-.reservation-bar.bar-single {
-  border-radius: 4px;
-  left: 15%;
-  right: 15%;
-}
+.calendar-day.reservation-start-3,
+.calendar-day.reservation-end-3 { background: #f59e0b; }
 
-/* Multiple bar positioning */
-.reservation-bar:nth-child(2) { bottom: 28px; }
-.reservation-bar:nth-child(3) { bottom: 22px; }
-.reservation-bar:nth-child(4) { bottom: 16px; }
-.reservation-bar:nth-child(5) { bottom: 10px; }
+.calendar-day.reservation-start-4,
+.calendar-day.reservation-end-4 { background: #ec4899; }
 
-/* Reservation colors */
-.reservation-color-1 { background: #3b82f6; }
-.reservation-color-2 { background: #10b981; }
-.reservation-color-3 { background: #f59e0b; }
-.reservation-color-4 { background: #ec4899; }
-.reservation-color-5 { background: #8b5cf6; }
-.reservation-color-6 { background: #ef4444; }
-.reservation-color-7 { background: #14b8a6; }
-.reservation-color-8 { background: #f97316; }
+.calendar-day.reservation-start-5,
+.calendar-day.reservation-end-5 { background: #8b5cf6; }
+
+.calendar-day.reservation-start-6,
+.calendar-day.reservation-end-6 { background: #ef4444; }
+
+.calendar-day.reservation-start-7,
+.calendar-day.reservation-end-7 { background: #14b8a6; }
+
+.calendar-day.reservation-start-8,
+.calendar-day.reservation-end-8 { background: #f97316; }
+
+/* Light color for MIDDLE days */
+.calendar-day.reservation-middle-1 { background: rgba(59, 130, 246, 0.3); }
+.calendar-day.reservation-middle-1 .calendar-day-number { color: #1f2937; }
+
+.calendar-day.reservation-middle-2 { background: rgba(16, 185, 129, 0.3); }
+.calendar-day.reservation-middle-2 .calendar-day-number { color: #1f2937; }
+
+.calendar-day.reservation-middle-3 { background: rgba(245, 158, 11, 0.3); }
+.calendar-day.reservation-middle-3 .calendar-day-number { color: #1f2937; }
+
+.calendar-day.reservation-middle-4 { background: rgba(236, 72, 153, 0.3); }
+.calendar-day.reservation-middle-4 .calendar-day-number { color: #1f2937; }
+
+.calendar-day.reservation-middle-5 { background: rgba(139, 92, 246, 0.3); }
+.calendar-day.reservation-middle-5 .calendar-day-number { color: #1f2937; }
+
+.calendar-day.reservation-middle-6 { background: rgba(239, 68, 68, 0.3); }
+.calendar-day.reservation-middle-6 .calendar-day-number { color: #1f2937; }
+
+.calendar-day.reservation-middle-7 { background: rgba(20, 184, 166, 0.3); }
+.calendar-day.reservation-middle-7 .calendar-day-number { color: #1f2937; }
+
+.calendar-day.reservation-middle-8 { background: rgba(249, 115, 22, 0.3); }
+.calendar-day.reservation-middle-8 .calendar-day-number { color: #1f2937; }
+
+/* Single day reservation (both start and end) */
+.calendar-day.reservation-single-1 { background: #3b82f6; }
+.calendar-day.reservation-single-2 { background: #10b981; }
+.calendar-day.reservation-single-3 { background: #f59e0b; }
+.calendar-day.reservation-single-4 { background: #ec4899; }
+.calendar-day.reservation-single-5 { background: #8b5cf6; }
+.calendar-day.reservation-single-6 { background: #ef4444; }
+.calendar-day.reservation-single-7 { background: #14b8a6; }
+.calendar-day.reservation-single-8 { background: #f97316; }
 
 /* Reservation Popup */
 .reservation-popup {
@@ -715,12 +734,12 @@
   transform: translateX(-50%);
   background: #1f2937;
   color: white;
-  padding: 6px 10px;
-  border-radius: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
   font-size: 11px;
   white-space: nowrap;
   z-index: 1000;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   pointer-events: none;
   opacity: 0;
@@ -756,58 +775,38 @@
   }
   
   .calendar-day {
-    padding: 1px;
-    min-height: 40px;
-    max-height: 50px;
-    border-radius: 4px;
+    padding: 4px;
+    min-height: 45px;
+    max-height: 60px;
   }
   
   .calendar-day-number {
-    font-size: 11px;
+    font-size: 12px;
   }
   
   .calendar-day-header {
     font-size: 9px;
     padding: 4px 1px;
   }
-
-  .reservation-bar {
-    height: 3px;
-  }
-
-  .reservation-bar:nth-child(2) { bottom: 24px; }
-  .reservation-bar:nth-child(3) { bottom: 19px; }
-  .reservation-bar:nth-child(4) { bottom: 14px; }
-  .reservation-bar:nth-child(5) { bottom: 9px; }
   
   .reservation-popup {
     font-size: 10px;
-    padding: 4px 8px;
+    padding: 6px 10px;
   }
 }
 
 /* Very Small Screens */
 @media (max-width: 400px) {
   .calendar-day {
-    min-height: 35px;
-    max-height: 45px;
+    min-height: 40px;
+    max-height: 50px;
+    padding: 2px;
   }
   
   .calendar-day-number {
-    font-size: 10px;
+    font-size: 11px;
   }
-  
-  .reservation-bar {
-    height: 2px;
-  }
-  
-  .reservation-bar:nth-child(2) { bottom: 20px; }
-  .reservation-bar:nth-child(3) { bottom: 16px; }
-  .reservation-bar:nth-child(4) { bottom: 12px; }
-  .reservation-bar:nth-child(5) { bottom: 8px; }
 }
-
-
 
 
 
@@ -3176,54 +3175,50 @@ function renderCalendar() {
     });
     
     // Build day content
-    let dayContent = `<span class="calendar-day-number">${i}</span>`;
-    
-    if (reservationsOnThisDay.length > 0) {
-      day.classList.add('reserved');
-      
-      // Add colored bars for EACH reservation
-      reservationsOnThisDay.forEach((reservation, index) => {
-        const guestKey = `${reservation.nombre}-${reservation.apellido}-${reservation.fechaEntrada}`;
-        const colorIdx = guestColorMap.get(guestKey);
-        const guestName = `${reservation.nombre} ${reservation.apellido}`;
-        
-        const entryDate = new Date(reservation.fechaEntrada);
-        const exitDate = new Date(reservation.fechaSalida);
-        const isStart = currentDate.getTime() === entryDate.getTime();
-        const isEnd = currentDate.getTime() === exitDate.getTime();
-        const isSingle = isStart && isEnd;
+let dayContent = `<span class="calendar-day-number">${i}</span>`;
 
-        let barClass = 'bar-middle';
-        if (isSingle) {
-          barClass = 'bar-single';
-        } else if (isStart) {
-          barClass = 'bar-start';
-        } else if (isEnd) {
-          barClass = 'bar-end';
-        }
+if (reservationsOnThisDay.length > 0) {
+  day.classList.add('reserved');
+  
+  // Use FIRST reservation's color for the cell background
+  const firstReservation = reservationsOnThisDay[0];
+  const guestKey = `${firstReservation.nombre}-${firstReservation.apellido}-${firstReservation.fechaEntrada}`;
+  const colorIdx = guestColorMap.get(guestKey);
+  
+  const entryDate = new Date(firstReservation.fechaEntrada);
+  const exitDate = new Date(firstReservation.fechaSalida);
+  const isStart = currentDate.getTime() === entryDate.getTime();
+  const isEnd = currentDate.getTime() === exitDate.getTime();
+  const isSingle = isStart && isEnd;
 
-        // Add horizontal colored bar
-        dayContent += `<div class="reservation-bar reservation-color-${colorIdx} ${barClass}"></div>`;
-      });
-      
-      // Add popup with first guest's info
-      const firstReservation = reservationsOnThisDay[0];
-      const firstName = `${firstReservation.nombre} ${firstReservation.apellido}`;
-      const moreGuests = reservationsOnThisDay.length > 1 ? `<br><small>+${reservationsOnThisDay.length - 1} más</small>` : '';
-      
-      dayContent += `<div class="reservation-popup">${firstName}<br><small>${firstReservation.fechaEntrada} - ${firstReservation.fechaSalida}</small>${moreGuests}</div>`;
-      
-      // Click handler for mobile
-      day.addEventListener('click', function(e) {
-        e.stopPropagation();
-        document.querySelectorAll('.calendar-day.show-popup').forEach(d => {
-          if (d !== this) d.classList.remove('show-popup');
-        });
-        this.classList.toggle('show-popup');
-      });
-    }
-    
-    day.innerHTML = dayContent;
+  // Add background color class based on position
+  if (isSingle) {
+    day.classList.add(`reservation-single-${colorIdx}`);
+  } else if (isStart) {
+    day.classList.add(`reservation-start-${colorIdx}`);
+  } else if (isEnd) {
+    day.classList.add(`reservation-end-${colorIdx}`);
+  } else {
+    day.classList.add(`reservation-middle-${colorIdx}`);
+  }
+  
+  // Add popup
+  const firstName = `${firstReservation.nombre} ${firstReservation.apellido}`;
+  const moreGuests = reservationsOnThisDay.length > 1 ? `<br><small>+${reservationsOnThisDay.length - 1} más</small>` : '';
+  
+  dayContent += `<div class="reservation-popup">${firstName}<br><small>${firstReservation.fechaEntrada} - ${firstReservation.fechaSalida}</small>${moreGuests}</div>`;
+  
+  // Click handler for mobile
+  day.addEventListener('click', function(e) {
+    e.stopPropagation();
+    document.querySelectorAll('.calendar-day.show-popup').forEach(d => {
+      if (d !== this) d.classList.remove('show-popup');
+    });
+    this.classList.toggle('show-popup');
+  });
+}
+
+day.innerHTML = dayContent;
     
     // Mark today
     if (today.getDate() === i && 
