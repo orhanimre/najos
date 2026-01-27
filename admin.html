@@ -340,6 +340,8 @@
 
 .custom-dates {
   display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
   margin-top: 16px;
   padding: 16px;
   background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
@@ -348,15 +350,12 @@
 }
 
 .custom-dates.show {
-  display: block;
+  display: grid;
 }
 
 .date-input-group {
-  margin-bottom: 12px;
-}
-
-.date-input-group:last-child {
-  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .date-input-group label {
@@ -365,7 +364,6 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  display: block;
   margin-bottom: 8px;
 }
 
@@ -2632,14 +2630,11 @@ window.switchViewFromDropdown = function() {
       }
 
       window.setDatePreset = function (preset) {
-  const today = new Date();
-  let startDate, endDate;
-
-  // STEP 1: Clear the date fields FIRST
+  // STEP 1: Clear dates FIRST
   document.getElementById("fechaDesde").value = "";
   document.getElementById("fechaHasta").value = "";
-
-  // STEP 2: Clear any previous search
+  
+  // STEP 2: Clear search
   searchTerm = '';
   document.getElementById('searchInput').value = '';
   document.getElementById('clearSearchBtn').style.display = 'none';
@@ -2647,18 +2642,13 @@ window.switchViewFromDropdown = function() {
   if (searchResultsInfo) {
     searchResultsInfo.style.display = 'none';
   }
-
-  // STEP 3: Reset preset button styles and hide personalizado
-  document
-    .querySelectorAll(".preset-btn")
-    .forEach((btn) => btn.classList.remove("active"));
-  document.getElementById("customDates").classList.remove("show");
   
-  // Reset preset button styles and hide personalizado
-  document
-    .querySelectorAll(".preset-btn")
-    .forEach((btn) => btn.classList.remove("active"));
+  // STEP 3: Hide personalizado and reset buttons
   document.getElementById("customDates").classList.remove("show");
+  document.querySelectorAll(".preset-btn").forEach((btn) => btn.classList.remove("active"));
+
+  const today = new Date();
+  let startDate, endDate;
 
   switch (preset) {
     case "week":
@@ -2690,9 +2680,7 @@ window.switchViewFromDropdown = function() {
       break;
 
     case "year":
-      startDate = new Date(today.getFullYear(), 0, 1)
-        .toISOString()
-        .split("T")[0];
+      startDate = new Date(today.getFullYear(), 0, 1).toISOString().split("T")[0];
       endDate = today.toISOString().split("T")[0];
       document.querySelectorAll(".preset-btn")[2].classList.add("active");
       break;
