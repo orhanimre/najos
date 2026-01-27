@@ -340,8 +340,12 @@
       .custom-dates {
   display: none;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 12px;
+  gap: 16px;
+  margin-top: 16px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  border-radius: 16px;
+  border: 2px solid #e2e8f0;
 }
 
 .custom-dates.show {
@@ -351,13 +355,15 @@
       .date-input-group {
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 10px;
       }
 
       .date-input-group label {
-        font-size: 12px;
-        color: #4a5568;
-        font-weight: 600;
+        font-size: 13px;
+        color: #667eea;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
 
       .filter-buttons {
@@ -370,8 +376,7 @@
         display: flex;
       }
 
-      select,
-      input[type="date"] {
+      select {
         width: 100%;
         padding: 12px 16px;
         border: 2px solid #e2e8f0;
@@ -381,12 +386,37 @@
         transition: all 0.3s;
       }
 
-      select:focus,
-      input[type="date"]:focus {
+      select:focus {
         outline: none;
         border-color: #667eea;
         background: white;
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      input[type="date"] {
+        width: 100%;
+        padding: 14px 18px;
+        border: 2px solid #cbd5e0;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        background: white;
+        color: #1f2937;
+        transition: all 0.3s;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      input[type="date"]:focus {
+        outline: none;
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15), 0 4px 12px rgba(102, 126, 234, 0.2);
+        transform: translateY(-1px);
+      }
+
+      input[type="date"]:hover {
+        border-color: #667eea;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
       }
 
       .btn-primary {
@@ -1189,6 +1219,26 @@
         }
       }
 
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+
       .detail-header {
         display: flex;
         justify-content: space-between;
@@ -1949,9 +1999,9 @@
 }
 
 .date-time {
-  font-size: 11px;
-  color: #9ca3af;
-  font-weight: 500;
+  font-size: 13px;
+  color: #1f2937;
+  font-weight: 600;
 }
 
 .name-cell {
@@ -2188,15 +2238,6 @@ tbody tr.clickable:active {
     <input type="date" id="fechaHasta" onchange="handleDateChange('hasta')" />
   </div>
 </div>
-
-            <div id="filterButtons" class="filter-buttons">
-              <button class="btn-primary" onclick="applyFilters()">
-                Aplicar Filtros
-              </button>
-              <button class="btn-secondary" onclick="clearFilters()">
-                Limpiar
-              </button>
-            </div>
 
             <!-- Search Bar -->
             <div class="search-container">
@@ -2613,7 +2654,6 @@ window.switchViewFromDropdown = function() {
 
       window.toggleCustomDates = function () {
   const customDates = document.getElementById("customDates");
-  const filterButtons = document.getElementById("filterButtons");
   const isShowing = customDates.classList.contains("show");
 
   document
@@ -2622,7 +2662,6 @@ window.switchViewFromDropdown = function() {
 
   if (!isShowing) {
     customDates.classList.add("show");
-    filterButtons.classList.add("show");
     document.querySelectorAll(".preset-btn")[3].classList.add("active");
     // Auto-focus on "Desde" input
     setTimeout(() => {
@@ -2630,16 +2669,51 @@ window.switchViewFromDropdown = function() {
     }, 100);
   } else {
     customDates.classList.remove("show");
-    filterButtons.classList.remove("show");
+    // Clear dates when closing
+    document.getElementById("fechaDesde").value = "";
+    document.getElementById("fechaHasta").value = "";
+    applyFilters();
   }
 };
 
-// NEW FUNCTION - Add this function
+// Show toast notification
+function showToast(message) {
+  const toast = document.createElement("div");
+  toast.textContent = message;
+  toast.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
+    z-index: 9999;
+    font-weight: 600;
+    font-size: 14px;
+    animation: slideInRight 0.3s ease;
+    max-width: 300px;
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.style.animation = "fadeOut 0.3s ease";
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+// Handle date changes in Personalizado section
 window.handleDateChange = function(field) {
   const fechaDesde = document.getElementById("fechaDesde").value;
   const fechaHasta = document.getElementById("fechaHasta").value;
   
   if (field === 'desde' && fechaDesde) {
+    // Set minimum date for "Hasta" to be after "Desde"
+    const desdeDate = new Date(fechaDesde);
+    desdeDate.setDate(desdeDate.getDate() + 1);
+    const minHasta = desdeDate.toISOString().split("T")[0];
+    document.getElementById("fechaHasta").setAttribute("min", minHasta);
+    
     // Auto-focus to "Hasta" when "Desde" is selected
     document.getElementById("fechaHasta").focus();
   }
@@ -2647,6 +2721,12 @@ window.handleDateChange = function(field) {
   // Auto-apply filters when both dates are selected
   if (fechaDesde && fechaHasta) {
     applyFilters();
+  } else if (field === 'hasta' && !fechaDesde) {
+    // If only "Hasta" is selected, clear it and show message
+    if (fechaHasta) {
+      showToast("⚠️ Por favor selecciona primero la fecha 'Desde'");
+      document.getElementById("fechaHasta").value = "";
+    }
   }
 };
 
@@ -2734,7 +2814,6 @@ window.closeConfirmModal = function() {
   document.getElementById("fechaDesde").value = "";
   document.getElementById("fechaHasta").value = "";
   document.getElementById("customDates").classList.remove("show");
-  document.getElementById("filterButtons").classList.remove("show");
   document
     .querySelectorAll(".preset-btn")
     .forEach((btn) => btn.classList.remove("active"));
@@ -2935,10 +3014,21 @@ window.applyFiltersAndSearch = function() {
     filtered = filtered.filter((r) => r.cabana === cabanaFilter);
   }
 
-  // Apply date filter
+  // Apply date filter - check if reservation overlaps with selected date range
   if (fechaDesde && fechaHasta) {
     filtered = filtered.filter((r) => {
-      return r.fechaEntrada >= fechaDesde && r.fechaEntrada <= fechaHasta;
+      if (!r.fechaEntrada || !r.fechaSalida) return false;
+      
+      // Check if reservation overlaps with the selected date range
+      // A reservation overlaps if:
+      // - entrada is within the range, OR
+      // - salida is within the range, OR
+      // - reservation completely contains the range
+      return (
+        (r.fechaEntrada >= fechaDesde && r.fechaEntrada <= fechaHasta) ||
+        (r.fechaSalida >= fechaDesde && r.fechaSalida <= fechaHasta) ||
+        (r.fechaEntrada <= fechaDesde && r.fechaSalida >= fechaHasta)
+      );
     });
   }
 
