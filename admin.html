@@ -621,19 +621,13 @@
 }
 
 .calendar-day.other-month {
-  opacity: 0.3;
+  visibility: hidden;
   pointer-events: none;
 }
 
 .calendar-day.today .calendar-day-number {
-  background: #667eea;
-  color: white;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-weight: 700;
+  color: #667eea;
 }
 
 /* Past days - light gray */
@@ -655,10 +649,11 @@
 }
 
 /* Reservation background colors - FULL CELL BACKGROUND */
-.calendar-day.reserved {
-  cursor: pointer;
-  color: white;
-  border-radius: 0;
+.calendar-day.reservation-start-1,
+.calendar-day.reservation-end-1,
+.calendar-day.reservation-single-1 { 
+  background: #3b82f6;
+  border-radius: 8px;  /* ← ROUNDED CORNERS ADDED */
 }
 
 .calendar-day.reserved .calendar-day-number {
@@ -718,6 +713,7 @@
 /* LIGHT color for MIDDLE days */
 .calendar-day.reservation-middle-1 { 
   background: rgba(59, 130, 246, 0.25);
+  border-radius: 0;  /* ← NO ROUNDED CORNERS */
 }
 .calendar-day.reservation-middle-1 .calendar-day-number { 
   color: #1e40af;
@@ -3243,13 +3239,13 @@ function renderMonth(date, container) {
     }
   });
   
-  // Add previous month's days
-  for (let i = firstDay - 1; i >= 0; i--) {
-    const day = document.createElement('div');
-    day.className = 'calendar-day other-month';
-    day.innerHTML = `<span class="calendar-day-number">${daysInPrevMonth - i}</span>`;
-    grid.appendChild(day);
-  }
+ // Add empty cells for previous month's days (hidden)
+for (let i = 0; i < firstDay; i++) {
+  const day = document.createElement('div');
+  day.className = 'calendar-day other-month';
+  // NO innerHTML - just empty cells that are invisible
+  grid.appendChild(day);
+}
   
   // Add current month's days
   for (let i = 1; i <= daysInMonth; i++) {
