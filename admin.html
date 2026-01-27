@@ -346,6 +346,8 @@
   background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
   border-radius: 16px;
   border: 2px solid #e2e8f0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .custom-dates.show {
@@ -353,10 +355,12 @@
 }
 
       .date-input-group {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
 
       .date-input-group label {
         font-size: 13px;
@@ -394,20 +398,22 @@
       }
 
       input[type="date"] {
-        width: 100%;
-        padding: 12px 14px;
-        border: 2px solid #cbd5e0;
-        border-radius: 10px;
-        font-size: 14px;
-        font-weight: 500;
-        background: white;
-        color: #1f2937;
-        transition: all 0.3s;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        min-height: 44px;
-        max-height: 44px;
-        box-sizing: border-box;
-      }
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid #cbd5e0;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  background: white;
+  color: #1f2937;
+  transition: all 0.3s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  min-height: 44px;
+  max-height: 44px;
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+}
 
       input[type="date"]:focus {
         outline: none;
@@ -2623,19 +2629,23 @@ window.switchViewFromDropdown = function() {
       }
 
       window.setDatePreset = function (preset) {
-        const today = new Date();
-        let startDate, endDate;
+  const today = new Date();
+  let startDate, endDate;
 
-        // Clear any previous search text
-        if (typeof clearSearch === "function") {
-          clearSearch();
-        }
+  // Clear any previous search
+  searchTerm = '';
+  document.getElementById('searchInput').value = '';
+  document.getElementById('clearSearchBtn').style.display = 'none';
+  const searchResultsInfo = document.getElementById('searchResultsInfo');
+  if (searchResultsInfo) {
+    searchResultsInfo.style.display = 'none';
+  }
 
-        // Reset preset button styles and hide personalizado
-        document
-          .querySelectorAll(".preset-btn")
-          .forEach((btn) => btn.classList.remove("active"));
-        document.getElementById("customDates").classList.remove("show");
+  // Reset preset button styles and hide personalizado
+  document
+    .querySelectorAll(".preset-btn")
+    .forEach((btn) => btn.classList.remove("active"));
+  document.getElementById("customDates").classList.remove("show");
 
         switch (preset) {
           case "week":
