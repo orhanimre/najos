@@ -601,21 +601,22 @@
   font-weight: 700;
 }
 
+/* Calendar Grid */
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
+  gap: 2px;
   margin-top: 16px;
 }
 
 .calendar-day-header {
   text-align: center;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 11px;
   color: #667eea;
-  padding: 8px;
+  padding: 6px 2px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
 }
 
 .calendar-day {
@@ -625,13 +626,14 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 2px solid #e5e7eb;
-  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s;
-  padding: 4px;
+  padding: 2px;
   background: white;
-  min-height: 60px;
+  min-height: 45px;
+  max-height: 60px;
 }
 
 .calendar-day.other-month {
@@ -641,112 +643,41 @@
 
 .calendar-day.today {
   border-color: #667eea;
-  border-width: 3px;
+  border-width: 2px;
   font-weight: 700;
 }
 
-.calendar-day-number {
-  font-size: 14px;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.reservation-popup {
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #1f2937;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 12px;
-  white-space: nowrap;
-  z-index: 1000;
-  margin-bottom: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-/* Desktop hover */
-@media (min-width: 769px) {
-  .calendar-day.reserved:hover .reservation-popup {
-    opacity: 1;
-  }
-}
-
-/* Mobile tap/active */
-.calendar-day.reserved.show-popup .reservation-popup {
-  opacity: 1;
-}
-
-/* Mobile indicator */
 .calendar-day.reserved {
+  background: #fafafa;
   cursor: pointer;
 }
 
-.reservation-popup::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 6px solid transparent;
-  border-top-color: #1f2937;
+.calendar-day-number {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1f2937;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 2px;
 }
 
-@media (max-width: 768px) {
-  .calendar-grid {
-    gap: 2px;
-  }
-  
-  .calendar-day {
-    padding: 2px;
-    min-height: 50px;
-  }
-  
-  .calendar-day-number {
-    font-size: 12px;
-  }
-  
-  .calendar-day-header {
-    font-size: 10px;
-    padding: 8px 2px;
-  }
-
-  .reservation-bar {
-    height: 4px;
-  }
-
-  .reservation-bar:nth-child(2) { bottom: 30px; }
-  .reservation-bar:nth-child(3) { bottom: 24px; }
-  .reservation-bar:nth-child(4) { bottom: 18px; }
-  .reservation-bar:nth-child(5) { bottom: 12px; }
-}
-
-/* ENHANCED: Colored horizontal bars for reservations */
-.calendar-day.reserved {
-  background: #fafafa;
-}
-
+/* Reservation Bars */
 .reservation-bar {
   position: absolute;
   left: 0;
   right: 0;
-  height: 6px;
+  height: 5px;
   z-index: 1;
   transition: all 0.2s;
 }
 
 .reservation-bar.bar-start {
-  border-radius: 6px 0 0 6px;
+  border-radius: 4px 0 0 4px;
   left: 50%;
 }
 
 .reservation-bar.bar-end {
-  border-radius: 0 6px 6px 0;
+  border-radius: 0 4px 4px 0;
   right: 50%;
 }
 
@@ -755,18 +686,18 @@
 }
 
 .reservation-bar.bar-single {
-  border-radius: 6px;
-  left: 20%;
-  right: 20%;
+  border-radius: 4px;
+  left: 15%;
+  right: 15%;
 }
 
 /* Multiple bar positioning */
-.reservation-bar:nth-child(2) { bottom: 36px; }
-.reservation-bar:nth-child(3) { bottom: 28px; }
-.reservation-bar:nth-child(4) { bottom: 20px; }
-.reservation-bar:nth-child(5) { bottom: 12px; }
+.reservation-bar:nth-child(2) { bottom: 28px; }
+.reservation-bar:nth-child(3) { bottom: 22px; }
+.reservation-bar:nth-child(4) { bottom: 16px; }
+.reservation-bar:nth-child(5) { bottom: 10px; }
 
-/* Reservation colors - vibrant like flight booking */
+/* Reservation colors */
 .reservation-color-1 { background: #3b82f6; }
 .reservation-color-2 { background: #10b981; }
 .reservation-color-3 { background: #f59e0b; }
@@ -776,11 +707,109 @@
 .reservation-color-7 { background: #14b8a6; }
 .reservation-color-8 { background: #f97316; }
 
-/* Keep day number above bars */
-.calendar-day-number {
-  position: relative;
-  z-index: 2;
+/* Reservation Popup */
+.reservation-popup {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1f2937;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+  z-index: 1000;
+  margin-bottom: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
+
+.reservation-popup::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: #1f2937;
+}
+
+/* Desktop hover */
+@media (min-width: 769px) {
+  .calendar-day.reserved:hover .reservation-popup {
+    opacity: 1;
+  }
+}
+
+/* Mobile tap */
+.calendar-day.reserved.show-popup .reservation-popup {
+  opacity: 1;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .calendar-grid {
+    gap: 1px;
+  }
+  
+  .calendar-day {
+    padding: 1px;
+    min-height: 40px;
+    max-height: 50px;
+    border-radius: 4px;
+  }
+  
+  .calendar-day-number {
+    font-size: 11px;
+  }
+  
+  .calendar-day-header {
+    font-size: 9px;
+    padding: 4px 1px;
+  }
+
+  .reservation-bar {
+    height: 3px;
+  }
+
+  .reservation-bar:nth-child(2) { bottom: 24px; }
+  .reservation-bar:nth-child(3) { bottom: 19px; }
+  .reservation-bar:nth-child(4) { bottom: 14px; }
+  .reservation-bar:nth-child(5) { bottom: 9px; }
+  
+  .reservation-popup {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+}
+
+/* Very Small Screens */
+@media (max-width: 400px) {
+  .calendar-day {
+    min-height: 35px;
+    max-height: 45px;
+  }
+  
+  .calendar-day-number {
+    font-size: 10px;
+  }
+  
+  .reservation-bar {
+    height: 2px;
+  }
+  
+  .reservation-bar:nth-child(2) { bottom: 20px; }
+  .reservation-bar:nth-child(3) { bottom: 16px; }
+  .reservation-bar:nth-child(4) { bottom: 12px; }
+  .reservation-bar:nth-child(5) { bottom: 8px; }
+}
+
+
+
+
 
       /* Filters */
 .filters {
