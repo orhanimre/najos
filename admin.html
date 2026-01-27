@@ -2648,42 +2648,41 @@ window.switchViewFromDropdown = function() {
   document.querySelectorAll(".preset-btn").forEach((btn) => btn.classList.remove("active"));
 
   const today = new Date();
+  today.setHours(0, 0, 0, 0); // Normalize to midnight
   let startDate, endDate;
 
   switch (preset) {
     case "week":
-      const monday = new Date(today);
-      const dayOfWeek = today.getDay();
-      const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-      monday.setDate(today.getDate() + daysToMonday);
-      monday.setHours(0, 0, 0, 0);
-      
-      const sunday = new Date(monday);
-      sunday.setDate(monday.getDate() + 6);
-      sunday.setHours(23, 59, 59, 999);
-      
-      startDate = monday.toISOString().split("T")[0];
-      endDate = sunday.toISOString().split("T")[0];
-      document.querySelectorAll(".preset-btn")[0].classList.add("active");
-      break;
+  // Monday to Sunday of current week
+  const monday = new Date(today);
+  const dayOfWeek = today.getDay();
+  const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+  monday.setDate(today.getDate() + daysToMonday);
+  
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  
+  startDate = monday.toISOString().split("T")[0];
+  endDate = sunday.toISOString().split("T")[0];  // ✅ FIXED - Full week
+  document.querySelectorAll(".preset-btn")[0].classList.add("active");
+  break;
 
-    case "month":
-      const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-      firstDayOfMonth.setHours(0, 0, 0, 0);
-      
-      const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-      lastDayOfMonth.setHours(23, 59, 59, 999);
-      
-      startDate = firstDayOfMonth.toISOString().split("T")[0];
-      endDate = lastDayOfMonth.toISOString().split("T")[0];
-      document.querySelectorAll(".preset-btn")[1].classList.add("active");
-      break;
+case "month":
+  // First day to last day of current month
+  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  
+  startDate = firstDayOfMonth.toISOString().split("T")[0];
+  endDate = lastDayOfMonth.toISOString().split("T")[0];  // ✅ FIXED - Full month
+  document.querySelectorAll(".preset-btn")[1].classList.add("active");
+  break;
 
-    case "year":
-      startDate = new Date(today.getFullYear(), 0, 1).toISOString().split("T")[0];
-      endDate = today.toISOString().split("T")[0];
-      document.querySelectorAll(".preset-btn")[2].classList.add("active");
-      break;
+case "year":
+  // January 1st to December 31st of current year
+  startDate = new Date(today.getFullYear(), 0, 1).toISOString().split("T")[0];
+  endDate = new Date(today.getFullYear(), 11, 31).toISOString().split("T")[0];  // ✅ FIXED - Full year
+  document.querySelectorAll(".preset-btn")[2].classList.add("active");
+  break;
   }
 
   if (startDate && endDate) {
@@ -3068,16 +3067,16 @@ window.applyFiltersAndSearch = function() {
     filtered = filtered.filter((r) => r.cabana === cabanaFilter);
   }
 
-  // Apply date filter - show reservations where entrada date falls within selected date range
-  if (fechaDesde && fechaHasta) {
-    filtered = filtered.filter((r) => {
-      if (!r.fechaEntrada) return false;
-      
-      // Show reservation if entrada date is within the selected date range
-      // This ensures only reservations starting in the selected period are shown
-      return r.fechaEntrada >= fechaDesde && r.fechaEntrada <= fechaHasta;
-    });
-  }
+  // Apply date filter - show reservations that overlap with the selected date range
+if (fechaDesde && fechaHasta) {
+  filtered = filtered.filter((r) => {
+    if (!r.fechaEntrada || !r.fechaSalida) return false;
+    
+    // Show reservation if it overlaps with the selected date range
+    // Overlap occurs when: reservation starts before/on range end AND reservation ends after/on range start
+    return r.fechaEntrada <= fechaHasta && r.fechaSalida >= fechaDesde;  // ✅ FIXED - Overlap logic
+  });
+}
 
   // Apply search filter
   if (searchTerm) {
