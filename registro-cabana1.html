@@ -1348,6 +1348,9 @@
         collection,
         addDoc,
         serverTimestamp,
+        getDocs,
+        query,
+        where,
       } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -1428,7 +1431,45 @@
         horaSalida.value = "13:00";
       }, 0);
 
-      fechaEntrada.addEventListener("change", function () {
+      // Check for date conflicts
+      async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
+        try {
+          const q = query(
+            collection(db, "registrations"),
+            where("cabana", "==", "Cabaña MariaMar-1")
+          );
+          const querySnapshot = await getDocs(q);
+          
+          const entradaDate = new Date(fechaEntradaVal + 'T00:00:00');
+          const salidaDate = new Date(fechaSalidaVal + 'T00:00:00');
+          
+          for (const doc of querySnapshot.docs) {
+            const reservation = doc.data();
+            if (reservation.fechaEntrada && reservation.fechaSalida) {
+              const resEntrada = new Date(reservation.fechaEntrada + 'T00:00:00');
+              const resSalida = new Date(reservation.fechaSalida + 'T00:00:00');
+              
+              // Check for overlap: new reservation overlaps if:
+              // - entrada is between resEntrada and resSalida, OR
+              // - salida is between resEntrada and resSalida, OR
+              // - new reservation completely contains existing reservation
+              if (
+                (entradaDate >= resEntrada && entradaDate <= resSalida) ||
+                (salidaDate >= resEntrada && salidaDate <= resSalida) ||
+                (entradaDate <= resEntrada && salidaDate >= resSalida)
+              ) {
+                return true; // Conflict found
+              }
+            }
+          }
+          return false; // No conflict
+        } catch (error) {
+          console.error("Error checking date conflict:", error);
+          return false; // On error, allow submission (fail open)
+        }
+      }
+
+      fechaEntrada.addEventListener("change", async function () {
         const checkIn = this.value;
         const checkInDate = new Date(checkIn);
         const nextDay = new Date(checkInDate);
@@ -1437,6 +1478,27 @@
         fechaSalida.setAttribute("min", nextDayStr);
         if (fechaSalida.value && fechaSalida.value <= checkIn) {
           fechaSalida.value = nextDayStr;
+        }
+        
+        // Check for conflicts if both dates are selected
+        if (this.value && fechaSalida.value) {
+          const hasConflict = await checkDateConflict(this.value, fechaSalida.value);
+          if (hasConflict) {
+            showToast("⚠️ Estas fechas ya están reservadas. Por favor selecciona otras fechas.");
+            this.value = "";
+            fechaSalida.value = "";
+          }
+        }
+      });
+
+      fechaSalida.addEventListener("change", async function () {
+        if (fechaEntrada.value && this.value) {
+          const hasConflict = await checkDateConflict(fechaEntrada.value, this.value);
+          if (hasConflict) {
+            showToast("⚠️ Estas fechas ya están reservadas. Por favor selecciona otras fechas.");
+            this.value = "";
+            fechaEntrada.value = "";
+          }
         }
       });
 
@@ -1822,6 +1884,21 @@
         e.preventDefault();
 
         const formData = new FormData(form);
+        const fechaEntradaVal = formData.get("fechaEntrada");
+        const fechaSalidaVal = formData.get("fechaSalida");
+        
+        // Check for date conflicts before submission
+        const hasConflict = await checkDateConflict(fechaEntradaVal, fechaSalidaVal);
+        if (hasConflict) {
+          showToast("⚠️ Estas fechas ya están reservadas. Por favor selecciona otras fechas.");
+          errorMessage.textContent = "Las fechas seleccionadas ya están reservadas. Por favor elige otras fechas.";
+          errorMessage.style.display = "block";
+          setTimeout(() => {
+            errorMessage.style.display = "none";
+          }, 5000);
+          return;
+        }
+        
         const data = {
           cabana: "Cabaña MariaMar-1",
           timestamp: serverTimestamp(),
