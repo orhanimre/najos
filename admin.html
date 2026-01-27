@@ -3261,30 +3261,29 @@ for (let i = 0; i < firstDay; i++) {
     }
     
     // Find reservation for this date
-    const reservationForDay = cabinReservations.find(r => {
-      const entryDate = new Date(r.fechaEntrada);
-      const exitDate = new Date(r.fechaSalida);
-      entryDate.setHours(0, 0, 0, 0);
-      exitDate.setHours(0, 0, 0, 0);
-      return currentDate >= entryDate && currentDate <= exitDate;
-    });
-    
-    let dayContent = `<span class="calendar-day-number">${i}</span>`;
-    
-    if (reservationForDay) {
-      day.classList.add('reserved');
-      
-      const guestKey = `${reservationForDay.nombre}-${reservationForDay.apellido}-${reservationForDay.fechaEntrada}`;
-      const colorIdx = guestColorMap.get(guestKey);
-      
-      const entryDate = new Date(reservationForDay.fechaEntrada);
-      const exitDate = new Date(reservationForDay.fechaSalida);
-      entryDate.setHours(0, 0, 0, 0);
-      exitDate.setHours(0, 0, 0, 0);
-      
-      const isStart = currentDate.getTime() === entryDate.getTime();
-      const isEnd = currentDate.getTime() === exitDate.getTime();
-      const isSingle = isStart && isEnd;
+    // Find reservation for this date
+const reservationForDay = cabinReservations.find(r => {
+  const entryDate = new Date(r.fechaEntrada + 'T00:00:00');
+  const exitDate = new Date(r.fechaSalida + 'T00:00:00');
+  const checkDate = new Date(year, month, i);
+  return checkDate >= entryDate && checkDate <= exitDate;
+});
+
+let dayContent = `<span class="calendar-day-number">${i}</span>`;
+
+if (reservationForDay) {
+  day.classList.add('reserved');
+  
+  const guestKey = `${reservationForDay.nombre}-${reservationForDay.apellido}-${reservationForDay.fechaEntrada}`;
+  const colorIdx = guestColorMap.get(guestKey);
+  
+  const entryDate = new Date(reservationForDay.fechaEntrada + 'T00:00:00');
+  const exitDate = new Date(reservationForDay.fechaSalida + 'T00:00:00');
+  const checkDate = new Date(year, month, i);
+  
+  const isStart = checkDate.getTime() === entryDate.getTime();
+  const isEnd = checkDate.getTime() === exitDate.getTime();
+  const isSingle = isStart && isEnd;
 
       // Add background color class based on position
       if (isSingle) {
