@@ -340,37 +340,36 @@
 
 .custom-dates {
   display: none;
-  flex-direction: column;
-  gap: 24px;
-  margin-top: 24px;
-  padding: 28px 24px;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 20px;
+  padding: 24px;
   background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
   border-radius: 16px;
   border: 2px solid #e2e8f0;
 }
 
 .custom-dates.show {
-  display: flex;
+  display: grid;
 }
 
 .date-input-group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .date-input-group label {
-  font-size: 10px;
+  font-size: 11px;
   color: #667eea;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   margin-bottom: 0;
 }
 
 input[type="date"] {
   width: 100%;
-  max-width: 180px;
   padding: 8px 10px;
   border: 2px solid #cbd5e0;
   border-radius: 8px;
