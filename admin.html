@@ -338,23 +338,20 @@
 
       
 
-.custom-dates.show {
-  display: grid;
-}
-
 .custom-dates {
   display: none;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 12px;
   margin-top: 16px;
-  padding: 20px;
+  padding: 16px;
   background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
   border-radius: 16px;
   border: 2px solid #e2e8f0;
-  width: 100%;
-  max-width: 100%;
   box-sizing: border-box;
-  overflow: hidden; /* Prevent overflow */
+}
+
+.custom-dates.show {
+  display: grid;
 }
 
 .date-input-group {
@@ -363,8 +360,6 @@
   gap: 10px;
   min-width: 0;
   flex: 1;
-  max-width: 100%; /* Ensure it doesn't exceed parent */
-  overflow: hidden; /* Prevent overflow */
 }
 
 input[type="date"] {
@@ -379,21 +374,7 @@ input[type="date"] {
   transition: all 0.3s;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   min-height: 44px;
-  max-height: 44px;
   box-sizing: border-box;
-  max-width: 100%;
-  min-width: 0;
-  overflow: hidden; /* Prevent text overflow */
-  text-overflow: ellipsis; /* Add ellipsis if text is too long */
-}
-
-/* Mobile adjustments */
-@media (max-width: 640px) {
-  .custom-dates {
-    grid-template-columns: 1fr; /* Stack on mobile if needed */
-    gap: 12px;
-    padding: 16px;
-  }
 }
 
       .date-input-group label {
@@ -2657,15 +2638,15 @@ window.switchViewFromDropdown = function() {
     searchResultsInfo.style.display = 'none';
   }
 
+  // FIRST: Clear the date input fields BEFORE doing anything else
+  document.getElementById("fechaDesde").value = "";
+  document.getElementById("fechaHasta").value = "";
+  
   // Reset preset button styles and hide personalizado
   document
     .querySelectorAll(".preset-btn")
     .forEach((btn) => btn.classList.remove("active"));
   document.getElementById("customDates").classList.remove("show");
-  
-  // CLEAR the date input fields when switching to preset buttons
-  document.getElementById("fechaDesde").value = "";
-  document.getElementById("fechaHasta").value = "";
 
   switch (preset) {
     case "week":
