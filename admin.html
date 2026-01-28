@@ -669,8 +669,7 @@ input[type="date"] {
   background: white;
   min-height: 50px;
   max-height: 70px;
-  border: 1px solid #f3f4f6;
-  margin: -1px 0 0 -1px;
+  box-sizing: border-box;
 }
 
 .calendar-day.other-month {
@@ -773,7 +772,7 @@ input[type="date"] {
 /* LIGHT color for MIDDLE days */
 .calendar-day.reservation-middle-1 { 
   background: rgba(59, 130, 246, 0.25);
-  border-radius: 0;  /* ← NO ROUNDED CORNERS */
+  border-radius: 0 !important;  /* ← NO ROUNDED CORNERS - force override */
 }
 .calendar-day.reservation-middle-1 .calendar-day-number { 
   color: #1e40af;
