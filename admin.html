@@ -644,6 +644,7 @@ input[type="date"] {
   width: 100%;
   box-sizing: border-box;
   min-width: 0;
+  grid-auto-flow: dense; /* ADD THIS LINE */
 }
 
 .calendar-day-header {
@@ -3474,9 +3475,9 @@ for (let i = 1; i <= daysInMonth; i++) {
   day.className = 'calendar-day';
   
   // Position the first day in the correct column
-  if (i === 1) {
-    day.style.gridColumnStart = firstDay + 1;
-  }
+ if (i === 1) {
+  day.style.gridColumn = firstDay === 0 ? 7 : firstDay;
+}
   
   const currentDate = new Date(year, month, i);
   currentDate.setHours(0, 0, 0, 0);
