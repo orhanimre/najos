@@ -3516,7 +3516,7 @@ for (let i = 0; i < firstDay; i++) {
         }
 
         // Single-reservation popup
-const guestName = `${reservationForDay.nombre} ${reservationForDay.apellido}`;
+        const guestName = `${reservationForDay.nombre} ${reservationForDay.apellido}`;
 dayContent += `<div class="reservation-popup">${guestName}<br><small>${reservationForDay.fechaEntrada}</small><br><small>${reservationForDay.fechaSalida}</small></div>`;
       } else {
         // Multiple reservations on the same day (intersection)
@@ -3543,6 +3543,7 @@ dayContent += `<div class="reservation-popup">${guestName}<br><small>${reservati
         reservationsForDay.forEach((r, idx) => {
           const guestName = `${r.nombre} ${r.apellido}`;
           popupHtml += `${guestName}<br><small>${r.fechaEntrada}</small><br><small>${r.fechaSalida}</small>${idx < reservationsForDay.length - 1 ? '<br><br>' : ''}`;
+        });
         popupHtml += '</div>';
         dayContent += popupHtml;
       }
