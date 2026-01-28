@@ -3469,26 +3469,21 @@ function renderMonth(date, container) {
   
   
   // Add current month's days
+ // Calculate starting position - convert JavaScript day (0=Sun) to our grid (1=Mon, 7=Sun)
+  const firstDayAdjusted = firstDay === 0 ? 6 : firstDay - 1;
+  
+  // Add empty cells before the first day
+  for (let i = 0; i < firstDayAdjusted; i++) {
+    const emptyDay = document.createElement('div');
+    emptyDay.className = 'calendar-day other-month';
+    emptyDay.style.visibility = 'hidden';
+    grid.appendChild(emptyDay);
+  }
+  
   // Add current month's days
 for (let i = 1; i <= daysInMonth; i++) {
   const day = document.createElement('div');
   day.className = 'calendar-day';
-  
-  // Position the first day in the correct column
-if (i === 1) {
-  // Adjust for Monday-first calendar
-  // JavaScript: Sun=0, Mon=1, Tue=2, Wed=3, Thu=4, Fri=5, Sat=6
-  // Our grid: Mon=1, Tue=2, Wed=3, Thu=4, Fri=5, Sat=6, Sun=7
-  let gridColumn;
-  if (firstDay === 0) {
-    // Sunday should be column 7
-    gridColumn = 7;
-  } else {
-    // Mon=1 should be column 1, Tue=2 should be column 2, etc.
-    gridColumn = firstDay;
-  }
-  day.style.gridColumnStart = gridColumn;
-}
   
   const currentDate = new Date(year, month, i);
   currentDate.setHours(0, 0, 0, 0);
