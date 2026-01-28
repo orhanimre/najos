@@ -3480,13 +3480,22 @@ for (let i = 0; i < firstDay; i++) {
     }
     
     // Find reservations for this date (may be multiple)
-    const checkDate = new Date(year, month, i);
-    const reservationsForDay = cabinReservations.filter(r => {
-      if (!r.fechaEntrada || !r.fechaSalida) return false;
-      const entryDate = new Date(r.fechaEntrada + 'T00:00:00');
-      const exitDate = new Date(r.fechaSalida + 'T00:00:00');
-      return checkDate >= entryDate && checkDate <= exitDate;
-    });
+const checkDate = new Date(year, month, i);
+const reservationsForDay = cabinReservations.filter(r => {
+  if (!r.fechaEntrada || !r.fechaSalida) return false;
+  const entryDate = new Date(r.fechaEntrada + 'T00:00:00');
+  const exitDate = new Date(r.fechaSalida + 'T00:00:00');
+  return checkDate >= entryDate && checkDate <= exitDate;
+}).sort((a, b) => {
+  // Sort: check-OUT dates first (left side), then check-IN dates (right side)
+  const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+  const aIsCheckout = a.fechaSalida === dateStr;
+  const bIsCheckout = b.fechaSalida === dateStr;
+  
+  if (aIsCheckout && !bIsCheckout) return -1; // checkout goes left
+  if (!aIsCheckout && bIsCheckout) return 1;  // checkin goes right
+  return 0;
+});
 
     let dayContent = `<span class="calendar-day-number">${i}</span>`;
 
