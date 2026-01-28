@@ -1432,42 +1432,47 @@
       }, 0);
 
       // Check for date conflicts
-      async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
-        try {
-          const q = query(
-            collection(db, "registrations"),
-            where("cabana", "==", "Cabaña MariaMar-3")
-          );
-          const querySnapshot = await getDocs(q);
-          
-          const entradaDate = new Date(fechaEntradaVal + 'T00:00:00');
-          const salidaDate = new Date(fechaSalidaVal + 'T00:00:00');
-          
-          for (const doc of querySnapshot.docs) {
-            const reservation = doc.data();
-            if (reservation.fechaEntrada && reservation.fechaSalida) {
-              const resEntrada = new Date(reservation.fechaEntrada + 'T00:00:00');
-              const resSalida = new Date(reservation.fechaSalida + 'T00:00:00');
-              
-              // Check for overlap: new reservation overlaps if:
-              // - entrada is between resEntrada and resSalida, OR
-              // - salida is between resEntrada and resSalida, OR
-              // - new reservation completely contains existing reservation
-              if (
-                (entradaDate >= resEntrada && entradaDate <= resSalida) ||
-                (salidaDate >= resEntrada && salidaDate <= resSalida) ||
-                (entradaDate <= resEntrada && salidaDate >= resSalida)
-              ) {
-                return true; // Conflict found
-              }
-            }
-          }
-          return false; // No conflict
-        } catch (error) {
-          console.error("Error checking date conflict:", error);
-          return false; // On error, allow submission (fail open)
+      // Check for date conflicts using public availability calendar
+// Check for date conflicts using public availability calendar
+async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
+  try {
+    // Get ALL availability records (no where clause to avoid permission issues)
+    const querySnapshot = await getDocs(collection(db, "cabin_availability"));
+    
+    console.log("Checking conflicts for:", fechaEntradaVal, "to", fechaSalidaVal);
+    console.log("Found", querySnapshot.docs.length, "total date ranges");
+    
+    for (const doc of querySnapshot.docs) {
+      const blocked = doc.data();
+      
+      // Filter for our cabin in JavaScript
+      if (blocked.cabana !== "Cabaña MariaMar-1") {
+        continue;
+      }
+      
+      console.log("Checking against:", blocked.fechaInicio, "to", blocked.fechaFin);
+      
+      if (blocked.fechaInicio && blocked.fechaFin) {
+        const newStart = fechaEntradaVal;
+        const newEnd = fechaSalidaVal;
+        const blockedStart = blocked.fechaInicio;
+        const blockedEnd = blocked.fechaFin;
+        
+        // Check if dates overlap
+        if (newStart <= blockedEnd && newEnd >= blockedStart) {
+          console.log("CONFLICT FOUND!");
+          return true;
         }
       }
+    }
+    
+    console.log("No conflicts found");
+    return false;
+  } catch (error) {
+    console.error("Error checking date conflict:", error);
+    return false;
+  }
+}
 
       fechaEntrada.addEventListener("change", async function () {
         const checkIn = this.value;
@@ -1881,99 +1886,103 @@
 
       // Form Submission
       form.addEventListener("submit", async function (e) {
-        e.preventDefault();
+  e.preventDefault();
 
-        const formData = new FormData(form);
-        const fechaEntradaVal = formData.get("fechaEntrada");
-        const fechaSalidaVal = formData.get("fechaSalida");
-        
-        // Check for date conflicts before submission
-        const hasConflict = await checkDateConflict(fechaEntradaVal, fechaSalidaVal);
-        if (hasConflict) {
-          showToast("⚠️ Estas fechas ya están reservadas. Por favor selecciona otras fechas.");
-          errorMessage.textContent = "Las fechas seleccionadas ya están reservadas. Por favor elige otras fechas.";
-          errorMessage.style.display = "block";
-          setTimeout(() => {
-            errorMessage.style.display = "none";
-          }, 5000);
-          return;
-        }
-        
-        const data = {
-          cabana: "Cabaña MariaMar-3",
-          timestamp: serverTimestamp(),
-          nombre: formData.get("nombre"),
-          apellido: formData.get("apellido"),
-          celular: formData.get("celular"),
-          tipoId: formData.get("tipoId"),
-          numeroId: formData.get("numeroId"),
-          ciudad: formData.get("ciudad"),
-          totalHuespedes: Number(formData.get("totalHuespedes") || 0),
-          fechaEntrada: formData.get("fechaEntrada"),
-          horaEntrada: formData.get("horaEntrada"),
-          fechaSalida: formData.get("fechaSalida"),
-          horaSalida: formData.get("horaSalida"),
-          consent: formData.get("consent") === "on",
-        };
+  const formData = new FormData(form);
+  const fechaEntradaVal = formData.get("fechaEntrada");
+  const fechaSalidaVal = formData.get("fechaSalida");
+  
+  // Check for date conflicts
+  const hasConflict = await checkDateConflict(fechaEntradaVal, fechaSalidaVal);
+  if (hasConflict) {
+    showToast("⚠️ Estas fechas ya están reservadas. Por favor selecciona otras fechas.");
+    errorMessage.textContent = "Las fechas seleccionadas ya están reservadas. Por favor elige otras fechas.";
+    errorMessage.style.display = "block";
+    setTimeout(() => {
+      errorMessage.style.display = "none";
+    }, 5000);
+    return;
+  }
+  
+  const data = {
+    cabana: "Cabaña MariaMar-1",
+    timestamp: serverTimestamp(),
+    nombre: formData.get("nombre"),
+    apellido: formData.get("apellido"),
+    celular: formData.get("celular"),
+    tipoId: formData.get("tipoId"),
+    numeroId: formData.get("numeroId"),
+    ciudad: formData.get("ciudad"),
+    totalHuespedes: Number(formData.get("totalHuespedes") || 0),
+    fechaEntrada: formData.get("fechaEntrada"),
+    horaEntrada: formData.get("horaEntrada"),
+    fechaSalida: formData.get("fechaSalida"),
+    horaSalida: formData.get("horaSalida"),
+    consent: formData.get("consent") === "on",
+  };
 
-        // Add companion data
-        companions.forEach((idx) => {
-          data[`acomp${idx}Nombre`] = formData.get(`acomp${idx}Nombre`) || "";
-          data[`acomp${idx}Apellido`] =
-            formData.get(`acomp${idx}Apellido`) || "";
-          data[`acomp${idx}TipoId`] = formData.get(`acomp${idx}TipoId`) || "";
-          data[`acomp${idx}NumId`] = formData.get(`acomp${idx}NumId`) || "";
-        });
+  // Add companion data
+  companions.forEach((idx) => {
+    data[`acomp${idx}Nombre`] = formData.get(`acomp${idx}Nombre`) || "";
+    data[`acomp${idx}Apellido`] = formData.get(`acomp${idx}Apellido`) || "";
+    data[`acomp${idx}TipoId`] = formData.get(`acomp${idx}TipoId`) || "";
+    data[`acomp${idx}NumId`] = formData.get(`acomp${idx}NumId`) || "";
+  });
 
-        btnSubmit.textContent = "Enviando...";
-        btnSubmit.disabled = true;
+  btnSubmit.textContent = "Enviando...";
+  btnSubmit.disabled = true;
 
-        try {
-          await addDoc(collection(db, "registrations"), data);
+  try {
+    // Save full registration (with guest data)
+    const registrationRef = await addDoc(collection(db, "registrations"), data);
+    
+    // ALSO save to public availability calendar (dates only, no guest info)
+    await addDoc(collection(db, "cabin_availability"), {
+      cabana: "Cabaña MariaMar-1",
+      fechaInicio: fechaEntradaVal,
+      fechaFin: fechaSalidaVal,
+      registrationId: registrationRef.id,  // Link to full record
+      createdAt: serverTimestamp()
+    });
 
-          // Create modal
-          const modalHTML = `
-  <div class="modal-overlay" id="successModal">
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeSuccessModal()">×</button>
-      <div class="modal-icon">🎉</div>
-      <div class="modal-title">¡Registro Completado!</div>
-      <div class="modal-text">
-        Te esperamos con arena, sol y buenas vibras.
+    // Show success modal
+    const modalHTML = `
+      <div class="modal-overlay" id="successModal">
+        <div class="modal-content">
+          <button class="modal-close" onclick="closeSuccessModal()">×</button>
+          <div class="modal-icon">🎉</div>
+          <div class="modal-title">¡Registro Completado!</div>
+          <div class="modal-text">Te esperamos con arena, sol y buenas vibras.</div>
+          <div class="modal-divider">
+            <div class="modal-maps-title">📍 Mapas de Sitios de Interés</div>
+            <p style="font-size: 14px; margin-bottom: 15px; opacity: 0.9;">
+              Consulta los dos tipos de mapas con ubicaciones de playas, tiendas y restaurantes
+            </p>
+            <button type="button" onclick="showMapModal('https://i.imgur.com/1Nwxp1r.jpg', 'Normal')" class="modal-map-btn" style="cursor: pointer; border: none;">
+              🗺️ Mapa Vista Normal
+            </button>
+            <button type="button" onclick="showMapModal('https://i.imgur.com/7NskU8K.jpg', 'Satelite')" class="modal-map-btn" style="cursor: pointer; border: none;">
+              🛰️ Mapa Vista Satélite
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="modal-divider">
-        <div class="modal-maps-title">📍 Mapas de Sitios de Interés</div>
-        <p style="font-size: 14px; margin-bottom: 15px; opacity: 0.9;">
-          Consulta los dos tipos de mapas con ubicaciones de playas, tiendas y restaurantes
-        </p>
-        <button type="button" onclick="showMapModal('https://i.imgur.com/1Nwxp1r.jpg', 'Normal')" class="modal-map-btn" style="cursor: pointer; border: none;">
-          🗺️ Mapa Vista Normal
-        </button>
-        <button type="button" onclick="showMapModal('https://i.imgur.com/7NskU8K.jpg', 'Satelite')" class="modal-map-btn" style="cursor: pointer; border: none;">
-          🛰️ Mapa Vista Satélite
-        </button>
-      </div>
-    </div>
-  </div>
-`;
-
-          document.body.insertAdjacentHTML("beforeend", modalHTML);
-          errorMessage.style.display = "none";
-        } catch (error) {
-          console.error("Error:", error);
-          errorMessage.textContent =
-            "Error al enviar. Por favor intenta nuevamente o contáctanos por WhatsApp.";
-          errorMessage.style.display = "block";
-          successMessage.style.display = "none";
-
-          setTimeout(() => {
-            errorMessage.style.display = "none";
-          }, 5000);
-        } finally {
-          btnSubmit.textContent = "✓ Enviar Registro";
-          btnSubmit.disabled = false;
-        }
-      });
+    `;
+    document.body.insertAdjacentHTML("beforeend", modalHTML);
+    errorMessage.style.display = "none";
+  } catch (error) {
+    console.error("Error:", error);
+    errorMessage.textContent = "Error al enviar. Por favor intenta nuevamente o contáctanos por WhatsApp.";
+    errorMessage.style.display = "block";
+    successMessage.style.display = "none";
+    setTimeout(() => {
+      errorMessage.style.display = "none";
+    }, 5000);
+  } finally {
+    btnSubmit.textContent = "✓ Enviar Registro";
+    btnSubmit.disabled = false;
+  }
+});
 
       // Custom validation messages
       const requiredInputs = document.querySelectorAll("[required]");

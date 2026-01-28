@@ -2382,6 +2382,7 @@ tbody tr.clickable:active {
         onAuthStateChanged,
         signOut,
       } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+      
       import {
   getFirestore,
   collection,
@@ -2392,6 +2393,8 @@ tbody tr.clickable:active {
   doc,
   setDoc,
   serverTimestamp,
+  addDoc,      // ✅ ADD THIS
+  where,       // ✅ ADD THIS
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -2417,6 +2420,64 @@ tbody tr.clickable:active {
       window.db = db;
       window.doc = doc;
       window.deleteDoc = deleteDoc;
+
+      // ========== ONE-TIME SYNC FUNCTION ==========
+// Run this ONCE to sync existing registrations to availability calendar
+window.syncAvailabilityCalendar = async function() {
+  if (!confirm("This will sync all existing registrations to the availability calendar. Continue?")) {
+    return;
+  }
+  
+  try {
+    console.log("Starting sync...");
+    
+    // Get all active registrations
+    const q = query(collection(db, "registrations"));
+    const snapshot = await getDocs(q);
+    
+    let synced = 0;
+    let errors = 0;
+    
+    for (const docSnap of snapshot.docs) {
+      const reg = docSnap.data();
+      
+      try {
+        // Check if availability record already exists
+        const checkQ = query(
+          collection(db, "cabin_availability"),
+          where("registrationId", "==", docSnap.id)
+        );
+        const existing = await getDocs(checkQ);
+        
+        if (existing.empty) {
+          // Create availability record (dates only, no guest info)
+          await addDoc(collection(db, "cabin_availability"), {
+            cabana: reg.cabana,
+            fechaInicio: reg.fechaEntrada,
+            fechaFin: reg.fechaSalida,
+            registrationId: docSnap.id,
+            createdAt: serverTimestamp()
+          });
+          synced++;
+          console.log(`Synced: ${reg.cabana} ${reg.fechaEntrada} - ${reg.fechaSalida}`);
+        } else {
+          console.log(`Already exists: ${docSnap.id}`);
+        }
+      } catch (err) {
+        errors++;
+        console.error(`Error syncing ${docSnap.id}:`, err);
+      }
+    }
+    
+    alert(`✅ Sync complete!\n\nSynced: ${synced} records\nErrors: ${errors}\nTotal: ${snapshot.docs.length}`);
+    console.log("Sync complete!");
+    
+  } catch (error) {
+    console.error("Sync error:", error);
+    alert("❌ Error during sync. Check console for details.");
+  }
+};
+// ========== END SYNC FUNCTION ==========
 
       onAuthStateChanged(auth, (user) => {
         if (user) {
