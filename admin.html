@@ -639,17 +639,11 @@ input[type="date"] {
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 0;
+  gap: 4px;
   margin-top: 12px;
   width: 100%;
   box-sizing: border-box;
   min-width: 0;
-  border: 1px solid #e5e7eb;
-}
-
-.calendar-day {
-  border-right: 1px solid #e5e7eb;
-  border-bottom: 1px solid #e5e7eb;
 }
 
 .calendar-day:nth-child(7n) {
@@ -661,7 +655,7 @@ input[type="date"] {
   font-weight: 700;
   font-size: 11px;
   color: #667eea;
-  padding: 8px 0px;
+  padding: 8px 4px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
 }
