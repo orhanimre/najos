@@ -3519,24 +3519,26 @@ for (let i = 0; i < firstDay; i++) {
         const guestName = `${reservationForDay.nombre} ${reservationForDay.apellido}`;
 dayContent += `<div class="reservation-popup">${guestName}<br><small>${reservationForDay.fechaEntrada}</small><br><small>${reservationForDay.fechaSalida}</small></div>`;
       } else {
-        // Multiple reservations on the same day (intersection)
-        const colors = reservationsForDay
-          .map(r => {
-            const guestKey = `${r.nombre}-${r.apellido}-${r.fechaEntrada}`;
-            const idx = guestColorMap.get(guestKey);
-            return colorHexMap[idx] || '#3b82f6';
-          })
-          .slice(0, 3); // Use up to 3 colors
+  // Multiple reservations on the same day (intersection)
+  const colors = reservationsForDay
+    .map(r => {
+      const guestKey = `${r.nombre}-${r.apellido}-${r.fechaEntrada}`;
+      const idx = guestColorMap.get(guestKey);
+      return colorHexMap[idx] || '#3b82f6';
+    })
+    .slice(0, 3); // Use up to 3 colors
 
-        // Build a gradient background with multiple colors
-        if (colors.length === 2) {
-          day.style.background = `linear-gradient(135deg, ${colors[0]} 0%, ${colors[0]} 50%, ${colors[1]} 50%, ${colors[1]} 100%)`;
-        } else if (colors.length === 3) {
-          day.style.background = `linear-gradient(135deg, ${colors[0]} 0%, ${colors[0]} 33%, ${colors[1]} 33%, ${colors[1]} 66%, ${colors[2]} 66%, ${colors[2]} 100%)`;
-        } else if (colors.length === 1) {
-          day.style.background = colors[0];
-        }
-        day.style.borderRadius = '8px';
+  // Build a VERTICAL gradient (left to right split)
+  if (colors.length === 2) {
+    // 50/50 vertical split
+    day.style.background = `linear-gradient(90deg, ${colors[0]} 0%, ${colors[0]} 50%, ${colors[1]} 50%, ${colors[1]} 100%)`;
+  } else if (colors.length === 3) {
+    // 33/33/33 vertical split
+    day.style.background = `linear-gradient(90deg, ${colors[0]} 0%, ${colors[0]} 33.33%, ${colors[1]} 33.33%, ${colors[1]} 66.66%, ${colors[2]} 66.66%, ${colors[2]} 100%)`;
+  } else if (colors.length === 1) {
+    day.style.background = colors[0];
+  }
+  day.style.borderRadius = '8px';
 
         // Build popup with all reservations for this day
         let popupHtml = '<div class="reservation-popup">';
