@@ -3516,9 +3516,8 @@ for (let i = 0; i < firstDay; i++) {
         }
 
         // Single-reservation popup
-        const guestName = `${reservationForDay.nombre} ${reservationForDay.apellido}`;
-        dayContent += `<div class="reservation-popup">${guestName}<br><small>${reservationForDay.fechaEntrada} - ${reservationForDay.fechaSalida}</small></div>`;
-      } else {
+const guestName = `${reservationForDay.nombre} ${reservationForDay.apellido}`;
+dayContent += `<div class="reservation-popup">${guestName}<br><small>${reservationForDay.fechaEntrada} — ${reservationForDay.fechaSalida}</small></div>`;
         // Multiple reservations on the same day (intersection)
         const colors = reservationsForDay
           .map(r => {
