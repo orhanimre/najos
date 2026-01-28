@@ -3475,8 +3475,8 @@ for (let i = 1; i <= daysInMonth; i++) {
   day.className = 'calendar-day';
   
   // Position the first day in the correct column
- if (i === 1) {
-  day.style.gridColumn = firstDay === 0 ? 7 : firstDay;
+if (i === 1) {
+  day.style.gridColumnStart = firstDay === 0 ? 7 : firstDay;
 }
   
   const currentDate = new Date(year, month, i);
