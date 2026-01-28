@@ -1373,9 +1373,9 @@
       const maxCompanions = 3;
 
       function showToast(message) {
-        const toast = document.createElement("div");
-        toast.innerHTML = message;
-        toast.style.cssText = `
+  const toast = document.createElement("div");
+  toast.innerHTML = message;  // Changed from textContent to innerHTML
+  toast.style.cssText = `
     position: fixed;
     top: 20px;
     right: 20px;
@@ -1387,10 +1387,12 @@
     z-index: 9999;
     font-weight: 600;
     animation: slideInRight 0.3s ease;
+    max-width: 400px;
+    line-height: 1.5;
   `;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
-      }
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 5000);  // Increased to 5 seconds for readability
+}
 
       // Elements
       const form = document.getElementById("registrationForm");
@@ -1432,7 +1434,6 @@
       }, 0);
 
       // Check for date conflicts using public availability calendar
-// Check for date conflicts using public availability calendar
 async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
   try {
     // Get ALL availability records (no where clause to avoid permission issues)
@@ -1440,6 +1441,8 @@ async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
     
     console.log("Checking conflicts for:", fechaEntradaVal, "to", fechaSalidaVal);
     console.log("Found", querySnapshot.docs.length, "total date ranges");
+    
+    let conflictingReservation = null;
     
     for (const doc of querySnapshot.docs) {
       const blocked = doc.data();
@@ -1460,48 +1463,94 @@ async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
         // Check if dates overlap
         if (newStart <= blockedEnd && newEnd >= blockedStart) {
           console.log("CONFLICT FOUND!");
-          return true;
+          conflictingReservation = blocked;
+          break;
         }
       }
     }
     
+    if (conflictingReservation) {
+      console.log("Conflict found with:", conflictingReservation);
+      return {
+        hasConflict: true,
+        nextAvailable: conflictingReservation.fechaFin
+      };
+    }
+    
     console.log("No conflicts found");
-    return false;
+    return { hasConflict: false };
   } catch (error) {
     console.error("Error checking date conflict:", error);
-    return false;
+    return { hasConflict: false };
   }
 }
 
-      fechaEntrada.addEventListener("change", async function () {
+      // Track if we're currently checking to avoid double-checks
+// Track if we're currently checking to avoid double-checks
+let isCheckingDates = false;
+
+// Helper function to format date nicely
+function formatDateNice(dateStr) {
+  const date = new Date(dateStr + 'T00:00:00');
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString('es-ES', options);
+}
+
+// Helper function to get next day after a date
+function getNextDay(dateStr) {
+  const date = new Date(dateStr + 'T00:00:00');
+  date.setDate(date.getDate() + 1);
+  return date.toISOString().split('T')[0];
+}
+
+fechaEntrada.addEventListener("change", async function () {
   const checkIn = this.value;
   const checkInDate = new Date(checkIn);
   const nextDay = new Date(checkInDate);
   nextDay.setDate(nextDay.getDate() + 1);
   const nextDayStr = nextDay.toISOString().split("T")[0];
   fechaSalida.setAttribute("min", nextDayStr);
+  
+  // Auto-adjust salida if it's before or equal to entrada
   if (fechaSalida.value && fechaSalida.value <= checkIn) {
     fechaSalida.value = nextDayStr;
   }
   
-  // Check for conflicts if both dates are selected
-  if (this.value && fechaSalida.value) {
-    const hasConflict = await checkDateConflict(this.value, fechaSalida.value);
-    if (hasConflict) {
-      showToast("⚠️ Estas fechas ya están reservadas. Por favor selecciona otras fechas.");
+  // Only check for conflicts if BOTH dates are selected and we're not already checking
+  if (this.value && fechaSalida.value && !isCheckingDates) {
+    isCheckingDates = true;
+    const result = await checkDateConflict(this.value, fechaSalida.value);
+    isCheckingDates = false;
+    
+    if (result.hasConflict) {
+      const nextAvailable = getNextDay(result.nextAvailable);
+      const formattedDate = formatDateNice(nextAvailable);
+      showToast(`⚠️ Estas fechas ya están reservadas.<br>📅 Próxima fecha disponible: <strong>${formattedDate}</strong>`);
+      // Only clear the date that was just changed
       this.value = "";
-      fechaSalida.value = "";
     }
   }
 });
 
 fechaSalida.addEventListener("change", async function () {
-  if (fechaEntrada.value && this.value) {
-    const hasConflict = await checkDateConflict(fechaEntrada.value, this.value);
-    if (hasConflict) {
-      showToast("⚠️ Estas fechas ya están reservadas. Por favor selecciona otras fechas.");
+  // Only check if entrada is filled and we're not already checking
+  if (!fechaEntrada.value) {
+    showToast("⚠️ Por favor selecciona primero la fecha de entrada");
+    this.value = "";
+    return;
+  }
+  
+  if (fechaEntrada.value && this.value && !isCheckingDates) {
+    isCheckingDates = true;
+    const result = await checkDateConflict(fechaEntrada.value, this.value);
+    isCheckingDates = false;
+    
+    if (result.hasConflict) {
+      const nextAvailable = getNextDay(result.nextAvailable);
+      const formattedDate = formatDateNice(nextAvailable);
+      showToast(`⚠️ Estas fechas ya están reservadas.<br>📅 Próxima fecha disponible: <strong>${formattedDate}</strong>`);
+      // Only clear the date that was just changed
       this.value = "";
-      fechaEntrada.value = "";
     }
   }
 });
@@ -1932,17 +1981,24 @@ fechaSalida.addEventListener("change", async function () {
   btnSubmit.disabled = true;
 
   try {
-    // Save full registration (with guest data)
-    const registrationRef = await addDoc(collection(db, "registrations"), data);
-    
-    // ALSO save to public availability calendar (dates only, no guest info)
-    await addDoc(collection(db, "cabin_availability"), {
-      cabana: "Cabaña MariaMar-1",
-      fechaInicio: fechaEntradaVal,
-      fechaFin: fechaSalidaVal,
-      registrationId: registrationRef.id,  // Link to full record
-      createdAt: serverTimestamp()
-    });
+  // Save full registration (with guest data)
+  console.log("Creating registration...");
+  const registrationRef = await addDoc(collection(db, "registrations"), data);
+  console.log("Registration created with ID:", registrationRef.id);
+  
+  // ALSO save to public availability calendar (dates only, no guest info)
+  console.log("Creating availability record...");
+  const availabilityData = {
+    cabana: "Cabaña MariaMar-1",
+    fechaInicio: fechaEntradaVal,
+    fechaFin: fechaSalidaVal,
+    registrationId: registrationRef.id,
+    createdAt: serverTimestamp()
+  };
+  console.log("Availability data:", availabilityData);
+  
+  const availRef = await addDoc(collection(db, "cabin_availability"), availabilityData);
+  console.log("Availability record created with ID:", availRef.id);
 
     // Show success modal
     const modalHTML = `
