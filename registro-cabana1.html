@@ -1431,43 +1431,38 @@
         horaSalida.value = "13:00";
       }, 0);
 
-      // Check for date conflicts
-      async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
-        try {
-          const q = query(
-            collection(db, "registrations"),
-            where("cabana", "==", "Cabaña MariaMar-1")
-          );
-          const querySnapshot = await getDocs(q);
-          
-          const entradaDate = new Date(fechaEntradaVal + 'T00:00:00');
-          const salidaDate = new Date(fechaSalidaVal + 'T00:00:00');
-          
-          for (const doc of querySnapshot.docs) {
-            const reservation = doc.data();
-            if (reservation.fechaEntrada && reservation.fechaSalida) {
-              const resEntrada = new Date(reservation.fechaEntrada + 'T00:00:00');
-              const resSalida = new Date(reservation.fechaSalida + 'T00:00:00');
-              
-              // Check for overlap: new reservation overlaps if:
-              // - entrada is between resEntrada and resSalida, OR
-              // - salida is between resEntrada and resSalida, OR
-              // - new reservation completely contains existing reservation
-              if (
-                (entradaDate >= resEntrada && entradaDate <= resSalida) ||
-                (salidaDate >= resEntrada && salidaDate <= resSalida) ||
-                (entradaDate <= resEntrada && salidaDate >= resSalida)
-              ) {
-                return true; // Conflict found
-              }
-            }
-          }
-          return false; // No conflict
-        } catch (error) {
-          console.error("Error checking date conflict:", error);
-          return false; // On error, allow submission (fail open)
+      // Check for date conflicts - FLEXIBLE VERSION
+async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
+  try {
+    const q = query(
+      collection(db, "registrations"),
+      where("cabana", "==", "Cabaña MariaMar-1")
+    );
+    const querySnapshot = await getDocs(q);
+    
+    const entradaDate = new Date(fechaEntradaVal + 'T00:00:00');
+    const salidaDate = new Date(fechaSalidaVal + 'T00:00:00');
+    
+    for (const doc of querySnapshot.docs) {
+      const reservation = doc.data();
+      if (reservation.fechaEntrada && reservation.fechaSalida) {
+        const resEntrada = new Date(reservation.fechaEntrada + 'T00:00:00');
+        const resSalida = new Date(reservation.fechaSalida + 'T00:00:00');
+        
+        // FLEXIBLE: Allow booking if checkout day = checkin day
+        // Only conflict if dates actually overlap (not just touch)
+        if (entradaDate < resSalida && salidaDate > resEntrada && 
+            !(entradaDate.getTime() === resSalida.getTime())) {
+          return true; // Conflict found
         }
       }
+    }
+    return false;
+  } catch (error) {
+    console.error("Error checking date conflict:", error);
+    return false;
+  }
+}
 
       fechaEntrada.addEventListener("change", async function () {
         const checkIn = this.value;
