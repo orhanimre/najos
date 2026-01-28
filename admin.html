@@ -3430,7 +3430,7 @@ function renderMonth(date, container) {
   const grid = document.createElement('div');
   grid.className = 'calendar-grid';
   
-  const dayHeaders = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  const dayHeaders = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
   dayHeaders.forEach(day => {
     const header = document.createElement('div');
     header.className = 'calendar-day-header';
@@ -3476,7 +3476,9 @@ for (let i = 1; i <= daysInMonth; i++) {
   
   // Position the first day in the correct column
 if (i === 1) {
-  day.style.gridColumnStart = firstDay + 1;
+  // Adjust for Monday-first week: Mon=0, Tue=1, ..., Sun=6
+  const adjustedDay = firstDay === 0 ? 6 : firstDay - 1;
+  day.style.gridColumnStart = adjustedDay + 1;
 }
   
   const currentDate = new Date(year, month, i);
