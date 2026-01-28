@@ -1431,7 +1431,7 @@
         horaSalida.value = "13:00";
       }, 0);
 
-      // Check for date conflicts - FLEXIBLE VERSION
+      // Check for date conflicts - STRICT VERSION (No same-day turnover)
 async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
   try {
     const q = query(
@@ -1449,15 +1449,13 @@ async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
         const resEntrada = new Date(reservation.fechaEntrada + 'T00:00:00');
         const resSalida = new Date(reservation.fechaSalida + 'T00:00:00');
         
-        // FLEXIBLE: Allow booking if checkout day = checkin day
-        // Only conflict if dates actually overlap (not just touch)
-        if (entradaDate < resSalida && salidaDate > resEntrada && 
-            !(entradaDate.getTime() === resSalida.getTime())) {
-          return true; // Conflict found
+        // STRICT: Block if any day overlaps (including checkout/checkin same day)
+        if (entradaDate <= resSalida && salidaDate >= resEntrada) {
+          return true; // Conflict!
         }
       }
     }
-    return false;
+    return false; // No conflict
   } catch (error) {
     console.error("Error checking date conflict:", error);
     return false;
