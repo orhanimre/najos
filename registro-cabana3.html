@@ -1937,10 +1937,12 @@ fechaSalida.addEventListener("change", async function () {
   const fechaSalidaVal = formData.get("fechaSalida");
   
   // Check for date conflicts
-  const hasConflict = await checkDateConflict(fechaEntradaVal, fechaSalidaVal);
-  if (hasConflict) {
-    showToast("⚠️ Estas fechas ya están reservadas. Por favor selecciona otras fechas.");
-    errorMessage.textContent = "Las fechas seleccionadas ya están reservadas. Por favor elige otras fechas.";
+  const result = await checkDateConflict(fechaEntradaVal, fechaSalidaVal);
+  if (result.hasConflict) {
+    const nextAvailable = result.nextAvailable;
+    const formattedDate = formatDateNice(nextAvailable);
+    showToast(`⚠️ Estas fechas ya están reservadas.<br>📅 Próxima fecha disponible: <strong>${formattedDate}</strong>`);
+    errorMessage.textContent = `Las fechas seleccionadas ya están reservadas. Próxima fecha disponible: ${formattedDate}`;
     errorMessage.style.display = "block";
     setTimeout(() => {
       errorMessage.style.display = "none";
