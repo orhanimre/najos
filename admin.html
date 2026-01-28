@@ -2878,6 +2878,16 @@ window.handleDateChange = function(field) {
           
           // Delete from active registrations
           await deleteDoc(doc(db, "registrations", registrationId));
+
+          // ✅ ALSO DELETE FROM AVAILABILITY CALENDAR
+const availQ = query(
+  collection(db, "cabin_availability"),
+  where("registrationId", "==", registrationId)
+);
+const availSnapshot = await getDocs(availQ);
+availSnapshot.forEach(async (docSnap) => {
+  await deleteDoc(doc(db, "cabin_availability", docSnap.id));
+});
           
           // Update local arrays
           allRegistrations = allRegistrations.filter(r => r.id !== registrationId);
@@ -2949,48 +2959,45 @@ window.closeConfirmModal = function() {
       }
 
       window.showDetailModal = function (reg) {
-        const isMobile = window.innerWidth < 768;
-        if (!isMobile) return;
+  const modal = document.getElementById("detailModal");
+  const detailBody = document.getElementById("detailBody");
+  const timestamp = reg.timestamp
+    ? new Date(reg.timestamp.seconds * 1000)
+    : new Date();
+  const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
 
-        const modal = document.getElementById("detailModal");
-        const detailBody = document.getElementById("detailBody");
-        const timestamp = reg.timestamp
-          ? new Date(reg.timestamp.seconds * 1000)
-          : new Date();
-        const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
+  // Format: 25.01.2026 13:14
+  const formatDateTime = (date) => {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    return `${day}.${month}.${year} ${hours}:${minutes}`;
+  };
 
-        // Format: 25.01.2026 13:14
-        const formatDateTime = (date) => {
-          const day = String(date.getDate()).padStart(2, "0");
-          const month = String(date.getMonth() + 1).padStart(2, "0");
-          const year = date.getFullYear();
-          const hours = String(date.getHours()).padStart(2, "0");
-          const minutes = String(date.getMinutes()).padStart(2, "0");
-          return `${day}.${month}.${year} ${hours}:${minutes}`;
-        };
+  // Format date for stay
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "N/A";
+    const [year, month, day] = dateStr.split("-");
+    return `${day}.${month}.${year}`;
+  };
 
-        // Format date for stay
-        const formatDate = (dateStr) => {
-          if (!dateStr) return "N/A";
-          const [year, month, day] = dateStr.split("-");
-          return `${day}.${month}.${year}`;
-        };
+  // Function to check if companion has data
+  const hasCompanionData = (num) => {
+    return (
+      reg[`acomp${num}Nombre`] ||
+      reg[`acomp${num}Apellido`] ||
+      reg[`acomp${num}TipoId`] ||
+      reg[`acomp${num}NumId`]
+    );
+  };
 
-        // Function to check if companion has data
-        const hasCompanionData = (num) => {
-          return (
-            reg[`acomp${num}Nombre`] ||
-            reg[`acomp${num}Apellido`] ||
-            reg[`acomp${num}TipoId`] ||
-            reg[`acomp${num}NumId`]
-          );
-        };
-
-        // Build companions section with same style as principal guest
-        let companionsHTML = "";
-        for (let i = 0; i <= 2; i++) {
-          if (hasCompanionData(i)) {
-            companionsHTML += `
+  // Build companions section with same style as principal guest
+  let companionsHTML = "";
+  for (let i = 0; i <= 2; i++) {
+    if (hasCompanionData(i)) {
+      companionsHTML += `
         <div class="companion-item">
           <div class="companion-number">👤 Acompañante ${i + 1}</div>
           <div class="companion-info">
@@ -2999,10 +3006,10 @@ window.closeConfirmModal = function() {
           </div>
         </div>
       `;
-          }
-        }
+    }
+  }
 
-        detailBody.innerHTML = `
+  detailBody.innerHTML = `
     <div class="detail-body">
       <!-- Registration Info Card -->
       <div class="info-card">
@@ -3043,9 +3050,9 @@ window.closeConfirmModal = function() {
             </div>
           </div>
           <div class="guest-count">
-  <span class="guest-icon">👥</span>
-  <span class="guest-text">${(reg.totalHuespedes || 0) + 1} ${(reg.totalHuespedes || 0) + 1 === 1 ? "persona" : "personas"}</span>
-</div>
+            <span class="guest-icon">👥</span>
+            <span class="guest-text">${(reg.totalHuespedes || 0) + 1} ${(reg.totalHuespedes || 0) + 1 === 1 ? "persona" : "personas"}</span>
+          </div>
         </div>
       </div>
 
@@ -3083,14 +3090,14 @@ window.closeConfirmModal = function() {
     
     <div class="detail-actions">
       <button class="delete-btn" onclick="event.stopPropagation(); deleteRegistration('${reg.id}', event)">
-  🗑️ Eliminar Registro
-</button>
+        🗑️ Eliminar Registro
+      </button>
     </div>
   `;
 
-        modal.classList.add("show");
-        document.body.style.overflow = "hidden";
-      };
+  modal.classList.add("show");
+  document.body.style.overflow = "hidden";
+};
 
       // Search functionality
 let searchTerm = '';
