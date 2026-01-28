@@ -3476,9 +3476,18 @@ for (let i = 1; i <= daysInMonth; i++) {
   
   // Position the first day in the correct column
 if (i === 1) {
-  // Adjust for Monday-first week: Mon=0, Tue=1, ..., Sun=6
-  const adjustedDay = firstDay === 0 ? 6 : firstDay - 1;
-  day.style.gridColumnStart = adjustedDay + 1;
+  // Adjust for Monday-first calendar
+  // JavaScript: Sun=0, Mon=1, Tue=2, Wed=3, Thu=4, Fri=5, Sat=6
+  // Our grid: Mon=1, Tue=2, Wed=3, Thu=4, Fri=5, Sat=6, Sun=7
+  let gridColumn;
+  if (firstDay === 0) {
+    // Sunday should be column 7
+    gridColumn = 7;
+  } else {
+    // Mon=1 should be column 1, Tue=2 should be column 2, etc.
+    gridColumn = firstDay;
+  }
+  day.style.gridColumnStart = gridColumn;
 }
   
   const currentDate = new Date(year, month, i);
