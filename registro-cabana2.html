@@ -1434,6 +1434,7 @@
       }, 0);
 
       // Check for date conflicts using public availability calendar
+// Check for date conflicts using public availability calendar
 async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
   try {
     // Get ALL availability records (no where clause to avoid permission issues)
@@ -1460,8 +1461,9 @@ async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
         const blockedStart = blocked.fechaInicio;
         const blockedEnd = blocked.fechaFin;
         
-        // Check if dates overlap
-        if (newStart <= blockedEnd && newEnd >= blockedStart) {
+        // ✅ FIXED: Check if dates overlap (allowing same-day check-in/check-out)
+        // Conflict only if: new check-in is BEFORE blocked check-out AND new check-out is AFTER blocked check-in
+        if (newStart < blockedEnd && newEnd > blockedStart) {
           console.log("CONFLICT FOUND!");
           conflictingReservation = blocked;
           break;
@@ -1473,7 +1475,7 @@ async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
       console.log("Conflict found with:", conflictingReservation);
       return {
         hasConflict: true,
-        nextAvailable: conflictingReservation.fechaFin
+        nextAvailable: conflictingReservation.fechaFin  // This is already the check-out date
       };
     }
     
@@ -1496,12 +1498,6 @@ function formatDateNice(dateStr) {
   return date.toLocaleDateString('es-ES', options);
 }
 
-// Helper function to get next day after a date
-function getNextDay(dateStr) {
-  const date = new Date(dateStr + 'T00:00:00');
-  date.setDate(date.getDate() + 1);
-  return date.toISOString().split('T')[0];
-}
 
 fechaEntrada.addEventListener("change", async function () {
   const checkIn = this.value;
@@ -1523,10 +1519,10 @@ fechaEntrada.addEventListener("change", async function () {
     isCheckingDates = false;
     
     if (result.hasConflict) {
-      const nextAvailable = getNextDay(result.nextAvailable);
+      // ✅ FIXED: Don't add a day - the nextAvailable is already the check-out date
+      const nextAvailable = result.nextAvailable;
       const formattedDate = formatDateNice(nextAvailable);
       showToast(`⚠️ Estas fechas ya están reservadas.<br>📅 Próxima fecha disponible: <strong>${formattedDate}</strong>`);
-      // Only clear the date that was just changed
       this.value = "";
     }
   }
@@ -1546,10 +1542,10 @@ fechaSalida.addEventListener("change", async function () {
     isCheckingDates = false;
     
     if (result.hasConflict) {
-      const nextAvailable = getNextDay(result.nextAvailable);
+      // ✅ FIXED: Don't add a day - the nextAvailable is already the check-out date
+      const nextAvailable = result.nextAvailable;
       const formattedDate = formatDateNice(nextAvailable);
       showToast(`⚠️ Estas fechas ya están reservadas.<br>📅 Próxima fecha disponible: <strong>${formattedDate}</strong>`);
-      // Only clear the date that was just changed
       this.value = "";
     }
   }
