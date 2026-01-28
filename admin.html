@@ -3466,21 +3466,20 @@ function renderMonth(date, container) {
     }
   });
   
- // Add empty cells for previous month's days (hidden)
-for (let i = 0; i < firstDay; i++) {
-  const day = document.createElement('div');
-  day.className = 'calendar-day other-month';
-  // NO innerHTML - just empty cells that are invisible
-  grid.appendChild(day);
-}
   
   // Add current month's days
-  for (let i = 1; i <= daysInMonth; i++) {
-    const day = document.createElement('div');
-    day.className = 'calendar-day';
-    
-    const currentDate = new Date(year, month, i);
-    currentDate.setHours(0, 0, 0, 0);
+  // Add current month's days
+for (let i = 1; i <= daysInMonth; i++) {
+  const day = document.createElement('div');
+  day.className = 'calendar-day';
+  
+  // Position the first day in the correct column
+  if (i === 1) {
+    day.style.gridColumnStart = firstDay + 1;
+  }
+  
+  const currentDate = new Date(year, month, i);
+  currentDate.setHours(0, 0, 0, 0);
     
     // Check if past day
     if (currentDate < today) {
