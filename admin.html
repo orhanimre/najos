@@ -639,7 +639,7 @@ input[type="date"] {
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 0;
+  gap: 4px;
   margin-top: 12px;
   width: 100%;
   box-sizing: border-box;
@@ -834,32 +834,6 @@ input[type="date"] {
   font-weight: 600;
 }
 
-/* Seamless reservation connection */
-.calendar-day.reservation-middle-1::before,
-.calendar-day.reservation-middle-2::before,
-.calendar-day.reservation-middle-3::before,
-.calendar-day.reservation-middle-4::before,
-.calendar-day.reservation-middle-5::before,
-.calendar-day.reservation-middle-6::before,
-.calendar-day.reservation-middle-7::before,
-.calendar-day.reservation-middle-8::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -2px;
-  right: -2px;
-  bottom: 0;
-  z-index: -1;
-}
-
-.calendar-day.reservation-middle-1::before { background: rgba(59, 130, 246, 0.25); }
-.calendar-day.reservation-middle-2::before { background: rgba(16, 185, 129, 0.25); }
-.calendar-day.reservation-middle-3::before { background: rgba(245, 158, 11, 0.25); }
-.calendar-day.reservation-middle-4::before { background: rgba(236, 72, 153, 0.25); }
-.calendar-day.reservation-middle-5::before { background: rgba(139, 92, 246, 0.25); }
-.calendar-day.reservation-middle-6::before { background: rgba(239, 68, 68, 0.25); }
-.calendar-day.reservation-middle-7::before { background: rgba(20, 184, 166, 0.25); }
-.calendar-day.reservation-middle-8::before { background: rgba(249, 115, 22, 0.25); }
 
 /* Reservation Popup */
 .reservation-popup {
@@ -904,10 +878,9 @@ input[type="date"] {
 }
 
 /* Mobile Responsive */
-/* Mobile Responsive */
 @media (max-width: 768px) {
   .calendar-grid {
-    gap: 0;
+    gap: 2px;
   }
   
   .calendar-day {
