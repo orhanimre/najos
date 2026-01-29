@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro Cabaña 1 - Cabañas MariaMar</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/airbnb.css">
     <style>
       * {
         margin: 0;
@@ -399,6 +401,112 @@
         resize: vertical;
         min-height: 120px;
       }
+
+      /* ✅ NEW: Airbnb-style Date Picker */
+.date-picker-input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  background: #fafafa;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.date-picker-input:hover {
+  border-color: #cbd5e0;
+  background: white;
+}
+
+.date-picker-input.active {
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  background-color: white;
+}
+
+.date-picker-placeholder {
+  color: #a0aec0;
+}
+
+.date-picker-value {
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.date-picker-icon {
+  color: #667eea;
+  font-size: 18px;
+}
+
+/* Flatpickr Custom Styles */
+.flatpickr-calendar {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+  border: none !important;
+  border-radius: 16px !important;
+  font-family: inherit !important;
+}
+
+.flatpickr-months {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border-radius: 16px 16px 0 0 !important;
+}
+
+.flatpickr-current-month {
+  color: white !important;
+}
+
+.flatpickr-prev-month,
+.flatpickr-next-month {
+  fill: white !important;
+}
+
+.flatpickr-weekday {
+  color: #667eea !important;
+  font-weight: 700 !important;
+}
+
+.flatpickr-day.selected {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border-color: #667eea !important;
+}
+
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border-color: #667eea !important;
+}
+
+.flatpickr-day.inRange {
+  background: rgba(102, 126, 234, 0.15) !important;
+  border-color: rgba(102, 126, 234, 0.15) !important;
+}
+
+.flatpickr-day.disabled {
+  color: #e53e3e !important;
+  background: #fed7d7 !important;
+  text-decoration: line-through !important;
+  cursor: not-allowed !important;
+}
+
+.flatpickr-day.disabled:hover {
+  background: #fed7d7 !important;
+  border-color: #fed7d7 !important;
+}
+
+.flatpickr-day.today {
+  border-color: #48bb78 !important;
+  font-weight: 700 !important;
+}
+
+.flatpickr-day.today:hover {
+  background: #c6f6d5 !important;
+  border-color: #48bb78 !important;
+}
 
       .grid-2 {
         display: grid;
@@ -1192,63 +1300,54 @@
               </p>
             </div>
 
-            <div class="grid-2">
-              <div class="form-group">
-                <label for="fechaEntrada"
-                  >Fecha de Entrada <span class="required">*</span></label
-                >
-                <input
-                  type="date"
-                  id="fechaEntrada"
-                  name="fechaEntrada"
-                  required
-                />
-              </div>
+            <!-- ✅ NEW: Airbnb-style Date Picker -->
+<div class="form-group">
+  <label for="fechaEntrada"
+    >Fechas de Estadía <span class="required">*</span></label
+  >
+  <div class="date-picker-input" id="dateRangePicker">
+    <span class="date-picker-placeholder" id="dateRangeText">Selecciona tus fechas</span>
+    <span class="date-picker-icon">📅</span>
+  </div>
+  <input type="hidden" id="fechaEntrada" name="fechaEntrada" required />
+  <input type="hidden" id="fechaSalida" name="fechaSalida" required />
+  <div class="helper-text">
+    ❌ Fechas rojas = Reservadas | ✅ Fechas blancas = Disponibles
+  </div>
+</div>
 
-              <div class="form-group">
-                <label for="horaEntrada"
-                  >Hora de Entrada <span class="required">*</span></label
-                >
-                <input
-                  type="time"
-                  id="horaEntrada"
-                  name="horaEntrada"
-                  min="14:00"
-                  max="21:00"
-                  required
-                />
-                <div class="helper-text">Entre 2:00 PM y 9:00 PM</div>
-              </div>
-            </div>
+<div class="grid-2">
+  <div class="form-group">
+    <label for="horaEntrada"
+      >Hora de Entrada <span class="required">*</span></label
+    >
+    <input
+      type="time"
+      id="horaEntrada"
+      name="horaEntrada"
+      value="14:00"
+      min="14:00"
+      max="21:00"
+      required
+    />
+    <div class="helper-text">Entre 2:00 PM y 9:00 PM</div>
+  </div>
 
-            <div class="grid-2">
-              <div class="form-group">
-                <label for="fechaSalida"
-                  >Fecha de Salida <span class="required">*</span></label
-                >
-                <input
-                  type="date"
-                  id="fechaSalida"
-                  name="fechaSalida"
-                  required
-                />
-              </div>
-
-              <div class="form-group">
-                <label for="horaSalida"
-                  >Hora de Salida <span class="required">*</span></label
-                >
-                <input
-                  type="time"
-                  id="horaSalida"
-                  name="horaSalida"
-                  max="13:00"
-                  required
-                />
-                <div class="helper-text">Antes de 1:00 PM</div>
-              </div>
-            </div>
-          </div>
+  <div class="form-group">
+    <label for="horaSalida"
+      >Hora de Salida <span class="required">*</span></label
+    >
+    <input
+      type="time"
+      id="horaSalida"
+      name="horaSalida"
+      value="13:00"
+      max="13:00"
+      required
+    />
+    <div class="helper-text">Antes de 1:00 PM</div>
+  </div>
+</div>
 
           <!-- Step 3: Companions & Consent -->
           <div class="step-container" data-step="3">
@@ -1341,6 +1440,9 @@
         </form>
       </div>
     </div>
+    <!-- ✅ NEW: Flatpickr Library -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import {
@@ -1411,162 +1513,114 @@
       const consentCheckbox = document.getElementById("consent");
       const consentGroup = document.getElementById("consentGroup");
 
-      // Initialize dates
-      const today = new Date().toISOString().split("T")[0];
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      const tomorrowStr = tomorrow.toISOString().split("T")[0];
+      // ✅ NEW: Airbnb-style Date Picker with Flatpickr
+const horaEntrada = document.getElementById("horaEntrada");
+const horaSalida = document.getElementById("horaSalida");
+const fechaEntradaHidden = document.getElementById("fechaEntrada");
+const fechaSalidaHidden = document.getElementById("fechaSalida");
+const dateRangeText = document.getElementById("dateRangeText");
 
-      const fechaEntrada = document.getElementById("fechaEntrada");
-      const fechaSalida = document.getElementById("fechaSalida");
-      const horaEntrada = document.getElementById("horaEntrada");
-      const horaSalida = document.getElementById("horaSalida");
+let bookedDates = [];
 
-      fechaEntrada.setAttribute("min", today);
-      fechaSalida.setAttribute("min", tomorrowStr);
-
-      // Set default values immediately
-      setTimeout(() => {
-        fechaEntrada.value = today;
-        fechaSalida.value = tomorrowStr;
-        horaEntrada.value = "14:00";
-        horaSalida.value = "13:00";
-      }, 0);
-
-      // Check for date conflicts using public availability calendar
-// Check for date conflicts using public availability calendar
-async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
+// Fetch booked dates from Firebase
+async function fetchBookedDates() {
   try {
-    // Get ALL availability records (no where clause to avoid permission issues)
     const querySnapshot = await getDocs(collection(db, "cabin_availability"));
+    const booked = [];
     
-    console.log("Checking conflicts for:", fechaEntradaVal, "to", fechaSalidaVal);
-    console.log("Found", querySnapshot.docs.length, "total date ranges");
-    
-    let conflictingReservation = null;
-    
-    for (const doc of querySnapshot.docs) {
-      const blocked = doc.data();
-      
-      // Filter for our cabin in JavaScript
-      if (blocked.cabana !== "Cabaña MariaMar-1") {
-        continue;
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      if (data.cabana === "Cabaña MariaMar-1" && data.fechaInicio && data.fechaFin) {
+        booked.push({
+          from: data.fechaInicio,
+          to: data.fechaFin
+        });
       }
-      
-      console.log("Checking against:", blocked.fechaInicio, "to", blocked.fechaFin);
-      
-      if (blocked.fechaInicio && blocked.fechaFin) {
-        const newStart = fechaEntradaVal;
-        const newEnd = fechaSalidaVal;
-        const blockedStart = blocked.fechaInicio;
-        const blockedEnd = blocked.fechaFin;
-        
-        // ✅ FIXED: Check if dates overlap (allowing same-day check-in/check-out)
-        // Conflict only if: new check-in is BEFORE blocked check-out AND new check-out is AFTER blocked check-in
-        if (newStart < blockedEnd && newEnd > blockedStart) {
-          console.log("CONFLICT FOUND!");
-          conflictingReservation = blocked;
-          break;
-        }
-      }
-    }
+    });
     
-    if (conflictingReservation) {
-      console.log("Conflict found with:", conflictingReservation);
-      return {
-        hasConflict: true,
-        nextAvailable: conflictingReservation.fechaFin  // This is already the check-out date
-      };
-    }
-    
-    console.log("No conflicts found");
-    return { hasConflict: false };
+    bookedDates = booked;
+    console.log("Booked dates loaded:", bookedDates);
   } catch (error) {
-    console.error("Error checking date conflict:", error);
-    return { hasConflict: false };
+    console.error("Error fetching booked dates:", error);
   }
 }
 
-      // Track if we're currently checking to avoid double-checks
-// Track if we're currently checking to avoid double-checks
-let isCheckingDates = false;
-
-// Helper function to format date nicely
-function formatDateNice(dateStr) {
-  const date = new Date(dateStr + 'T00:00:00');
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  return date.toLocaleDateString('es-ES', options);
+// Initialize Flatpickr
+async function initializeDatePicker() {
+  await fetchBookedDates();
+  
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const fp = flatpickr("#dateRangePicker", {
+    mode: "range",
+    minDate: today,
+    dateFormat: "Y-m-d",
+    locale: "es",
+    inline: false,
+    showMonths: 1,
+    disable: [
+      ...bookedDates.map(range => ({
+        from: range.from,
+        to: range.to
+      }))
+    ],
+    onChange: function(selectedDates, dateStr, instance) {
+      if (selectedDates.length === 2) {
+        const [start, end] = selectedDates;
+        
+        const startFormatted = start.toLocaleDateString('es-ES', { 
+          day: 'numeric', 
+          month: 'short' 
+        });
+        const endFormatted = end.toLocaleDateString('es-ES', { 
+          day: 'numeric', 
+          month: 'short',
+          year: 'numeric'
+        });
+        
+        dateRangeText.textContent = `${startFormatted} - ${endFormatted}`;
+        dateRangeText.classList.remove('date-picker-placeholder');
+        dateRangeText.classList.add('date-picker-value');
+        
+        fechaEntradaHidden.value = start.toISOString().split('T')[0];
+        fechaSalidaHidden.value = end.toISOString().split('T')[0];
+        
+        console.log("Selected dates:", fechaEntradaHidden.value, "to", fechaSalidaHidden.value);
+      } else if (selectedDates.length === 1) {
+        dateRangeText.textContent = "Selecciona fecha de salida";
+        dateRangeText.classList.remove('date-picker-placeholder');
+        dateRangeText.classList.add('date-picker-value');
+      }
+    },
+    onOpen: function() {
+      document.getElementById("dateRangePicker").classList.add("active");
+    },
+    onClose: function() {
+      document.getElementById("dateRangePicker").classList.remove("active");
+    }
+  });
 }
 
+// Initialize on page load
+initializeDatePicker();
 
-fechaEntrada.addEventListener("change", async function () {
-  const checkIn = this.value;
-  const checkInDate = new Date(checkIn);
-  const nextDay = new Date(checkInDate);
-  nextDay.setDate(nextDay.getDate() + 1);
-  const nextDayStr = nextDay.toISOString().split("T")[0];
-  fechaSalida.setAttribute("min", nextDayStr);
-  
-  // Auto-adjust salida if it's before or equal to entrada
-  if (fechaSalida.value && fechaSalida.value <= checkIn) {
-    fechaSalida.value = nextDayStr;
-  }
-  
-  // Only check for conflicts if BOTH dates are selected and we're not already checking
-  if (this.value && fechaSalida.value && !isCheckingDates) {
-    isCheckingDates = true;
-    const result = await checkDateConflict(this.value, fechaSalida.value);
-    isCheckingDates = false;
-    
-    if (result.hasConflict) {
-      // ✅ FIXED: Don't add a day - the nextAvailable is already the check-out date
-      const nextAvailable = result.nextAvailable;
-      const formattedDate = formatDateNice(nextAvailable);
-      showToast(`⚠️ Estas fechas ya están reservadas.<br>📅 Próxima fecha disponible: <strong>${formattedDate}</strong>`);
-      this.value = "";
-    }
+// Validate time inputs
+horaEntrada.addEventListener("change", function () {
+  const time = this.value;
+  if (time < "14:00" || time > "21:00") {
+    showToast("⏰ La hora de entrada debe ser entre 2:00 PM y 9:00 PM");
+    this.value = "14:00";
   }
 });
 
-fechaSalida.addEventListener("change", async function () {
-  // Only check if entrada is filled and we're not already checking
-  if (!fechaEntrada.value) {
-    showToast("⚠️ Por favor selecciona primero la fecha de entrada");
-    this.value = "";
-    return;
-  }
-  
-  if (fechaEntrada.value && this.value && !isCheckingDates) {
-    isCheckingDates = true;
-    const result = await checkDateConflict(fechaEntrada.value, this.value);
-    isCheckingDates = false;
-    
-    if (result.hasConflict) {
-      // ✅ FIXED: Don't add a day - the nextAvailable is already the check-out date
-      const nextAvailable = result.nextAvailable;
-      const formattedDate = formatDateNice(nextAvailable);
-      showToast(`⚠️ Estas fechas ya están reservadas.<br>📅 Próxima fecha disponible: <strong>${formattedDate}</strong>`);
-      this.value = "";
-    }
+horaSalida.addEventListener("change", function () {
+  const time = this.value;
+  if (time > "13:00") {
+    showToast("⏰ La hora de salida debe ser antes de 1:00 PM");
+    this.value = "13:00";
   }
 });
-
-      // Validate time inputs
-      horaEntrada.addEventListener("change", function () {
-        const time = this.value;
-        if (time < "14:00" || time > "21:00") {
-          showToast("⏰ La hora de entrada debe ser entre 2:00 PM y 9:00 PM");
-          this.value = "14:00";
-        }
-      });
-
-      horaSalida.addEventListener("change", function () {
-        const time = this.value;
-        if (time > "13:00") {
-          showToast("⏰ La hora de salida debe ser antes de 1:00 PM");
-          this.value = "13:00";
-        }
-      });
 
       // Consent checkbox color change
       consentCheckbox.addEventListener("change", function () {
@@ -1877,79 +1931,69 @@ fechaSalida.addEventListener("change", async function () {
       }
 
       // Summary
-      function updateSummary() {
-        const formData = new FormData(form);
-        const nombre = formData.get("nombre");
-        const apellido = formData.get("apellido");
-        const totalHuespedes = formData.get("totalHuespedes");
-        const fechaEntradaVal = formData.get("fechaEntrada");
-        const fechaSalidaVal = formData.get("fechaSalida");
-        const horaEntradaVal = formData.get("horaEntrada");
-        const horaSalidaVal = formData.get("horaSalida");
+      // Summary
+function updateSummary() {
+  const formData = new FormData(form);
+  const nombre = formData.get("nombre");
+  const apellido = formData.get("apellido");
+  const totalHuespedes = formData.get("totalHuespedes");
+  const fechaEntradaVal = formData.get("fechaEntrada");
+  const fechaSalidaVal = formData.get("fechaSalida");
+  const horaEntradaVal = formData.get("horaEntrada");
+  const horaSalidaVal = formData.get("horaSalida");
 
-        // Count only filled companions
-        const filledCompanions = Object.values(companionFilledStatus).filter(
-          (status) => status === true,
-        ).length;
+  // Count only filled companions
+  const filledCompanions = Object.values(companionFilledStatus).filter(
+    (status) => status === true,
+  ).length;
 
-        let summaryHTML = `
-  <div class="summary-item">
-    <span class="summary-label">Huésped Principal:</span>
-    <span class="summary-value">${nombre} ${apellido}</span>
-  </div>
-  <div class="summary-item">
-    <span class="summary-label">Check-in:</span>
-    <span class="summary-value">${fechaEntradaVal} a las ${horaEntradaVal}</span>
-  </div>
-  <div class="summary-item">
-    <span class="summary-label">Check-out:</span>
-    <span class="summary-value">${fechaSalidaVal} a las ${horaSalidaVal}</span>
-  </div>
-  <div class="summary-item">
-    <span class="summary-label">Acompañantes:</span>
-    <span class="summary-value">${filledCompanions} registrado(s)</span>
-  </div>
+  let summaryHTML = `
+<div class="summary-item">
+  <span class="summary-label">Huésped Principal:</span>
+  <span class="summary-value">${nombre} ${apellido}</span>
+</div>
+<div class="summary-item">
+  <span class="summary-label">Check-in:</span>
+  <span class="summary-value">${fechaEntradaVal} a las ${horaEntradaVal}</span>
+</div>
+<div class="summary-item">
+  <span class="summary-label">Check-out:</span>
+  <span class="summary-value">${fechaSalidaVal} a las ${horaSalidaVal}</span>
+</div>
+<div class="summary-item">
+  <span class="summary-label">Acompañantes:</span>
+  <span class="summary-value">${filledCompanions} registrado(s)</span>
+</div>
 `;
 
-        // Add individual companion details for filled companions
-        companions.forEach((idx) => {
-          if (companionFilledStatus[idx]) {
-            const nombre = formData.get(`acomp${idx}Nombre`);
-            const apellido = formData.get(`acomp${idx}Apellido`);
-            summaryHTML += `
-        <div class="summary-item">
-          <span class="summary-label">Acompañante ${idx + 1}:</span>
-          <span class="summary-value">${nombre} ${apellido}</span>
-        </div>
-      `;
-          }
-        });
+  // Add individual companion details for filled companions
+  companions.forEach((idx) => {
+    if (companionFilledStatus[idx]) {
+      const nombre = formData.get(`acomp${idx}Nombre`);
+      const apellido = formData.get(`acomp${idx}Apellido`);
+      summaryHTML += `
+      <div class="summary-item">
+        <span class="summary-label">Acompañante ${idx + 1}:</span>
+        <span class="summary-value">${nombre} ${apellido}</span>
+      </div>
+    `;
+    }
+  });
 
-        summaryContent.innerHTML = summaryHTML;
-      }
+  summaryContent.innerHTML = summaryHTML;
+}
 
-      // Form Submission
-      form.addEventListener("submit", async function (e) {
+
+// ✅ ADD THIS - Form Submission
+form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const formData = new FormData(form);
   const fechaEntradaVal = formData.get("fechaEntrada");
   const fechaSalidaVal = formData.get("fechaSalida");
   
-  // Check for date conflicts
-  const result = await checkDateConflict(fechaEntradaVal, fechaSalidaVal);
-  if (result.hasConflict) {
-    const nextAvailable = result.nextAvailable;
-    const formattedDate = formatDateNice(nextAvailable);
-    showToast(`⚠️ Estas fechas ya están reservadas.<br>📅 Próxima fecha disponible: <strong>${formattedDate}</strong>`);
-    errorMessage.textContent = `Las fechas seleccionadas ya están reservadas. Próxima fecha disponible: ${formattedDate}`;
-    errorMessage.style.display = "block";
-    setTimeout(() => {
-      errorMessage.style.display = "none";
-    }, 5000);
-    return;
-  }
-  
+  // ✅ Conflict check removed - Flatpickr already prevents selecting booked dates
+
   const data = {
     cabana: "Cabaña MariaMar-1",
     timestamp: serverTimestamp(),
@@ -1979,24 +2023,24 @@ fechaSalida.addEventListener("change", async function () {
   btnSubmit.disabled = true;
 
   try {
-  // Save full registration (with guest data)
-  console.log("Creating registration...");
-  const registrationRef = await addDoc(collection(db, "registrations"), data);
-  console.log("Registration created with ID:", registrationRef.id);
-  
-  // ALSO save to public availability calendar (dates only, no guest info)
-  console.log("Creating availability record...");
-  const availabilityData = {
-    cabana: "Cabaña MariaMar-1",
-    fechaInicio: fechaEntradaVal,
-    fechaFin: fechaSalidaVal,
-    registrationId: registrationRef.id,
-    createdAt: serverTimestamp()
-  };
-  console.log("Availability data:", availabilityData);
-  
-  const availRef = await addDoc(collection(db, "cabin_availability"), availabilityData);
-  console.log("Availability record created with ID:", availRef.id);
+    // Save full registration (with guest data)
+    console.log("Creating registration...");
+    const registrationRef = await addDoc(collection(db, "registrations"), data);
+    console.log("Registration created with ID:", registrationRef.id);
+    
+    // ALSO save to public availability calendar (dates only, no guest info)
+    console.log("Creating availability record...");
+    const availabilityData = {
+      cabana: "Cabaña MariaMar-1",
+      fechaInicio: fechaEntradaVal,
+      fechaFin: fechaSalidaVal,
+      registrationId: registrationRef.id,
+      createdAt: serverTimestamp()
+    };
+    console.log("Availability data:", availabilityData);
+    
+    const availRef = await addDoc(collection(db, "cabin_availability"), availabilityData);
+    console.log("Availability record created with ID:", availRef.id);
 
     // Show success modal
     const modalHTML = `
