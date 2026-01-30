@@ -1021,6 +1021,17 @@
         transform: scale(0.95);
       }
 
+      /* Selected entrada date in salida calendar */
+      .calendar-day.selected-entrada {
+        background: #fbbf24;
+        border: 2px solid #f59e0b;
+      }
+
+      .calendar-day.selected-entrada .calendar-day-number {
+        color: #78350f;
+        font-weight: 700;
+      }
+
       /* Legend */
       .calendar-legend {
         padding: 16px 24px;
@@ -1710,6 +1721,7 @@ async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
         
         // ✅ FIXED: Check if dates overlap (allowing same-day check-in/check-out)
         // Conflict only if: new check-in is BEFORE blocked check-out AND new check-out is AFTER blocked check-in
+        // Same-day checkout/checkin IS allowed (newStart can equal blockedEnd)
         if (newStart < blockedEnd && newEnd > blockedStart) {
           console.log("CONFLICT FOUND!");
           conflictingReservation = blocked;
@@ -2438,8 +2450,12 @@ fechaSalida.addEventListener("change", async function () {
             dayCell.classList.add("today");
           }
           
+          // Check if this is the selected entrada date (when viewing salida calendar)
+          if (currentDatePickerField === "fechaSalida" && fechaEntrada.value === dateStr) {
+            dayCell.classList.add("selected-entrada");
+          }
           // Check if booked
-          if (bookedDates.includes(dateStr)) {
+          else if (bookedDates.includes(dateStr)) {
             dayCell.classList.add("booked");
           } else if (cellDate >= today) {
             dayCell.classList.add("available");
