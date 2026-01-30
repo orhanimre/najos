@@ -2484,11 +2484,11 @@ fechaSalida.addEventListener("change", async function () {
             dayCell.classList.add("selected-entrada");
           }
           // Check if this is the selected check-in date (entrada)
-          else if (fechaEntrada.value === dateStr) {
+          else if (fechaEntrada.value && fechaEntrada.value === dateStr) {
             dayCell.classList.add("check-in");
           }
           // Check if this is the selected check-out date (salida)
-          else if (fechaSalida.value === dateStr) {
+          else if (fechaSalida.value && fechaSalida.value === dateStr) {
             dayCell.classList.add("check-out");
           }
           // Check if date is between check-in and check-out
