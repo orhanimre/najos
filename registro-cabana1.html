@@ -2469,9 +2469,28 @@ fechaSalida.addEventListener("change", async function () {
         closeDatePickerModal();
       }
 
-      // Add click handlers to date fields
-      fechaEntrada.addEventListener("click", () => openDatePickerModal("fechaEntrada"));
-      fechaSalida.addEventListener("click", () => openDatePickerModal("fechaSalida"));
+      // Add click handlers to date fields - prevent default and show custom modal
+      fechaEntrada.addEventListener("click", function(e) {
+        e.preventDefault();
+        openDatePickerModal("fechaEntrada");
+      });
+      
+      fechaEntrada.addEventListener("focus", function(e) {
+        e.preventDefault();
+        this.blur();
+        openDatePickerModal("fechaEntrada");
+      });
+      
+      fechaSalida.addEventListener("click", function(e) {
+        e.preventDefault();
+        openDatePickerModal("fechaSalida");
+      });
+      
+      fechaSalida.addEventListener("focus", function(e) {
+        e.preventDefault();
+        this.blur();
+        openDatePickerModal("fechaSalida");
+      });
 
       // Close modal when clicking outside
       document.getElementById("datePickerModal").addEventListener("click", function(e) {
