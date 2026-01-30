@@ -1032,6 +1032,39 @@
         font-weight: 700;
       }
 
+      /* Check-in date - half fill left */
+      .calendar-day.check-in {
+        background: linear-gradient(90deg, #10b981 50%, transparent 50%);
+        border: 2px solid #059669;
+      }
+
+      .calendar-day.check-in .calendar-day-number {
+        color: white;
+        font-weight: 700;
+      }
+
+      /* Check-out date - half fill right */
+      .calendar-day.check-out {
+        background: linear-gradient(90deg, transparent 50%, #f97316 50%);
+        border: 2px solid #ea580c;
+      }
+
+      .calendar-day.check-out .calendar-day-number {
+        color: white;
+        font-weight: 700;
+      }
+
+      /* Range dates - full fill */
+      .calendar-day.in-range {
+        background: #a7f3d0;
+        border: 2px solid #6ee7b7;
+      }
+
+      .calendar-day.in-range .calendar-day-number {
+        color: #065f46;
+        font-weight: 600;
+      }
+
       /* Legend */
       .calendar-legend {
         padding: 16px 24px;
@@ -1723,6 +1756,11 @@ async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
         // Conflict only if: new check-in is BEFORE blocked check-out AND new check-out is AFTER blocked check-in
         // Same-day checkout/checkin IS allowed (newStart can equal blockedEnd)
         if (newStart < blockedEnd && newEnd > blockedStart) {
+          // BUT: Allow if newStart equals blockedEnd (same-day turnover)
+          if (newStart === blockedEnd) {
+            console.log("Same-day turnover allowed");
+            continue;
+          }
           console.log("CONFLICT FOUND!");
           conflictingReservation = blocked;
           break;
