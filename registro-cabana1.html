@@ -990,30 +990,32 @@
         z-index: 2;
       }
 
-      /* Booked dates - solid color */
+      /* Unavailable dates - gray */
       .calendar-day.booked {
-        background: #3b82f6;
-        border-radius: 8px;
+        background: #d1d5db;
+        color: #9ca3af;
+        cursor: not-allowed;
       }
 
       .calendar-day.booked .calendar-day-number {
-        color: white;
-        font-weight: 700;
+        color: #9ca3af;
+        font-weight: 600;
       }
 
-      /* Available dates - light background */
+      /* Available dates - black */
       .calendar-day.available {
-        background: #f0fff4;
-        border: 2px solid #48bb78;
+        background: white;
+        border: 1px solid #e5e7eb;
+        cursor: pointer;
       }
 
       .calendar-day.available .calendar-day-number {
-        color: #065f46;
+        color: #1f2937;
         font-weight: 600;
       }
 
       .calendar-day.available:hover {
-        background: #e6ffed;
+        background: #f3f4f6;
         transform: scale(1.05);
       }
 
@@ -1021,38 +1023,36 @@
         transform: scale(0.95);
       }
 
-      /* Selected entrada date in salida calendar */
-      .calendar-day.selected-entrada {
-        background: #fbbf24;
-        border: 2px solid #f59e0b;
+      /* Check-in date - black background */
+      .calendar-day.check-in {
+        background: #1f2937;
+        border: 2px solid #1f2937;
       }
 
-      .calendar-day.selected-entrada .calendar-day-number {
-        color: #78350f;
+      .calendar-day.check-in .calendar-day-number {
+        color: white;
         font-weight: 700;
       }
 
-      /* Check-in and check-out dates - half fill (same style) */
-      .calendar-day.check-in,
+      /* Check-out date - black background */
       .calendar-day.check-out {
-        background: linear-gradient(90deg, #10b981 50%, #f97316 50%);
-        border: 2px solid #059669;
+        background: #1f2937;
+        border: 2px solid #1f2937;
       }
 
-      .calendar-day.check-in .calendar-day-number,
       .calendar-day.check-out .calendar-day-number {
         color: white;
         font-weight: 700;
       }
 
-      /* Range dates - full fill */
+      /* Range dates - light gray fill */
       .calendar-day.in-range {
-        background: #a7f3d0;
-        border: 2px solid #6ee7b7;
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
       }
 
       .calendar-day.in-range .calendar-day-number {
-        color: #065f46;
+        color: #1f2937;
         font-weight: 600;
       }
 
