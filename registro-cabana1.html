@@ -1923,14 +1923,20 @@ fechaSalida.addEventListener("change", async function () {
         const requiredInputs = stepContainer.querySelectorAll("[required]");
 
         for (let input of requiredInputs) {
-          if (input.tagName === "SELECT") {
+          if (input.type === "checkbox") {
+            if (!input.checked) {
+              input.focus();
+              showToast("⚠️ Por favor acepta los términos para continuar");
+              return false;
+            }
+          } else if (input.tagName === "SELECT") {
             if (!input.value || input.value === "") {
               input.focus();
               input.reportValidity();
               showToast("⚠️ Por favor completa todos los campos obligatorios");
               return false;
             }
-          } else {
+          } else if (input.type !== "hidden") {
             if (!input.value.trim()) {
               input.focus();
               input.reportValidity();
