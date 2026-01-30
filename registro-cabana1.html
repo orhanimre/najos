@@ -2471,8 +2471,30 @@ fechaSalida.addEventListener("change", async function () {
         // Trigger change event
         field.dispatchEvent(new Event("change", { bubbles: true }));
         
-        // Close modal
-        closeDatePickerModal();
+        // If selecting entrada, automatically open salida picker
+        if (currentDatePickerField === "fechaEntrada") {
+          // Close current modal
+          closeDatePickerModal();
+          
+          // Set minimum for salida to the same day (same-day checkout allowed)
+          const checkInDate = new Date(dateStr);
+          const checkOutDate = new Date(checkInDate);
+          checkOutDate.setDate(checkOutDate.getDate() + 1);
+          const checkOutDateStr = checkOutDate.toISOString().split("T")[0];
+          
+          fechaSalida.setAttribute("min", dateStr);
+          
+          // Auto-set salida to next day
+          fechaSalida.value = checkOutDateStr;
+          
+          // Open salida picker after a short delay
+          setTimeout(() => {
+            openDatePickerModal("fechaSalida");
+          }, 300);
+        } else {
+          // Close modal for salida
+          closeDatePickerModal();
+        }
       }
 
       // Add click handlers to date fields - prevent default and show custom modal
