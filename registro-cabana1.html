@@ -834,6 +834,231 @@
         }
       }
 
+      /* Calendar Modal for Date Selection */
+      .date-picker-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(4px);
+        z-index: 10000;
+        padding: 20px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .date-picker-modal.show {
+        display: flex;
+      }
+
+      .date-picker-content {
+        background: white;
+        border-radius: 20px;
+        padding: 0;
+        max-width: 900px;
+        width: calc(100% - 32px);
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        animation: slideUp 0.3s ease;
+        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        box-sizing: border-box;
+      }
+
+      .date-picker-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 20px 20px 0 0;
+        flex-shrink: 0;
+      }
+
+      .date-picker-header h3 {
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .date-picker-body {
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .date-picker-scroll {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 24px;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .calendar-month-section {
+        margin-bottom: 32px;
+        width: 100%;
+        box-sizing: border-box;
+        min-width: 0;
+      }
+
+      .calendar-month-section:last-child {
+        margin-bottom: 0;
+      }
+
+      .calendar-month-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #e5e7eb;
+      }
+
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+        margin-top: 12px;
+        width: 100%;
+        box-sizing: border-box;
+        min-width: 0;
+      }
+
+      .calendar-day-header {
+        text-align: center;
+        font-weight: 700;
+        font-size: 11px;
+        color: #667eea;
+        padding: 12px 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .calendar-day {
+        position: relative;
+        aspect-ratio: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        padding: 8px;
+        background: white;
+        min-height: 50px;
+        max-height: 70px;
+        box-sizing: border-box;
+        border-radius: 8px;
+      }
+
+      .calendar-day.other-month {
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .calendar-day.today .calendar-day-number {
+        font-weight: 700;
+        color: #667eea;
+      }
+
+      .calendar-day.past {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+
+      .calendar-day.past .calendar-day-number {
+        color: #9ca3af;
+      }
+
+      .calendar-day-number {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1f2937;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* Booked dates - solid color */
+      .calendar-day.booked {
+        background: #3b82f6;
+        border-radius: 8px;
+      }
+
+      .calendar-day.booked .calendar-day-number {
+        color: white;
+        font-weight: 700;
+      }
+
+      /* Available dates - light background */
+      .calendar-day.available {
+        background: #f0fff4;
+        border: 2px solid #48bb78;
+      }
+
+      .calendar-day.available .calendar-day-number {
+        color: #065f46;
+        font-weight: 600;
+      }
+
+      .calendar-day.available:hover {
+        background: #e6ffed;
+        transform: scale(1.05);
+      }
+
+      .calendar-day.available:active {
+        transform: scale(0.95);
+      }
+
+      /* Legend */
+      .calendar-legend {
+        padding: 16px 24px;
+        background: #f9fafb;
+        border-top: 1px solid #e5e7eb;
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #4a5568;
+      }
+
+      .legend-color {
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .legend-color.booked {
+        background: #3b82f6;
+      }
+
+      .legend-color.available {
+        background: #f0fff4;
+        border: 2px solid #48bb78;
+      }
+
       /* Image Lightbox */
       .lightbox-overlay {
         position: fixed;
@@ -1340,7 +1565,29 @@
           </div>
         </form>
       </div>
+    <!-- Date Picker Calendar Modal -->
+    <div id="datePickerModal" class="date-picker-modal">
+      <div class="date-picker-content">
+        <div class="date-picker-header">
+          <h3 id="datePickerTitle">Selecciona una Fecha</h3>
+          <button class="modal-close" onclick="closeDatePickerModal()">✕</button>
+        </div>
+        <div class="date-picker-body">
+          <div class="date-picker-scroll" id="datePickerScroll"></div>
+          <div class="calendar-legend">
+            <div class="legend-item">
+              <div class="legend-color available"></div>
+              <span>Disponible</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color booked"></div>
+              <span>Reservado</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import {
@@ -2053,6 +2300,185 @@ fechaSalida.addEventListener("change", async function () {
 
       // Initialize
       updateProgress();
+
+      // ===== DATE PICKER CALENDAR FUNCTIONS =====
+      let currentDatePickerField = null;
+      let bookedDates = [];
+
+      // Load booked dates from Firestore
+      async function loadBookedDates() {
+        try {
+          const querySnapshot = await getDocs(collection(db, "cabin_availability"));
+          bookedDates = [];
+          
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            if (data.cabana === "Cabaña MariaMar-1" && data.fechaInicio && data.fechaFin) {
+              // Add all dates in the range
+              const start = new Date(data.fechaInicio);
+              const end = new Date(data.fechaFin);
+              
+              for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+                bookedDates.push(d.toISOString().split("T")[0]);
+              }
+            }
+          });
+          
+          console.log("Loaded booked dates:", bookedDates);
+        } catch (error) {
+          console.error("Error loading booked dates:", error);
+        }
+      }
+
+      // Open date picker modal
+      window.openDatePickerModal = async function(fieldId) {
+        currentDatePickerField = fieldId;
+        const modal = document.getElementById("datePickerModal");
+        const title = document.getElementById("datePickerTitle");
+        
+        if (fieldId === "fechaEntrada") {
+          title.textContent = "📅 Selecciona tu Fecha de Entrada";
+        } else {
+          title.textContent = "📅 Selecciona tu Fecha de Salida";
+        }
+        
+        // Load booked dates
+        await loadBookedDates();
+        
+        // Render calendar
+        renderCalendar();
+        
+        modal.classList.add("show");
+        document.body.style.overflow = "hidden";
+      };
+
+      // Close date picker modal
+      window.closeDatePickerModal = function() {
+        const modal = document.getElementById("datePickerModal");
+        modal.classList.remove("show");
+        document.body.style.overflow = "";
+      };
+
+      // Render calendar months
+      function renderCalendar() {
+        const scroll = document.getElementById("datePickerScroll");
+        scroll.innerHTML = "";
+        
+        const today = new Date();
+        const currentYear = today.getFullYear();
+        const currentMonth = today.getMonth();
+        
+        // Show 6 months
+        for (let i = 0; i < 6; i++) {
+          const date = new Date(currentYear, currentMonth + i, 1);
+          const monthSection = createMonthSection(date);
+          scroll.appendChild(monthSection);
+        }
+      }
+
+      // Create a month section
+      function createMonthSection(date) {
+        const section = document.createElement("div");
+        section.className = "calendar-month-section";
+        
+        const monthName = date.toLocaleDateString("es-ES", { month: "long", year: "numeric" });
+        const monthTitle = document.createElement("div");
+        monthTitle.className = "calendar-month-title";
+        monthTitle.textContent = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+        section.appendChild(monthTitle);
+        
+        // Create grid
+        const grid = document.createElement("div");
+        grid.className = "calendar-grid";
+        
+        // Day headers
+        const dayHeaders = ["L", "M", "X", "J", "V", "S", "D"];
+        dayHeaders.forEach((day) => {
+          const header = document.createElement("div");
+          header.className = "calendar-day-header";
+          header.textContent = day;
+          grid.appendChild(header);
+        });
+        
+        // Get first day of month and number of days
+        const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+        const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+        
+        // Add empty cells for days before month starts
+        for (let i = 0; i < (firstDay === 0 ? 6 : firstDay - 1); i++) {
+          const emptyCell = document.createElement("div");
+          emptyCell.className = "calendar-day other-month";
+          grid.appendChild(emptyCell);
+        }
+        
+        // Add days of month
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dayCell = document.createElement("div");
+          dayCell.className = "calendar-day";
+          
+          const cellDate = new Date(date.getFullYear(), date.getMonth(), day);
+          const dateStr = cellDate.toISOString().split("T")[0];
+          
+          // Check if past
+          if (cellDate < today) {
+            dayCell.classList.add("past");
+          }
+          
+          // Check if today
+          if (cellDate.toDateString() === today.toDateString()) {
+            dayCell.classList.add("today");
+          }
+          
+          // Check if booked
+          if (bookedDates.includes(dateStr)) {
+            dayCell.classList.add("booked");
+          } else if (cellDate >= today) {
+            dayCell.classList.add("available");
+          }
+          
+          const dayNumber = document.createElement("div");
+          dayNumber.className = "calendar-day-number";
+          dayNumber.textContent = day;
+          dayCell.appendChild(dayNumber);
+          
+          // Add click handler for available dates
+          if (dayCell.classList.contains("available")) {
+            dayCell.style.cursor = "pointer";
+            dayCell.addEventListener("click", () => selectDate(dateStr));
+          }
+          
+          grid.appendChild(dayCell);
+        }
+        
+        section.appendChild(grid);
+        return section;
+      }
+
+      // Select a date
+      function selectDate(dateStr) {
+        const field = document.getElementById(currentDatePickerField);
+        field.value = dateStr;
+        
+        // Trigger change event
+        field.dispatchEvent(new Event("change", { bubbles: true }));
+        
+        // Close modal
+        closeDatePickerModal();
+      }
+
+      // Add click handlers to date fields
+      fechaEntrada.addEventListener("click", () => openDatePickerModal("fechaEntrada"));
+      fechaSalida.addEventListener("click", () => openDatePickerModal("fechaSalida"));
+
+      // Close modal when clicking outside
+      document.getElementById("datePickerModal").addEventListener("click", function(e) {
+        if (e.target === this) {
+          closeDatePickerModal();
+        }
+      });
     </script>
   </body>
 </html>
