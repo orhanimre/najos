@@ -1032,23 +1032,14 @@
         font-weight: 700;
       }
 
-      /* Check-in date - half fill left */
-      .calendar-day.check-in {
-        background: linear-gradient(90deg, #10b981 50%, transparent 50%);
+      /* Check-in and check-out dates - half fill (same style) */
+      .calendar-day.check-in,
+      .calendar-day.check-out {
+        background: linear-gradient(90deg, #10b981 50%, #f97316 50%);
         border: 2px solid #059669;
       }
 
-      .calendar-day.check-in .calendar-day-number {
-        color: white;
-        font-weight: 700;
-      }
-
-      /* Check-out date - half fill right */
-      .calendar-day.check-out {
-        background: linear-gradient(90deg, transparent 50%, #f97316 50%);
-        border: 2px solid #ea580c;
-      }
-
+      .calendar-day.check-in .calendar-day-number,
       .calendar-day.check-out .calendar-day-number {
         color: white;
         font-weight: 700;
