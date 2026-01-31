@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro Cabaña 2 - Cabañas MariaMar</title>
+    <title>Registro Cabaña 1 - Cabañas MariaMar</title>
     <style>
       * {
         margin: 0;
@@ -352,7 +352,6 @@
       input[type="text"],
       input[type="tel"],
       input[type="number"],
-      input[type="date"],
       input[type="time"],
       textarea {
         width: 100%;
@@ -813,25 +812,371 @@
         border: 2px solid #e2e8f0;
       }
 
-      /* Mobile adjustments */
-      @media (max-width: 600px) {
-        .stepper-container {
-          max-width: 100%;
-          padding: 14px 16px;
-          gap: 12px;
-        }
+      /* Airbnb-Style Date Picker */
+      .date-picker-trigger {
+        width: 100%;
+        padding: 14px 18px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 16px;
+        background: #fafafa;
+        cursor: pointer;
+        text-align: left;
+        color: #2d3748;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-        .stepper-btn {
-          width: 48px;
-          height: 48px;
-          font-size: 22px;
-        }
+      .date-picker-trigger:hover {
+        border-color: #667eea;
+        background: white;
+      }
 
-        .stepper-value {
-          font-size: 28px;
-          min-width: 50px;
-          padding: 6px 12px;
-        }
+      .date-picker-trigger.has-value {
+        color: #1f2937;
+        font-weight: 600;
+      }
+
+      .date-picker-trigger .placeholder {
+        color: #9ca3af;
+      }
+
+      .date-picker-trigger .calendar-icon {
+        color: #667eea;
+        font-size: 18px;
+      }
+
+      /* Calendar Modal for Date Selection */
+      .date-picker-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(4px);
+        z-index: 10000;
+        padding: 20px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .date-picker-modal.show {
+        display: flex;
+      }
+
+      .date-picker-content {
+        background: white;
+        border-radius: 20px;
+        padding: 0;
+        max-width: 900px;
+        width: calc(100% - 32px);
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        animation: slideUp 0.3s ease;
+        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        box-sizing: border-box;
+      }
+
+      .date-picker-header {
+        padding: 24px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 20px 20px 0 0;
+        flex-shrink: 0;
+      }
+
+      .date-picker-header h3 {
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0 0 16px 0;
+        text-align: center;
+      }
+
+      .date-selection-buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .date-selection-btn {
+        flex: 1;
+        padding: 12px 20px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .date-selection-btn.active {
+        background: white;
+        color: #667eea;
+        border-color: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .date-selection-btn .label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        opacity: 0.8;
+      }
+
+      .date-selection-btn.active .label {
+        opacity: 1;
+      }
+
+      .date-selection-btn .value {
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .date-picker-body {
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .date-picker-scroll {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 24px;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .calendar-month-section {
+        margin-bottom: 32px;
+        width: 100%;
+        box-sizing: border-box;
+        min-width: 0;
+      }
+
+      .calendar-month-section:last-child {
+        margin-bottom: 0;
+      }
+
+      .calendar-month-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #e5e7eb;
+      }
+
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+        margin-top: 12px;
+        width: 100%;
+        box-sizing: border-box;
+        min-width: 0;
+      }
+
+      .calendar-day-header {
+        text-align: center;
+        font-weight: 700;
+        font-size: 11px;
+        color: #667eea;
+        padding: 12px 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .calendar-day {
+        position: relative;
+        aspect-ratio: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        padding: 8px;
+        background: white;
+        min-height: 50px;
+        max-height: 70px;
+        box-sizing: border-box;
+        border-radius: 8px;
+      }
+
+      .calendar-day.other-month {
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .calendar-day.today .calendar-day-number {
+        font-weight: 700;
+        color: #667eea;
+      }
+
+      .calendar-day.past {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+
+      .calendar-day.past .calendar-day-number {
+        color: #9ca3af;
+      }
+
+      .calendar-day-number {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1f2937;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* Unavailable dates - medium gray (booked) */
+      .calendar-day.booked {
+        background: #9ca3af;
+        color: white;
+        cursor: not-allowed;
+      }
+
+      .calendar-day.booked .calendar-day-number {
+        color: white;
+        font-weight: 600;
+      }
+
+      /* Checkout dates - half colored (available for check-in) */
+      .calendar-day.checkout-available {
+        background: linear-gradient(135deg, #9ca3af 0%, #9ca3af 50%, white 50%, white 100%);
+        border: 2px solid #9ca3af;
+        cursor: pointer;
+      }
+
+      .calendar-day.checkout-available .calendar-day-number {
+        color: #1f2937;
+        font-weight: 700;
+      }
+
+      .calendar-day.checkout-available:hover {
+        transform: scale(1.05);
+        border-color: #667eea;
+      }
+
+      /* Available dates - white with border */
+      .calendar-day.available {
+        background: white;
+        border: 1px solid #e5e7eb;
+        cursor: pointer;
+      }
+
+      .calendar-day.available .calendar-day-number {
+        color: #1f2937;
+        font-weight: 600;
+      }
+
+      .calendar-day.available:hover {
+        background: #f3f4f6;
+        transform: scale(1.05);
+        border-color: #667eea;
+      }
+
+      .calendar-day.available:active {
+        transform: scale(0.95);
+      }
+
+      /* Check-in date - DARK GRAY background */
+      .calendar-day.check-in {
+        background: #4b5563;
+        border: 2px solid #4b5563;
+      }
+
+      .calendar-day.check-in .calendar-day-number {
+        color: white;
+        font-weight: 700;
+      }
+
+      /* Check-out date - DARK GRAY background */
+      .calendar-day.check-out {
+        background: #4b5563;
+        border: 2px solid #4b5563;
+      }
+
+      .calendar-day.check-out .calendar-day-number {
+        color: white;
+        font-weight: 700;
+      }
+
+      /* Range dates - LIGHT GRAY fill */
+      .calendar-day.in-range {
+        background: #d1d5db;
+        border: 1px solid #d1d5db;
+      }
+
+      .calendar-day.in-range .calendar-day-number {
+        color: #1f2937;
+        font-weight: 600;
+      }
+
+      /* Legend */
+      .calendar-legend {
+        padding: 16px 24px;
+        background: #f9fafb;
+        border-top: 1px solid #e5e7eb;
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #4a5568;
+      }
+
+      .legend-color {
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .legend-color.booked {
+        background: #9ca3af;
+      }
+
+      .legend-color.selected {
+        background: #4b5563;
+      }
+
+      .legend-color.range {
+        background: #d1d5db;
+      }
+
+      .legend-color.available {
+        background: white;
+        border: 2px solid #e5e7eb;
       }
 
       /* Image Lightbox */
@@ -1007,13 +1352,6 @@
           grid-template-columns: 1fr;
         }
 
-        /* Keep date and time fields on same line on mobile */
-        .grid-2:has(#fechaEntrada),
-        .grid-2:has(#fechaSalida) {
-          grid-template-columns: 1fr 1fr;
-          gap: 12px;
-        }
-
         .step-navigation {
           flex-direction: column-reverse;
           gap: 12px;
@@ -1024,6 +1362,68 @@
         .nav-btn {
           padding: 14px 24px;
           font-size: 15px;
+        }
+
+        .stepper-container {
+          max-width: 100%;
+          padding: 14px 16px;
+          gap: 12px;
+        }
+
+        .stepper-btn {
+          width: 48px;
+          height: 48px;
+          font-size: 22px;
+        }
+
+        .stepper-value {
+          font-size: 28px;
+          min-width: 50px;
+          padding: 6px 12px;
+        }
+
+        .calendar-grid {
+          gap: 2px;
+        }
+        
+        .calendar-day {
+          padding: 4px;
+          min-height: 45px;
+          max-height: 60px;
+        }
+        
+        .calendar-day-number {
+          font-size: 12px;
+        }
+        
+        .calendar-day-header {
+          font-size: 9px;
+          padding: 6px 2px;
+        }
+        
+        .date-picker-scroll {
+          padding: 16px;
+        }
+        
+        .calendar-month-section {
+          margin-bottom: 24px;
+        }
+
+        .date-selection-buttons {
+          flex-direction: column;
+        }
+      }
+
+      /* Very Small Screens */
+      @media (max-width: 400px) {
+        .calendar-day {
+          min-height: 40px;
+          max-height: 50px;
+          padding: 2px;
+        }
+        
+        .calendar-day-number {
+          font-size: 11px;
         }
       }
     </style>
@@ -1187,24 +1587,21 @@
             <div class="step-intro">
               <h2>🏖️ ¡Genial! Ahora dime cuándo vienes a disfrutar el mar</h2>
               <p>
-                Cuéntanos los detalles de tu estadía para que todo esté listo
-                cuando llegues.
+                Selecciona tus fechas de entrada y salida en nuestro calendario interactivo.
               </p>
             </div>
 
-            <div class="grid-2">
-              <div class="form-group">
-                <label for="fechaEntrada"
-                  >Fecha de Entrada <span class="required">*</span></label
-                >
-                <input
-                  type="date"
-                  id="fechaEntrada"
-                  name="fechaEntrada"
-                  required
-                />
+            <div class="form-group">
+              <label>Fechas de Estadía <span class="required">*</span></label>
+              <div class="date-picker-trigger" onclick="openDatePickerModal()">
+                <span id="dateDisplayText" class="placeholder">Selecciona tus fechas</span>
+                <span class="calendar-icon">📅</span>
               </div>
+              <input type="hidden" id="fechaEntrada" name="fechaEntrada" required />
+              <input type="hidden" id="fechaSalida" name="fechaSalida" required />
+            </div>
 
+            <div class="grid-2">
               <div class="form-group">
                 <label for="horaEntrada"
                   >Hora de Entrada <span class="required">*</span></label
@@ -1218,20 +1615,6 @@
                   required
                 />
                 <div class="helper-text">Entre 2:00 PM y 9:00 PM</div>
-              </div>
-            </div>
-
-            <div class="grid-2">
-              <div class="form-group">
-                <label for="fechaSalida"
-                  >Fecha de Salida <span class="required">*</span></label
-                >
-                <input
-                  type="date"
-                  id="fechaSalida"
-                  name="fechaSalida"
-                  required
-                />
               </div>
 
               <div class="form-group">
@@ -1281,7 +1664,7 @@
                 required
               />
               <div class="helper-text">
-                Máximo 5 acompañantes (sin incluirte a ti)
+                Máximo 3 acompañantes (sin incluirte a ti)
               </div>
             </div>
 
@@ -1341,6 +1724,69 @@
         </form>
       </div>
     </div>
+
+    <!-- Date Picker Calendar Modal -->
+    <div id="datePickerModal" class="date-picker-modal">
+      <div class="date-picker-content">
+        <div class="date-picker-header">
+          <h3>📅 Selecciona tus Fechas</h3>
+          <div class="date-selection-buttons">
+            <button type="button" class="date-selection-btn active" id="checkInBtn">
+              <span class="label">Check-in</span>
+              <span class="value" id="checkInDisplay">Añadir fecha</span>
+            </button>
+            <button type="button" class="date-selection-btn" id="checkOutBtn">
+              <span class="label">Check-out</span>
+              <span class="value" id="checkOutDisplay">Añadir fecha</span>
+            </button>
+          </div>
+          <button class="modal-close" onclick="closeDatePickerModal()">✕</button>
+        </div>
+        <div class="date-picker-body">
+          <div class="date-picker-scroll" id="datePickerScroll"></div>
+          <div class="calendar-legend">
+            <div class="legend-item">
+              <div class="legend-color available"></div>
+              <span>Disponible</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color selected"></div>
+              <span>Seleccionado</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color range"></div>
+              <span>Tu estadía</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background: linear-gradient(135deg, #9ca3af 0%, #9ca3af 50%, white 50%, white 100%); border: 2px solid #9ca3af;"></div>
+              <span>Checkout (disponible)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color booked"></div>
+              <span>Reservado</span>
+            </div>
+          </div>
+          <div style="padding: 16px 24px; background: white; border-top: 1px solid #e5e7eb;">
+            <button type="button" id="confirmDatesBtn" onclick="confirmDatesAndClose()" style="
+              width: 100%;
+              padding: 14px 24px;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              border: none;
+              border-radius: 12px;
+              font-size: 16px;
+              font-weight: 700;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(102, 126, 234, 0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.4)'">
+              ✓ Confirmar Fechas
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import {
@@ -1349,8 +1795,6 @@
         addDoc,
         serverTimestamp,
         getDocs,
-        query,
-        where,
       } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -1371,28 +1815,32 @@
       let companions = [];
       let companionFilledStatus = {};
       const maxCompanions = 5;
+      let selectedCheckIn = null;
+      let selectedCheckOut = null;
+      let selectingCheckIn = true;
+      let bookedDates = [];
 
       function showToast(message) {
-  const toast = document.createElement("div");
-  toast.innerHTML = message;  // Changed from textContent to innerHTML
-  toast.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
-    color: white;
-    padding: 16px 24px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
-    z-index: 9999;
-    font-weight: 600;
-    animation: slideInRight 0.3s ease;
-    max-width: 400px;
-    line-height: 1.5;
-  `;
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 5000);  // Increased to 5 seconds for readability
-}
+        const toast = document.createElement("div");
+        toast.innerHTML = message;
+        toast.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+          color: white;
+          padding: 16px 24px;
+          border-radius: 12px;
+          box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
+          z-index: 9999;
+          font-weight: 600;
+          animation: slideInRight 0.3s ease;
+          max-width: 400px;
+          line-height: 1.5;
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 5000);
+      }
 
       // Elements
       const form = document.getElementById("registrationForm");
@@ -1402,154 +1850,20 @@
       const progressFill = document.getElementById("progressFill");
       const successMessage = document.getElementById("successMessage");
       const errorMessage = document.getElementById("errorMessage");
-      const companionsContainer = document.getElementById(
-        "companionsContainer",
-      );
+      const companionsContainer = document.getElementById("companionsContainer");
       const summaryBox = document.getElementById("summaryBox");
       const summaryContent = document.getElementById("summaryContent");
       const totalHuespedesInput = document.getElementById("totalHuespedes");
       const consentCheckbox = document.getElementById("consent");
       const consentGroup = document.getElementById("consentGroup");
-
-      // Initialize dates
-      const today = new Date().toISOString().split("T")[0];
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      const tomorrowStr = tomorrow.toISOString().split("T")[0];
-
-      const fechaEntrada = document.getElementById("fechaEntrada");
-      const fechaSalida = document.getElementById("fechaSalida");
       const horaEntrada = document.getElementById("horaEntrada");
       const horaSalida = document.getElementById("horaSalida");
 
-      fechaEntrada.setAttribute("min", today);
-      fechaSalida.setAttribute("min", tomorrowStr);
-
-      // Set default values immediately
+      // Set default time values
       setTimeout(() => {
-        fechaEntrada.value = today;
-        fechaSalida.value = tomorrowStr;
         horaEntrada.value = "14:00";
         horaSalida.value = "13:00";
       }, 0);
-
-      // Check for date conflicts using public availability calendar
-// Check for date conflicts using public availability calendar
-async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
-  try {
-    // Get ALL availability records (no where clause to avoid permission issues)
-    const querySnapshot = await getDocs(collection(db, "cabin_availability"));
-    
-    console.log("Checking conflicts for:", fechaEntradaVal, "to", fechaSalidaVal);
-    console.log("Found", querySnapshot.docs.length, "total date ranges");
-    
-    let conflictingReservation = null;
-    
-    for (const doc of querySnapshot.docs) {
-      const blocked = doc.data();
-      
-      // Filter for our cabin in JavaScript
-      if (blocked.cabana !== "Cabaña MariaMar-2") {
-        continue;
-      }
-      
-      console.log("Checking against:", blocked.fechaInicio, "to", blocked.fechaFin);
-      
-      if (blocked.fechaInicio && blocked.fechaFin) {
-        const newStart = fechaEntradaVal;
-        const newEnd = fechaSalidaVal;
-        const blockedStart = blocked.fechaInicio;
-        const blockedEnd = blocked.fechaFin;
-        
-        // ✅ FIXED: Check if dates overlap (allowing same-day check-in/check-out)
-        // Conflict only if: new check-in is BEFORE blocked check-out AND new check-out is AFTER blocked check-in
-        if (newStart < blockedEnd && newEnd > blockedStart) {
-          console.log("CONFLICT FOUND!");
-          conflictingReservation = blocked;
-          break;
-        }
-      }
-    }
-    
-    if (conflictingReservation) {
-      console.log("Conflict found with:", conflictingReservation);
-      return {
-        hasConflict: true,
-        nextAvailable: conflictingReservation.fechaFin  // This is already the check-out date
-      };
-    }
-    
-    console.log("No conflicts found");
-    return { hasConflict: false };
-  } catch (error) {
-    console.error("Error checking date conflict:", error);
-    return { hasConflict: false };
-  }
-}
-
-      // Track if we're currently checking to avoid double-checks
-// Track if we're currently checking to avoid double-checks
-let isCheckingDates = false;
-
-// Helper function to format date nicely
-function formatDateNice(dateStr) {
-  const date = new Date(dateStr + 'T00:00:00');
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  return date.toLocaleDateString('es-ES', options);
-}
-
-
-fechaEntrada.addEventListener("change", async function () {
-  const checkIn = this.value;
-  const checkInDate = new Date(checkIn);
-  const nextDay = new Date(checkInDate);
-  nextDay.setDate(nextDay.getDate() + 1);
-  const nextDayStr = nextDay.toISOString().split("T")[0];
-  fechaSalida.setAttribute("min", nextDayStr);
-  
-  // Auto-adjust salida if it's before or equal to entrada
-  if (fechaSalida.value && fechaSalida.value <= checkIn) {
-    fechaSalida.value = nextDayStr;
-  }
-  
-  // Only check for conflicts if BOTH dates are selected and we're not already checking
-  if (this.value && fechaSalida.value && !isCheckingDates) {
-    isCheckingDates = true;
-    const result = await checkDateConflict(this.value, fechaSalida.value);
-    isCheckingDates = false;
-    
-    if (result.hasConflict) {
-      // ✅ FIXED: Don't add a day - the nextAvailable is already the check-out date
-      const nextAvailable = result.nextAvailable;
-      const formattedDate = formatDateNice(nextAvailable);
-      showToast(`⚠️ Estas fechas ya están reservadas.<br>📅 Próxima fecha disponible: <strong>${formattedDate}</strong>`);
-      this.value = "";
-    }
-  }
-});
-
-fechaSalida.addEventListener("change", async function () {
-  // Only check if entrada is filled and we're not already checking
-  if (!fechaEntrada.value) {
-    showToast("⚠️ Por favor selecciona primero la fecha de entrada");
-    this.value = "";
-    return;
-  }
-  
-  if (fechaEntrada.value && this.value && !isCheckingDates) {
-    isCheckingDates = true;
-    const result = await checkDateConflict(fechaEntrada.value, this.value);
-    isCheckingDates = false;
-    
-    if (result.hasConflict) {
-      // ✅ FIXED: Don't add a day - the nextAvailable is already the check-out date
-      const nextAvailable = result.nextAvailable;
-      const formattedDate = formatDateNice(nextAvailable);
-      showToast(`⚠️ Estas fechas ya están reservadas.<br>📅 Próxima fecha disponible: <strong>${formattedDate}</strong>`);
-      this.value = "";
-    }
-  }
-});
 
       // Validate time inputs
       horaEntrada.addEventListener("change", function () {
@@ -1593,15 +1907,12 @@ fechaSalida.addEventListener("change", async function () {
         stepperValue.textContent = newCount;
         totalHuespedesInput.value = newCount;
 
-        // Update button states
         updateStepperButtons();
 
-        // Clear existing companions
         companionsContainer.innerHTML = "";
         companions = [];
         companionFilledStatus = {};
 
-        // Create companion cards
         for (let i = 0; i < newCount; i++) {
           companions.push(i);
           companionFilledStatus[i] = false;
@@ -1624,7 +1935,6 @@ fechaSalida.addEventListener("change", async function () {
         }
       });
 
-      // Initialize stepper
       updateStepperButtons();
 
       // Step Navigation
@@ -1676,14 +1986,20 @@ fechaSalida.addEventListener("change", async function () {
         const requiredInputs = stepContainer.querySelectorAll("[required]");
 
         for (let input of requiredInputs) {
-          if (input.tagName === "SELECT") {
+          if (input.type === "checkbox") {
+            if (!input.checked) {
+              input.focus();
+              showToast("⚠️ Por favor acepta los términos para continuar");
+              return false;
+            }
+          } else if (input.tagName === "SELECT") {
             if (!input.value || input.value === "") {
               input.focus();
               input.reportValidity();
               showToast("⚠️ Por favor completa todos los campos obligatorios");
               return false;
             }
-          } else {
+          } else if (input.type !== "hidden") {
             if (!input.value.trim()) {
               input.focus();
               input.reportValidity();
@@ -1712,6 +2028,10 @@ fechaSalida.addEventListener("change", async function () {
             stepperValue.textContent = "0";
             totalHuespedesInput.value = "0";
             updateStepperButtons();
+            selectedCheckIn = null;
+            selectedCheckOut = null;
+            selectingCheckIn = true;
+            updateDateDisplay();
             showStep(1);
           }, 300);
         }
@@ -1720,63 +2040,41 @@ fechaSalida.addEventListener("change", async function () {
       // Show banner in lightbox
       window.showBannerLightbox = function () {
         const lightboxHTML = `
-    <div class="lightbox-overlay" onclick="this.remove()">
-      <div class="lightbox-content" onclick="event.stopPropagation()">
-        <button class="lightbox-close" onclick="this.closest('.lightbox-overlay').remove()">×</button>
-        <img src="https://imgur.com/21Ay90Q.jpg" alt="Cabaña MariaMar-2" class="lightbox-image" />
-      </div>
-    </div>
-  `;
+          <div class="lightbox-overlay" onclick="this.remove()">
+            <div class="lightbox-content" onclick="event.stopPropagation()">
+              <button class="lightbox-close" onclick="this.closest('.lightbox-overlay').remove()">×</button>
+              <img src="https://imgur.com/21Ay90Q.jpg" alt="Cabaña MariaMar-2" class="lightbox-image" />
+            </div>
+          </div>
+        `;
         document.body.insertAdjacentHTML("beforeend", lightboxHTML);
       };
 
       // Show map in lightbox
       window.showMapModal = function (imageUrl, mapNumber) {
         const lightboxHTML = `
-    <div class="lightbox-overlay" onclick="this.remove()">
-      <div class="lightbox-content" onclick="event.stopPropagagation()">
-        <button class="lightbox-close" onclick="this.closest('.lightbox-overlay').remove()">×</button>
-        <img src="${imageUrl}" alt="Mapa de Sitios" class="lightbox-image" />
-        <div style="
-          background: rgba(255, 255, 255, 0.95);
-          color: #2d3748;
-          padding: 16px 20px;
-          border-radius: 12px;
-          margin-top: 20px;
-          text-align: center;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        ">
-          <div style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">📸 Para guardar el mapa:</div>
-          <div style="font-size: 14px; color: #4a5568; line-height: 1.5;">
-            Mantén presionada la imagen y selecciona<br>"Guardar imagen" o "Descargar imagen"
+          <div class="lightbox-overlay" onclick="this.remove()">
+            <div class="lightbox-content" onclick="event.stopPropagation()">
+              <button class="lightbox-close" onclick="this.closest('.lightbox-overlay').remove()">×</button>
+              <img src="${imageUrl}" alt="Mapa de Sitios" class="lightbox-image" />
+              <div style="
+                background: rgba(255, 255, 255, 0.95);
+                color: #2d3748;
+                padding: 16px 20px;
+                border-radius: 12px;
+                margin-top: 20px;
+                text-align: center;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+              ">
+                <div style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">📸 Para guardar el mapa:</div>
+                <div style="font-size: 14px; color: #4a5568; line-height: 1.5;">
+                  Mantén presionada la imagen y selecciona<br>"Guardar imagen" o "Descargar imagen"
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-  `;
+        `;
         document.body.insertAdjacentHTML("beforeend", lightboxHTML);
-      };
-
-      // Close success modal function
-      window.closeSuccessModal = function () {
-        const modal = document.getElementById("successModal");
-        if (modal) {
-          modal.style.animation = "fadeOut 0.3s ease";
-          setTimeout(() => {
-            modal.remove();
-            form.reset();
-            companions = [];
-            companionFilledStatus = {};
-            companionsContainer.innerHTML = "";
-            consentGroup.classList.remove("checked");
-            currentStep = 1;
-            currentCompanionCount = 0;
-            stepperValue.textContent = "0";
-            totalHuespedesInput.value = "0";
-            updateStepperButtons();
-            showStep(1);
-          }, 300);
-        }
       };
 
       btnNext.addEventListener("click", () => {
@@ -1819,7 +2117,6 @@ fechaSalida.addEventListener("change", async function () {
           companionFilledStatus[index] = false;
         }
 
-        // Update summary whenever status changes
         if (currentStep === 3) {
           updateSummary();
         }
@@ -1833,38 +2130,37 @@ fechaSalida.addEventListener("change", async function () {
         card.className = "companion-card";
         card.dataset.companionIndex = index;
         card.innerHTML = `
-    <div class="companion-header">
-      <div class="companion-title">👤 Acompañante ${index + 1}</div>
-    </div>
-    <div class="grid-2">
-      <div class="form-group">
-        <label>Nombre(s) <span class="required">*</span></label>
-        <input type="text" name="acomp${index}Nombre" placeholder="Nombre" class="companion-field" data-companion="${index}" required />
-      </div>
-      <div class="form-group">
-        <label>Apellido(s) <span class="required">*</span></label>
-        <input type="text" name="acomp${index}Apellido" placeholder="Apellido" class="companion-field" data-companion="${index}" required />
-      </div>
-    </div>
-    <div class="grid-2">
-      <div class="form-group">
-        <label>Tipo de Identificación <span class="required">*</span></label>
-        <select name="acomp${index}TipoId" class="companion-field" data-companion="${index}" required>
-          <option value="">Seleccione</option>
-          <option value="cc">Cédula de Ciudadanía</option>
-          <option value="ti">Tarjeta de Identidad</option>
-          <option value="ce">Cédula de Extranjería</option>
-          <option value="pasaporte">Pasaporte</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Número de Documento <span class="required">*</span></label>
-        <input type="text" name="acomp${index}NumId" placeholder="Número" class="companion-field" data-companion="${index}" required />
-      </div>
-    </div>
-  `;
+          <div class="companion-header">
+            <div class="companion-title">👤 Acompañante ${index + 1}</div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label>Nombre(s) <span class="required">*</span></label>
+              <input type="text" name="acomp${index}Nombre" placeholder="Nombre" class="companion-field" data-companion="${index}" required />
+            </div>
+            <div class="form-group">
+              <label>Apellido(s) <span class="required">*</span></label>
+              <input type="text" name="acomp${index}Apellido" placeholder="Apellido" class="companion-field" data-companion="${index}" required />
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label>Tipo de Identificación <span class="required">*</span></label>
+              <select name="acomp${index}TipoId" class="companion-field" data-companion="${index}" required>
+                <option value="">Seleccione</option>
+                <option value="cc">Cédula de Ciudadanía</option>
+                <option value="ti">Tarjeta de Identidad</option>
+                <option value="ce">Cédula de Extranjería</option>
+                <option value="pasaporte">Pasaporte</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Número de Documento <span class="required">*</span></label>
+              <input type="text" name="acomp${index}NumId" placeholder="Número" class="companion-field" data-companion="${index}" required />
+            </div>
+          </div>
+        `;
 
-        // Add event listeners to all fields in this companion card
         setTimeout(() => {
           const fields = card.querySelectorAll(".companion-field");
           fields.forEach((field) => {
@@ -1881,161 +2177,452 @@ fechaSalida.addEventListener("change", async function () {
         const formData = new FormData(form);
         const nombre = formData.get("nombre");
         const apellido = formData.get("apellido");
-        const totalHuespedes = formData.get("totalHuespedes");
-        const fechaEntradaVal = formData.get("fechaEntrada");
-        const fechaSalidaVal = formData.get("fechaSalida");
-        const horaEntradaVal = formData.get("horaEntrada");
-        const horaSalidaVal = formData.get("horaSalida");
 
-        // Count only filled companions
         const filledCompanions = Object.values(companionFilledStatus).filter(
           (status) => status === true,
         ).length;
 
         let summaryHTML = `
-  <div class="summary-item">
-    <span class="summary-label">Huésped Principal:</span>
-    <span class="summary-value">${nombre} ${apellido}</span>
-  </div>
-  <div class="summary-item">
-    <span class="summary-label">Check-in:</span>
-    <span class="summary-value">${fechaEntradaVal} a las ${horaEntradaVal}</span>
-  </div>
-  <div class="summary-item">
-    <span class="summary-label">Check-out:</span>
-    <span class="summary-value">${fechaSalidaVal} a las ${horaSalidaVal}</span>
-  </div>
-  <div class="summary-item">
-    <span class="summary-label">Acompañantes:</span>
-    <span class="summary-value">${filledCompanions} registrado(s)</span>
-  </div>
-`;
+          <div class="summary-item">
+            <span class="summary-label">Huésped Principal:</span>
+            <span class="summary-value">${nombre} ${apellido}</span>
+          </div>
+        `;
 
-        // Add individual companion details for filled companions
+        if (selectedCheckIn && selectedCheckOut) {
+          summaryHTML += `
+            <div class="summary-item">
+              <span class="summary-label">Check-in:</span>
+              <span class="summary-value">${formatDateNice(selectedCheckIn)} a las ${horaEntrada.value}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Check-out:</span>
+              <span class="summary-value">${formatDateNice(selectedCheckOut)} a las ${horaSalida.value}</span>
+            </div>
+          `;
+        }
+
+        summaryHTML += `
+          <div class="summary-item">
+            <span class="summary-label">Acompañantes:</span>
+            <span class="summary-value">${filledCompanions} registrado(s)</span>
+          </div>
+        `;
+
         companions.forEach((idx) => {
           if (companionFilledStatus[idx]) {
             const nombre = formData.get(`acomp${idx}Nombre`);
             const apellido = formData.get(`acomp${idx}Apellido`);
             summaryHTML += `
-        <div class="summary-item">
-          <span class="summary-label">Acompañante ${idx + 1}:</span>
-          <span class="summary-value">${nombre} ${apellido}</span>
-        </div>
-      `;
+              <div class="summary-item">
+                <span class="summary-label">Acompañante ${idx + 1}:</span>
+                <span class="summary-value">${nombre} ${apellido}</span>
+              </div>
+            `;
           }
         });
 
         summaryContent.innerHTML = summaryHTML;
       }
 
+      // Date Picker Functions
+      async function loadBookedDates() {
+        try {
+          const querySnapshot = await getDocs(collection(db, "cabin_availability"));
+          bookedDates = [];
+          window.checkoutDates = []; // Dates that are checkout days (available for check-in)
+          
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            if (data.cabana === "Cabaña MariaMar-2" && data.fechaInicio && data.fechaFin) {
+              const start = new Date(data.fechaInicio);
+              const end = new Date(data.fechaFin);
+              
+              // Add checkout date to special array (these are available for new check-ins)
+              window.checkoutDates.push(data.fechaFin);
+              
+              // Add all dates BEFORE checkout (checkout day is available)
+              for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+                bookedDates.push(d.toISOString().split("T")[0]);
+              }
+            }
+          });
+          
+          console.log("Loaded booked dates:", bookedDates);
+          console.log("Loaded checkout dates:", window.checkoutDates);
+        } catch (error) {
+          console.error("Error loading booked dates:", error);
+        }
+      }
+
+      window.openDatePickerModal = async function() {
+        const modal = document.getElementById("datePickerModal");
+        
+        await loadBookedDates();
+        renderCalendar();
+        
+        modal.classList.add("show");
+        document.body.style.overflow = "hidden";
+      };
+
+      window.closeDatePickerModal = function() {
+        const modal = document.getElementById("datePickerModal");
+        modal.classList.remove("show");
+        document.body.style.overflow = "";
+      };
+
+      window.confirmDatesAndClose = function() {
+        if (selectedCheckIn && selectedCheckOut) {
+          closeDatePickerModal();
+        } else {
+          showToast("⚠️ Por favor selecciona ambas fechas: check-in y check-out");
+        }
+      };
+
+      function formatDateNice(dateStr) {
+        const date = new Date(dateStr + 'T00:00:00');
+        const options = { weekday: 'short', day: 'numeric', month: 'short' };
+        return date.toLocaleDateString('es-ES', options);
+      }
+
+      function updateDateDisplay() {
+        const displayText = document.getElementById("dateDisplayText");
+        const trigger = document.querySelector(".date-picker-trigger");
+        const checkInDisplay = document.getElementById("checkInDisplay");
+        const checkOutDisplay = document.getElementById("checkOutDisplay");
+        const confirmBtn = document.getElementById("confirmDatesBtn");
+        
+        if (selectedCheckIn && selectedCheckOut) {
+          displayText.textContent = `${formatDateNice(selectedCheckIn)} → ${formatDateNice(selectedCheckOut)}`;
+          displayText.classList.remove("placeholder");
+          trigger.classList.add("has-value");
+          
+          checkInDisplay.textContent = formatDateNice(selectedCheckIn);
+          checkOutDisplay.textContent = formatDateNice(selectedCheckOut);
+          
+          // Enable confirm button
+          if (confirmBtn) {
+            confirmBtn.disabled = false;
+            confirmBtn.style.opacity = "1";
+          }
+        } else if (selectedCheckIn) {
+          displayText.textContent = `${formatDateNice(selectedCheckIn)} → Selecciona check-out`;
+          displayText.classList.remove("placeholder");
+          trigger.classList.add("has-value");
+          
+          checkInDisplay.textContent = formatDateNice(selectedCheckIn);
+          checkOutDisplay.textContent = "Añadir fecha";
+          
+          // Disable confirm button
+          if (confirmBtn) {
+            confirmBtn.disabled = true;
+            confirmBtn.style.opacity = "0.5";
+          }
+        } else {
+          displayText.textContent = "Selecciona tus fechas";
+          displayText.classList.add("placeholder");
+          trigger.classList.remove("has-value");
+          
+          checkInDisplay.textContent = "Añadir fecha";
+          checkOutDisplay.textContent = "Añadir fecha";
+          
+          // Disable confirm button
+          if (confirmBtn) {
+            confirmBtn.disabled = true;
+            confirmBtn.style.opacity = "0.5";
+          }
+        }
+        
+        // Update hidden inputs
+        document.getElementById("fechaEntrada").value = selectedCheckIn || "";
+        document.getElementById("fechaSalida").value = selectedCheckOut || "";
+        
+        // Update button states
+        const checkInBtn = document.getElementById("checkInBtn");
+        const checkOutBtn = document.getElementById("checkOutBtn");
+        
+        if (selectingCheckIn) {
+          checkInBtn.classList.add("active");
+          checkOutBtn.classList.remove("active");
+        } else {
+          checkInBtn.classList.remove("active");
+          checkOutBtn.classList.add("active");
+        }
+      }
+
+      // Button click handlers
+      document.getElementById("checkInBtn").addEventListener("click", function() {
+        selectingCheckIn = true;
+        updateDateDisplay();
+        renderCalendar();
+      });
+
+      document.getElementById("checkOutBtn").addEventListener("click", function() {
+        if (selectedCheckIn) {
+          selectingCheckIn = false;
+          updateDateDisplay();
+          renderCalendar();
+        } else {
+          showToast("⚠️ Primero selecciona tu fecha de check-in");
+        }
+      });
+
+      function renderCalendar() {
+        const scroll = document.getElementById("datePickerScroll");
+        scroll.innerHTML = "";
+        
+        const today = new Date();
+        const currentYear = today.getFullYear();
+        const currentMonth = today.getMonth();
+        
+        for (let i = 0; i < 6; i++) {
+          const date = new Date(currentYear, currentMonth + i, 1);
+          const monthSection = createMonthSection(date);
+          scroll.appendChild(monthSection);
+        }
+      }
+
+      function createMonthSection(date) {
+        const section = document.createElement("div");
+        section.className = "calendar-month-section";
+        
+        const monthName = date.toLocaleDateString("es-ES", { month: "long", year: "numeric" });
+        const monthTitle = document.createElement("div");
+        monthTitle.className = "calendar-month-title";
+        monthTitle.textContent = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+        section.appendChild(monthTitle);
+        
+        const grid = document.createElement("div");
+        grid.className = "calendar-grid";
+        
+        const dayHeaders = ["L", "M", "X", "J", "V", "S", "D"];
+        dayHeaders.forEach((day) => {
+          const header = document.createElement("div");
+          header.className = "calendar-day-header";
+          header.textContent = day;
+          grid.appendChild(header);
+        });
+        
+        const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+        const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+        
+        for (let i = 0; i < (firstDay === 0 ? 6 : firstDay - 1); i++) {
+          const emptyCell = document.createElement("div");
+          emptyCell.className = "calendar-day other-month";
+          grid.appendChild(emptyCell);
+        }
+        
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dayCell = document.createElement("div");
+          dayCell.className = "calendar-day";
+          
+          const cellDate = new Date(date.getFullYear(), date.getMonth(), day);
+          const dateStr = cellDate.toISOString().split("T")[0];
+          
+          if (cellDate < today) {
+            dayCell.classList.add("past");
+          }
+          
+          if (cellDate.toDateString() === today.toDateString()) {
+            dayCell.classList.add("today");
+          }
+          
+          let isClickable = false;
+          
+          // Check if this date is the selected check-in
+          if (selectedCheckIn === dateStr) {
+            dayCell.classList.add("check-in");
+            isClickable = true; // Allow clicking to reset
+          }
+          // Check if this date is the selected check-out
+          else if (selectedCheckOut === dateStr) {
+            dayCell.classList.add("check-out");
+            isClickable = true; // Allow clicking to reset
+          }
+          // Check if date is between check-in and check-out
+          else if (selectedCheckIn && selectedCheckOut && dateStr > selectedCheckIn && dateStr < selectedCheckOut) {
+            dayCell.classList.add("in-range");
+            isClickable = true; // Allow clicking to reset
+          }
+          // Check if this is a checkout date (available for check-in) - only when selecting check-in
+          else if (selectingCheckIn && window.checkoutDates && window.checkoutDates.includes(dateStr) && cellDate >= today) {
+            dayCell.classList.add("checkout-available");
+            isClickable = true;
+          }
+          // Check if booked
+          else if (bookedDates.includes(dateStr)) {
+            dayCell.classList.add("booked");
+            isClickable = false;
+          } else if (cellDate >= today) {
+            // Available only if: after today AND (no check-in selected OR after check-in)
+            if (!selectingCheckIn && selectedCheckIn && dateStr <= selectedCheckIn) {
+              // Can't select check-out on or before check-in
+              dayCell.classList.add("past");
+              isClickable = false;
+            } else {
+              dayCell.classList.add("available");
+              isClickable = true;
+            }
+          }
+          
+          const dayNumber = document.createElement("div");
+          dayNumber.className = "calendar-day-number";
+          dayNumber.textContent = day;
+          dayCell.appendChild(dayNumber);
+          
+          if (isClickable) {
+            dayCell.style.cursor = "pointer";
+            dayCell.addEventListener("click", () => selectDate(dateStr));
+          }
+          
+          grid.appendChild(dayCell);
+        }
+        
+        section.appendChild(grid);
+        return section;
+      }
+
+      function selectDate(dateStr) {
+        if (selectingCheckIn) {
+          // Selecting check-in
+          selectedCheckIn = dateStr;
+          selectedCheckOut = null;
+          selectingCheckIn = false;
+          updateDateDisplay();
+          renderCalendar();
+        } else {
+          // Selecting check-out
+          if (dateStr <= selectedCheckIn) {
+            showToast("⚠️ La fecha de check-out debe ser después del check-in");
+            return;
+          }
+          
+          // Check if any booked dates exist between check-in and check-out
+          const checkInDate = new Date(selectedCheckIn);
+          const checkOutDate = new Date(dateStr);
+          let hasConflict = false;
+          
+          for (let d = new Date(checkInDate); d < checkOutDate; d.setDate(d.getDate() + 1)) {
+            const checkDateStr = d.toISOString().split("T")[0];
+            if (bookedDates.includes(checkDateStr)) {
+              hasConflict = true;
+              break;
+            }
+          }
+          
+          if (hasConflict) {
+            showToast("⚠️ Hay fechas reservadas en este rango. Por favor selecciona otras fechas.");
+            return;
+          }
+          
+          selectedCheckOut = dateStr;
+          
+          // After selecting check-out, prepare for next selection (which will reset)
+          selectingCheckIn = true;
+          
+          updateDateDisplay();
+          renderCalendar();
+        }
+      }
+
+      // Close modal when clicking outside
+      document.getElementById("datePickerModal").addEventListener("click", function(e) {
+        if (e.target === this) {
+          closeDatePickerModal();
+        }
+      });
+
       // Form Submission
       form.addEventListener("submit", async function (e) {
-  e.preventDefault();
+        e.preventDefault();
 
-  const formData = new FormData(form);
-  const fechaEntradaVal = formData.get("fechaEntrada");
-  const fechaSalidaVal = formData.get("fechaSalida");
-  
-  // Check for date conflicts
-  const result = await checkDateConflict(fechaEntradaVal, fechaSalidaVal);
-  if (result.hasConflict) {
-    const nextAvailable = result.nextAvailable;
-    const formattedDate = formatDateNice(nextAvailable);
-    showToast(`⚠️ Estas fechas ya están reservadas.<br>📅 Próxima fecha disponible: <strong>${formattedDate}</strong>`);
-    errorMessage.textContent = `Las fechas seleccionadas ya están reservadas. Próxima fecha disponible: ${formattedDate}`;
-    errorMessage.style.display = "block";
-    setTimeout(() => {
-      errorMessage.style.display = "none";
-    }, 5000);
-    return;
-  }
-  
-  const data = {
-    cabana: "Cabaña MariaMar-2",
-    timestamp: serverTimestamp(),
-    nombre: formData.get("nombre"),
-    apellido: formData.get("apellido"),
-    celular: formData.get("celular"),
-    tipoId: formData.get("tipoId"),
-    numeroId: formData.get("numeroId"),
-    ciudad: formData.get("ciudad"),
-    totalHuespedes: Number(formData.get("totalHuespedes") || 0),
-    fechaEntrada: formData.get("fechaEntrada"),
-    horaEntrada: formData.get("horaEntrada"),
-    fechaSalida: formData.get("fechaSalida"),
-    horaSalida: formData.get("horaSalida"),
-    consent: formData.get("consent") === "on",
-  };
+        if (!selectedCheckIn || !selectedCheckOut) {
+          showToast("⚠️ Por favor selecciona tus fechas de estadía");
+          return;
+        }
 
-  // Add companion data
-  companions.forEach((idx) => {
-    data[`acomp${idx}Nombre`] = formData.get(`acomp${idx}Nombre`) || "";
-    data[`acomp${idx}Apellido`] = formData.get(`acomp${idx}Apellido`) || "";
-    data[`acomp${idx}TipoId`] = formData.get(`acomp${idx}TipoId`) || "";
-    data[`acomp${idx}NumId`] = formData.get(`acomp${idx}NumId`) || "";
-  });
+        const formData = new FormData(form);
+        
+        const data = {
+          cabana: "Cabaña MariaMar-2",
+          timestamp: serverTimestamp(),
+          nombre: formData.get("nombre"),
+          apellido: formData.get("apellido"),
+          celular: formData.get("celular"),
+          tipoId: formData.get("tipoId"),
+          numeroId: formData.get("numeroId"),
+          ciudad: formData.get("ciudad"),
+          totalHuespedes: Number(formData.get("totalHuespedes") || 0),
+          fechaEntrada: selectedCheckIn,
+          horaEntrada: formData.get("horaEntrada"),
+          fechaSalida: selectedCheckOut,
+          horaSalida: formData.get("horaSalida"),
+          consent: formData.get("consent") === "on",
+        };
 
-  btnSubmit.textContent = "Enviando...";
-  btnSubmit.disabled = true;
+        companions.forEach((idx) => {
+          data[`acomp${idx}Nombre`] = formData.get(`acomp${idx}Nombre`) || "";
+          data[`acomp${idx}Apellido`] = formData.get(`acomp${idx}Apellido`) || "";
+          data[`acomp${idx}TipoId`] = formData.get(`acomp${idx}TipoId`) || "";
+          data[`acomp${idx}NumId`] = formData.get(`acomp${idx}NumId`) || "";
+        });
 
-  try {
-  // Save full registration (with guest data)
-  console.log("Creating registration...");
-  const registrationRef = await addDoc(collection(db, "registrations"), data);
-  console.log("Registration created with ID:", registrationRef.id);
-  
-  // ALSO save to public availability calendar (dates only, no guest info)
-  console.log("Creating availability record...");
-  const availabilityData = {
-    cabana: "Cabaña MariaMar-2",
-    fechaInicio: fechaEntradaVal,
-    fechaFin: fechaSalidaVal,
-    registrationId: registrationRef.id,
-    createdAt: serverTimestamp()
-  };
-  console.log("Availability data:", availabilityData);
-  
-  const availRef = await addDoc(collection(db, "cabin_availability"), availabilityData);
-  console.log("Availability record created with ID:", availRef.id);
+        btnSubmit.textContent = "Enviando...";
+        btnSubmit.disabled = true;
 
-    // Show success modal
-    const modalHTML = `
-      <div class="modal-overlay" id="successModal">
-        <div class="modal-content">
-          <button class="modal-close" onclick="closeSuccessModal()">×</button>
-          <div class="modal-icon">🎉</div>
-          <div class="modal-title">¡Registro Completado!</div>
-          <div class="modal-text">Te esperamos con arena, sol y buenas vibras.</div>
-          <div class="modal-divider">
-            <div class="modal-maps-title">📍 Mapas de Sitios de Interés</div>
-            <p style="font-size: 14px; margin-bottom: 15px; opacity: 0.9;">
-              Consulta los dos tipos de mapas con ubicaciones de playas, tiendas y restaurantes
-            </p>
-            <button type="button" onclick="showMapModal('https://i.imgur.com/1Nwxp1r.jpg', 'Normal')" class="modal-map-btn" style="cursor: pointer; border: none;">
-              🗺️ Mapa Vista Normal
-            </button>
-            <button type="button" onclick="showMapModal('https://i.imgur.com/7NskU8K.jpg', 'Satelite')" class="modal-map-btn" style="cursor: pointer; border: none;">
-              🛰️ Mapa Vista Satélite
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-    document.body.insertAdjacentHTML("beforeend", modalHTML);
-    errorMessage.style.display = "none";
-  } catch (error) {
-    console.error("Error:", error);
-    errorMessage.textContent = "Error al enviar. Por favor intenta nuevamente o contáctanos por WhatsApp.";
-    errorMessage.style.display = "block";
-    successMessage.style.display = "none";
-    setTimeout(() => {
-      errorMessage.style.display = "none";
-    }, 5000);
-  } finally {
-    btnSubmit.textContent = "✓ Enviar Registro";
-    btnSubmit.disabled = false;
-  }
-});
+        try {
+          const registrationRef = await addDoc(collection(db, "registrations"), data);
+          
+          const availabilityData = {
+            cabana: "Cabaña MariaMar-2",
+            fechaInicio: selectedCheckIn,
+            fechaFin: selectedCheckOut,
+            registrationId: registrationRef.id,
+            createdAt: serverTimestamp()
+          };
+          
+          await addDoc(collection(db, "cabin_availability"), availabilityData);
+
+          const modalHTML = `
+            <div class="modal-overlay" id="successModal">
+              <div class="modal-content">
+                <button class="modal-close" onclick="closeSuccessModal()">×</button>
+                <div class="modal-icon">🎉</div>
+                <div class="modal-title">¡Registro Completado!</div>
+                <div class="modal-text">Te esperamos con arena, sol y buenas vibras.</div>
+                <div class="modal-divider">
+                  <div class="modal-maps-title">📍 Mapas de Sitios de Interés</div>
+                  <p style="font-size: 14px; margin-bottom: 15px; opacity: 0.9;">
+                    Consulta los dos tipos de mapas con ubicaciones de playas, tiendas y restaurantes
+                  </p>
+                  <button type="button" onclick="showMapModal('https://i.imgur.com/1Nwxp1r.jpg', 'Normal')" class="modal-map-btn" style="cursor: pointer; border: none;">
+                    🗺️ Mapa Vista Normal
+                  </button>
+                  <button type="button" onclick="showMapModal('https://i.imgur.com/7NskU8K.jpg', 'Satelite')" class="modal-map-btn" style="cursor: pointer; border: none;">
+                    🛰️ Mapa Vista Satélite
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+          document.body.insertAdjacentHTML("beforeend", modalHTML);
+          errorMessage.style.display = "none";
+        } catch (error) {
+          console.error("Error:", error);
+          errorMessage.textContent = "Error al enviar. Por favor intenta nuevamente o contáctanos por WhatsApp.";
+          errorMessage.style.display = "block";
+          successMessage.style.display = "none";
+          setTimeout(() => {
+            errorMessage.style.display = "none";
+          }, 5000);
+        } finally {
+          btnSubmit.textContent = "✓ Enviar Registro";
+          btnSubmit.disabled = false;
+        }
+      });
 
       // Custom validation messages
       const requiredInputs = document.querySelectorAll("[required]");
@@ -2053,6 +2640,7 @@ fechaSalida.addEventListener("change", async function () {
 
       // Initialize
       updateProgress();
+      updateDateDisplay();
     </script>
   </body>
 </html>
