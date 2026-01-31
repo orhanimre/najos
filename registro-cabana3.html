@@ -1449,7 +1449,7 @@ async function checkDateConflict(fechaEntradaVal, fechaSalidaVal) {
       const blocked = doc.data();
       
       // Filter for our cabin in JavaScript
-      if (blocked.cabana !== "Cabaña MariaMar-1") {
+      if (blocked.cabana !== "Cabaña MariaMar-3") {
         continue;
       }
       
@@ -1951,7 +1951,7 @@ fechaSalida.addEventListener("change", async function () {
   }
   
   const data = {
-    cabana: "Cabaña MariaMar-1",
+    cabana: "Cabaña MariaMar-3",
     timestamp: serverTimestamp(),
     nombre: formData.get("nombre"),
     apellido: formData.get("apellido"),
@@ -1987,7 +1987,7 @@ fechaSalida.addEventListener("change", async function () {
   // ALSO save to public availability calendar (dates only, no guest info)
   console.log("Creating availability record...");
   const availabilityData = {
-    cabana: "Cabaña MariaMar-1",
+    cabana: "Cabaña MariaMar-3",
     fechaInicio: fechaEntradaVal,
     fechaFin: fechaSalidaVal,
     registrationId: registrationRef.id,
