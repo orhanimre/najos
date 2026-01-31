@@ -1061,6 +1061,23 @@
         font-weight: 600;
       }
 
+      /* Checkout dates - half colored (available for check-in) */
+      .calendar-day.checkout-available {
+        background: linear-gradient(135deg, #9ca3af 0%, #9ca3af 50%, white 50%, white 100%);
+        border: 2px solid #9ca3af;
+        cursor: pointer;
+      }
+
+      .calendar-day.checkout-available .calendar-day-number {
+        color: #1f2937;
+        font-weight: 700;
+      }
+
+      .calendar-day.checkout-available:hover {
+        transform: scale(1.05);
+        border-color: #667eea;
+      }
+
       /* Available dates - white with border */
       .calendar-day.available {
         background: white;
@@ -1741,6 +1758,10 @@
               <span>Tu estadía</span>
             </div>
             <div class="legend-item">
+              <div class="legend-color" style="background: linear-gradient(135deg, #9ca3af 0%, #9ca3af 50%, white 50%, white 100%); border: 2px solid #9ca3af;"></div>
+              <span>Checkout (disponible)</span>
+            </div>
+            <div class="legend-item">
               <div class="legend-color booked"></div>
               <span>Reservado</span>
             </div>
@@ -2209,12 +2230,16 @@
         try {
           const querySnapshot = await getDocs(collection(db, "cabin_availability"));
           bookedDates = [];
+          window.checkoutDates = []; // Dates that are checkout days (available for check-in)
           
           querySnapshot.forEach((doc) => {
             const data = doc.data();
             if (data.cabana === "Cabaña MariaMar-1" && data.fechaInicio && data.fechaFin) {
               const start = new Date(data.fechaInicio);
               const end = new Date(data.fechaFin);
+              
+              // Add checkout date to special array (these are available for new check-ins)
+              window.checkoutDates.push(data.fechaFin);
               
               // Add all dates BEFORE checkout (checkout day is available)
               for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
@@ -2224,6 +2249,7 @@
           });
           
           console.log("Loaded booked dates:", bookedDates);
+          console.log("Loaded checkout dates:", window.checkoutDates);
         } catch (error) {
           console.error("Error loading booked dates:", error);
         }
@@ -2404,28 +2430,41 @@
             dayCell.classList.add("today");
           }
           
+          let isClickable = false;
+          
           // Check if this date is the selected check-in
           if (selectedCheckIn === dateStr) {
             dayCell.classList.add("check-in");
+            isClickable = true; // Allow clicking to reset
           }
           // Check if this date is the selected check-out
           else if (selectedCheckOut === dateStr) {
             dayCell.classList.add("check-out");
+            isClickable = true; // Allow clicking to reset
           }
           // Check if date is between check-in and check-out
           else if (selectedCheckIn && selectedCheckOut && dateStr > selectedCheckIn && dateStr < selectedCheckOut) {
             dayCell.classList.add("in-range");
+            isClickable = true; // Allow clicking to reset
+          }
+          // Check if this is a checkout date (available for check-in) - only when selecting check-in
+          else if (selectingCheckIn && window.checkoutDates && window.checkoutDates.includes(dateStr) && cellDate >= today) {
+            dayCell.classList.add("checkout-available");
+            isClickable = true;
           }
           // Check if booked
           else if (bookedDates.includes(dateStr)) {
             dayCell.classList.add("booked");
+            isClickable = false;
           } else if (cellDate >= today) {
             // Available only if: after today AND (no check-in selected OR after check-in)
             if (!selectingCheckIn && selectedCheckIn && dateStr <= selectedCheckIn) {
               // Can't select check-out on or before check-in
               dayCell.classList.add("past");
+              isClickable = false;
             } else {
               dayCell.classList.add("available");
+              isClickable = true;
             }
           }
           
@@ -2434,7 +2473,7 @@
           dayNumber.textContent = day;
           dayCell.appendChild(dayNumber);
           
-          if (dayCell.classList.contains("available")) {
+          if (isClickable) {
             dayCell.style.cursor = "pointer";
             dayCell.addEventListener("click", () => selectDate(dateStr));
           }
