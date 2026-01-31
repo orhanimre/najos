@@ -2233,14 +2233,20 @@
         try {
           const querySnapshot = await getDocs(collection(db, "cabin_availability"));
           bookedDates = [];
-          window.checkoutDates = []; // Dates that are checkout days (available for check-in)
+          window.checkoutDates = []; // Dates that are checkout days (available for check-in, half-colored)
           const checkInDates = []; // Track all check-in dates
+          const checkOutDates = []; // Track all checkout dates
           
-          // First pass: collect all check-in dates
+          // First pass: collect all check-in and check-out dates
           querySnapshot.forEach((doc) => {
             const data = doc.data();
-            if (data.cabana === "Cabaña MariaMar-3" && data.fechaInicio) {
-              checkInDates.push(data.fechaInicio);
+            if (data.cabana === "Cabaña MariaMar-3") {
+              if (data.fechaInicio) {
+                checkInDates.push(data.fechaInicio);
+              }
+              if (data.fechaFin) {
+                checkOutDates.push(data.fechaFin);
+              }
             }
           });
           
@@ -2257,18 +2263,19 @@
               }
               
               // Check if checkout date is also a check-in date for another reservation
-              // If yes, mark it as booked too. If no, it's available for new check-in
-              if (!checkInDates.includes(data.fechaFin)) {
-                window.checkoutDates.push(data.fechaFin);
-              } else {
-                // Checkout date is also a check-in date, so it's booked
+              // If yes, mark it as booked (full color). If no, it's available for new check-in (half-colored)
+              if (checkInDates.includes(data.fechaFin)) {
+                // Checkout date is also a check-in date, so it's booked (full color)
                 bookedDates.push(data.fechaFin);
+              } else {
+                // Checkout date is NOT a check-in date, so it's available (half-colored)
+                window.checkoutDates.push(data.fechaFin);
               }
             }
           });
           
           console.log("Loaded booked dates:", bookedDates);
-          console.log("Loaded checkout dates (available for check-in):", window.checkoutDates);
+          console.log("Loaded checkout dates (half-colored, available for check-in):", window.checkoutDates);
         } catch (error) {
           console.error("Error loading booked dates:", error);
         }
