@@ -2231,25 +2231,41 @@
           const querySnapshot = await getDocs(collection(db, "cabin_availability"));
           bookedDates = [];
           window.checkoutDates = []; // Dates that are checkout days (available for check-in)
+          const checkInDates = []; // Track all check-in dates
           
+          // First pass: collect all check-in dates
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            if (data.cabana === "Cabaña MariaMar-2" && data.fechaInicio) {
+              checkInDates.push(data.fechaInicio);
+            }
+          });
+          
+          // Second pass: mark dates as booked
           querySnapshot.forEach((doc) => {
             const data = doc.data();
             if (data.cabana === "Cabaña MariaMar-2" && data.fechaInicio && data.fechaFin) {
               const start = new Date(data.fechaInicio);
               const end = new Date(data.fechaFin);
               
-              // Add checkout date to special array (these are available for new check-ins)
-              window.checkoutDates.push(data.fechaFin);
-              
-              // Add all dates BEFORE checkout (checkout day is available)
+              // Add all dates from check-in to check-out (inclusive of check-in, exclusive of check-out)
               for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
                 bookedDates.push(d.toISOString().split("T")[0]);
+              }
+              
+              // Check if checkout date is also a check-in date for another reservation
+              // If yes, mark it as booked too. If no, it's available for new check-in
+              if (!checkInDates.includes(data.fechaFin)) {
+                window.checkoutDates.push(data.fechaFin);
+              } else {
+                // Checkout date is also a check-in date, so it's booked
+                bookedDates.push(data.fechaFin);
               }
             }
           });
           
           console.log("Loaded booked dates:", bookedDates);
-          console.log("Loaded checkout dates:", window.checkoutDates);
+          console.log("Loaded checkout dates (available for check-in):", window.checkoutDates);
         } catch (error) {
           console.error("Error loading booked dates:", error);
         }
