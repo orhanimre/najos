@@ -2032,6 +2032,9 @@
             selectedCheckOut = null;
             selectingCheckIn = true;
             updateDateDisplay();
+            // Reset default times for next guest
+            horaEntrada.value = "14:00";
+            horaSalida.value = "13:00";
             showStep(1);
           }, 300);
         }
