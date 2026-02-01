@@ -900,32 +900,32 @@
       }
 
       .date-selection-buttons {
-  display: flex;
-  gap: 12px;
-  margin-top: 16px;
-}
+        display: flex;
+        gap: 12px;
+        margin-top: 16px;
+      }
 
-/* Keep buttons side by side on mobile */
-@media (max-width: 600px) {
-  .date-selection-buttons {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-  }
-  
-  .date-selection-btn {
-    padding: 10px 12px;
-    font-size: 13px;
-  }
-  
-  .date-selection-btn .label {
-    font-size: 9px;
-  }
-  
-  .date-selection-btn .value {
-    font-size: 13px;
-  }
-}
+      /* Keep buttons side by side on mobile */
+      @media (max-width: 600px) {
+        .date-selection-buttons {
+          display: flex;
+          flex-direction: row;
+          gap: 8px;
+        }
+
+        .date-selection-btn {
+          padding: 10px 12px;
+          font-size: 13px;
+        }
+
+        .date-selection-btn .label {
+          font-size: 9px;
+        }
+
+        .date-selection-btn .value {
+          font-size: 13px;
+        }
+      }
 
       .date-selection-btn {
         flex: 1;
@@ -1073,81 +1073,93 @@
 
       /* Unavailable dates - medium gray (booked) */
       /* Shared dates - FULL GRAY (not clickable) */
-.calendar-day.shared-booked {
-  background: #9ca3af;
-  color: white;
-  cursor: not-allowed;
-  border: 2px solid #9ca3af;
-}
+      .calendar-day.shared-booked {
+        background: #9ca3af;
+        color: white;
+        cursor: not-allowed;
+        border: 2px solid #9ca3af;
+      }
 
-.calendar-day.shared-booked .calendar-day-number {
-  color: white;
-  font-weight: 700;
-}
+      .calendar-day.shared-booked .calendar-day-number {
+        color: white;
+        font-weight: 700;
+      }
 
-/* Unshared check-in dates - HALF GRAY RIGHT (not clickable for check-in) */
-.calendar-day.checkin-only {
-  background: linear-gradient(90deg, white 0%, white 50%, #9ca3af 50%, #9ca3af 100%);
-  border: 2px solid #9ca3af;
-  cursor: not-allowed;
-}
+      /* Unshared check-in dates - HALF GRAY RIGHT (not clickable for check-in) */
+      .calendar-day.checkin-only {
+        background: linear-gradient(
+          90deg,
+          white 0%,
+          white 50%,
+          #9ca3af 50%,
+          #9ca3af 100%
+        );
+        border: 2px solid #9ca3af;
+        cursor: not-allowed;
+      }
 
-.calendar-day.checkin-only .calendar-day-number {
-  color: #1f2937;
-  font-weight: 700;
-}
+      .calendar-day.checkin-only .calendar-day-number {
+        color: #1f2937;
+        font-weight: 700;
+      }
 
-/* When checkin-only date is clickable (as checkout) */
-.calendar-day.checkin-only.clickable {
-  cursor: pointer;
-}
+      /* When checkin-only date is clickable (as checkout) */
+      .calendar-day.checkin-only.clickable {
+        cursor: pointer;
+      }
 
-.calendar-day.checkin-only.clickable:hover {
-  transform: scale(1.05);
-  border-color: #667eea;
-}
+      .calendar-day.checkin-only.clickable:hover {
+        transform: scale(1.05);
+        border-color: #667eea;
+      }
 
-/* Unshared checkout dates - HALF GRAY LEFT (available for check-in) */
-.calendar-day.checkout-available {
-  background: linear-gradient(90deg, #9ca3af 0%, #9ca3af 50%, white 50%, white 100%);
-  border: 2px solid #9ca3af;
-  cursor: pointer;
-}
+      /* Unshared checkout dates - HALF GRAY LEFT (available for check-in) */
+      .calendar-day.checkout-available {
+        background: linear-gradient(
+          90deg,
+          #9ca3af 0%,
+          #9ca3af 50%,
+          white 50%,
+          white 100%
+        );
+        border: 2px solid #9ca3af;
+        cursor: pointer;
+      }
 
-.calendar-day.checkout-available .calendar-day-number {
-  color: #1f2937;
-  font-weight: 700;
-}
+      .calendar-day.checkout-available .calendar-day-number {
+        color: #1f2937;
+        font-weight: 700;
+      }
 
-.calendar-day.checkout-available:hover {
-  transform: scale(1.05);
-  border-color: #667eea;
-}
+      .calendar-day.checkout-available:hover {
+        transform: scale(1.05);
+        border-color: #667eea;
+      }
 
-/* Middle days - LIGHT GRAY (not clickable) */
-.calendar-day.middle-booked {
-  background: #d1d5db;
-  color: #4b5563;
-  cursor: not-allowed;
-  border: 1px solid #d1d5db;
-}
+      /* Middle days - LIGHT GRAY (not clickable) */
+      .calendar-day.middle-booked {
+        background: #d1d5db;
+        color: #4b5563;
+        cursor: not-allowed;
+        border: 1px solid #d1d5db;
+      }
 
-.calendar-day.middle-booked .calendar-day-number {
-  color: #4b5563;
-  font-weight: 600;
-}
+      .calendar-day.middle-booked .calendar-day-number {
+        color: #4b5563;
+        font-weight: 600;
+      }
 
-/* Legacy booked class - keep for backward compatibility */
-.calendar-day.booked {
-  background: #9ca3af;
-  color: white;
-  cursor: not-allowed;
-}
+      /* Legacy booked class - keep for backward compatibility */
+      .calendar-day.booked {
+        background: #9ca3af;
+        color: white;
+        cursor: not-allowed;
+      }
 
-.calendar-day.booked .calendar-day-number {
-  color: white;
-  font-weight: 600;
-}
+      .calendar-day.booked .calendar-day-number {
+        color: white;
+        font-weight: 600;
+      }
 
       /* Available dates - white with border */
       .calendar-day.available {
@@ -1216,46 +1228,46 @@
       }
 
       .legend-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #4a5568;
-}
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #4a5568;
+      }
 
-.legend-color {
-  width: 24px;
-  height: 24px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+      .legend-color {
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-/* Mobile legend simplification */
-@media (max-width: 600px) {
-  .legend-item.legend-hide-mobile {
-    display: none;
-  }
-  
-  .legend-item {
-    font-size: 11px;
-    gap: 6px;
-  }
-  
-  .legend-color {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-  }
-  
-  .calendar-legend {
-    padding: 12px 16px;
-    gap: 12px;
-    justify-content: space-around;
-  }
-}
+      /* Mobile legend simplification */
+      @media (max-width: 600px) {
+        .legend-item.legend-hide-mobile {
+          display: none;
+        }
+
+        .legend-item {
+          font-size: 11px;
+          gap: 6px;
+        }
+
+        .legend-color {
+          width: 20px;
+          height: 20px;
+          flex-shrink: 0;
+        }
+
+        .calendar-legend {
+          padding: 12px 16px;
+          gap: 12px;
+          justify-content: space-around;
+        }
+      }
 
       .legend-color.booked {
         background: #9ca3af;
@@ -1366,151 +1378,151 @@
 
       /* Mobile Responsive */
       /* Mobile Responsive */
-@media (max-width: 600px) {
-  body {
-    padding: 10px;
-  }
+      @media (max-width: 600px) {
+        body {
+          padding: 10px;
+        }
 
-  .container {
-    border-radius: 16px;
-  }
+        .container {
+          border-radius: 16px;
+        }
 
-  .header {
-    padding: 30px 20px 40px 20px;
-  }
+        .header {
+          padding: 30px 20px 40px 20px;
+        }
 
-  .header h1 {
-    font-size: 24px;
-  }
+        .header h1 {
+          font-size: 24px;
+        }
 
-  .cabin-badge {
-    font-size: 14px;
-    padding: 8px 16px;
-  }
+        .cabin-badge {
+          font-size: 14px;
+          padding: 8px 16px;
+        }
 
-  .banner-container {
-    margin: 15px auto 25px auto;
-  }
+        .banner-container {
+          margin: 15px auto 25px auto;
+        }
 
-  .banner-image {
-    max-height: 350px;
-  }
+        .banner-image {
+          max-height: 350px;
+        }
 
-  .banner-badge {
-    bottom: 15px;
-    right: 15px;
-    padding: 10px 16px;
-    font-size: 13px;
-  }
+        .banner-badge {
+          bottom: 15px;
+          right: 15px;
+          padding: 10px 16px;
+          font-size: 13px;
+        }
 
-  .logo {
-    max-width: 200px;
-  }
+        .logo {
+          max-width: 200px;
+        }
 
-  .progress-container {
-    padding: 20px 15px 15px;
-  }
+        .progress-container {
+          padding: 20px 15px 15px;
+        }
 
-  .progress-circle {
-    width: 35px;
-    height: 35px;
-    font-size: 14px;
-  }
+        .progress-circle {
+          width: 35px;
+          height: 35px;
+          font-size: 14px;
+        }
 
-  .progress-label {
-    font-size: 11px;
-    max-width: 80px;
-  }
+        .progress-label {
+          font-size: 11px;
+          max-width: 80px;
+        }
 
-  .progress-line {
-    left: 45px;
-    right: 45px;
-  }
+        .progress-line {
+          left: 45px;
+          right: 45px;
+        }
 
-  .form-content {
-    padding: 25px 18px;
-  }
+        .form-content {
+          padding: 25px 18px;
+        }
 
-  .step-intro {
-    padding: 16px;
-    margin-bottom: 25px;
-  }
+        .step-intro {
+          padding: 16px;
+          margin-bottom: 25px;
+        }
 
-  .step-intro h2 {
-    font-size: 20px;
-  }
+        .step-intro h2 {
+          font-size: 20px;
+        }
 
-  .step-intro p {
-    font-size: 14px;
-  }
+        .step-intro p {
+          font-size: 14px;
+        }
 
-  .grid-2 {
-    grid-template-columns: 1fr;
-  }
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
 
-  /* Keep time inputs on same line */
-  .step-container[data-step="2"] .grid-2 {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
+        /* Keep time inputs on same line */
+        .step-container[data-step="2"] .grid-2 {
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
 
-  .step-navigation {
-    flex-direction: column-reverse;
-    gap: 12px;
-    margin-top: 30px;
-    padding-top: 20px;
-  }
+        .step-navigation {
+          flex-direction: column-reverse;
+          gap: 12px;
+          margin-top: 30px;
+          padding-top: 20px;
+        }
 
-  .nav-btn {
-    padding: 14px 24px;
-    font-size: 15px;
-  }
+        .nav-btn {
+          padding: 14px 24px;
+          font-size: 15px;
+        }
 
-  .stepper-container {
-    max-width: 100%;
-    padding: 14px 16px;
-    gap: 12px;
-  }
+        .stepper-container {
+          max-width: 100%;
+          padding: 14px 16px;
+          gap: 12px;
+        }
 
-  .stepper-btn {
-    width: 48px;
-    height: 48px;
-    font-size: 22px;
-  }
+        .stepper-btn {
+          width: 48px;
+          height: 48px;
+          font-size: 22px;
+        }
 
-  .stepper-value {
-    font-size: 28px;
-    min-width: 50px;
-    padding: 6px 12px;
-  }
+        .stepper-value {
+          font-size: 28px;
+          min-width: 50px;
+          padding: 6px 12px;
+        }
 
-  .calendar-grid {
-    gap: 2px;
-  }
-  
-  .calendar-day {
-    padding: 4px;
-    min-height: 45px;
-    max-height: 60px;
-  }
-  
-  .calendar-day-number {
-    font-size: 12px;
-  }
-  
-  .calendar-day-header {
-    font-size: 9px;
-    padding: 6px 2px;
-  }
-  
-  .date-picker-scroll {
-    padding: 16px;
-  }
-  
-  .calendar-month-section {
-    margin-bottom: 24px;
-  }
-}
+        .calendar-grid {
+          gap: 2px;
+        }
+
+        .calendar-day {
+          padding: 4px;
+          min-height: 45px;
+          max-height: 60px;
+        }
+
+        .calendar-day-number {
+          font-size: 12px;
+        }
+
+        .calendar-day-header {
+          font-size: 9px;
+          padding: 6px 2px;
+        }
+
+        .date-picker-scroll {
+          padding: 16px;
+        }
+
+        .calendar-month-section {
+          margin-bottom: 24px;
+        }
+      }
 
       /* Very Small Screens */
       @media (max-width: 400px) {
@@ -1519,7 +1531,7 @@
           max-height: 50px;
           padding: 2px;
         }
-        
+
         .calendar-day-number {
           font-size: 11px;
         }
@@ -1651,8 +1663,7 @@
               </div>
               <div class="form-group">
                 <label for="numeroId"
-                  >Número de Documento
-                  <span class="required">*</span></label
+                  >Número de Documento <span class="required">*</span></label
                 >
                 <input
                   type="text"
@@ -1685,18 +1696,31 @@
             <div class="step-intro">
               <h2>🏖️ ¡Genial! Ahora dime cuándo vienes a disfrutar el mar</h2>
               <p>
-                Selecciona tus fechas de entrada y salida en nuestro calendario interactivo.
+                Selecciona tus fechas de entrada y salida en nuestro calendario
+                interactivo.
               </p>
             </div>
 
             <div class="form-group">
               <label>Fechas de Estadía <span class="required">*</span></label>
               <div class="date-picker-trigger" onclick="openDatePickerModal()">
-                <span id="dateDisplayText" class="placeholder">Selecciona tus fechas</span>
+                <span id="dateDisplayText" class="placeholder"
+                  >Selecciona tus fechas</span
+                >
                 <span class="calendar-icon">📅</span>
               </div>
-              <input type="hidden" id="fechaEntrada" name="fechaEntrada" required />
-              <input type="hidden" id="fechaSalida" name="fechaSalida" required />
+              <input
+                type="hidden"
+                id="fechaEntrada"
+                name="fechaEntrada"
+                required
+              />
+              <input
+                type="hidden"
+                id="fechaSalida"
+                name="fechaSalida"
+                required
+              />
             </div>
 
             <div class="grid-2">
@@ -1829,7 +1853,11 @@
         <div class="date-picker-header">
           <h3>📅 Selecciona tus Fechas</h3>
           <div class="date-selection-buttons">
-            <button type="button" class="date-selection-btn active" id="checkInBtn">
+            <button
+              type="button"
+              class="date-selection-btn active"
+              id="checkInBtn"
+            >
               <span class="label">Check-in</span>
               <span class="value" id="checkInDisplay">Añadir fecha</span>
             </button>
@@ -1838,34 +1866,55 @@
               <span class="value" id="checkOutDisplay">Añadir fecha</span>
             </button>
           </div>
-          <button class="modal-close" onclick="closeDatePickerModal()">✕</button>
+          <button class="modal-close" onclick="closeDatePickerModal()">
+            ✕
+          </button>
         </div>
         <div class="date-picker-body">
           <div class="date-picker-scroll" id="datePickerScroll"></div>
           <div class="calendar-legend">
-  <div class="legend-item legend-always-show">
-    <div class="legend-color available"></div>
-    <span>Disponible</span>
-  </div>
-  <div class="legend-item legend-always-show">
-    <div class="legend-color selected"></div>
-    <span>Seleccionado</span>
-  </div>
-</div>
-          <div style="padding: 16px 24px; background: white; border-top: 1px solid #e5e7eb;">
-            <button type="button" id="confirmDatesBtn" onclick="confirmDatesAndClose()" style="
-              width: 100%;
-              padding: 14px 24px;
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-              color: white;
-              border: none;
-              border-radius: 12px;
-              font-size: 16px;
-              font-weight: 700;
-              cursor: pointer;
-              transition: all 0.3s ease;
-              box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(102, 126, 234, 0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.4)'">
+            <div class="legend-item legend-always-show">
+              <div class="legend-color available"></div>
+              <span>Disponible</span>
+            </div>
+            <div class="legend-item legend-always-show">
+              <div class="legend-color selected"></div>
+              <span>Seleccionado</span>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 16px 24px;
+              background: white;
+              border-top: 1px solid #e5e7eb;
+            "
+          >
+            <button
+              type="button"
+              id="confirmDatesBtn"
+              onclick="confirmDatesAndClose()"
+              style="
+                width: 100%;
+                padding: 14px 24px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                border: none;
+                border-radius: 12px;
+                font-size: 16px;
+                font-weight: 700;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+              "
+              onmouseover="
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.5)';
+              "
+              onmouseout="
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.4)';
+              "
+            >
               ✓ Confirmar Fechas
             </button>
           </div>
@@ -1905,6 +1954,7 @@
       let selectedCheckOut = null;
       let selectingCheckIn = true;
       let bookedDates = [];
+      let bookedDatesLoaded = false;
 
       function showToast(message) {
         const toast = document.createElement("div");
@@ -1936,7 +1986,9 @@
       const progressFill = document.getElementById("progressFill");
       const successMessage = document.getElementById("successMessage");
       const errorMessage = document.getElementById("errorMessage");
-      const companionsContainer = document.getElementById("companionsContainer");
+      const companionsContainer = document.getElementById(
+        "companionsContainer",
+      );
       const summaryBox = document.getElementById("summaryBox");
       const summaryContent = document.getElementById("summaryContent");
       const totalHuespedesInput = document.getElementById("totalHuespedes");
@@ -2059,6 +2111,14 @@
           summaryBox.style.display = "block";
         } else {
           summaryBox.style.display = "none";
+        }
+
+        // Preload booked dates when entering Step 2
+        if (step === 2 && !bookedDatesLoaded) {
+          loadBookedDates().then(() => {
+            bookedDatesLoaded = true;
+            console.log("Booked dates preloaded for Step 2");
+          });
         }
 
         updateProgress();
@@ -2316,135 +2376,165 @@
 
       // Date Picker Functions
       async function loadBookedDates() {
-  try {
-    const querySnapshot = await getDocs(collection(db, "cabin_availability"));
-    bookedDates = [];
-    window.checkoutDates = []; // Unshared checkout dates (available for check-in, half-colored left)
-    window.checkinDates = []; // Unshared check-in dates (NOT available for check-in, half-colored right)
-    window.middleDates = []; // Middle days of reservations (light gray)
-    window.sharedDates = []; // Shared checkout/check-in dates (full gray)
-    
-    const checkInDates = []; // Track all check-in dates
-    const checkOutDates = []; // Track all checkout dates
-    
-    // First pass: collect all check-in and check-out dates
-    querySnapshot.forEach((doc) => {
-  const data = doc.data();
-  if (data.cabana === "Cabaña MariaMar-2") {  // ✅ CORRECT
-        if (data.fechaInicio) {
-          checkInDates.push(data.fechaInicio);
-        }
-        if (data.fechaFin) {
-          checkOutDates.push(data.fechaFin);
-        }
-      }
-    });
-    
-    // Second pass: categorize all dates
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      if (data.cabana === "Cabaña MariaMar-2" && data.fechaInicio && data.fechaFin) {
-        const start = new Date(data.fechaInicio);
-        const end = new Date(data.fechaFin);
-        
-        // Check if check-in is shared with another checkout
-        const isCheckInShared = checkOutDates.includes(data.fechaInicio);
-        // Check if checkout is shared with another check-in
-        const isCheckOutShared = checkInDates.includes(data.fechaFin);
-        
-        // Handle check-in date
-        if (isCheckInShared) {
-          // Shared check-in/checkout date - full gray
-          if (!window.sharedDates.includes(data.fechaInicio)) {
-            window.sharedDates.push(data.fechaInicio);
-          }
-        } else {
-          // Unshared check-in - half gray (right side)
-          if (!window.checkinDates.includes(data.fechaInicio)) {
-            window.checkinDates.push(data.fechaInicio);
-          }
-        }
-        
-        // Handle middle dates (between check-in and checkout)
-        for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
-          const dateStr = d.toISOString().split("T")[0];
-          if (dateStr !== data.fechaInicio && dateStr !== data.fechaFin) {
-            if (!window.middleDates.includes(dateStr)) {
-              window.middleDates.push(dateStr);
+        try {
+          const querySnapshot = await getDocs(
+            collection(db, "cabin_availability"),
+          );
+          bookedDates = [];
+          window.checkoutDates = []; // Unshared checkout dates (available for check-in, half-colored left)
+          window.checkinDates = []; // Unshared check-in dates (NOT available for check-in, half-colored right)
+          window.middleDates = []; // Middle days of reservations (light gray)
+          window.sharedDates = []; // Shared checkout/check-in dates (full gray)
+
+          const checkInDates = []; // Track all check-in dates
+          const checkOutDates = []; // Track all checkout dates
+
+          // First pass: collect all check-in and check-out dates
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            if (data.cabana === "Cabaña MariaMar-2") {
+              // ✅ CORRECT
+              if (data.fechaInicio) {
+                checkInDates.push(data.fechaInicio);
+              }
+              if (data.fechaFin) {
+                checkOutDates.push(data.fechaFin);
+              }
             }
-          }
-        }
-        
-        // Handle checkout date
-        if (isCheckOutShared) {
-          // Shared checkout/check-in date - full gray
-          if (!window.sharedDates.includes(data.fechaFin)) {
-            window.sharedDates.push(data.fechaFin);
-          }
-        } else {
-          // Unshared checkout - half gray (left side), available for new check-in
-          if (!window.checkoutDates.includes(data.fechaFin)) {
-            window.checkoutDates.push(data.fechaFin);
-          }
-        }
-        
-        // Add all booked dates (for backward compatibility)
-        for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
-          const dateStr = d.toISOString().split("T")[0];
-          if (!bookedDates.includes(dateStr)) {
-            bookedDates.push(dateStr);
-          }
-        }
-        if (isCheckOutShared && !bookedDates.includes(data.fechaFin)) {
-          bookedDates.push(data.fechaFin);
+          });
+
+          // Second pass: categorize all dates
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            if (
+              data.cabana === "Cabaña MariaMar-2" &&
+              data.fechaInicio &&
+              data.fechaFin
+            ) {
+              const start = new Date(data.fechaInicio);
+              const end = new Date(data.fechaFin);
+
+              // Check if check-in is shared with another checkout
+              const isCheckInShared = checkOutDates.includes(data.fechaInicio);
+              // Check if checkout is shared with another check-in
+              const isCheckOutShared = checkInDates.includes(data.fechaFin);
+
+              // Handle check-in date
+              if (isCheckInShared) {
+                // Shared check-in/checkout date - full gray
+                if (!window.sharedDates.includes(data.fechaInicio)) {
+                  window.sharedDates.push(data.fechaInicio);
+                }
+              } else {
+                // Unshared check-in - half gray (right side)
+                if (!window.checkinDates.includes(data.fechaInicio)) {
+                  window.checkinDates.push(data.fechaInicio);
+                }
+              }
+
+              // Handle middle dates (between check-in and checkout)
+              for (
+                let d = new Date(start);
+                d < end;
+                d.setDate(d.getDate() + 1)
+              ) {
+                const dateStr = d.toISOString().split("T")[0];
+                if (dateStr !== data.fechaInicio && dateStr !== data.fechaFin) {
+                  if (!window.middleDates.includes(dateStr)) {
+                    window.middleDates.push(dateStr);
+                  }
+                }
+              }
+
+              // Handle checkout date
+              if (isCheckOutShared) {
+                // Shared checkout/check-in date - full gray
+                if (!window.sharedDates.includes(data.fechaFin)) {
+                  window.sharedDates.push(data.fechaFin);
+                }
+              } else {
+                // Unshared checkout - half gray (left side), available for new check-in
+                if (!window.checkoutDates.includes(data.fechaFin)) {
+                  window.checkoutDates.push(data.fechaFin);
+                }
+              }
+
+              // Add all booked dates (for backward compatibility)
+              for (
+                let d = new Date(start);
+                d < end;
+                d.setDate(d.getDate() + 1)
+              ) {
+                const dateStr = d.toISOString().split("T")[0];
+                if (!bookedDates.includes(dateStr)) {
+                  bookedDates.push(dateStr);
+                }
+              }
+              if (isCheckOutShared && !bookedDates.includes(data.fechaFin)) {
+                bookedDates.push(data.fechaFin);
+              }
+            }
+          });
+
+          console.log(
+            "Loaded unshared check-in dates (half gray right):",
+            window.checkinDates,
+          );
+          console.log("Loaded middle dates (light gray):", window.middleDates);
+          console.log("Loaded shared dates (full gray):", window.sharedDates);
+          console.log(
+            "Loaded unshared checkout dates (half gray left, available):",
+            window.checkoutDates,
+          );
+        } catch (error) {
+          console.error("Error loading booked dates:", error);
         }
       }
-    });
-    
-    console.log("Loaded unshared check-in dates (half gray right):", window.checkinDates);
-    console.log("Loaded middle dates (light gray):", window.middleDates);
-    console.log("Loaded shared dates (full gray):", window.sharedDates);
-    console.log("Loaded unshared checkout dates (half gray left, available):", window.checkoutDates);
-  } catch (error) {
-    console.error("Error loading booked dates:", error);
-  }
-}
 
       window.openDatePickerModal = function () {
-  const modal = document.getElementById("datePickerModal");
-  
-  // Show modal immediately
-  modal.classList.add("show");
-  document.body.style.overflow = "hidden";
-  
-  // Show loading state in calendar
-  const scroll = document.getElementById("datePickerScroll");
-  scroll.innerHTML = '<div style="text-align: center; padding: 40px; color: #667eea; font-size: 18px;">⏳ Cargando disponibilidad...</div>';
-  
-  // Load data in background (non-blocking)
-  loadBookedDates().then(() => {
-    renderCalendar();
-  });
-};
+        const modal = document.getElementById("datePickerModal");
 
-      window.closeDatePickerModal = function() {
+        // Show modal immediately
+        modal.classList.add("show");
+        document.body.style.overflow = "hidden";
+
+        // If data is already loaded, render immediately
+        if (bookedDatesLoaded) {
+          renderCalendar();
+        } else {
+          // Show loading state
+          const scroll = document.getElementById("datePickerScroll");
+          scroll.innerHTML =
+            '<div style="text-align: center; padding: 40px; color: #667eea; font-size: 18px;">⏳ Cargando disponibilidad...</div>';
+
+          // Load data if not already loaded
+          loadBookedDates().then(() => {
+            bookedDatesLoaded = true;
+            renderCalendar();
+          });
+        }
+      };
+
+      window.closeDatePickerModal = function () {
         const modal = document.getElementById("datePickerModal");
         modal.classList.remove("show");
         document.body.style.overflow = "";
       };
 
-      window.confirmDatesAndClose = function() {
+      window.confirmDatesAndClose = function () {
         if (selectedCheckIn && selectedCheckOut) {
           closeDatePickerModal();
         } else {
-          showToast("⚠️ Por favor selecciona ambas fechas: check-in y check-out");
+          showToast(
+            "⚠️ Por favor selecciona ambas fechas: check-in y check-out",
+          );
         }
       };
 
       function formatDateNice(dateStr) {
-        const date = new Date(dateStr + 'T00:00:00');
-        const options = { weekday: 'short', day: 'numeric', month: 'short' };
-        return date.toLocaleDateString('es-ES', options);
+        const date = new Date(dateStr + "T00:00:00");
+        const options = { weekday: "short", day: "numeric", month: "short" };
+        return date.toLocaleDateString("es-ES", options);
       }
 
       function updateDateDisplay() {
@@ -2453,15 +2543,15 @@
         const checkInDisplay = document.getElementById("checkInDisplay");
         const checkOutDisplay = document.getElementById("checkOutDisplay");
         const confirmBtn = document.getElementById("confirmDatesBtn");
-        
+
         if (selectedCheckIn && selectedCheckOut) {
           displayText.textContent = `${formatDateNice(selectedCheckIn)} → ${formatDateNice(selectedCheckOut)}`;
           displayText.classList.remove("placeholder");
           trigger.classList.add("has-value");
-          
+
           checkInDisplay.textContent = formatDateNice(selectedCheckIn);
           checkOutDisplay.textContent = formatDateNice(selectedCheckOut);
-          
+
           // Enable confirm button
           if (confirmBtn) {
             confirmBtn.disabled = false;
@@ -2471,10 +2561,10 @@
           displayText.textContent = `${formatDateNice(selectedCheckIn)} → Selecciona check-out`;
           displayText.classList.remove("placeholder");
           trigger.classList.add("has-value");
-          
+
           checkInDisplay.textContent = formatDateNice(selectedCheckIn);
           checkOutDisplay.textContent = "Añadir fecha";
-          
+
           // Disable confirm button
           if (confirmBtn) {
             confirmBtn.disabled = true;
@@ -2484,25 +2574,25 @@
           displayText.textContent = "Selecciona tus fechas";
           displayText.classList.add("placeholder");
           trigger.classList.remove("has-value");
-          
+
           checkInDisplay.textContent = "Añadir fecha";
           checkOutDisplay.textContent = "Añadir fecha";
-          
+
           // Disable confirm button
           if (confirmBtn) {
             confirmBtn.disabled = true;
             confirmBtn.style.opacity = "0.5";
           }
         }
-        
+
         // Update hidden inputs
         document.getElementById("fechaEntrada").value = selectedCheckIn || "";
         document.getElementById("fechaSalida").value = selectedCheckOut || "";
-        
+
         // Update button states
         const checkInBtn = document.getElementById("checkInBtn");
         const checkOutBtn = document.getElementById("checkOutBtn");
-        
+
         if (selectingCheckIn) {
           checkInBtn.classList.add("active");
           checkOutBtn.classList.remove("active");
@@ -2513,30 +2603,34 @@
       }
 
       // Button click handlers
-      document.getElementById("checkInBtn").addEventListener("click", function() {
-        selectingCheckIn = true;
-        updateDateDisplay();
-        renderCalendar();
-      });
-
-      document.getElementById("checkOutBtn").addEventListener("click", function() {
-        if (selectedCheckIn) {
-          selectingCheckIn = false;
+      document
+        .getElementById("checkInBtn")
+        .addEventListener("click", function () {
+          selectingCheckIn = true;
           updateDateDisplay();
           renderCalendar();
-        } else {
-          showToast("⚠️ Primero selecciona tu fecha de check-in");
-        }
-      });
+        });
+
+      document
+        .getElementById("checkOutBtn")
+        .addEventListener("click", function () {
+          if (selectedCheckIn) {
+            selectingCheckIn = false;
+            updateDateDisplay();
+            renderCalendar();
+          } else {
+            showToast("⚠️ Primero selecciona tu fecha de check-in");
+          }
+        });
 
       function renderCalendar() {
         const scroll = document.getElementById("datePickerScroll");
         scroll.innerHTML = "";
-        
+
         const today = new Date();
         const currentYear = today.getFullYear();
         const currentMonth = today.getMonth();
-        
+
         for (let i = 0; i < 6; i++) {
           const date = new Date(currentYear, currentMonth + i, 1);
           const monthSection = createMonthSection(date);
@@ -2547,16 +2641,20 @@
       function createMonthSection(date) {
         const section = document.createElement("div");
         section.className = "calendar-month-section";
-        
-        const monthName = date.toLocaleDateString("es-ES", { month: "long", year: "numeric" });
+
+        const monthName = date.toLocaleDateString("es-ES", {
+          month: "long",
+          year: "numeric",
+        });
         const monthTitle = document.createElement("div");
         monthTitle.className = "calendar-month-title";
-        monthTitle.textContent = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+        monthTitle.textContent =
+          monthName.charAt(0).toUpperCase() + monthName.slice(1);
         section.appendChild(monthTitle);
-        
+
         const grid = document.createElement("div");
         grid.className = "calendar-grid";
-        
+
         const dayHeaders = ["L", "M", "X", "J", "V", "S", "D"];
         dayHeaders.forEach((day) => {
           const header = document.createElement("div");
@@ -2564,110 +2662,143 @@
           header.textContent = day;
           grid.appendChild(header);
         });
-        
-        const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-        const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-        
+
+        const firstDay = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          1,
+        ).getDay();
+        const daysInMonth = new Date(
+          date.getFullYear(),
+          date.getMonth() + 1,
+          0,
+        ).getDate();
+
         for (let i = 0; i < (firstDay === 0 ? 6 : firstDay - 1); i++) {
           const emptyCell = document.createElement("div");
           emptyCell.className = "calendar-day other-month";
           grid.appendChild(emptyCell);
         }
-        
+
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        
+
         for (let day = 1; day <= daysInMonth; day++) {
           const dayCell = document.createElement("div");
           dayCell.className = "calendar-day";
-          
+
           const cellDate = new Date(date.getFullYear(), date.getMonth(), day);
           const dateStr = cellDate.toISOString().split("T")[0];
-          
+
           if (cellDate < today) {
             dayCell.classList.add("past");
           }
-          
+
           if (cellDate.toDateString() === today.toDateString()) {
             dayCell.classList.add("today");
           }
-          
+
           let isClickable = false;
 
-// Check if this date is the selected check-in
-if (selectedCheckIn === dateStr) {
-  dayCell.classList.add("check-in");
-  isClickable = true; // Allow clicking to reset
-}
-// Check if this date is the selected check-out
-else if (selectedCheckOut === dateStr) {
-  dayCell.classList.add("check-out");
-  isClickable = true; // Allow clicking to reset
-}
-// Check if date is between check-in and check-out
-else if (selectedCheckIn && selectedCheckOut && dateStr > selectedCheckIn && dateStr < selectedCheckOut) {
-  dayCell.classList.add("in-range");
-  isClickable = true; // Allow clicking to reset
-}
-// Check if this is a SHARED date (full gray - not clickable)
-else if (window.sharedDates && window.sharedDates.includes(dateStr)) {
-  dayCell.classList.add("shared-booked");
-  isClickable = false;
-}
-// Check if this is an UNSHARED CHECK-IN date (half gray right - only clickable for checkout selection)
-else if (window.checkinDates && window.checkinDates.includes(dateStr)) {
-  dayCell.classList.add("checkin-only");
-  // Only clickable when selecting check-out AND it's after selected check-in
-  if (!selectingCheckIn && selectedCheckIn && dateStr > selectedCheckIn && cellDate >= today) {
-    isClickable = true;
-  } else {
-    isClickable = false;
-  }
-}
-// Check if this is an UNSHARED CHECKOUT date (half gray left - available for check-in)
-else if (window.checkoutDates && window.checkoutDates.includes(dateStr) && cellDate >= today) {
-  dayCell.classList.add("checkout-available");
-  // Only clickable when selecting check-in
-  if (selectingCheckIn) {
-    isClickable = true;
-  } else if (!selectingCheckIn && selectedCheckIn && dateStr > selectedCheckIn) {
-    // Also clickable as checkout if after check-in
-    isClickable = true;
-  } else {
-    isClickable = false;
-  }
-}
-// Check if this is a MIDDLE day (light gray - not clickable)
-else if (window.middleDates && window.middleDates.includes(dateStr)) {
-  dayCell.classList.add("middle-booked");
-  isClickable = false;
-}
-// Check if available
-else if (cellDate >= today) {
-  // Available only if: after today AND (no check-in selected OR after check-in)
-  if (!selectingCheckIn && selectedCheckIn && dateStr <= selectedCheckIn) {
-    // Can't select check-out on or before check-in
-    dayCell.classList.add("past");
-    isClickable = false;
-  } else {
-    dayCell.classList.add("available");
-    isClickable = true;
-  }
-}
-          
+          // Check if this date is the selected check-in
+          if (selectedCheckIn === dateStr) {
+            dayCell.classList.add("check-in");
+            isClickable = true; // Allow clicking to reset
+          }
+          // Check if this date is the selected check-out
+          else if (selectedCheckOut === dateStr) {
+            dayCell.classList.add("check-out");
+            isClickable = true; // Allow clicking to reset
+          }
+          // Check if date is between check-in and check-out
+          else if (
+            selectedCheckIn &&
+            selectedCheckOut &&
+            dateStr > selectedCheckIn &&
+            dateStr < selectedCheckOut
+          ) {
+            dayCell.classList.add("in-range");
+            isClickable = true; // Allow clicking to reset
+          }
+          // Check if this is a SHARED date (full gray - not clickable)
+          else if (window.sharedDates && window.sharedDates.includes(dateStr)) {
+            dayCell.classList.add("shared-booked");
+            isClickable = false;
+          }
+          // Check if this is an UNSHARED CHECK-IN date (half gray right - only clickable for checkout selection)
+          else if (
+            window.checkinDates &&
+            window.checkinDates.includes(dateStr)
+          ) {
+            dayCell.classList.add("checkin-only");
+            // Only clickable when selecting check-out AND it's after selected check-in
+            if (
+              !selectingCheckIn &&
+              selectedCheckIn &&
+              dateStr > selectedCheckIn &&
+              cellDate >= today
+            ) {
+              isClickable = true;
+            } else {
+              isClickable = false;
+            }
+          }
+          // Check if this is an UNSHARED CHECKOUT date (half gray left - available for check-in)
+          else if (
+            window.checkoutDates &&
+            window.checkoutDates.includes(dateStr) &&
+            cellDate >= today
+          ) {
+            dayCell.classList.add("checkout-available");
+            // Only clickable when selecting check-in
+            if (selectingCheckIn) {
+              isClickable = true;
+            } else if (
+              !selectingCheckIn &&
+              selectedCheckIn &&
+              dateStr > selectedCheckIn
+            ) {
+              // Also clickable as checkout if after check-in
+              isClickable = true;
+            } else {
+              isClickable = false;
+            }
+          }
+          // Check if this is a MIDDLE day (light gray - not clickable)
+          else if (window.middleDates && window.middleDates.includes(dateStr)) {
+            dayCell.classList.add("middle-booked");
+            isClickable = false;
+          }
+          // Check if available
+          else if (cellDate >= today) {
+            // Available only if: after today AND (no check-in selected OR after check-in)
+            if (
+              !selectingCheckIn &&
+              selectedCheckIn &&
+              dateStr <= selectedCheckIn
+            ) {
+              // Can't select check-out on or before check-in
+              dayCell.classList.add("past");
+              isClickable = false;
+            } else {
+              dayCell.classList.add("available");
+              isClickable = true;
+            }
+          }
+
           const dayNumber = document.createElement("div");
           dayNumber.className = "calendar-day-number";
           dayNumber.textContent = day;
           dayCell.appendChild(dayNumber);
-          
+
           if (isClickable) {
             dayCell.style.cursor = "pointer";
             dayCell.addEventListener("click", () => selectDate(dateStr));
           }
-          
+
           grid.appendChild(dayCell);
         }
-        
+
         section.appendChild(grid);
         return section;
       }
@@ -2686,41 +2817,49 @@ else if (cellDate >= today) {
             showToast("⚠️ La fecha de check-out debe ser después del check-in");
             return;
           }
-          
+
           // Check if any booked dates exist between check-in and check-out
           const checkInDate = new Date(selectedCheckIn);
           const checkOutDate = new Date(dateStr);
           let hasConflict = false;
-          
-          for (let d = new Date(checkInDate); d < checkOutDate; d.setDate(d.getDate() + 1)) {
+
+          for (
+            let d = new Date(checkInDate);
+            d < checkOutDate;
+            d.setDate(d.getDate() + 1)
+          ) {
             const checkDateStr = d.toISOString().split("T")[0];
             if (bookedDates.includes(checkDateStr)) {
               hasConflict = true;
               break;
             }
           }
-          
+
           if (hasConflict) {
-            showToast("⚠️ Hay fechas reservadas en este rango. Por favor selecciona otras fechas.");
+            showToast(
+              "⚠️ Hay fechas reservadas en este rango. Por favor selecciona otras fechas.",
+            );
             return;
           }
-          
+
           selectedCheckOut = dateStr;
-          
+
           // After selecting check-out, prepare for next selection (which will reset)
           selectingCheckIn = true;
-          
+
           updateDateDisplay();
           renderCalendar();
         }
       }
 
       // Close modal when clicking outside
-      document.getElementById("datePickerModal").addEventListener("click", function(e) {
-        if (e.target === this) {
-          closeDatePickerModal();
-        }
-      });
+      document
+        .getElementById("datePickerModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeDatePickerModal();
+          }
+        });
 
       // Form Submission
       form.addEventListener("submit", async function (e) {
@@ -2732,7 +2871,7 @@ else if (cellDate >= today) {
         }
 
         const formData = new FormData(form);
-        
+
         const data = {
           cabana: "Cabaña MariaMar-2",
           timestamp: serverTimestamp(),
@@ -2752,7 +2891,8 @@ else if (cellDate >= today) {
 
         companions.forEach((idx) => {
           data[`acomp${idx}Nombre`] = formData.get(`acomp${idx}Nombre`) || "";
-          data[`acomp${idx}Apellido`] = formData.get(`acomp${idx}Apellido`) || "";
+          data[`acomp${idx}Apellido`] =
+            formData.get(`acomp${idx}Apellido`) || "";
           data[`acomp${idx}TipoId`] = formData.get(`acomp${idx}TipoId`) || "";
           data[`acomp${idx}NumId`] = formData.get(`acomp${idx}NumId`) || "";
         });
@@ -2761,16 +2901,19 @@ else if (cellDate >= today) {
         btnSubmit.disabled = true;
 
         try {
-          const registrationRef = await addDoc(collection(db, "registrations"), data);
-          
+          const registrationRef = await addDoc(
+            collection(db, "registrations"),
+            data,
+          );
+
           const availabilityData = {
             cabana: "Cabaña MariaMar-2",
             fechaInicio: selectedCheckIn,
             fechaFin: selectedCheckOut,
             registrationId: registrationRef.id,
-            createdAt: serverTimestamp()
+            createdAt: serverTimestamp(),
           };
-          
+
           await addDoc(collection(db, "cabin_availability"), availabilityData);
 
           const modalHTML = `
@@ -2799,7 +2942,8 @@ else if (cellDate >= today) {
           errorMessage.style.display = "none";
         } catch (error) {
           console.error("Error:", error);
-          errorMessage.textContent = "Error al enviar. Por favor intenta nuevamente o contáctanos por WhatsApp.";
+          errorMessage.textContent =
+            "Error al enviar. Por favor intenta nuevamente o contáctanos por WhatsApp.";
           errorMessage.style.display = "block";
           successMessage.style.display = "none";
           setTimeout(() => {

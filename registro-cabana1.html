@@ -2094,35 +2094,35 @@
       }
 
       function showStep(step) {
-  document.querySelectorAll(".step-container").forEach((container) => {
-    container.classList.remove("active");
-  });
-  document
-    .querySelector(`.step-container[data-step="${step}"]`)
-    .classList.add("active");
+        document.querySelectorAll(".step-container").forEach((container) => {
+          container.classList.remove("active");
+        });
+        document
+          .querySelector(`.step-container[data-step="${step}"]`)
+          .classList.add("active");
 
-  btnBack.style.display = step === 1 ? "none" : "block";
-  btnNext.style.display = step === 3 ? "none" : "block";
-  btnSubmit.style.display = step === 3 ? "block" : "none";
+        btnBack.style.display = step === 1 ? "none" : "block";
+        btnNext.style.display = step === 3 ? "none" : "block";
+        btnSubmit.style.display = step === 3 ? "block" : "none";
 
-  if (step === 3) {
-    updateSummary();
-    summaryBox.style.display = "block";
-  } else {
-    summaryBox.style.display = "none";
-  }
+        if (step === 3) {
+          updateSummary();
+          summaryBox.style.display = "block";
+        } else {
+          summaryBox.style.display = "none";
+        }
 
-  // Preload booked dates when entering Step 2
-  if (step === 2 && !bookedDatesLoaded) {
-    loadBookedDates().then(() => {
-      bookedDatesLoaded = true;
-      console.log('Booked dates preloaded for Step 2');
-    });
-  }
+        // Preload booked dates when entering Step 2
+        if (step === 2 && !bookedDatesLoaded) {
+          loadBookedDates().then(() => {
+            bookedDatesLoaded = true;
+            console.log("Booked dates preloaded for Step 2");
+          });
+        }
 
-  updateProgress();
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
+        updateProgress();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
 
       function validateStep(step) {
         const stepContainer = document.querySelector(
@@ -2490,27 +2490,28 @@
       }
 
       window.openDatePickerModal = function () {
-  const modal = document.getElementById("datePickerModal");
-  
-  // Show modal immediately
-  modal.classList.add("show");
-  document.body.style.overflow = "hidden";
-  
-  // If data is already loaded, render immediately
-  if (bookedDatesLoaded) {
-    renderCalendar();
-  } else {
-    // Show loading state
-    const scroll = document.getElementById("datePickerScroll");
-    scroll.innerHTML = '<div style="text-align: center; padding: 40px; color: #667eea; font-size: 18px;">⏳ Cargando disponibilidad...</div>';
-    
-    // Load data if not already loaded
-    loadBookedDates().then(() => {
-      bookedDatesLoaded = true;
-      renderCalendar();
-    });
-  }
-};
+        const modal = document.getElementById("datePickerModal");
+
+        // Show modal immediately
+        modal.classList.add("show");
+        document.body.style.overflow = "hidden";
+
+        // If data is already loaded, render immediately
+        if (bookedDatesLoaded) {
+          renderCalendar();
+        } else {
+          // Show loading state
+          const scroll = document.getElementById("datePickerScroll");
+          scroll.innerHTML =
+            '<div style="text-align: center; padding: 40px; color: #667eea; font-size: 18px;">⏳ Cargando disponibilidad...</div>';
+
+          // Load data if not already loaded
+          loadBookedDates().then(() => {
+            bookedDatesLoaded = true;
+            renderCalendar();
+          });
+        }
+      };
 
       window.closeDatePickerModal = function () {
         const modal = document.getElementById("datePickerModal");
