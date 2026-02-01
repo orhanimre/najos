@@ -2556,56 +2556,59 @@
       }
 
       function updateDateDisplay() {
-  const displayText = document.getElementById("dateDisplayText");
-  const trigger = document.querySelector(".date-picker-trigger");
-  const checkInDisplay = document.getElementById("checkInDisplay");
+  const displayText     = document.getElementById("dateDisplayText");
+  const trigger         = document.querySelector(".date-picker-trigger");
+  const checkInDisplay  = document.getElementById("checkInDisplay");
   const checkOutDisplay = document.getElementById("checkOutDisplay");
-  const checkInBtn = document.getElementById("checkInBtn");
-  const checkOutBtn = document.getElementById("checkOutBtn");
+  const checkInBtn      = document.getElementById("checkInBtn");
+  const checkOutBtn     = document.getElementById("checkOutBtn");
 
-  // Reset classes first
+  // Always start clean
   trigger.classList.remove("has-value");
 
+  let hasAnyDate = false;
+
   if (selectedCheckIn && selectedCheckOut) {
-    // Both dates selected
     displayText.textContent = `${formatDateNice(selectedCheckIn)} → ${formatDateNice(selectedCheckOut)}`;
     displayText.classList.remove("placeholder");
-    trigger.classList.add("has-value");
+    hasAnyDate = true;
 
-    checkInDisplay.textContent = formatDateNice(selectedCheckIn);
+    checkInDisplay.textContent  = formatDateNice(selectedCheckIn);
     checkOutDisplay.textContent = formatDateNice(selectedCheckOut);
 
     checkInBtn.classList.remove("active");
     checkOutBtn.classList.remove("active");
   } 
   else if (selectedCheckIn) {
-    // Only check-in selected → prompting for check-out
     displayText.textContent = `${formatDateNice(selectedCheckIn)} → Selecciona check-out`;
     displayText.classList.remove("placeholder");
-    trigger.classList.add("has-value");
+    hasAnyDate = true;
 
-    checkInDisplay.textContent = formatDateNice(selectedCheckIn);
+    checkInDisplay.textContent  = formatDateNice(selectedCheckIn);
     checkOutDisplay.textContent = "Añadir fecha";
 
     checkInBtn.classList.remove("active");
     checkOutBtn.classList.add("active");
   } 
   else {
-    // No dates selected
     displayText.textContent = "Selecciona tus fechas";
     displayText.classList.add("placeholder");
-    // trigger.classList.remove("has-value") already done above
 
-    checkInDisplay.textContent = "Añadir fecha";
+    checkInDisplay.textContent  = "Añadir fecha";
     checkOutDisplay.textContent = "Añadir fecha";
 
     checkInBtn.classList.add("active");
     checkOutBtn.classList.remove("active");
   }
 
-  // Update hidden inputs (very important for form submission)
+  // Apply has-value if we have at least one date
+  if (hasAnyDate) {
+    trigger.classList.add("has-value");
+  }
+
+  // Hidden fields
   document.getElementById("fechaEntrada").value = selectedCheckIn || "";
-  document.getElementById("fechaSalida").value = selectedCheckOut || "";
+  document.getElementById("fechaSalida").value  = selectedCheckOut || "";
 }
       // Button click handlers
       document
