@@ -967,42 +967,6 @@
         font-weight: 700;
       }
 
-      /* Reset button for date fields */
-.date-reset-btn {
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
-  color: #667eea;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  font-size: 14px;
-  cursor: pointer;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  font-weight: 700;
-  margin-left: 8px;
-  flex-shrink: 0;
-}
-
-.date-reset-btn:hover {
-  background: white;
-  transform: scale(1.1);
-}
-
-.date-selection-btn.has-date .date-reset-btn {
-  display: flex;
-}
-
-.date-selection-btn .value-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: 100%;
-}
-
       .date-picker-body {
         flex: 1;
         overflow: hidden;
@@ -1559,6 +1523,39 @@
         }
       }
 
+      .date-clear-btn {
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.2);
+  color: white;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+
+.date-clear-btn:hover {
+  background: rgba(0, 0, 0, 0.45);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.date-clear-btn:active {
+  transform: translateY(-50%) scale(0.92);
+}
+
+/* Show the × only when dates are selected */
+.date-picker-trigger.has-value .date-clear-btn {
+  display: block;
+}
+
       /* Very Small Screens */
       @media (max-width: 400px) {
         .calendar-day {
@@ -1737,26 +1734,23 @@
             </div>
 
             <div class="form-group">
-              <label>Fechas de Estadía <span class="required">*</span></label>
-              <div class="date-picker-trigger" onclick="openDatePickerModal()">
-                <span id="dateDisplayText" class="placeholder"
-                  >Selecciona tus fechas</span
-                >
-                <span class="calendar-icon">📅</span>
-              </div>
-              <input
-                type="hidden"
-                id="fechaEntrada"
-                name="fechaEntrada"
-                required
-              />
-              <input
-                type="hidden"
-                id="fechaSalida"
-                name="fechaSalida"
-                required
-              />
-            </div>
+  <label>Fechas de Estadía <span class="required">*</span></label>
+  <div class="date-picker-trigger" onclick="openDatePickerModal()">
+    <span id="dateDisplayText" class="placeholder">Selecciona tus fechas</span>
+    <span class="calendar-icon">📅</span>
+    
+    <!-- New: single clear button -->
+    <button 
+      type="button" 
+      class="date-clear-btn" 
+      id="clearDatesBtn"
+      onclick="clearBothDates(event)"
+      title="Borrar fechas seleccionadas"
+    >×</button>
+  </div>
+  <input type="hidden" id="fechaEntrada" name="fechaEntrada" required />
+  <input type="hidden" id="fechaSalida" name="fechaSalida" required />
+</div>
 
             <div class="grid-2">
               <div class="form-group">
@@ -1888,25 +1882,19 @@
         <div class="date-picker-header">
           <h3>📅 Selecciona tus Fechas</h3>
           <div class="date-selection-buttons">
-  <button
-    type="button"
-    class="date-selection-btn active"
-    id="checkInBtn"
-  >
-    <span class="label">Check-in</span>
-    <div class="value-container">
-      <span class="value" id="checkInDisplay">Añadir fecha</span>
-      <button type="button" class="date-reset-btn" id="resetCheckInBtn" onclick="event.stopPropagation(); resetCheckIn();">×</button>
-    </div>
-  </button>
-  <button type="button" class="date-selection-btn" id="checkOutBtn">
-    <span class="label">Check-out</span>
-    <div class="value-container">
-      <span class="value" id="checkOutDisplay">Añadir fecha</span>
-      <button type="button" class="date-reset-btn" id="resetCheckOutBtn" onclick="event.stopPropagation(); resetCheckOut();">×</button>
-    </div>
-  </button>
-</div>
+            <button
+              type="button"
+              class="date-selection-btn active"
+              id="checkInBtn"
+            >
+              <span class="label">Check-in</span>
+              <span class="value" id="checkInDisplay">Añadir fecha</span>
+            </button>
+            <button type="button" class="date-selection-btn" id="checkOutBtn">
+              <span class="label">Check-out</span>
+              <span class="value" id="checkOutDisplay">Añadir fecha</span>
+            </button>
+          </div>
           <button class="modal-close" onclick="closeDatePickerModal()">
             ✕
           </button>
@@ -2548,6 +2536,19 @@
         }
       };
 
+      function clearBothDates(e) {
+  e.stopPropagation();           // Important: prevents opening the modal when clicking ×
+  selectedCheckIn = null;
+  selectedCheckOut = null;
+  selectingCheckIn = true;
+  updateDateDisplay();
+  
+  // If the calendar modal is currently open, refresh it
+  if (document.getElementById("datePickerModal").classList.contains("show")) {
+    renderCalendar();
+  }
+}
+
       function formatDateNice(dateStr) {
         const date = new Date(dateStr + "T00:00:00");
         const options = { weekday: "short", day: "numeric", month: "short" };
@@ -2559,9 +2560,14 @@
   const trigger = document.querySelector(".date-picker-trigger");
   const checkInDisplay = document.getElementById("checkInDisplay");
   const checkOutDisplay = document.getElementById("checkOutDisplay");
-  const confirmBtn = document.getElementById("confirmDatesBtn");
+  const checkInBtn = document.getElementById("checkInBtn");
+  const checkOutBtn = document.getElementById("checkOutBtn");
+
+  // Reset classes first
+  trigger.classList.remove("has-value");
 
   if (selectedCheckIn && selectedCheckOut) {
+    // Both dates selected
     displayText.textContent = `${formatDateNice(selectedCheckIn)} → ${formatDateNice(selectedCheckOut)}`;
     displayText.classList.remove("placeholder");
     trigger.classList.add("has-value");
@@ -2569,11 +2575,11 @@
     checkInDisplay.textContent = formatDateNice(selectedCheckIn);
     checkOutDisplay.textContent = formatDateNice(selectedCheckOut);
 
-    if (confirmBtn) {
-      confirmBtn.disabled = false;
-      confirmBtn.style.opacity = "1";
-    }
-  } else if (selectedCheckIn) {
+    checkInBtn.classList.remove("active");
+    checkOutBtn.classList.remove("active");
+  } 
+  else if (selectedCheckIn) {
+    // Only check-in selected → prompting for check-out
     displayText.textContent = `${formatDateNice(selectedCheckIn)} → Selecciona check-out`;
     displayText.classList.remove("placeholder");
     trigger.classList.add("has-value");
@@ -2581,72 +2587,26 @@
     checkInDisplay.textContent = formatDateNice(selectedCheckIn);
     checkOutDisplay.textContent = "Añadir fecha";
 
-    if (confirmBtn) {
-      confirmBtn.disabled = true;
-      confirmBtn.style.opacity = "0.5";
-    }
-  } else {
+    checkInBtn.classList.remove("active");
+    checkOutBtn.classList.add("active");
+  } 
+  else {
+    // No dates selected
     displayText.textContent = "Selecciona tus fechas";
     displayText.classList.add("placeholder");
-    trigger.classList.remove("has-value");
+    // trigger.classList.remove("has-value") already done above
 
     checkInDisplay.textContent = "Añadir fecha";
     checkOutDisplay.textContent = "Añadir fecha";
 
-    if (confirmBtn) {
-      confirmBtn.disabled = true;
-      confirmBtn.style.opacity = "0.5";
-    }
-  }
-
-  document.getElementById("fechaEntrada").value = selectedCheckIn || "";
-  document.getElementById("fechaSalida").value = selectedCheckOut || "";
-
-  // Show/hide reset buttons
-  const checkInBtn = document.getElementById("checkInBtn");
-  const checkOutBtn = document.getElementById("checkOutBtn");
-
-  if (selectedCheckIn) {
-    checkInBtn.classList.add("has-date");
-  } else {
-    checkInBtn.classList.remove("has-date");
-  }
-
-  if (selectedCheckOut) {
-    checkOutBtn.classList.add("has-date");
-  } else {
-    checkOutBtn.classList.remove("has-date");
-  }
-
-  // Update button states
-  if (selectingCheckIn) {
     checkInBtn.classList.add("active");
     checkOutBtn.classList.remove("active");
-  } else {
-    checkInBtn.classList.remove("active");
-    checkOutBtn.classList.add("active");
   }
+
+  // Update hidden inputs (very important for form submission)
+  document.getElementById("fechaEntrada").value = selectedCheckIn || "";
+  document.getElementById("fechaSalida").value = selectedCheckOut || "";
 }
-
-      // Reset check-in date
-window.resetCheckIn = function() {
-  selectedCheckIn = null;
-  selectedCheckOut = null;
-  selectingCheckIn = true;
-  updateDateDisplay();
-  renderCalendar();
-};
-
-// Reset check-out date
-window.resetCheckOut = function() {
-  if (selectedCheckOut) {
-    selectedCheckOut = null;
-    selectingCheckIn = false;
-    updateDateDisplay();
-    renderCalendar();
-  }
-};
-      
       // Button click handlers
       document
         .getElementById("checkInBtn")
