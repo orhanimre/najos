@@ -967,6 +967,49 @@
         font-weight: 700;
       }
 
+      /* Clear date buttons - ADD HERE */
+.clear-date-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.2);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 8px;
+  border: none;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.date-selection-btn.has-date .clear-date-btn {
+  display: flex;
+}
+
+.clear-date-btn:hover {
+  background: rgba(0, 0, 0, 0.4);
+  transform: scale(1.1);
+}
+
+.date-selection-btn .value-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.date-picker-body {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
       .date-picker-body {
         flex: 1;
         overflow: hidden;
@@ -1459,41 +1502,7 @@
           grid-template-columns: 1fr;
         }
 
-        /* Clear date buttons inside selection buttons */
-        .clear-date-btn {
-          display: none;
-          align-items: center;
-          justify-content: center;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: rgba(0, 0, 0, 0.2);
-          color: white;
-          font-size: 14px;
-          font-weight: bold;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          margin-left: 8px;
-          border: none;
-          padding: 0;
-          flex-shrink: 0;
-        }
-
-        .date-selection-btn.has-date .clear-date-btn {
-          display: flex;
-        }
-
-        .clear-date-btn:hover {
-          background: rgba(0, 0, 0, 0.4);
-          transform: scale(1.1);
-        }
-
-        .date-selection-btn .value-container {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 4px;
-        }
+        
 
         /* Keep time inputs on same line */
         .step-container[data-step="2"] .grid-2 {
