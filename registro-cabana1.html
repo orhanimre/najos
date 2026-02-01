@@ -2257,10 +2257,8 @@
               const start = new Date(data.fechaInicio);
               const end = new Date(data.fechaFin);
               
-              // Add all dates AFTER check-in up to check-out (exclusive of both check-in and check-out)
-              const nextDay = new Date(start);
-              nextDay.setDate(nextDay.getDate() + 1);
-              for (let d = new Date(nextDay); d < end; d.setDate(d.getDate() + 1)) {
+              // Add all dates from check-in to check-out (inclusive of check-in, exclusive of check-out)
+              for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
                 bookedDates.push(d.toISOString().split("T")[0]);
               }
               
@@ -2475,28 +2473,25 @@
             dayCell.classList.add("in-range");
             isClickable = true; // Allow clicking to reset
           }
-          // Check if booked
-          else if (bookedDates.includes(dateStr)) {
-            dayCell.classList.add("booked");
-            isClickable = false;
-          }
           // Check if this is a checkout date (available for check-in, half-colored) - only when selecting check-in
           else if (selectingCheckIn && window.checkoutDates && window.checkoutDates.includes(dateStr) && cellDate >= today) {
             dayCell.classList.add("checkout-available");
             isClickable = true;
           }
-          // When selecting check-in, only checkout dates are selectable
-          else if (selectingCheckIn) {
+          // Check if booked
+          else if (bookedDates.includes(dateStr)) {
             dayCell.classList.add("booked");
             isClickable = false;
-          }
-          // When selecting check-out, show available dates after check-in
-          else if (!selectingCheckIn && selectedCheckIn && dateStr > selectedCheckIn && cellDate >= today) {
-            dayCell.classList.add("available");
-            isClickable = true;
           } else if (cellDate >= today) {
-            dayCell.classList.add("booked");
-            isClickable = false;
+            // Available only if: after today AND (no check-in selected OR after check-in)
+            if (!selectingCheckIn && selectedCheckIn && dateStr <= selectedCheckIn) {
+              // Can't select check-out on or before check-in
+              dayCell.classList.add("past");
+              isClickable = false;
+            } else {
+              dayCell.classList.add("available");
+              isClickable = true;
+            }
           }
           
           const dayNumber = document.createElement("div");

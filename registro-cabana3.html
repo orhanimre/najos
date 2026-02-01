@@ -2257,10 +2257,8 @@
               const start = new Date(data.fechaInicio);
               const end = new Date(data.fechaFin);
               
-              // Add all dates AFTER check-in up to check-out (exclusive of both check-in and check-out)
-              const nextDay = new Date(start);
-              nextDay.setDate(nextDay.getDate() + 1);
-              for (let d = new Date(nextDay); d < end; d.setDate(d.getDate() + 1)) {
+              // Add all dates from check-in to check-out (inclusive of check-in, exclusive of check-out)
+              for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
                 bookedDates.push(d.toISOString().split("T")[0]);
               }
               
