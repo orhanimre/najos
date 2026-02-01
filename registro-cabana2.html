@@ -2323,8 +2323,8 @@
     
     // First pass: collect all check-in and check-out dates
     querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      if (data.cabana === "Cabaña MariaMar-1") {
+  const data = doc.data();
+  if (data.cabana === "Cabaña MariaMar-2") {  // ✅ CORRECT
         if (data.fechaInicio) {
           checkInDates.push(data.fechaInicio);
         }
@@ -2337,7 +2337,7 @@
     // Second pass: categorize all dates
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-      if (data.cabana === "Cabaña MariaMar-1" && data.fechaInicio && data.fechaFin) {
+      if (data.cabana === "Cabaña MariaMar-2" && data.fechaInicio && data.fechaFin) {
         const start = new Date(data.fechaInicio);
         const end = new Date(data.fechaFin);
         
