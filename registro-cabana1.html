@@ -2596,7 +2596,8 @@ window.resetCheckOutDate = function(event) {
   const checkInDisplay = document.getElementById("checkInDisplay");
   const checkOutDisplay = document.getElementById("checkOutDisplay");
   const confirmBtn = document.getElementById("confirmDatesBtn");
-  // DON'T redeclare checkInBtn and checkOutBtn here
+  const checkInBtn = document.getElementById("checkInBtn");
+  const checkOutBtn = document.getElementById("checkOutBtn");
 
   if (selectedCheckIn && selectedCheckOut) {
     displayText.textContent = `${formatDateNice(selectedCheckIn)} → ${formatDateNice(selectedCheckOut)}`;
@@ -2606,9 +2607,9 @@ window.resetCheckOutDate = function(event) {
     checkInDisplay.textContent = formatDateNice(selectedCheckIn);
     checkOutDisplay.textContent = formatDateNice(selectedCheckOut);
 
-    // ADD THESE TWO LINES - reference elements directly
-    document.getElementById("checkInBtn").classList.add("has-date");
-    document.getElementById("checkOutBtn").classList.add("has-date");
+    // Show both reset buttons
+    if (checkInBtn) checkInBtn.classList.add("has-date");
+    if (checkOutBtn) checkOutBtn.classList.add("has-date");
 
     // Enable confirm button
     if (confirmBtn) {
@@ -2623,9 +2624,9 @@ window.resetCheckOutDate = function(event) {
     checkInDisplay.textContent = formatDateNice(selectedCheckIn);
     checkOutDisplay.textContent = "Añadir fecha";
 
-    // ADD THESE TWO LINES
-    document.getElementById("checkInBtn").classList.add("has-date");
-    document.getElementById("checkOutBtn").classList.remove("has-date");
+    // Show only check-in reset button
+    if (checkInBtn) checkInBtn.classList.add("has-date");
+    if (checkOutBtn) checkOutBtn.classList.remove("has-date");
 
     // Disable confirm button
     if (confirmBtn) {
@@ -2640,9 +2641,9 @@ window.resetCheckOutDate = function(event) {
     checkInDisplay.textContent = "Añadir fecha";
     checkOutDisplay.textContent = "Añadir fecha";
 
-    // ADD THESE TWO LINES
-    document.getElementById("checkInBtn").classList.remove("has-date");
-    document.getElementById("checkOutBtn").classList.remove("has-date");
+    // Hide both reset buttons
+    if (checkInBtn) checkInBtn.classList.remove("has-date");
+    if (checkOutBtn) checkOutBtn.classList.remove("has-date");
 
     // Disable confirm button
     if (confirmBtn) {
@@ -2656,13 +2657,12 @@ window.resetCheckOutDate = function(event) {
   document.getElementById("fechaSalida").value = selectedCheckOut || "";
 
   // Update button states
-  // Use the existing event listener references instead
   if (selectingCheckIn) {
-    document.getElementById("checkInBtn").classList.add("active");
-    document.getElementById("checkOutBtn").classList.remove("active");
+    if (checkInBtn) checkInBtn.classList.add("active");
+    if (checkOutBtn) checkOutBtn.classList.remove("active");
   } else {
-    document.getElementById("checkInBtn").classList.remove("active");
-    document.getElementById("checkOutBtn").classList.add("active");
+    if (checkInBtn) checkInBtn.classList.remove("active");
+    if (checkOutBtn) checkOutBtn.classList.add("active");
   }
 }
 
