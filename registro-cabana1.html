@@ -1354,16 +1354,20 @@
   font-weight: 700;
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
+
   display: none;
+  pointer-events: none; /* 👈 CRITICAL */
 }
 
 .date-selection-btn.active .clear-date {
   display: block;
+  pointer-events: auto; /* 👈 clickable ONLY when visible */
 }
 
 .clear-date:hover {
   color: #ef4444;
 }
+
 
 
       /* Messages */
