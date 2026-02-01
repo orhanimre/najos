@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Huéspedes - Cabañas MariaMar</title>
+    <title>Cabañas MariaMar - Sistema de Registro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,27 +14,225 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --sand: #F4E8D8;
+            --ocean: #0077BE;
+            --ocean-dark: #005A8D;
+            --ocean-light: #4DA8DA;
+            --sunset: #FF6B35;
+            --palm: #2D5016;
+            --white: #FFFFFF;
+            --cream: #FFF9F0;
+            --shadow: rgba(0, 77, 115, 0.15);
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-light) 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated wave background */
+        body::before {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="%23F4E8D8" fill-opacity="0.3"/></svg>') repeat-x;
+            animation: wave 20s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%23F4E8D8" fill-opacity="0.5"/></svg>') repeat-x;
+            animation: wave 15s linear infinite reverse;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes wave {
+            0% { background-position: 0 0; }
+            100% { background-position: 1200px 0; }
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             width: 100%;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            background: var(--cream);
+            border-radius: 24px;
+            box-shadow: 
+                0 30px 90px var(--shadow),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
             overflow: hidden;
-            animation: fadeIn 0.6s ease;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Header with decorative elements */
+        .header {
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
+            color: var(--white);
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '🌴';
+            position: absolute;
+            font-size: 200px;
+            opacity: 0.05;
+            top: -40px;
+            left: -20px;
+            transform: rotate(-15deg);
+            animation: sway 6s ease-in-out infinite;
+        }
+
+        .header::after {
+            content: '🌴';
+            position: absolute;
+            font-size: 200px;
+            opacity: 0.05;
+            bottom: -40px;
+            right: -20px;
+            transform: rotate(15deg);
+            animation: sway 6s ease-in-out infinite reverse;
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(-15deg); }
+            50% { transform: rotate(-12deg); }
+        }
+
+        .logo-container {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 24px;
+        }
+
+        .logo {
+            max-width: 280px;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+            border-radius: 16px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 6vw, 52px);
+            font-weight: 900;
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-subtitle {
+            font-size: clamp(16px, 3vw, 20px);
+            font-weight: 300;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 0.5px;
+        }
+
+        .content {
+            padding: 60px 40px;
+            position: relative;
+        }
+
+        .intro-section {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeIn 0.8s ease 0.2s backwards;
         }
 
         @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .intro-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 5vw, 38px);
+            color: var(--ocean-dark);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .intro-section p {
+            font-size: clamp(15px, 2.5vw, 18px);
+            color: #5A5A5A;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        .cabanas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            margin-top: 40px;
+        }
+
+        .cabana-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 8px 24px rgba(0, 77, 115, 0.08),
+                0 2px 6px rgba(0, 77, 115, 0.04);
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .cabana-card:nth-child(1) { animation-delay: 0.1s; }
+        .cabana-card:nth-child(2) { animation-delay: 0.2s; }
+        .cabana-card:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes slideUp {
             from {
                 opacity: 0;
                 transform: translateY(30px);
@@ -42,55 +243,6 @@
             }
         }
 
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 50px 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 36px;
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-
-        .header p {
-            font-size: 18px;
-            opacity: 0.95;
-        }
-
-        .content {
-            padding: 50px 40px;
-        }
-
-        .intro-text {
-            text-align: center;
-            margin-bottom: 40px;
-            color: #4a5568;
-            font-size: 16px;
-            line-height: 1.6;
-        }
-
-        .cabanas-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 24px;
-            margin-top: 30px;
-        }
-
-        .cabana-card {
-            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 32px 24px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
         .cabana-card::before {
             content: '';
             position: absolute;
@@ -98,145 +250,335 @@
             left: 0;
             right: 0;
             height: 6px;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(90deg, var(--sunset) 0%, var(--ocean) 100%);
             transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .cabana-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(102, 126, 234, 0.2);
-            border-color: #667eea;
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .cabana-card:hover::before {
             transform: scaleX(1);
         }
 
+        .cabana-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 
+                0 20px 40px rgba(0, 77, 115, 0.15),
+                0 8px 16px rgba(0, 77, 115, 0.08);
+        }
+
+        .cabana-icon-wrapper {
+            padding: 48px 32px 32px;
+            background: linear-gradient(180deg, var(--sand) 0%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .cabana-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 100px;
+            height: 100px;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-light) 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 36px;
-            color: white;
-            font-weight: bold;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            font-size: 48px;
+            color: var(--white);
+            font-weight: 900;
+            font-family: 'Playfair Display', serif;
+            box-shadow: 
+                0 12px 28px rgba(0, 77, 115, 0.25),
+                0 0 0 8px rgba(0, 119, 190, 0.1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cabana-card:hover .cabana-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 
+                0 16px 36px rgba(0, 77, 115, 0.35),
+                0 0 0 12px rgba(0, 119, 190, 0.15);
+        }
+
+        .cabana-content {
+            padding: 0 32px 40px;
+            text-align: center;
         }
 
         .cabana-card h3 {
-            font-size: 22px;
-            color: #2d3748;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(22px, 4vw, 26px);
+            color: var(--ocean-dark);
             margin-bottom: 12px;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .cabana-card p {
-            color: #718096;
-            font-size: 14px;
-            margin-bottom: 20px;
+            color: #777;
+            font-size: clamp(14px, 2.5vw, 16px);
+            margin-bottom: 24px;
+            font-weight: 300;
+            line-height: 1.5;
         }
 
         .select-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, var(--sunset) 0%, #E5561F 100%);
+            color: var(--white);
             border: none;
-            padding: 12px 28px;
-            border-radius: 8px;
-            font-size: 15px;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
+            position: relative;
+            overflow: hidden;
         }
 
-        .cabana-card:hover .select-btn {
-            opacity: 1;
+        .select-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .select-btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .select-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 28px rgba(255, 107, 53, 0.4);
+        }
+
+        .select-btn:active {
+            transform: scale(0.98);
         }
 
         .footer {
             text-align: center;
-            padding: 30px;
-            color: #718096;
+            padding: 40px 32px;
+            background: linear-gradient(180deg, transparent 0%, var(--sand) 50%);
+            color: #777;
             font-size: 14px;
-            border-top: 1px solid #e2e8f0;
+            border-top: 1px solid rgba(0, 77, 115, 0.08);
+            position: relative;
         }
 
+        .footer::before {
+            content: '🌊';
+            display: block;
+            font-size: 32px;
+            margin-bottom: 12px;
+            opacity: 0.6;
+            animation: wave-emoji 2s ease-in-out infinite;
+        }
+
+        @keyframes wave-emoji {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        /* Decorative elements */
+        .decoration {
+            position: absolute;
+            font-size: 80px;
+            opacity: 0.03;
+            pointer-events: none;
+            animation: float-decoration 8s ease-in-out infinite;
+        }
+
+        .decoration:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .decoration:nth-child(2) {
+            top: 60%;
+            right: 8%;
+            animation-delay: 2s;
+        }
+
+        @keyframes float-decoration {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(10px, -10px) rotate(5deg); }
+            66% { transform: translate(-5px, 10px) rotate(-5deg); }
+        }
+
+        /* Mobile Responsive */
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 28px;
+            body {
+                padding: 12px;
+            }
+
+            .container {
+                border-radius: 20px;
+            }
+
+            .header {
+                padding: 40px 24px;
+            }
+
+            .logo {
+                max-width: 200px;
             }
 
             .content {
-                padding: 30px 20px;
+                padding: 40px 24px;
+            }
+
+            .intro-section {
+                margin-bottom: 36px;
             }
 
             .cabanas-grid {
                 grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .cabana-icon-wrapper {
+                padding: 36px 24px 24px;
+            }
+
+            .cabana-icon {
+                width: 80px;
+                height: 80px;
+                font-size: 36px;
+            }
+
+            .cabana-content {
+                padding: 0 24px 32px;
             }
 
             .select-btn {
-                opacity: 1;
+                padding: 12px 28px;
+                font-size: 15px;
             }
+
+            .footer {
+                padding: 32px 24px;
+            }
+
+            .decoration {
+                font-size: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 32px 20px;
+            }
+
+            .content {
+                padding: 32px 20px;
+            }
+
+            .cabana-icon-wrapper {
+                padding: 28px 20px 20px;
+            }
+
+            .cabana-content {
+                padding: 0 20px 28px;
+            }
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
     </style>
 </head>
 <body>
+    <div class="decoration">🐚</div>
+    <div class="decoration">⛵</div>
+    
     <div class="container">
         <div class="header">
-            <h1>🏡 Cabañas MariaMar</h1>
-            <p>Sistema de Registro de Huéspedes</p>
+            <div class="logo-container">
+                <img src="https://i.imgur.com/tWfkFP8.jpg" alt="Logo Cabañas MariaMar" class="logo">
+            </div>
+            <h1>Cabañas MariaMar</h1>
+            <p class="header-subtitle">Tu escape frente al mar</p>
         </div>
 
         <div class="content">
-            <div class="intro-text">
-                <h2 style="color: #2d3748; margin-bottom: 12px; font-size: 24px;">Bienvenido</h2>
-                <p>Por favor selecciona la cabaña para la cual deseas completar el registro de huéspedes.</p>
+            <div class="intro-section">
+                <h2>¡Bienvenido!</h2>
+                <p>Selecciona tu cabaña para comenzar el registro. Solo te tomará unos minutos y estarás listo para disfrutar del paraíso.</p>
             </div>
 
             <div class="cabanas-grid">
                 <div class="cabana-card" onclick="selectCabana(1)">
-                    <div class="cabana-icon">1</div>
-                    <h3>Cabaña MariaMar-1</h3>
-                    <p>Haz clic para registrar tus datos</p>
-                    <button class="select-btn">Seleccionar</button>
+                    <div class="cabana-icon-wrapper">
+                        <div class="cabana-icon">1</div>
+                    </div>
+                    <div class="cabana-content">
+                        <h3>MariaMar-1</h3>
+                        <p>Cabaña a 50 metros del Mar Caribe</p>
+                        <button class="select-btn">Registrarme Aquí</button>
+                    </div>
                 </div>
 
                 <div class="cabana-card" onclick="selectCabana(2)">
-                    <div class="cabana-icon">2</div>
-                    <h3>Cabaña MariaMar-2</h3>
-                    <p>Haz clic para registrar tus datos</p>
-                    <button class="select-btn">Seleccionar</button>
+                    <div class="cabana-icon-wrapper">
+                        <div class="cabana-icon">2</div>
+                    </div>
+                    <div class="cabana-content">
+                        <h3>MariaMar-2</h3>
+                        <p>Cabaña a 50 metros del Mar Caribe</p>
+                        <button class="select-btn">Registrarme Aquí</button>
+                    </div>
                 </div>
 
                 <div class="cabana-card" onclick="selectCabana(3)">
-                    <div class="cabana-icon">3</div>
-                    <h3>Cabaña MariaMar-3</h3>
-                    <p>Haz clic para registrar tus datos</p>
-                    <button class="select-btn">Seleccionar</button>
+                    <div class="cabana-icon-wrapper">
+                        <div class="cabana-icon">3</div>
+                    </div>
+                    <div class="cabana-content">
+                        <h3>MariaMar-3</h3>
+                        <p>Cabaña a 50 metros del Mar Caribe</p>
+                        <button class="select-btn">Registrarme Aquí</button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="footer">
-            <p>© 2025 Cabañas MariaMar - Todos los derechos reservados</p>
+            <p>© 2026 Cabañas MariaMar · Todos los derechos reservados</p>
+            <p style="margin-top: 8px; font-size: 13px; opacity: 0.7;">Tu refugio en la costa</p>
         </div>
     </div>
 
     <script>
         function selectCabana(number) {
-    // Instead of sessionStorage, redirect directly to specific pages
-    window.location.href = `registro-cabana${number}.html`;
-}
+            // Add subtle feedback animation
+            event.currentTarget.style.animation = 'pulse 0.3s ease';
+            
+            // Navigate after brief delay for visual feedback
+            setTimeout(() => {
+                window.location.href = `registro-cabana${number}.html`;
+            }, 200);
+        }
+
+        // Add entrance animation on load
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.6s ease';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
     </script>
 </body>
 </html>
