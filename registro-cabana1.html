@@ -928,22 +928,22 @@
       }
 
       .date-selection-btn {
-        flex: 1;
-        padding: 12px 20px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-        border-radius: 12px;
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-        position: relative;
-      }
+  flex: 1;
+  padding: 12px 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: relative;  /* ADD THIS LINE */
+}
 
       .date-selection-btn.active {
         background: white;
@@ -969,35 +969,36 @@
       }
 
       /* Reset button for date selection */
-      .date-reset-btn {
-        position: absolute;
-        top: 4px;
-        right: 4px;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: rgba(239, 68, 68, 0.9);
-        color: white;
-        border: none;
-        font-size: 12px;
-        font-weight: 700;
-        cursor: pointer;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-        padding: 0;
-        line-height: 1;
-      }
+.date-reset-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  border: none;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  line-height: 1;
+  z-index: 5;
+}
 
-      .date-reset-btn:hover {
-        background: rgba(220, 38, 38, 1);
-        transform: scale(1.1);
-      }
+.date-reset-btn:hover {
+  background: rgba(220, 38, 38, 1);
+  transform: scale(1.1);
+}
 
-      .date-selection-btn.has-date .date-reset-btn {
-        display: flex;
-      }
+.date-selection-btn.has-date .date-reset-btn {
+  display: flex;
+}
 
       .date-picker-body {
         flex: 1;
@@ -1608,13 +1609,13 @@
           <div class="progress-step" data-step="2">
             <div class="progress-circle">2</div>
             <div class="progress-label">Tu Estadía</div>
-            <div class="progress-icon">🖍️</div>
+            <div class="progress-icon">🏖️</div>
           </div>
 
           <div class="progress-step" data-step="3">
             <div class="progress-circle">3</div>
             <div class="progress-label">Confirmación</div>
-            <div class="progress-icon">✔</div>
+            <div class="progress-icon">✓</div>
           </div>
         </div>
       </div>
@@ -1725,7 +1726,7 @@
           <!-- Step 2: Stay Details -->
           <div class="step-container" data-step="2">
             <div class="step-intro">
-              <h2>🖍️ ¡Genial! Ahora dime cuándo vienes a disfrutar el mar</h2>
+              <h2>🏖️ ¡Genial! Ahora dime cuándo vienes a disfrutar el mar</h2>
               <p>
                 Selecciona tus fechas de entrada y salida en nuestro calendario
                 interactivo.
@@ -1884,21 +1885,23 @@
         <div class="date-picker-header">
           <h3>📅 Selecciona tus Fechas</h3>
           <div class="date-selection-buttons">
-            <button
-              type="button"
-              class="date-selection-btn active"
-              id="checkInBtn"
-            >
-              <span class="label">Check-in</span>
-              <span class="value" id="checkInDisplay">Añadir fecha</span>
-              <button type="button" class="date-reset-btn" onclick="resetCheckInDate(event)" title="Limpiar fecha">×</button>
-            </button>
-            <button type="button" class="date-selection-btn" id="checkOutBtn">
-              <span class="label">Check-out</span>
-              <span class="value" id="checkOutDisplay">Añadir fecha</span>
-              <button type="button" class="date-reset-btn" onclick="resetCheckOutDate(event)" title="Limpiar fecha">×</button>
-            </button>
-          </div>
+  <button
+    type="button"
+    class="date-selection-btn active"
+    id="checkInBtn"
+  >
+    <span class="label">Check-in</span>
+    <span class="value" id="checkInDisplay">Añadir fecha</span>
+    <!-- ADD THIS BUTTON -->
+    <button type="button" class="date-reset-btn" onclick="resetCheckInDate(event)" title="Limpiar fecha">×</button>
+  </button>
+  <button type="button" class="date-selection-btn" id="checkOutBtn">
+    <span class="label">Check-out</span>
+    <span class="value" id="checkOutDisplay">Añadir fecha</span>
+    <!-- ADD THIS BUTTON -->
+    <button type="button" class="date-reset-btn" onclick="resetCheckOutDate(event)" title="Limpiar fecha">×</button>
+  </button>
+</div>
           <button class="modal-close" onclick="closeDatePickerModal()">
             ✕
           </button>
@@ -2012,22 +2015,22 @@
       }
 
       // Reset date functions
-      window.resetCheckInDate = function(event) {
-        event.stopPropagation();
-        selectedCheckIn = null;
-        selectedCheckOut = null;
-        selectingCheckIn = true;
-        updateDateDisplay();
-        renderCalendar();
-      };
+window.resetCheckInDate = function(event) {
+  event.stopPropagation();
+  selectedCheckIn = null;
+  selectedCheckOut = null;
+  selectingCheckIn = true;
+  updateDateDisplay();
+  renderCalendar();
+};
 
-      window.resetCheckOutDate = function(event) {
-        event.stopPropagation();
-        selectedCheckOut = null;
-        selectingCheckIn = false;
-        updateDateDisplay();
-        renderCalendar();
-      };
+window.resetCheckOutDate = function(event) {
+  event.stopPropagation();
+  selectedCheckOut = null;
+  selectingCheckIn = false;
+  updateDateDisplay();
+  renderCalendar();
+};
 
       // Elements
       const form = document.getElementById("registrationForm");
@@ -2588,69 +2591,72 @@
       }
 
       function updateDateDisplay() {
-        const displayText = document.getElementById("dateDisplayText");
-        const trigger = document.querySelector(".date-picker-trigger");
-        const checkInDisplay = document.getElementById("checkInDisplay");
-        const checkOutDisplay = document.getElementById("checkOutDisplay");
-        const confirmBtn = document.getElementById("confirmDatesBtn");
-        const checkInBtn = document.getElementById("checkInBtn");
-        const checkOutBtn = document.getElementById("checkOutBtn");
+  const displayText = document.getElementById("dateDisplayText");
+  const trigger = document.querySelector(".date-picker-trigger");
+  const checkInDisplay = document.getElementById("checkInDisplay");
+  const checkOutDisplay = document.getElementById("checkOutDisplay");
+  const confirmBtn = document.getElementById("confirmDatesBtn");
+  const checkInBtn = document.getElementById("checkInBtn");  // ADD THIS
+  const checkOutBtn = document.getElementById("checkOutBtn");  // ADD THIS
 
-        if (selectedCheckIn && selectedCheckOut) {
-          displayText.textContent = `${formatDateNice(selectedCheckIn)} → ${formatDateNice(selectedCheckOut)}`;
-          displayText.classList.remove("placeholder");
-          trigger.classList.add("has-value");
+  if (selectedCheckIn && selectedCheckOut) {
+    displayText.textContent = `${formatDateNice(selectedCheckIn)} → ${formatDateNice(selectedCheckOut)}`;
+    displayText.classList.remove("placeholder");
+    trigger.classList.add("has-value");
 
-          checkInDisplay.textContent = formatDateNice(selectedCheckIn);
-          checkOutDisplay.textContent = formatDateNice(selectedCheckOut);
+    checkInDisplay.textContent = formatDateNice(selectedCheckIn);
+    checkOutDisplay.textContent = formatDateNice(selectedCheckOut);
 
-          checkInBtn.classList.add("has-date");
-          checkOutBtn.classList.add("has-date");
+    checkInBtn.classList.add("has-date");    // ADD THIS
+    checkOutBtn.classList.add("has-date");   // ADD THIS
 
-          // Enable confirm button
-          if (confirmBtn) {
-            confirmBtn.disabled = false;
-            confirmBtn.style.opacity = "1";
-          }
-        } else if (selectedCheckIn) {
-          displayText.textContent = `${formatDateNice(selectedCheckIn)} → Selecciona check-out`;
-          displayText.classList.remove("placeholder");
-          trigger.classList.add("has-value");
+    // Enable confirm button
+    if (confirmBtn) {
+      confirmBtn.disabled = false;
+      confirmBtn.style.opacity = "1";
+    }
+  } else if (selectedCheckIn) {
+    displayText.textContent = `${formatDateNice(selectedCheckIn)} → Selecciona check-out`;
+    displayText.classList.remove("placeholder");
+    trigger.classList.add("has-value");
 
-          checkInDisplay.textContent = formatDateNice(selectedCheckIn);
-          checkOutDisplay.textContent = "Añadir fecha";
+    checkInDisplay.textContent = formatDateNice(selectedCheckIn);
+    checkOutDisplay.textContent = "Añadir fecha";
 
-          checkInBtn.classList.add("has-date");
-          checkOutBtn.classList.remove("has-date");
+    checkInBtn.classList.add("has-date");      // ADD THIS
+    checkOutBtn.classList.remove("has-date");  // ADD THIS
 
-          // Disable confirm button
-          if (confirmBtn) {
-            confirmBtn.disabled = true;
-            confirmBtn.style.opacity = "0.5";
-          }
-        } else {
-          displayText.textContent = "Selecciona tus fechas";
-          displayText.classList.add("placeholder");
-          trigger.classList.remove("has-value");
+    // Disable confirm button
+    if (confirmBtn) {
+      confirmBtn.disabled = true;
+      confirmBtn.style.opacity = "0.5";
+    }
+  } else {
+    displayText.textContent = "Selecciona tus fechas";
+    displayText.classList.add("placeholder");
+    trigger.classList.remove("has-value");
 
-          checkInDisplay.textContent = "Añadir fecha";
-          checkOutDisplay.textContent = "Añadir fecha";
+    checkInDisplay.textContent = "Añadir fecha";
+    checkOutDisplay.textContent = "Añadir fecha";
 
-          checkInBtn.classList.remove("has-date");
-          checkOutBtn.classList.remove("has-date");
+    checkInBtn.classList.remove("has-date");   // ADD THIS
+    checkOutBtn.classList.remove("has-date");  // ADD THIS
 
-          // Disable confirm button
-          if (confirmBtn) {
-            confirmBtn.disabled = true;
-            confirmBtn.style.opacity = "0.5";
-          }
-        }
+    // Disable confirm button
+    if (confirmBtn) {
+      confirmBtn.disabled = true;
+      confirmBtn.style.opacity = "0.5";
+    }
+  }
 
         // Update hidden inputs
         document.getElementById("fechaEntrada").value = selectedCheckIn || "";
         document.getElementById("fechaSalida").value = selectedCheckOut || "";
 
         // Update button states
+        const checkInBtn = document.getElementById("checkInBtn");
+        const checkOutBtn = document.getElementById("checkOutBtn");
+
         if (selectingCheckIn) {
           checkInBtn.classList.add("active");
           checkOutBtn.classList.remove("active");
