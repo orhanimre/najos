@@ -2740,8 +2740,8 @@ window.switchViewFromDropdown = function() {
   </td>
   <td>${reg.celular}</td>
   <td>${reg.ciudad}</td>
-  <td>${reg.fechaEntrada}</td>
-  <td>${reg.fechaSalida}</td>
+  <td>${formatDate(reg.fechaEntrada)}</td>
+  <td>${formatDate(reg.fechaSalida)}</td>
   <td><span class="guest-badge">${(reg.totalHuespedes || 0) + 1}</span></td>
   <td class="mobile-col">
     <button class="view-btn" onclick="event.stopPropagation(); showDetailModal(${JSON.stringify(reg).replace(/"/g, '&quot;')})">
