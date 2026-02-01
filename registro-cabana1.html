@@ -1342,34 +1342,6 @@
         transform: rotate(90deg);
       }
 
-      .date-selection-btn {
-  position: relative;
-}
-
-.clear-date {
-  position: absolute;
-  top: 6px;
-  right: 8px;
-  font-size: 16px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.7);
-  cursor: pointer;
-
-  display: none;
-  pointer-events: none; /* 👈 CRITICAL */
-}
-
-.date-selection-btn.active .clear-date {
-  display: block;
-  pointer-events: auto; /* 👈 clickable ONLY when visible */
-}
-
-.clear-date:hover {
-  color: #ef4444;
-}
-
-
-
       /* Messages */
       .message {
         padding: 18px 24px;
@@ -1880,18 +1852,19 @@
         <div class="date-picker-header">
           <h3>📅 Selecciona tus Fechas</h3>
           <div class="date-selection-buttons">
-  <button class="date-selection-btn" id="checkinBtn">
-    <span class="label">Check-in</span>
-    <span class="value" id="checkinValue">Add date</span>
-  </button>
-
-  <button class="date-selection-btn" id="checkoutBtn">
-    <span class="label">Check-out</span>
-    <span class="value" id="checkoutValue">Add date</span>
-    <span class="clear-date" onclick="clearDates(event)">×</span>
-  </button>
-</div>
-
+            <button
+              type="button"
+              class="date-selection-btn active"
+              id="checkInBtn"
+            >
+              <span class="label">Check-in</span>
+              <span class="value" id="checkInDisplay">Añadir fecha</span>
+            </button>
+            <button type="button" class="date-selection-btn" id="checkOutBtn">
+              <span class="label">Check-out</span>
+              <span class="value" id="checkOutDisplay">Añadir fecha</span>
+            </button>
+          </div>
           <button class="modal-close" onclick="closeDatePickerModal()">
             ✕
           </button>
@@ -2624,33 +2597,6 @@
             showToast("⚠️ Primero selecciona tu fecha de check-in");
           }
         });
-
-        function clearDates(e) {
-  e.stopPropagation(); // prevents reopening calendar
-
-  // 1. Reset state
-  fechaEntrada = null;
-  fechaSalida = null;
-
-  // 2. Reset button text
-  document.getElementById("checkinValue").textContent = "Add date";
-  document.getElementById("checkoutValue").textContent = "Add date";
-
-  // 3. Remove active styles
-  document.getElementById("checkinBtn").classList.remove("active");
-  document.getElementById("checkoutBtn").classList.remove("active");
-
-  // 4. Clear calendar selection visuals
-  document.querySelectorAll(".calendar-day").forEach(day => {
-    day.classList.remove(
-      "selected",
-      "range-start",
-      "range-end",
-      "in-range"
-    );
-  });
-}
-
 
       function renderCalendar() {
         const scroll = document.getElementById("datePickerScroll");
