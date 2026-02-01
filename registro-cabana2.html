@@ -1050,33 +1050,82 @@
       }
 
       /* Unavailable dates - medium gray (booked) */
-      .calendar-day.booked {
-        background: #9ca3af;
-        color: white;
-        cursor: not-allowed;
-      }
+      /* Shared dates - FULL GRAY (not clickable) */
+.calendar-day.shared-booked {
+  background: #9ca3af;
+  color: white;
+  cursor: not-allowed;
+  border: 2px solid #9ca3af;
+}
 
-      .calendar-day.booked .calendar-day-number {
-        color: white;
-        font-weight: 600;
-      }
+.calendar-day.shared-booked .calendar-day-number {
+  color: white;
+  font-weight: 700;
+}
 
-      /* Checkout dates - half colored (available for check-in) */
-      .calendar-day.checkout-available {
-        background: linear-gradient(135deg, #9ca3af 0%, #9ca3af 50%, white 50%, white 100%);
-        border: 2px solid #9ca3af;
-        cursor: pointer;
-      }
+/* Unshared check-in dates - HALF GRAY RIGHT (not clickable for check-in) */
+.calendar-day.checkin-only {
+  background: linear-gradient(90deg, white 0%, white 50%, #9ca3af 50%, #9ca3af 100%);
+  border: 2px solid #9ca3af;
+  cursor: not-allowed;
+}
 
-      .calendar-day.checkout-available .calendar-day-number {
-        color: #1f2937;
-        font-weight: 700;
-      }
+.calendar-day.checkin-only .calendar-day-number {
+  color: #1f2937;
+  font-weight: 700;
+}
 
-      .calendar-day.checkout-available:hover {
-        transform: scale(1.05);
-        border-color: #667eea;
-      }
+/* When checkin-only date is clickable (as checkout) */
+.calendar-day.checkin-only.clickable {
+  cursor: pointer;
+}
+
+.calendar-day.checkin-only.clickable:hover {
+  transform: scale(1.05);
+  border-color: #667eea;
+}
+
+/* Unshared checkout dates - HALF GRAY LEFT (available for check-in) */
+.calendar-day.checkout-available {
+  background: linear-gradient(90deg, #9ca3af 0%, #9ca3af 50%, white 50%, white 100%);
+  border: 2px solid #9ca3af;
+  cursor: pointer;
+}
+
+.calendar-day.checkout-available .calendar-day-number {
+  color: #1f2937;
+  font-weight: 700;
+}
+
+.calendar-day.checkout-available:hover {
+  transform: scale(1.05);
+  border-color: #667eea;
+}
+
+/* Middle days - LIGHT GRAY (not clickable) */
+.calendar-day.middle-booked {
+  background: #d1d5db;
+  color: #4b5563;
+  cursor: not-allowed;
+  border: 1px solid #d1d5db;
+}
+
+.calendar-day.middle-booked .calendar-day-number {
+  color: #4b5563;
+  font-weight: 600;
+}
+
+/* Legacy booked class - keep for backward compatibility */
+.calendar-day.booked {
+  background: #9ca3af;
+  color: white;
+  cursor: not-allowed;
+}
+
+.calendar-day.booked .calendar-day-number {
+  color: white;
+  font-weight: 600;
+}
 
       /* Available dates - white with border */
       .calendar-day.available {
@@ -1745,27 +1794,35 @@
         <div class="date-picker-body">
           <div class="date-picker-scroll" id="datePickerScroll"></div>
           <div class="calendar-legend">
-            <div class="legend-item">
-              <div class="legend-color available"></div>
-              <span>Disponible</span>
-            </div>
-            <div class="legend-item">
-              <div class="legend-color selected"></div>
-              <span>Seleccionado</span>
-            </div>
-            <div class="legend-item">
-              <div class="legend-color range"></div>
-              <span>Tu estadía</span>
-            </div>
-            <div class="legend-item">
-              <div class="legend-color" style="background: linear-gradient(135deg, #9ca3af 0%, #9ca3af 50%, white 50%, white 100%); border: 2px solid #9ca3af;"></div>
-              <span>Checkout (disponible)</span>
-            </div>
-            <div class="legend-item">
-              <div class="legend-color booked"></div>
-              <span>Reservado</span>
-            </div>
-          </div>
+  <div class="legend-item">
+    <div class="legend-color available"></div>
+    <span>Disponible</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color selected"></div>
+    <span>Seleccionado</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color range"></div>
+    <span>Tu estadía</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color" style="background: linear-gradient(90deg, #9ca3af 0%, #9ca3af 50%, white 50%, white 100%); border: 2px solid #9ca3af;"></div>
+    <span>Checkout disponible</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color" style="background: linear-gradient(90deg, white 0%, white 50%, #9ca3af 50%, #9ca3af 100%); border: 2px solid #9ca3af;"></div>
+    <span>Check-in ocupado</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color" style="background: #d1d5db; border: 1px solid #d1d5db;"></div>
+    <span>Días intermedios</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color" style="background: #9ca3af; border: 2px solid #9ca3af;"></div>
+    <span>Completamente ocupado</span>
+  </div>
+</div>
           <div style="padding: 16px 24px; background: white; border-top: 1px solid #e5e7eb;">
             <button type="button" id="confirmDatesBtn" onclick="confirmDatesAndClose()" style="
               width: 100%;
@@ -2230,56 +2287,99 @@
 
       // Date Picker Functions
       async function loadBookedDates() {
-        try {
-          const querySnapshot = await getDocs(collection(db, "cabin_availability"));
-          bookedDates = [];
-          window.checkoutDates = []; // Dates that are checkout days (available for check-in, half-colored)
-          const checkInDates = []; // Track all check-in dates
-          const checkOutDates = []; // Track all checkout dates
-          
-          // First pass: collect all check-in and check-out dates
-          querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            if (data.cabana === "Cabaña MariaMar-2") {
-              if (data.fechaInicio) {
-                checkInDates.push(data.fechaInicio);
-              }
-              if (data.fechaFin) {
-                checkOutDates.push(data.fechaFin);
-              }
-            }
-          });
-          
-          // Second pass: mark dates as booked
-          querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            if (data.cabana === "Cabaña MariaMar-2" && data.fechaInicio && data.fechaFin) {
-              const start = new Date(data.fechaInicio);
-              const end = new Date(data.fechaFin);
-              
-              // Add all dates from check-in to check-out (inclusive of check-in, exclusive of check-out)
-              for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
-                bookedDates.push(d.toISOString().split("T")[0]);
-              }
-              
-              // Check if checkout date is also a check-in date for another reservation
-              // If yes, mark it as booked (full color). If no, it's available for new check-in (half-colored)
-              if (checkInDates.includes(data.fechaFin)) {
-                // Checkout date is also a check-in date, so it's booked (full color)
-                bookedDates.push(data.fechaFin);
-              } else {
-                // Checkout date is NOT a check-in date, so it's available (half-colored)
-                window.checkoutDates.push(data.fechaFin);
-              }
-            }
-          });
-          
-          console.log("Loaded booked dates:", bookedDates);
-          console.log("Loaded checkout dates (half-colored, available for check-in):", window.checkoutDates);
-        } catch (error) {
-          console.error("Error loading booked dates:", error);
+  try {
+    const querySnapshot = await getDocs(collection(db, "cabin_availability"));
+    bookedDates = [];
+    window.checkoutDates = []; // Unshared checkout dates (available for check-in, half-colored left)
+    window.checkinDates = []; // Unshared check-in dates (NOT available for check-in, half-colored right)
+    window.middleDates = []; // Middle days of reservations (light gray)
+    window.sharedDates = []; // Shared checkout/check-in dates (full gray)
+    
+    const checkInDates = []; // Track all check-in dates
+    const checkOutDates = []; // Track all checkout dates
+    
+    // First pass: collect all check-in and check-out dates
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      if (data.cabana === "Cabaña MariaMar-1") {
+        if (data.fechaInicio) {
+          checkInDates.push(data.fechaInicio);
+        }
+        if (data.fechaFin) {
+          checkOutDates.push(data.fechaFin);
         }
       }
+    });
+    
+    // Second pass: categorize all dates
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      if (data.cabana === "Cabaña MariaMar-1" && data.fechaInicio && data.fechaFin) {
+        const start = new Date(data.fechaInicio);
+        const end = new Date(data.fechaFin);
+        
+        // Check if check-in is shared with another checkout
+        const isCheckInShared = checkOutDates.includes(data.fechaInicio);
+        // Check if checkout is shared with another check-in
+        const isCheckOutShared = checkInDates.includes(data.fechaFin);
+        
+        // Handle check-in date
+        if (isCheckInShared) {
+          // Shared check-in/checkout date - full gray
+          if (!window.sharedDates.includes(data.fechaInicio)) {
+            window.sharedDates.push(data.fechaInicio);
+          }
+        } else {
+          // Unshared check-in - half gray (right side)
+          if (!window.checkinDates.includes(data.fechaInicio)) {
+            window.checkinDates.push(data.fechaInicio);
+          }
+        }
+        
+        // Handle middle dates (between check-in and checkout)
+        for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+          const dateStr = d.toISOString().split("T")[0];
+          if (dateStr !== data.fechaInicio && dateStr !== data.fechaFin) {
+            if (!window.middleDates.includes(dateStr)) {
+              window.middleDates.push(dateStr);
+            }
+          }
+        }
+        
+        // Handle checkout date
+        if (isCheckOutShared) {
+          // Shared checkout/check-in date - full gray
+          if (!window.sharedDates.includes(data.fechaFin)) {
+            window.sharedDates.push(data.fechaFin);
+          }
+        } else {
+          // Unshared checkout - half gray (left side), available for new check-in
+          if (!window.checkoutDates.includes(data.fechaFin)) {
+            window.checkoutDates.push(data.fechaFin);
+          }
+        }
+        
+        // Add all booked dates (for backward compatibility)
+        for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+          const dateStr = d.toISOString().split("T")[0];
+          if (!bookedDates.includes(dateStr)) {
+            bookedDates.push(dateStr);
+          }
+        }
+        if (isCheckOutShared && !bookedDates.includes(data.fechaFin)) {
+          bookedDates.push(data.fechaFin);
+        }
+      }
+    });
+    
+    console.log("Loaded unshared check-in dates (half gray right):", window.checkinDates);
+    console.log("Loaded middle dates (light gray):", window.middleDates);
+    console.log("Loaded shared dates (full gray):", window.sharedDates);
+    console.log("Loaded unshared checkout dates (half gray left, available):", window.checkoutDates);
+  } catch (error) {
+    console.error("Error loading booked dates:", error);
+  }
+}
 
       window.openDatePickerModal = async function() {
         const modal = document.getElementById("datePickerModal");
@@ -2457,42 +2557,67 @@
           }
           
           let isClickable = false;
-          
-          // Check if this date is the selected check-in
-          if (selectedCheckIn === dateStr) {
-            dayCell.classList.add("check-in");
-            isClickable = true; // Allow clicking to reset
-          }
-          // Check if this date is the selected check-out
-          else if (selectedCheckOut === dateStr) {
-            dayCell.classList.add("check-out");
-            isClickable = true; // Allow clicking to reset
-          }
-          // Check if date is between check-in and check-out
-          else if (selectedCheckIn && selectedCheckOut && dateStr > selectedCheckIn && dateStr < selectedCheckOut) {
-            dayCell.classList.add("in-range");
-            isClickable = true; // Allow clicking to reset
-          }
-          // Check if this is a checkout date (available for check-in, half-colored) - only when selecting check-in
-          else if (selectingCheckIn && window.checkoutDates && window.checkoutDates.includes(dateStr) && cellDate >= today) {
-            dayCell.classList.add("checkout-available");
-            isClickable = true;
-          }
-          // Check if booked
-          else if (bookedDates.includes(dateStr)) {
-            dayCell.classList.add("booked");
-            isClickable = false;
-          } else if (cellDate >= today) {
-            // Available only if: after today AND (no check-in selected OR after check-in)
-            if (!selectingCheckIn && selectedCheckIn && dateStr <= selectedCheckIn) {
-              // Can't select check-out on or before check-in
-              dayCell.classList.add("past");
-              isClickable = false;
-            } else {
-              dayCell.classList.add("available");
-              isClickable = true;
-            }
-          }
+
+// Check if this date is the selected check-in
+if (selectedCheckIn === dateStr) {
+  dayCell.classList.add("check-in");
+  isClickable = true; // Allow clicking to reset
+}
+// Check if this date is the selected check-out
+else if (selectedCheckOut === dateStr) {
+  dayCell.classList.add("check-out");
+  isClickable = true; // Allow clicking to reset
+}
+// Check if date is between check-in and check-out
+else if (selectedCheckIn && selectedCheckOut && dateStr > selectedCheckIn && dateStr < selectedCheckOut) {
+  dayCell.classList.add("in-range");
+  isClickable = true; // Allow clicking to reset
+}
+// Check if this is a SHARED date (full gray - not clickable)
+else if (window.sharedDates && window.sharedDates.includes(dateStr)) {
+  dayCell.classList.add("shared-booked");
+  isClickable = false;
+}
+// Check if this is an UNSHARED CHECK-IN date (half gray right - only clickable for checkout selection)
+else if (window.checkinDates && window.checkinDates.includes(dateStr)) {
+  dayCell.classList.add("checkin-only");
+  // Only clickable when selecting check-out AND it's after selected check-in
+  if (!selectingCheckIn && selectedCheckIn && dateStr > selectedCheckIn && cellDate >= today) {
+    isClickable = true;
+  } else {
+    isClickable = false;
+  }
+}
+// Check if this is an UNSHARED CHECKOUT date (half gray left - available for check-in)
+else if (window.checkoutDates && window.checkoutDates.includes(dateStr) && cellDate >= today) {
+  dayCell.classList.add("checkout-available");
+  // Only clickable when selecting check-in
+  if (selectingCheckIn) {
+    isClickable = true;
+  } else if (!selectingCheckIn && selectedCheckIn && dateStr > selectedCheckIn) {
+    // Also clickable as checkout if after check-in
+    isClickable = true;
+  } else {
+    isClickable = false;
+  }
+}
+// Check if this is a MIDDLE day (light gray - not clickable)
+else if (window.middleDates && window.middleDates.includes(dateStr)) {
+  dayCell.classList.add("middle-booked");
+  isClickable = false;
+}
+// Check if available
+else if (cellDate >= today) {
+  // Available only if: after today AND (no check-in selected OR after check-in)
+  if (!selectingCheckIn && selectedCheckIn && dateStr <= selectedCheckIn) {
+    // Can't select check-out on or before check-in
+    dayCell.classList.add("past");
+    isClickable = false;
+  } else {
+    dayCell.classList.add("available");
+    isClickable = true;
+  }
+}
           
           const dayNumber = document.createElement("div");
           dayNumber.className = "calendar-day-number";

@@ -3527,25 +3527,11 @@ const reservationsForDay = cabinReservations.filter(r => {
         const isEnd = checkDate.getTime() === exitDate.getTime();
         const isSingle = isStart && isEnd;
 
-        // Check if this check-in date is shared with another guest's check-out
-        const isSharedCheckIn = isStart && cabinReservations.some(r => 
-          r.fechaSalida === dateStr && r.fechaEntrada !== reservationForDay.fechaEntrada
-        );
-
         // Add background color class based on position
         if (isSingle) {
           day.classList.add(`reservation-single-${colorIdx}`);
         } else if (isStart) {
-          // Check-in: half-color if NOT shared, full-color if shared
-          if (isSharedCheckIn) {
-            day.classList.add(`reservation-start-${colorIdx}`);
-          } else {
-            // Half-colored check-in (not shared)
-            const color = colorHexMap[colorIdx] || '#3b82f6';
-            day.style.background = `linear-gradient(90deg, white 0%, white 50%, ${color} 50%, ${color} 100%)`;
-            day.style.borderRadius = '8px';
-            day.style.border = `2px solid ${color}`;
-          }
+          day.classList.add(`reservation-start-${colorIdx}`);
         } else if (isEnd) {
           day.classList.add(`reservation-end-${colorIdx}`);
         } else {
