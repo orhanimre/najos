@@ -2480,7 +2480,7 @@
         }
       }
 
-      window.openDatePickerModal = async function () {
+      window.openDatePickerModal = function () {
   const modal = document.getElementById("datePickerModal");
   
   // Show modal immediately
@@ -2491,9 +2491,10 @@
   const scroll = document.getElementById("datePickerScroll");
   scroll.innerHTML = '<div style="text-align: center; padding: 40px; color: #667eea; font-size: 18px;">⏳ Cargando disponibilidad...</div>';
   
-  // Load data in background
-  await loadBookedDates();
-  renderCalendar();
+  // Load data in background (non-blocking)
+  loadBookedDates().then(() => {
+    renderCalendar();
+  });
 };
 
       window.closeDatePickerModal = function () {

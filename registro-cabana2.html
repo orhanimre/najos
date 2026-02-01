@@ -2410,15 +2410,22 @@
   }
 }
 
-      window.openDatePickerModal = async function() {
-        const modal = document.getElementById("datePickerModal");
-        
-        await loadBookedDates();
-        renderCalendar();
-        
-        modal.classList.add("show");
-        document.body.style.overflow = "hidden";
-      };
+      window.openDatePickerModal = function () {
+  const modal = document.getElementById("datePickerModal");
+  
+  // Show modal immediately
+  modal.classList.add("show");
+  document.body.style.overflow = "hidden";
+  
+  // Show loading state in calendar
+  const scroll = document.getElementById("datePickerScroll");
+  scroll.innerHTML = '<div style="text-align: center; padding: 40px; color: #667eea; font-size: 18px;">⏳ Cargando disponibilidad...</div>';
+  
+  // Load data in background (non-blocking)
+  loadBookedDates().then(() => {
+    renderCalendar();
+  });
+};
 
       window.closeDatePickerModal = function() {
         const modal = document.getElementById("datePickerModal");
