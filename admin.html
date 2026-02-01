@@ -2756,7 +2756,7 @@ window.switchViewFromDropdown = function() {
         });
       }
 
-      window.setDatePreset = function (preset) {
+      window.setDatePreset = function (preset) {  
   // STEP 1: Clear dates FIRST
   document.getElementById("fechaDesde").value = "";
   document.getElementById("fechaHasta").value = "";
@@ -3599,8 +3599,16 @@ const reservationsForDay = cabinReservations.filter(r => {
         }
 
         // Single-reservation popup
+        // Helper function to format dates in popup
+        const formatPopupDate = (dateStr) => {
+          if (!dateStr) return "N/A";
+          const [year, month, day] = dateStr.split("-");
+          return `${day}.${month}.${year}`;
+        };
+
+        // Single-reservation popup
         const guestName = `${reservationForDay.nombre} ${reservationForDay.apellido}`;
-dayContent += `<div class="reservation-popup">${guestName}<br><small>${reservationForDay.fechaEntrada}</small><br><small>${reservationForDay.fechaSalida}</small></div>`;
+dayContent += `<div class="reservation-popup">${guestName}<br><small>${formatPopupDate(reservationForDay.fechaEntrada)}</small><br><small>${formatPopupDate(reservationForDay.fechaSalida)}</small></div>`;
       } else {
   // Multiple reservations on the same day (intersection)
   const colors = reservationsForDay
@@ -3623,11 +3631,18 @@ dayContent += `<div class="reservation-popup">${guestName}<br><small>${reservati
   }
   day.style.borderRadius = '8px';
 
+        // Helper function to format dates in popup
+        const formatPopupDate = (dateStr) => {
+          if (!dateStr) return "N/A";
+          const [year, month, day] = dateStr.split("-");
+          return `${day}.${month}.${year}`;
+        };
+
         // Build popup with all reservations for this day
         let popupHtml = '<div class="reservation-popup">';
         reservationsForDay.forEach((r, idx) => {
           const guestName = `${r.nombre} ${r.apellido}`;
-          popupHtml += `${guestName}<br><small>${r.fechaEntrada}</small><br><small>${r.fechaSalida}</small>${idx < reservationsForDay.length - 1 ? '<br><br>' : ''}`;
+          popupHtml += `${guestName}<br><small>${formatPopupDate(r.fechaEntrada)}</small><br><small>${formatPopupDate(r.fechaSalida)}</small>${idx < reservationsForDay.length - 1 ? '<br><br>' : ''}`;
         });
         popupHtml += '</div>';
         dayContent += popupHtml;
