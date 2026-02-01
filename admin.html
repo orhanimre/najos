@@ -708,13 +708,7 @@ input[type="date"] {
   z-index: 2;
 }
 
-/* Reservation background colors - FULL CELL BACKGROUND */
-.calendar-day.reservation-start-1,
-.calendar-day.reservation-end-1,
-.calendar-day.reservation-single-1 { 
-  background: #3b82f6;
-}
-
+/* Reserved day number styling */
 .calendar-day.reserved .calendar-day-number {
   color: white;
   font-weight: 700;
@@ -725,6 +719,7 @@ input[type="date"] {
 .calendar-day.reservation-end-1,
 .calendar-day.reservation-single-1 { 
   background: #3b82f6;
+  border-radius: 8px;
 }
 
 .calendar-day.reservation-start-2,
@@ -776,10 +771,38 @@ input[type="date"] {
   border-radius: 8px;
 }
 
+.calendar-day.reservation-start-9,
+.calendar-day.reservation-end-9,
+.calendar-day.reservation-single-9 { 
+  background: #06b6d4;  /* Cyan - contrasts with orange/red */
+  border-radius: 8px;
+}
+
+.calendar-day.reservation-start-10,
+.calendar-day.reservation-end-10,
+.calendar-day.reservation-single-10 { 
+  background: #84cc16;  /* Lime - contrasts with pink/purple */
+  border-radius: 8px;
+}
+
+.calendar-day.reservation-start-11,
+.calendar-day.reservation-end-11,
+.calendar-day.reservation-single-11 { 
+  background: #d946ef;  /* Fuchsia - contrasts with green/teal */
+  border-radius: 8px;
+}
+
+.calendar-day.reservation-start-12,
+.calendar-day.reservation-end-12,
+.calendar-day.reservation-single-12 { 
+  background: #0ea5e9;  /* Sky blue - contrasts with orange */
+  border-radius: 8px;
+}
+
 /* LIGHT color for MIDDLE days */
 .calendar-day.reservation-middle-1 { 
   background: rgba(59, 130, 246, 0.25);
-  border-radius: 0 !important;  /* ← NO ROUNDED CORNERS - force override */
+  border-radius: 0 !important;
 }
 .calendar-day.reservation-middle-1 .calendar-day-number { 
   color: #1e40af;
@@ -839,6 +862,39 @@ input[type="date"] {
 }
 .calendar-day.reservation-middle-8 .calendar-day-number { 
   color: #9a3412;
+  font-weight: 600;
+}
+
+/* ✅ ADD THE NEW ONES HERE */
+.calendar-day.reservation-middle-9 { 
+  background: rgba(6, 182, 212, 0.25);
+}
+.calendar-day.reservation-middle-9 .calendar-day-number { 
+  color: #0e7490;
+  font-weight: 600;
+}
+
+.calendar-day.reservation-middle-10 { 
+  background: rgba(132, 204, 22, 0.25);
+}
+.calendar-day.reservation-middle-10 .calendar-day-number { 
+  color: #4d7c0f;
+  font-weight: 600;
+}
+
+.calendar-day.reservation-middle-11 { 
+  background: rgba(217, 70, 239, 0.25);
+}
+.calendar-day.reservation-middle-11 .calendar-day-number { 
+  color: #a21caf;
+  font-weight: 600;
+}
+
+.calendar-day.reservation-middle-12 { 
+  background: rgba(14, 165, 233, 0.25);
+}
+.calendar-day.reservation-middle-12 .calendar-day-number { 
+  color: #075985;
   font-weight: 600;
 }
 
@@ -3448,22 +3504,26 @@ function renderMonth(date, container) {
   // Create color map for each unique guest
   const guestColorMap = new Map();
   const colorHexMap = {
-    1: '#3b82f6',
-    2: '#10b981',
-    3: '#f59e0b',
-    4: '#ec4899',
-    5: '#8b5cf6',
-    6: '#ef4444',
-    7: '#14b8a6',
-    8: '#f97316',
-  };
-  let colorIndex = 1;
+  1: '#3b82f6',
+  2: '#10b981',
+  3: '#f59e0b',
+  4: '#ec4899',
+  5: '#8b5cf6',
+  6: '#ef4444',
+  7: '#14b8a6',
+  8: '#f97316',
+  9: '#06b6d4',   // ✅ ADD
+  10: '#84cc16',  // ✅ ADD
+  11: '#d946ef',  // ✅ ADD
+  12: '#0ea5e9',  // ✅ ADD
+};
+let colorIndex = 1;
   
   cabinReservations.forEach(reservation => {
     const guestKey = `${reservation.nombre}-${reservation.apellido}-${reservation.fechaEntrada}`;
     if (!guestColorMap.has(guestKey)) {
       guestColorMap.set(guestKey, colorIndex);
-      colorIndex = (colorIndex % 8) + 1;
+      colorIndex = (colorIndex % 12) + 1;
     }
   });
   
