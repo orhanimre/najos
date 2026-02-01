@@ -983,9 +983,7 @@
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  opacity: 0;
-  visibility: hidden;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
@@ -1000,9 +998,8 @@
   transform: scale(1.15);
 }
 
-.date-selection-btn.has-date .date-reset-btn {
-  opacity: 1;
-  visibility: visible;
+.date-reset-btn.show {
+  display: flex;
 }
 
       .date-picker-body {
@@ -1890,22 +1887,24 @@
         <div class="date-picker-header">
           <h3>📅 Selecciona tus Fechas</h3>
           <div class="date-selection-buttons">
-  <button
-    type="button"
-    class="date-selection-btn active"
-    id="checkInBtn"
-  >
-    <span class="label">Check-in</span>
-    <span class="value" id="checkInDisplay">Añadir fecha</span>
-    <!-- ADD THIS BUTTON -->
-    <button type="button" class="date-reset-btn" onclick="resetCheckInDate(event)" title="Limpiar fecha">×</button>
-  </button>
-  <button type="button" class="date-selection-btn" id="checkOutBtn">
-    <span class="label">Check-out</span>
-    <span class="value" id="checkOutDisplay">Añadir fecha</span>
-    <!-- ADD THIS BUTTON -->
-    <button type="button" class="date-reset-btn" onclick="resetCheckOutDate(event)" title="Limpiar fecha">×</button>
-  </button>
+  <div class="date-btn-wrapper">
+    <button
+      type="button"
+      class="date-selection-btn active"
+      id="checkInBtn"
+    >
+      <span class="label">Check-in</span>
+      <span class="value" id="checkInDisplay">Añadir fecha</span>
+    </button>
+    <button type="button" class="date-reset-btn" id="resetCheckIn" title="Limpiar fecha">×</button>
+  </div>
+  <div class="date-btn-wrapper">
+    <button type="button" class="date-selection-btn" id="checkOutBtn">
+      <span class="label">Check-out</span>
+      <span class="value" id="checkOutDisplay">Añadir fecha</span>
+    </button>
+    <button type="button" class="date-reset-btn" id="resetCheckOut" title="Limpiar fecha">×</button>
+  </div>
 </div>
           <button class="modal-close" onclick="closeDatePickerModal()">
             ✕
@@ -2020,9 +2019,12 @@
       }
 
       // Reset date functions
+// Reset date functions - attach to window
 window.resetCheckInDate = function(event) {
-  event.preventDefault();
-  event.stopPropagation();
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
   selectedCheckIn = null;
   selectedCheckOut = null;
   selectingCheckIn = true;
@@ -2031,13 +2033,19 @@ window.resetCheckInDate = function(event) {
 };
 
 window.resetCheckOutDate = function(event) {
-  event.preventDefault();
-  event.stopPropagation();
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
   selectedCheckOut = null;
   selectingCheckIn = false;
   updateDateDisplay();
   renderCalendar();
 };
+
+// Add event listeners for reset buttons after DOM loads
+document.getElementById('resetCheckIn').addEventListener('click', resetCheckInDate);
+document.getElementById('resetCheckOut').addEventListener('click', resetCheckOutDate);
 
       // Elements
       const form = document.getElementById("registrationForm");
@@ -2605,6 +2613,8 @@ window.resetCheckOutDate = function(event) {
   const confirmBtn = document.getElementById("confirmDatesBtn");
   const checkInBtn = document.getElementById("checkInBtn");
   const checkOutBtn = document.getElementById("checkOutBtn");
+  const resetCheckInBtn = document.getElementById("resetCheckIn");
+  const resetCheckOutBtn = document.getElementById("resetCheckOut");
 
   if (selectedCheckIn && selectedCheckOut) {
     displayText.textContent = `${formatDateNice(selectedCheckIn)} → ${formatDateNice(selectedCheckOut)}`;
@@ -2615,8 +2625,8 @@ window.resetCheckOutDate = function(event) {
     checkOutDisplay.textContent = formatDateNice(selectedCheckOut);
 
     // Show both reset buttons
-    if (checkInBtn) checkInBtn.classList.add("has-date");
-    if (checkOutBtn) checkOutBtn.classList.add("has-date");
+    if (resetCheckInBtn) resetCheckInBtn.classList.add("show");
+    if (resetCheckOutBtn) resetCheckOutBtn.classList.add("show");
 
     // Enable confirm button
     if (confirmBtn) {
@@ -2632,8 +2642,8 @@ window.resetCheckOutDate = function(event) {
     checkOutDisplay.textContent = "Añadir fecha";
 
     // Show only check-in reset button
-    if (checkInBtn) checkInBtn.classList.add("has-date");
-    if (checkOutBtn) checkOutBtn.classList.remove("has-date");
+    if (resetCheckInBtn) resetCheckInBtn.classList.add("show");
+    if (resetCheckOutBtn) resetCheckOutBtn.classList.remove("show");
 
     // Disable confirm button
     if (confirmBtn) {
@@ -2649,8 +2659,8 @@ window.resetCheckOutDate = function(event) {
     checkOutDisplay.textContent = "Añadir fecha";
 
     // Hide both reset buttons
-    if (checkInBtn) checkInBtn.classList.remove("has-date");
-    if (checkOutBtn) checkOutBtn.classList.remove("has-date");
+    if (resetCheckInBtn) resetCheckInBtn.classList.remove("show");
+    if (resetCheckOutBtn) resetCheckOutBtn.classList.remove("show");
 
     // Disable confirm button
     if (confirmBtn) {
