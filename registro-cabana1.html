@@ -900,10 +900,32 @@
       }
 
       .date-selection-buttons {
-        display: flex;
-        gap: 12px;
-        margin-top: 16px;
-      }
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+/* Keep buttons side by side on mobile */
+@media (max-width: 600px) {
+  .date-selection-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+  }
+  
+  .date-selection-btn {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  
+  .date-selection-btn .label {
+    font-size: 9px;
+  }
+  
+  .date-selection-btn .value {
+    font-size: 13px;
+  }
+}
 
       .date-selection-btn {
         flex: 1;
@@ -1194,22 +1216,46 @@
       }
 
       .legend-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 13px;
-        font-weight: 600;
-        color: #4a5568;
-      }
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a5568;
+}
 
-      .legend-color {
-        width: 24px;
-        height: 24px;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+.legend-color {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile legend simplification */
+@media (max-width: 600px) {
+  .legend-item.legend-hide-mobile {
+    display: none;
+  }
+  
+  .legend-item {
+    font-size: 11px;
+    gap: 6px;
+  }
+  
+  .legend-color {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+  
+  .calendar-legend {
+    padding: 12px 16px;
+    gap: 12px;
+    justify-content: space-around;
+  }
+}
 
       .legend-color.booked {
         background: #9ca3af;
@@ -1456,10 +1502,6 @@
         
         .calendar-month-section {
           margin-bottom: 24px;
-        }
-
-        .date-selection-buttons {
-          flex-direction: column;
         }
       }
 
@@ -1794,33 +1836,13 @@
         <div class="date-picker-body">
           <div class="date-picker-scroll" id="datePickerScroll"></div>
           <div class="calendar-legend">
-  <div class="legend-item">
+  <div class="legend-item legend-always-show">
     <div class="legend-color available"></div>
     <span>Disponible</span>
   </div>
-  <div class="legend-item">
+  <div class="legend-item legend-always-show">
     <div class="legend-color selected"></div>
     <span>Seleccionado</span>
-  </div>
-  <div class="legend-item">
-    <div class="legend-color range"></div>
-    <span>Tu estadía</span>
-  </div>
-  <div class="legend-item">
-    <div class="legend-color" style="background: linear-gradient(90deg, #9ca3af 0%, #9ca3af 50%, white 50%, white 100%); border: 2px solid #9ca3af;"></div>
-    <span>Checkout disponible</span>
-  </div>
-  <div class="legend-item">
-    <div class="legend-color" style="background: linear-gradient(90deg, white 0%, white 50%, #9ca3af 50%, #9ca3af 100%); border: 2px solid #9ca3af;"></div>
-    <span>Check-in ocupado</span>
-  </div>
-  <div class="legend-item">
-    <div class="legend-color" style="background: #d1d5db; border: 1px solid #d1d5db;"></div>
-    <span>Días intermedios</span>
-  </div>
-  <div class="legend-item">
-    <div class="legend-color" style="background: #9ca3af; border: 2px solid #9ca3af;"></div>
-    <span>Completamente ocupado</span>
   </div>
 </div>
           <div style="padding: 16px 24px; background: white; border-top: 1px solid #e5e7eb;">
