@@ -1376,37 +1376,6 @@
         box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
       }
 
-      /* Airbnb-style clear (X) button */
-.clear-date {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.15);
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.date-selection-btn {
-  position: relative;
-}
-
-.date-selection-btn.has-value .clear-date {
-  display: flex;
-}
-
-.clear-date:hover {
-  background: rgba(0,0,0,0.35);
-}
-
-
       /* Mobile Responsive */
       @media (max-width: 600px) {
         body {
@@ -1882,28 +1851,20 @@
       <div class="date-picker-content">
         <div class="date-picker-header">
           <h3>📅 Selecciona tus Fechas</h3>
-         <div class="date-selection-buttons">
-
-  <!-- CHECK-IN -->
-  <button class="date-selection-btn active" id="checkinBtn">
-    <span class="label">Check-in</span>
-    <span class="value" id="checkinValue">Seleccionar</span>
-
-    <!-- ❌ ADD THIS -->
-    <span class="clear-date" onclick="clearDates(event)">✕</span>
-  </button>
-
-  <!-- CHECK-OUT -->
-  <button class="date-selection-btn" id="checkoutBtn">
-    <span class="label">Check-out</span>
-    <span class="value" id="checkoutValue">Seleccionar</span>
-
-    <!-- ❌ ADD THIS -->
-    <span class="clear-date" onclick="clearDates(event)">✕</span>
-  </button>
-
-</div>
-
+          <div class="date-selection-buttons">
+            <button
+              type="button"
+              class="date-selection-btn active"
+              id="checkInBtn"
+            >
+              <span class="label">Check-in</span>
+              <span class="value" id="checkInDisplay">Añadir fecha</span>
+            </button>
+            <button type="button" class="date-selection-btn" id="checkOutBtn">
+              <span class="label">Check-out</span>
+              <span class="value" id="checkOutDisplay">Añadir fecha</span>
+            </button>
+          </div>
           <button class="modal-close" onclick="closeDatePickerModal()">
             ✕
           </button>
@@ -2636,24 +2597,6 @@
             showToast("⚠️ Primero selecciona tu fecha de check-in");
           }
         });
-
-        function clearDates(e) {
-  e.stopPropagation();
-
-  // Reset text
-  document.getElementById('checkinValue').textContent = 'Seleccionar';
-  document.getElementById('checkoutValue').textContent = 'Seleccionar';
-
-  // Reset button state
-  document.getElementById('checkinBtn').classList.remove('active');
-  document.getElementById('checkoutBtn').classList.remove('active');
-
-  // Clear calendar visuals ONLY
-  document.querySelectorAll('.calendar-day').forEach(day => {
-    day.classList.remove('selected', 'range', 'start', 'end');
-  });
-}
-
 
       function renderCalendar() {
         const scroll = document.getElementById("datePickerScroll");
