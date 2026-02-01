@@ -942,6 +942,7 @@
         flex-direction: column;
         align-items: center;
         gap: 4px;
+        position: relative;
       }
 
       .date-selection-btn.active {
@@ -965,6 +966,37 @@
       .date-selection-btn .value {
         font-size: 15px;
         font-weight: 700;
+      }
+
+      /* Reset button for date selection */
+      .date-reset-btn {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: rgba(239, 68, 68, 0.9);
+        color: white;
+        border: none;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        padding: 0;
+        line-height: 1;
+      }
+
+      .date-reset-btn:hover {
+        background: rgba(220, 38, 38, 1);
+        transform: scale(1.1);
+      }
+
+      .date-selection-btn.has-date .date-reset-btn {
+        display: flex;
       }
 
       .date-picker-body {
@@ -1576,13 +1608,13 @@
           <div class="progress-step" data-step="2">
             <div class="progress-circle">2</div>
             <div class="progress-label">Tu Estadía</div>
-            <div class="progress-icon">🏖️</div>
+            <div class="progress-icon">🖍️</div>
           </div>
 
           <div class="progress-step" data-step="3">
             <div class="progress-circle">3</div>
             <div class="progress-label">Confirmación</div>
-            <div class="progress-icon">✓</div>
+            <div class="progress-icon">✔</div>
           </div>
         </div>
       </div>
@@ -1693,7 +1725,7 @@
           <!-- Step 2: Stay Details -->
           <div class="step-container" data-step="2">
             <div class="step-intro">
-              <h2>🏖️ ¡Genial! Ahora dime cuándo vienes a disfrutar el mar</h2>
+              <h2>🖍️ ¡Genial! Ahora dime cuándo vienes a disfrutar el mar</h2>
               <p>
                 Selecciona tus fechas de entrada y salida en nuestro calendario
                 interactivo.
@@ -1859,10 +1891,12 @@
             >
               <span class="label">Check-in</span>
               <span class="value" id="checkInDisplay">Añadir fecha</span>
+              <button type="button" class="date-reset-btn" onclick="resetCheckInDate(event)" title="Limpiar fecha">×</button>
             </button>
             <button type="button" class="date-selection-btn" id="checkOutBtn">
               <span class="label">Check-out</span>
               <span class="value" id="checkOutDisplay">Añadir fecha</span>
+              <button type="button" class="date-reset-btn" onclick="resetCheckOutDate(event)" title="Limpiar fecha">×</button>
             </button>
           </div>
           <button class="modal-close" onclick="closeDatePickerModal()">
@@ -1976,6 +2010,24 @@
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 5000);
       }
+
+      // Reset date functions
+      window.resetCheckInDate = function(event) {
+        event.stopPropagation();
+        selectedCheckIn = null;
+        selectedCheckOut = null;
+        selectingCheckIn = true;
+        updateDateDisplay();
+        renderCalendar();
+      };
+
+      window.resetCheckOutDate = function(event) {
+        event.stopPropagation();
+        selectedCheckOut = null;
+        selectingCheckIn = false;
+        updateDateDisplay();
+        renderCalendar();
+      };
 
       // Elements
       const form = document.getElementById("registrationForm");
@@ -2541,6 +2593,8 @@
         const checkInDisplay = document.getElementById("checkInDisplay");
         const checkOutDisplay = document.getElementById("checkOutDisplay");
         const confirmBtn = document.getElementById("confirmDatesBtn");
+        const checkInBtn = document.getElementById("checkInBtn");
+        const checkOutBtn = document.getElementById("checkOutBtn");
 
         if (selectedCheckIn && selectedCheckOut) {
           displayText.textContent = `${formatDateNice(selectedCheckIn)} → ${formatDateNice(selectedCheckOut)}`;
@@ -2549,6 +2603,9 @@
 
           checkInDisplay.textContent = formatDateNice(selectedCheckIn);
           checkOutDisplay.textContent = formatDateNice(selectedCheckOut);
+
+          checkInBtn.classList.add("has-date");
+          checkOutBtn.classList.add("has-date");
 
           // Enable confirm button
           if (confirmBtn) {
@@ -2563,6 +2620,9 @@
           checkInDisplay.textContent = formatDateNice(selectedCheckIn);
           checkOutDisplay.textContent = "Añadir fecha";
 
+          checkInBtn.classList.add("has-date");
+          checkOutBtn.classList.remove("has-date");
+
           // Disable confirm button
           if (confirmBtn) {
             confirmBtn.disabled = true;
@@ -2576,6 +2636,9 @@
           checkInDisplay.textContent = "Añadir fecha";
           checkOutDisplay.textContent = "Añadir fecha";
 
+          checkInBtn.classList.remove("has-date");
+          checkOutBtn.classList.remove("has-date");
+
           // Disable confirm button
           if (confirmBtn) {
             confirmBtn.disabled = true;
@@ -2588,9 +2651,6 @@
         document.getElementById("fechaSalida").value = selectedCheckOut || "";
 
         // Update button states
-        const checkInBtn = document.getElementById("checkInBtn");
-        const checkOutBtn = document.getElementById("checkOutBtn");
-
         if (selectingCheckIn) {
           checkInBtn.classList.add("active");
           checkOutBtn.classList.remove("active");
