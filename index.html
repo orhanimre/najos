@@ -267,38 +267,24 @@
                 0 8px 16px rgba(0, 77, 115, 0.08);
         }
 
-        .cabana-icon-wrapper {
-            padding: 48px 32px 32px;
-            background: linear-gradient(180deg, var(--sand) 0%, transparent 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .cabana-image-wrapper {
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+            position: relative;
+            background: var(--sand);
         }
 
-        .cabana-icon {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 24px;
-            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-light) 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            color: var(--white);
-            font-weight: 900;
-            font-family: 'Playfair Display', serif;
-            box-shadow: 
-                0 12px 28px rgba(0, 77, 115, 0.25),
-                0 0 0 8px rgba(0, 119, 190, 0.1);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        .cabana-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .cabana-card:hover .cabana-icon {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 
-                0 16px 36px rgba(0, 77, 115, 0.35),
-                0 0 0 12px rgba(0, 119, 190, 0.15);
+        .cabana-card:hover .cabana-image {
+            transform: scale(1.08);
         }
 
         .cabana-content {
@@ -446,14 +432,8 @@
                 gap: 24px;
             }
 
-            .cabana-icon-wrapper {
-                padding: 36px 24px 24px;
-            }
-
-            .cabana-icon {
-                width: 80px;
-                height: 80px;
-                font-size: 36px;
+            .cabana-image-wrapper {
+                height: 200px;
             }
 
             .cabana-content {
@@ -483,8 +463,8 @@
                 padding: 32px 20px;
             }
 
-            .cabana-icon-wrapper {
-                padding: 28px 20px 20px;
+            .cabana-image-wrapper {
+                height: 180px;
             }
 
             .cabana-content {
@@ -520,8 +500,8 @@
 
             <div class="cabanas-grid">
                 <div class="cabana-card" onclick="selectCabana(1)">
-                    <div class="cabana-icon-wrapper">
-                        <div class="cabana-icon">1</div>
+                    <div class="cabana-image-wrapper">
+                        <img src="https://imgur.com/dVlUrNm.jpg" alt="Cabaña MariaMar-1" class="cabana-image">
                     </div>
                     <div class="cabana-content">
                         <h3>MariaMar-1</h3>
@@ -531,8 +511,8 @@
                 </div>
 
                 <div class="cabana-card" onclick="selectCabana(2)">
-                    <div class="cabana-icon-wrapper">
-                        <div class="cabana-icon">2</div>
+                    <div class="cabana-image-wrapper">
+                        <img src="https://imgur.com/21Ay90Q.jpg" alt="Cabaña MariaMar-2" class="cabana-image">
                     </div>
                     <div class="cabana-content">
                         <h3>MariaMar-2</h3>
@@ -542,8 +522,8 @@
                 </div>
 
                 <div class="cabana-card" onclick="selectCabana(3)">
-                    <div class="cabana-icon-wrapper">
-                        <div class="cabana-icon">3</div>
+                    <div class="cabana-image-wrapper">
+                        <img src="https://imgur.com/QLnvbcu.jpg" alt="Cabaña MariaMar-3" class="cabana-image">
                     </div>
                     <div class="cabana-content">
                         <h3>MariaMar-3</h3>
