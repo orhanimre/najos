@@ -17,7 +17,7 @@
     },
     {
       "src": "/",
-      "dest": "/index.html"
+      "dest": "/registro-cabana1.html"
     },
     {
       "src": "/(.*)",
