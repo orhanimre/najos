@@ -1,4 +1,3 @@
-
 module.exports = async (req, res) => {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -70,16 +69,33 @@ module.exports = async (req, res) => {
           </div>
           
           <!-- Admin Button -->
-          <div style="padding: 20px; text-align: center; background: #f7fafc;">
+          <div style="padding: 20px; text-align: center; background: #edf2f7;">
             <a href="https://mariamar.vercel.app/admin.html" 
-               style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 15px; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);">
+               style="display: inline-block; background: #48bb78; color: white; padding: 14px 28px; text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 15px; box-shadow: 0 4px 14px rgba(72, 187, 120, 0.4); transition: all 0.3s ease;">
               📋 Ver Panel Admin
             </a>
           </div>
           
           <!-- Content -->
           <div style="padding: 20px;">
-            <!-- Guest Info -->
+            <!-- Stay Info (MOVED TO FIRST) -->
+            <div style="background: #f7fafc; border-left: 4px solid #667eea; padding: 16px; margin-bottom: 20px; border-radius: 8px;">
+              <h3 style="color: #667eea; margin-top: 0; margin-bottom: 12px; font-size: 16px;">🏖️ Estadía</h3>
+              <div style="margin-bottom: 8px; font-size: 14px;">
+                <strong style="color: #667eea;">Check-in:</strong>
+                <span style="color: #2d3748;">${formatDate(data.fechaEntrada)} a las ${data.horaEntrada}</span>
+              </div>
+              <div style="margin-bottom: 8px; font-size: 14px;">
+                <strong style="color: #667eea;">Check-out:</strong>
+                <span style="color: #2d3748;">${formatDate(data.fechaSalida)} a las ${data.horaSalida}</span>
+              </div>
+              <div style="font-size: 14px;">
+                <strong style="color: #667eea;">Total personas:</strong>
+                <span style="color: #2d3748;">${(data.totalHuespedes || 0) + 1}</span>
+              </div>
+            </div>
+
+            <!-- Guest Info (NOW SECOND) -->
             <div style="background: #f7fafc; border-left: 4px solid #667eea; padding: 16px; margin-bottom: 20px; border-radius: 8px;">
               <h3 style="color: #667eea; margin-top: 0; margin-bottom: 12px; font-size: 16px;">👤 Huésped Principal</h3>
               <div style="margin-bottom: 8px; font-size: 14px;">
@@ -97,23 +113,6 @@ module.exports = async (req, res) => {
               <div style="font-size: 14px;">
                 <strong style="color: #667eea;">Ciudad:</strong>
                 <span style="color: #2d3748;">${data.ciudad}</span>
-              </div>
-            </div>
-
-            <!-- Stay Info -->
-            <div style="background: #f7fafc; border-left: 4px solid #667eea; padding: 16px; margin-bottom: 20px; border-radius: 8px;">
-              <h3 style="color: #667eea; margin-top: 0; margin-bottom: 12px; font-size: 16px;">🏖️ Estadía</h3>
-              <div style="margin-bottom: 8px; font-size: 14px;">
-                <strong style="color: #667eea;">Check-in:</strong>
-                <span style="color: #2d3748;">${formatDate(data.fechaEntrada)} a las ${data.horaEntrada}</span>
-              </div>
-              <div style="margin-bottom: 8px; font-size: 14px;">
-                <strong style="color: #667eea;">Check-out:</strong>
-                <span style="color: #2d3748;">${formatDate(data.fechaSalida)} a las ${data.horaSalida}</span>
-              </div>
-              <div style="font-size: 14px;">
-                <strong style="color: #667eea;">Total personas:</strong>
-                <span style="color: #2d3748;">${(data.totalHuespedes || 0) + 1}</span>
               </div>
             </div>
 
@@ -139,7 +138,7 @@ module.exports = async (req, res) => {
       body: JSON.stringify({
         from: 'Cabañas MariaMar <onboarding@resend.dev>',
         to: ['orhanimre@gmail.com'],
-        subject: `🏡 Nuevo Registro - ${data.cabana} - ${data.nombre} ${data.apellido}`,
+        subject: `${data.cabana} (Nuevo Registro)`,
         html: emailHTML
       })
     });
