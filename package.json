@@ -1,8 +1,5 @@
 {
-  "name": "cabanas-mariamar-email",
+  "name": "cabanas-mariamar",
   "version": "1.0.0",
-  "description": "Email notification system for Cabañas MariaMar",
-  "dependencies": {
-    "node-fetch": "^2.6.7"
-  }
+  "private": true
 }
