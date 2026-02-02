@@ -1,7 +1,13 @@
-const fetch = require('node-fetch');
-
 module.exports = async (req, res) => {
-  // Only allow POST requests
+  // Add CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -30,7 +36,7 @@ module.exports = async (req, res) => {
       companionsHTML = '<p><em>Sin acompañantes</em></p>';
     }
 
-    // Send email using Resend
+    // Send email using Resend (using native fetch - no import needed)
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
