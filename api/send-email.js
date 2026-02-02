@@ -66,21 +66,25 @@ module.exports = async (req, res) => {
             color-scheme: light only;
             supported-color-schemes: light;
           }
+          @media (prefers-color-scheme: dark) {
+            .header-text { color: #ffffff !important; }
+            .button-text { color: #ffffff !important; }
+          }
         </style>
       </head>
       <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f4f4f4;">
         <div style="max-width: 600px; margin: 0 auto; background: #ffffff;">
           <!-- Header -->
           <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px 20px; text-align: center;">
-            <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: #ffffff !important;">🏡 <span style="color: #ffffff !important;">Nuevo Registro</span></h1>
-            <div style="margin-top: 12px; font-size: 18px; font-weight: 600; color: #ffffff !important;"><span style="color: #ffffff !important;">${data.cabana}</span></div>
+            <h1 class="header-text" style="margin: 0; font-size: 24px; font-weight: 700; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; mso-line-height-rule: exactly;" data-ogsc="#ffffff">🏡 Nuevo Registro</h1>
+            <div class="header-text" style="margin-top: 12px; font-size: 18px; font-weight: 600; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; mso-line-height-rule: exactly;" data-ogsc="#ffffff">${data.cabana}</div>
           </div>
           
           <!-- Admin Button -->
           <div style="padding: 20px; text-align: center; background: #edf2f7;">
-            <a href="https://mariamar.vercel.app/admin.html" 
-               style="display: inline-block; background: #48bb78; color: #ffffff !important; padding: 14px 28px; text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 15px; box-shadow: 0 4px 14px rgba(72, 187, 120, 0.4);">
-              <span style="color: #ffffff !important;">📋 Ver Panel Admin</span>
+            <a href="https://mariamar.vercel.app/admin.html" class="button-text"
+               style="display: inline-block; background: #48bb78; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; padding: 14px 28px; text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 15px; box-shadow: 0 4px 14px rgba(72, 187, 120, 0.4); mso-line-height-rule: exactly;" data-ogsc="#ffffff">
+              📋 Ver Panel Admin
             </a>
           </div>
           
