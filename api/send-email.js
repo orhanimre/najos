@@ -1,3 +1,4 @@
+
 module.exports = async (req, res) => {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -33,7 +34,7 @@ module.exports = async (req, res) => {
 
     let companionsHTML = '';
     if (data.totalHuespedes > 0) {
-      companionsHTML = '<h3 style="color: #667eea; margin-top: 20px; margin-bottom: 12px;">👥 Acompañantes:</h3>';
+      companionsHTML = '<div style="margin-top: 20px;"><h3 style="color: #667eea; margin-bottom: 12px; font-size: 16px;">👥 Acompañantes:</h3>';
       for (let i = 0; i < data.totalHuespedes; i++) {
         const nombre = data[`acomp${i}Nombre`];
         const apellido = data[`acomp${i}Apellido`];
@@ -42,13 +43,14 @@ module.exports = async (req, res) => {
         
         if (nombre || apellido) {
           companionsHTML += `
-            <div style="background: #f7fafc; padding: 12px; border-radius: 8px; margin-bottom: 8px;">
+            <div style="background: #f7fafc; padding: 10px 12px; border-radius: 8px; margin-bottom: 8px; font-size: 14px;">
               <strong>Acompañante ${i + 1}:</strong> ${nombre} ${apellido}<br>
-              <small>ID: ${tipoId?.toUpperCase()} - ${numId}</small>
+              <small style="color: #718096;">ID: ${tipoId?.toUpperCase()} - ${numId}</small>
             </div>
           `;
         }
       }
+      companionsHTML += '</div>';
     }
 
     const emailHTML = `
@@ -56,46 +58,61 @@ module.exports = async (req, res) => {
       <html>
       <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
       </head>
-      <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0;">
+      <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f4f4f4;">
         <div style="max-width: 600px; margin: 0 auto; background: #ffffff;">
-          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center;">
-            <h1 style="margin: 0; font-size: 28px;">🏡 Nuevo Registro - ${data.cabana}</h1>
+          <!-- Header -->
+          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px 20px; text-align: center;">
+            <h1 style="margin: 0; font-size: 24px; font-weight: 700;">🏡 Nuevo Registro</h1>
+            <div style="margin-top: 12px; font-size: 18px; font-weight: 600;">${data.cabana}</div>
           </div>
           
-          <div style="padding: 30px;">
+          <!-- Admin Button -->
+          <div style="padding: 20px; text-align: center; background: #f7fafc;">
+            <a href="https://mariamar.vercel.app/admin.html" 
+               style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 15px; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);">
+              📋 Ver Panel Admin
+            </a>
+          </div>
+          
+          <!-- Content -->
+          <div style="padding: 20px;">
+            <!-- Guest Info -->
             <div style="background: #f7fafc; border-left: 4px solid #667eea; padding: 16px; margin-bottom: 20px; border-radius: 8px;">
-              <h3 style="color: #667eea; margin-top: 0;">👤 Huésped Principal</h3>
-              <div style="margin-bottom: 12px;">
-                <span style="font-weight: bold; color: #667eea;">Nombre:</span>
+              <h3 style="color: #667eea; margin-top: 0; margin-bottom: 12px; font-size: 16px;">👤 Huésped Principal</h3>
+              <div style="margin-bottom: 8px; font-size: 14px;">
+                <strong style="color: #667eea;">Nombre:</strong>
                 <span style="color: #2d3748;">${data.nombre} ${data.apellido}</span>
               </div>
-              <div style="margin-bottom: 12px;">
-                <span style="font-weight: bold; color: #667eea;">Celular:</span>
+              <div style="margin-bottom: 8px; font-size: 14px;">
+                <strong style="color: #667eea;">Celular:</strong>
                 <span style="color: #2d3748;">${data.celular}</span>
               </div>
-              <div style="margin-bottom: 12px;">
-                <span style="font-weight: bold; color: #667eea;">Documento:</span>
+              <div style="margin-bottom: 8px; font-size: 14px;">
+                <strong style="color: #667eea;">Documento:</strong>
                 <span style="color: #2d3748;">${data.tipoId?.toUpperCase()} - ${data.numeroId}</span>
               </div>
-              <div style="margin-bottom: 12px;">
-                <span style="font-weight: bold; color: #667eea;">Ciudad:</span>
+              <div style="font-size: 14px;">
+                <strong style="color: #667eea;">Ciudad:</strong>
                 <span style="color: #2d3748;">${data.ciudad}</span>
               </div>
             </div>
 
+            <!-- Stay Info -->
             <div style="background: #f7fafc; border-left: 4px solid #667eea; padding: 16px; margin-bottom: 20px; border-radius: 8px;">
-              <h3 style="color: #667eea; margin-top: 0;">🏖️ Estadía</h3>
-              <div style="margin-bottom: 12px;">
-                <span style="font-weight: bold; color: #667eea;">Check-in:</span>
+              <h3 style="color: #667eea; margin-top: 0; margin-bottom: 12px; font-size: 16px;">🏖️ Estadía</h3>
+              <div style="margin-bottom: 8px; font-size: 14px;">
+                <strong style="color: #667eea;">Check-in:</strong>
                 <span style="color: #2d3748;">${formatDate(data.fechaEntrada)} a las ${data.horaEntrada}</span>
               </div>
-              <div style="margin-bottom: 12px;">
-                <span style="font-weight: bold; color: #667eea;">Check-out:</span>
+              <div style="margin-bottom: 8px; font-size: 14px;">
+                <strong style="color: #667eea;">Check-out:</strong>
                 <span style="color: #2d3748;">${formatDate(data.fechaSalida)} a las ${data.horaSalida}</span>
               </div>
-              <div style="margin-bottom: 12px;">
-                <span style="font-weight: bold; color: #667eea;">Total personas:</span>
+              <div style="font-size: 14px;">
+                <strong style="color: #667eea;">Total personas:</strong>
                 <span style="color: #2d3748;">${(data.totalHuespedes || 0) + 1}</span>
               </div>
             </div>
@@ -103,9 +120,10 @@ module.exports = async (req, res) => {
             ${companionsHTML}
           </div>
 
-          <div style="background: #f7fafc; padding: 20px; text-align: center; color: #718096; font-size: 14px;">
-            <p>📧 Este es un correo automático del sistema de registro de Cabañas MariaMar</p>
-            <p>Fecha de registro: ${new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' })}</p>
+          <!-- Footer -->
+          <div style="background: #f7fafc; padding: 20px; text-align: center; color: #718096; font-size: 12px; border-top: 1px solid #e2e8f0;">
+            <p style="margin: 0 0 8px 0;">📧 Correo automático del sistema de registro</p>
+            <p style="margin: 0;">Fecha: ${new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' })}</p>
           </div>
         </div>
       </body>
