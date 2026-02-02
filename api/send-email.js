@@ -15,6 +15,16 @@ module.exports = async (req, res) => {
   }
 
   try {
+    // ✅ ADD THIS: Check if email notifications are enabled
+    const emailEnabled = req.body.emailEnabled;
+    if (emailEnabled === false) {
+      return res.status(200).json({ 
+        success: true,
+        skipped: true,
+        message: 'Email notifications disabled'
+      });
+    }
+
     const data = req.body;
     
     // Get API key from environment variable

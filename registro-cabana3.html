@@ -1985,12 +1985,14 @@
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import {
-        getFirestore,
-        collection,
-        addDoc,
-        serverTimestamp,
-        getDocs,
-      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp,
+  getDocs,
+  doc,      // ✅ ADD THIS
+  getDoc,   // ✅ ADD THIS
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyACEyCsx-4lhITc8s06QyZPQiS9t3f7I18",
@@ -3015,14 +3017,30 @@
           await addDoc(collection(db, "cabin_availability"), availabilityData);
 
           // NEW: Send email notification
-          try {
-            const emailResponse = await fetch("/api/send-email", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(data),
-            });
+          // ✅ NEW: Check email settings and send notification
+let emailEnabled = true; // Default to enabled
+try {
+  const settingsRef = doc(db, "settings", "email_notifications");
+  const settingsDoc = await getDoc(settingsRef);
+  if (settingsDoc.exists()) {
+    emailEnabled = settingsDoc.data().enabled;
+  }
+} catch (error) {
+  console.log("Could not load email settings, defaulting to enabled");
+}
+
+// Send email notification with toggle status
+try {
+  const emailResponse = await fetch("/api/send-email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ...data,
+      emailEnabled: emailEnabled  // ✅ ADD THIS
+    }),
+  });
 
             if (emailResponse.ok) {
               console.log("✅ Email notification sent successfully");

@@ -1989,6 +1989,8 @@
         addDoc,
         serverTimestamp,
         getDocs,
+        doc, // ✅ ADD THIS
+        getDoc, // ✅ ADD THIS
       } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -3021,13 +3023,29 @@
           await addDoc(collection(db, "cabin_availability"), availabilityData);
 
           // NEW: Send email notification
+          // ✅ NEW: Check email settings and send notification
+          let emailEnabled = true; // Default to enabled
+          try {
+            const settingsRef = doc(db, "settings", "email_notifications");
+            const settingsDoc = await getDoc(settingsRef);
+            if (settingsDoc.exists()) {
+              emailEnabled = settingsDoc.data().enabled;
+            }
+          } catch (error) {
+            console.log("Could not load email settings, defaulting to enabled");
+          }
+
+          // Send email notification with toggle status
           try {
             const emailResponse = await fetch("/api/send-email", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify(data),
+              body: JSON.stringify({
+                ...data,
+                emailEnabled: emailEnabled, // ✅ ADD THIS
+              }),
             });
 
             if (emailResponse.ok) {
