@@ -71,7 +71,7 @@ module.exports = async (req, res) => {
           <!-- Admin Button -->
           <div style="padding: 20px; text-align: center; background: #edf2f7;">
             <a href="https://mariamar.vercel.app/admin.html" 
-               style="display: inline-block; background: #48bb78; color: white; padding: 14px 28px; text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 15px; box-shadow: 0 4px 14px rgba(72, 187, 120, 0.4); transition: all 0.3s ease;">
+               style="display: inline-block; background: #48bb78; color: #ffffff !important; padding: 14px 28px; text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 15px; box-shadow: 0 4px 14px rgba(72, 187, 120, 0.4); transition: all 0.3s ease;">
               📋 Ver Panel Admin
             </a>
           </div>
