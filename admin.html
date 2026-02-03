@@ -2204,7 +2204,6 @@ tbody tr.clickable:active {
         <div id="emailToggle" class="toggle-switch active" onclick="toggleEmailNotifications()">
           <div class="toggle-slider"></div>
         </div>
-        <span id="toggleStatus" class="toggle-status">ON</span>
       </div>
     </div>
 
@@ -2592,14 +2591,11 @@ window.toggleEmailNotifications = async function() {
 
 function updateToggleUI(enabled) {
   const toggle = document.getElementById('emailToggle');
-  const status = document.getElementById('toggleStatus');
-  
+
   if (enabled) {
     toggle.classList.add('active');
-    status.textContent = 'ON';
   } else {
     toggle.classList.remove('active');
-    status.textContent = 'OFF';
   }
 }
 
