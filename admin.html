@@ -1824,49 +1824,52 @@ input[type="date"] {
       /* Mobile: Below the subtitle */
 @media (max-width: 768px) {
   .header-top {
-    flex-direction: column;
-    gap: 12px;
-    align-items: stretch;
+    position: relative;
   }
 
   .header-main-row {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
+    display: block;
   }
 
   .header-left {
-    order: 1;
     text-align: center;
+    padding-top: 50px;
   }
 
   .header-right {
-    order: 2;
-    flex-direction: row;
-    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     gap: 8px;
   }
 
-  .nav-dropdown-container {
-    order: 3;
-    margin-top: 0;
+  .user-info {
+    order: 2;
   }
 
   .email-toggle-container {
-    flex: 1;
+    order: 1;
+    flex: 0 0 auto;
   }
 
-  .user-info {
-    flex: 0 0 auto;
+  .nav-dropdown-container {
+    margin-top: 12px;
   }
 
   .user-email {
     display: none;
   }
+
+  .logout-btn {
+    padding: 8px 12px;
+    font-size: 18px;
+  }
 }
 
-      /* Desktop styles */
       /* Desktop styles */
 @media (min-width: 768px) {
   .header-top {
