@@ -1627,26 +1627,33 @@ input[type="date"] {
   gap: 12px;
 }
 
+/* Bottom Row - Email Toggle + User/Logout */
+.bottom-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
 /* User & Logout Row */
 .user-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   gap: 12px;
+  flex: 0 0 auto;
 }
 
 .user-email {
   font-size: 13px;
   opacity: 0.9;
   font-weight: 500;
-  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .logout-btn {
-  background: rgba(255, 255, 255, 0.25);
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.3);
   color: white;
@@ -1658,11 +1665,14 @@ input[type="date"] {
   font-size: 20px;
   white-space: nowrap;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
 .logout-btn:hover {
-  background: #ef4444;
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
   border-color: #ef4444;
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+  transform: translateY(-2px);
 }
 
 /* Email Toggle */
@@ -1675,6 +1685,7 @@ input[type="date"] {
   backdrop-filter: blur(10px);
   border-radius: 12px;
   border: 2px solid rgba(255, 255, 255, 0.2);
+  flex: 1;
 }
 
 .email-toggle-label {
@@ -2173,33 +2184,37 @@ tbody tr.clickable:active {
     </div>
 
     <!-- Controls Row -->
-    <div class="header-controls">
-      <!-- View Selector -->
-      <div class="nav-dropdown-container">
-        <label class="nav-dropdown-label">Vista:</label>
-        <select id="viewSelector" class="nav-dropdown" onchange="switchViewFromDropdown()">
-          <option value="active">📋 Registros Activos</option>
-          <option value="archive">📦 Archivo</option>
-        </select>
-      </div>
+    <!-- Controls Row -->
+<div class="header-controls">
+  <!-- View Selector -->
+  <div class="nav-dropdown-container">
+    <label class="nav-dropdown-label">Vista:</label>
+    <select id="viewSelector" class="nav-dropdown" onchange="switchViewFromDropdown()">
+      <option value="active">📋 Registros Activos</option>
+      <option value="archive">📦 Archivo</option>
+    </select>
+  </div>
 
-      <!-- Email Toggle -->
-      <div class="email-toggle-container">
-        <span class="email-toggle-label">📧 Correo</span>
-        <div class="toggle-controls">
-          <div id="emailToggle" class="toggle-switch active" onclick="toggleEmailNotifications()">
-            <div class="toggle-slider"></div>
-          </div>
-          <span id="toggleStatus" class="toggle-status">ON</span>
+  <!-- Bottom Row: Email Toggle + User/Logout -->
+  <div class="bottom-row">
+    <!-- Email Toggle -->
+    <div class="email-toggle-container">
+      <span class="email-toggle-label">📧 Correo</span>
+      <div class="toggle-controls">
+        <div id="emailToggle" class="toggle-switch active" onclick="toggleEmailNotifications()">
+          <div class="toggle-slider"></div>
         </div>
-      </div>
-
-      <!-- User & Logout -->
-      <div class="user-row">
-        <span class="user-email" id="userEmail"></span>
-        <button id="logoutBtn" class="logout-btn">⎋</button>
+        <span id="toggleStatus" class="toggle-status">ON</span>
       </div>
     </div>
+
+    <!-- User & Logout -->
+    <div class="user-row">
+      <span class="user-email" id="userEmail"></span>
+      <button id="logoutBtn" class="logout-btn">⎋</button>
+    </div>
+  </div>
+</div>
   </div>
 </div>
 
