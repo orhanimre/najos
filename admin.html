@@ -1767,7 +1767,6 @@ input[type="date"] {
       }
 
       /* Mobile: Below the subtitle */
-/* Mobile: Below the subtitle */
 @media (max-width: 768px) {
   .header-top {
     flex-direction: column;
@@ -1775,17 +1774,17 @@ input[type="date"] {
     align-items: stretch;
   }
 
-  .header-left {
-    order: 1;
-    text-align: center;
-  }
-
   .header-top-row {
-    order: 2;
+    order: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 12px;
+  }
+
+  .header-left {
+    order: 2;
+    text-align: center;
   }
 
   .nav-dropdown-container {
@@ -2278,7 +2277,7 @@ tbody tr.clickable:active {
 
       <div class="header-top-row">
         <div class="email-toggle-container">
-          <span class="email-toggle-label">📧 Notificaciones</span>
+          <span class="email-toggle-label">📧 Correo</span>
           <div id="emailToggle" class="toggle-switch active" onclick="toggleEmailNotifications()">
             <div class="toggle-slider"></div>
           </div>
