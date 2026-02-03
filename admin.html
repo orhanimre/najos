@@ -130,7 +130,6 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 16px;
 }
 
 .header-right {
@@ -138,6 +137,14 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 12px;
+}
+
+.header-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
 }
 
 .header-left h1 {
@@ -2361,16 +2368,27 @@ tbody tr.clickable:active {
         <span class="user-email" id="userEmail"></span>
         <button id="logoutBtn" class="logout-btn">⎋</button>
       </div>
-      
-      <div class="email-toggle-container">
-        <span class="email-toggle-label">📧 Correo</span>
-        <div id="emailToggle" class="toggle-switch active" onclick="toggleEmailNotifications()">
-          <div class="toggle-slider"></div>
-        </div>
-        <span id="toggleStatus" class="toggle-status">ON</span>
-      </div>
     </div>
   </div>
+
+  <div class="header-bottom-row">
+    <div class="nav-dropdown-container">
+      <label class="nav-dropdown-label">Vista:</label>
+      <select id="viewSelector" class="nav-dropdown" onchange="switchViewFromDropdown()">
+        <option value="active">📋 Registros Activos</option>
+        <option value="archive">📦 Archivo</option>
+      </select>
+    </div>
+
+    <div class="email-toggle-container">
+      <span class="email-toggle-label">📧 Correo</span>
+      <div id="emailToggle" class="toggle-switch active" onclick="toggleEmailNotifications()">
+        <div class="toggle-slider"></div>
+      </div>
+      <span id="toggleStatus" class="toggle-status">ON</span>
+    </div>
+  </div>
+</div>
 
   <div class="nav-dropdown-container">
     <label class="nav-dropdown-label">Vista:</label>
