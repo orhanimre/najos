@@ -151,10 +151,24 @@
   white-space: nowrap;
 }
 
-      .logout-btn:hover {
-        background: white;
-        color: #667eea;
-      }
+      .logout-btn {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: #ef4444;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+  font-size: 20px;
+  white-space: nowrap;
+}
+
+.logout-btn:hover {
+  background: #ef4444;
+  color: white;
+}
 
 /* Email Toggle Switch */
 .email-toggle-container {
