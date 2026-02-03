@@ -126,6 +126,26 @@
   gap: 16px;
 }
 
+.header-main-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.header-left h1 {
+  font-size: 20px;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
       .header-left h1 {
         font-size: 20px;
         margin-bottom: 4px;
@@ -2330,21 +2350,18 @@ tbody tr.clickable:active {
       <div class="header">
   <div class="header-content">
    <div class="header-top">
-  <div class="header-left">
-    <h1>📊 Panel de Administración</h1>
-    <p>Cabañas MariaMar - Registros de Huéspedes</p>
-  </div>
-
-  <div class="header-controls-row">
-    <div class="nav-dropdown-container">
-      <label class="nav-dropdown-label">Vista:</label>
-      <select id="viewSelector" class="nav-dropdown" onchange="switchViewFromDropdown()">
-        <option value="active">📋 Registros Activos</option>
-        <option value="archive">📦 Archivo</option>
-      </select>
+  <div class="header-main-row">
+    <div class="header-left">
+      <h1>📊 Panel de Administración</h1>
+      <p>Cabañas MariaMar - Registros de Huéspedes</p>
     </div>
 
-    <div class="header-right-controls">
+    <div class="header-right">
+      <div class="user-info">
+        <span class="user-email" id="userEmail"></span>
+        <button id="logoutBtn" class="logout-btn">⎋</button>
+      </div>
+      
       <div class="email-toggle-container">
         <span class="email-toggle-label">📧 Correo</span>
         <div id="emailToggle" class="toggle-switch active" onclick="toggleEmailNotifications()">
@@ -2352,14 +2369,18 @@ tbody tr.clickable:active {
         </div>
         <span id="toggleStatus" class="toggle-status">ON</span>
       </div>
-      
-      <div class="user-info">
-        <span class="user-email" id="userEmail"></span>
-        <button id="logoutBtn" class="logout-btn">⎋</button>
-      </div>
     </div>
   </div>
+
+  <div class="nav-dropdown-container">
+    <label class="nav-dropdown-label">Vista:</label>
+    <select id="viewSelector" class="nav-dropdown" onchange="switchViewFromDropdown()">
+      <option value="active">📋 Registros Activos</option>
+      <option value="archive">📦 Archivo</option>
+    </select>
+  </div>
 </div>
+
   </div>
 </div>
 
