@@ -1822,6 +1822,7 @@ input[type="date"] {
       }
 
       /* Mobile: Below the subtitle */
+@/* Mobile: Below the subtitle */
 @media (max-width: 768px) {
   .header-top {
     flex-direction: column;
@@ -1829,25 +1830,32 @@ input[type="date"] {
     align-items: stretch;
   }
 
-  .header-top-row {
-    order: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .header-main-row {
+    flex-direction: column;
+    align-items: stretch;
     gap: 12px;
   }
 
   .header-left {
-    order: 2;
+    order: 1;
     text-align: center;
+  }
+
+  .header-right {
+    order: 2;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
   }
 
   .nav-dropdown-container {
     order: 3;
+    margin-top: 0;
   }
 
   .email-toggle-container {
-    flex: 0 0 auto;
+    flex: 1;
   }
 
   .user-info {
