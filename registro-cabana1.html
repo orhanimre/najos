@@ -3036,27 +3036,43 @@
           }
 
           // Send email notification with toggle status
-          try {
-            const emailResponse = await fetch("/api/send-email", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                ...data,
-                emailEnabled: emailEnabled, // ✅ ADD THIS
-              }),
-            });
+          // ✅ Check email settings from Firestore FIRST
+try {
+  const settingsRef = doc(db, "settings", "email_notifications");
+  const settingsDoc = await getDoc(settingsRef);
+  if (settingsDoc.exists()) {
+    emailEnabled = settingsDoc.data().enabled;
+  }
+} catch (error) {
+  console.log("Could not load email settings, defaulting to enabled");
+  emailEnabled = true;
+}
 
-            if (emailResponse.ok) {
-              console.log("✅ Email notification sent successfully");
-            } else {
-              console.error("⚠️ Email failed but registration succeeded");
-            }
-          } catch (emailError) {
-            console.error("❌ Error sending email notification:", emailError);
-            // Don't block the user if email fails - they've already registered
-          }
+// Send email notification ONLY if enabled
+if (emailEnabled) {
+  try {
+    const emailResponse = await fetch("/api/send-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...data,
+        emailEnabled: true,
+      }),
+    });
+
+    if (emailResponse.ok) {
+      console.log("✅ Email notification sent successfully");
+    } else {
+      console.error("⚠️ Email failed but registration succeeded");
+    }
+  } catch (emailError) {
+    console.error("❌ Error sending email notification:", emailError);
+  }
+} else {
+  console.log("📧 Email notifications disabled - skipping email");
+}
 
           const modalHTML = `
             <div class="modal-overlay" id="successModal">
