@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro Cabaña 1 - Cabañas MariaMar</title>
+    <title>Registro Cabaña 3 - Cabañas MariaMar</title>
     <style>
       * {
         margin: 0;
@@ -3031,42 +3031,42 @@
 
           // Send email notification with toggle status
           // ✅ Check email settings from Firestore FIRST
-try {
-  const settingsRef = doc(db, "settings", "email_notifications");
-  const settingsDoc = await getDoc(settingsRef);
-  if (settingsDoc.exists()) {
-    emailEnabled = settingsDoc.data().enabled;
-  }
-} catch (error) {
-  console.log("Could not load email settings, defaulting to enabled");
-  emailEnabled = true;
-}
+          try {
+            const settingsRef = doc(db, "settings", "email_notifications");
+            const settingsDoc = await getDoc(settingsRef);
+            if (settingsDoc.exists()) {
+              emailEnabled = settingsDoc.data().enabled;
+            }
+          } catch (error) {
+            console.log("Could not load email settings, defaulting to enabled");
+            emailEnabled = true;
+          }
 
-// Send email notification ONLY if enabled
-if (emailEnabled) {
-  try {
-    const emailResponse = await fetch("/api/send-email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...data,
-        emailEnabled: true,
-      }),
-    });
+          // Send email notification ONLY if enabled
+          if (emailEnabled) {
+            try {
+              const emailResponse = await fetch("/api/send-email", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  ...data,
+                  emailEnabled: true,
+                }),
+              });
 
-    if (emailResponse.ok) {
-      console.log("✅ Email notification sent successfully");
-    } else {
-      console.error("⚠️ Email failed but registration succeeded");
-    }
-  } catch (emailError) {
-    console.error("❌ Error sending email notification:", emailError);
-  }
-} else {
-  console.log("📧 Email notifications disabled - skipping email");
-}
+              if (emailResponse.ok) {
+                console.log("✅ Email notification sent successfully");
+              } else {
+                console.error("⚠️ Email failed but registration succeeded");
+              }
+            } catch (emailError) {
+              console.error("❌ Error sending email notification:", emailError);
+            }
+          } else {
+            console.log("📧 Email notifications disabled - skipping email");
+          }
 
           const modalHTML = `
             <div class="modal-overlay" id="successModal">
