@@ -1025,7 +1025,8 @@ input[type="date"] {
   font-size: 15px;
   font-weight: 600;
   color: #1f2937;
-  word-break: break-all;
+  word-break: break-word;  /* ✅ Changed from break-all */
+  overflow-wrap: break-word;  /* ✅ Added */
 }
 
 .logout-btn-modal {
@@ -2629,7 +2630,7 @@ tbody tr.clickable:active {
     <div class="settings-body">
       <!-- Email Notifications Section -->
       <div class="settings-section">
-        <div class="settings-section-title">📧 Notificaciones</div>
+        <div class="settings-section-title">📧 Notificaciones por Correo</div>
         <div class="email-toggle-container">
           <div class="toggle-left">
             <span class="email-toggle-label">Correo</span>
