@@ -883,6 +883,199 @@ input[type="date"] {
   }
 }
 
+/* Settings Button */
+.settings-btn {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 24px;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.settings-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: rotate(90deg);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+}
+
+.top-controls-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Settings Modal */
+.settings-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 10002;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-modal.show {
+  display: flex;
+}
+
+.settings-content {
+  background: white;
+  border-radius: 20px;
+  padding: 0;
+  max-width: 480px;
+  width: calc(100% - 32px);
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 20px 20px 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.settings-header h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.settings-body {
+  padding: 24px;
+}
+
+.settings-section {
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.settings-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.settings-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 16px;
+}
+
+/* Email toggle in modal - reuse existing styles but adapt container */
+.settings-section .email-toggle-container {
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  padding: 16px;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+}
+
+/* Account Info */
+.account-info {
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  padding: 16px;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+}
+
+.account-email {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #cbd5e0;
+}
+
+.account-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #667eea;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.account-email .user-email {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+  word-break: break-all;
+}
+
+.logout-btn-modal {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 15px;
+  transition: all 0.3s;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.logout-btn-modal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+}
+
+.logout-btn-modal:active {
+  transform: translateY(0);
+}
+
+/* Hide email toggle and logout on mobile */
+@media (max-width: 767px) {
+  .bottom-row {
+    display: none;
+  }
+}
+
+/* Desktop - hide settings button, show original controls */
+@media (min-width: 768px) {
+  .settings-btn {
+    display: none;
+  }
+  
+  .bottom-row {
+    display: flex !important;
+  }
+  
+  .top-controls-row {
+    justify-content: space-between;
+  }
+}
 
 
       /* Filters */
@@ -2216,30 +2409,18 @@ tbody tr.clickable:active {
 
     <!-- Controls Row -->
 <div class="header-controls">
-  <!-- Bottom Row: Email Toggle + User/Logout -->
-  <div class="bottom-row">
-    <!-- Email Toggle -->
-    <div class="email-toggle-container">
-      <div class="toggle-left">
-        <span class="email-toggle-label">Correo</span>
-        <div id="emailToggle" class="toggle-switch active" onclick="toggleEmailNotifications()">
-          <div class="toggle-slider"></div>
-        </div>
-      </div>
-      <div class="toggle-right">
-        <span class="user-email" id="userEmail"></span>
-        <button id="logoutBtn" class="logout-btn">⎋</button>
-      </div>
+  <!-- Settings Icon + View Selector Row -->
+  <div class="top-controls-row">
+    <button id="settingsBtn" class="settings-btn" onclick="openSettingsModal()">⚙️</button>
+    
+    <!-- View Selector -->
+    <div class="nav-dropdown-container">
+      <label class="nav-dropdown-label">Vista:</label>
+      <select id="viewSelector" class="nav-dropdown" onchange="switchViewFromDropdown()">
+        <option value="active">📋 Registros Activos</option>
+        <option value="archive">📦 Archivo</option>
+      </select>
     </div>
-  </div>
-
-  <!-- View Selector -->
-  <div class="nav-dropdown-container">
-    <label class="nav-dropdown-label">Vista:</label>
-    <select id="viewSelector" class="nav-dropdown" onchange="switchViewFromDropdown()">
-      <option value="active">📋 Registros Activos</option>
-      <option value="archive">📦 Archivo</option>
-    </select>
   </div>
 </div>
   </div>
@@ -2419,6 +2600,46 @@ tbody tr.clickable:active {
   </div>
 </div>
 
+<!-- ✅ ADD SETTINGS MODAL HERE -->
+<!-- Settings Modal -->
+<div id="settingsModal" class="settings-modal">
+  <div class="settings-content">
+    <div class="settings-header">
+      <h3>⚙️ Configuración</h3>
+      <button class="close-modal" onclick="closeSettingsModal()">✕</button>
+    </div>
+    <div class="settings-body">
+      <!-- Email Notifications Section -->
+      <div class="settings-section">
+        <div class="settings-section-title">📧 Notificaciones</div>
+        <div class="email-toggle-container">
+          <div class="toggle-left">
+            <span class="email-toggle-label">Correo</span>
+            <div id="emailToggleModal" class="toggle-switch active" onclick="toggleEmailNotifications()">
+              <div class="toggle-slider"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Account Section -->
+      <div class="settings-section">
+        <div class="settings-section-title">👤 Cuenta</div>
+        <div class="account-info">
+          <div class="account-email">
+            <span class="account-label">Email:</span>
+            <span class="user-email" id="userEmailModal"></span>
+          </div>
+          <button id="logoutBtnModal" class="logout-btn-modal">⎋ Cerrar Sesión</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ✅ END SETTINGS MODAL -->
+
+    </div> <!-- This is the closing tag for dashboardScreen -->
+
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import {
@@ -2592,9 +2813,55 @@ async function loadEmailSettings() {
   }
 }
 
+// Settings Modal Functions
+window.openSettingsModal = function() {
+  const modal = document.getElementById('settingsModal');
+  
+  // Sync email toggle state
+  const mainToggle = document.getElementById('emailToggle');
+  const modalToggle = document.getElementById('emailToggleModal');
+  if (mainToggle.classList.contains('active')) {
+    modalToggle.classList.add('active');
+  } else {
+    modalToggle.classList.remove('active');
+  }
+  
+  // Sync user email
+  const userEmail = document.getElementById('userEmail').textContent;
+  document.getElementById('userEmailModal').textContent = userEmail;
+  
+  modal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeSettingsModal = function() {
+  const modal = document.getElementById('settingsModal');
+  modal.classList.remove('show');
+  document.body.style.overflow = '';
+};
+
+// Close settings modal when clicking outside
+document.addEventListener('click', function(e) {
+  const modal = document.getElementById('settingsModal');
+  if (e.target === modal) {
+    closeSettingsModal();
+  }
+});
+
+// Logout from modal
+document.getElementById('logoutBtnModal').addEventListener('click', async () => {
+  try {
+    await signOut(auth);
+    closeSettingsModal();
+  } catch (error) {
+    console.error("Error signing out:", error);
+  }
+});
+
 window.toggleEmailNotifications = async function() {
   try {
     const toggle = document.getElementById('emailToggle');
+    const modalToggle = document.getElementById('emailToggleModal');
     const currentState = toggle.classList.contains('active');
     const newState = !currentState;
     
@@ -2606,7 +2873,7 @@ window.toggleEmailNotifications = async function() {
       updatedBy: auth.currentUser?.email || 'unknown'
     });
     
-    // Update UI
+    // Update both toggles
     updateToggleUI(newState);
     
     // Show confirmation
@@ -2619,11 +2886,14 @@ window.toggleEmailNotifications = async function() {
 
 function updateToggleUI(enabled) {
   const toggle = document.getElementById('emailToggle');
+  const modalToggle = document.getElementById('emailToggleModal');
 
   if (enabled) {
     toggle.classList.add('active');
+    if (modalToggle) modalToggle.classList.add('active');
   } else {
     toggle.classList.remove('active');
+    if (modalToggle) modalToggle.classList.remove('active');
   }
 }
 
