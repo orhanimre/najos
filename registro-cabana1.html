@@ -3022,21 +3022,36 @@
 
           await addDoc(collection(db, "cabin_availability"), availabilityData);
 
-          // ✅ Check email settings from Firestore BEFORE sending
+          // ✅ Check email settings from Firestore BEFORE sending (WITH DEBUG LOGGING)
           let emailEnabled = true; // Default to enabled
+
+          console.log("🔍 Starting email settings check...");
+
           try {
             const settingsRef = doc(db, "settings", "email_notifications");
+            console.log("🔍 Settings ref created:", settingsRef);
+
             const settingsDoc = await getDoc(settingsRef);
+            console.log("🔍 Settings doc fetched:", settingsDoc.exists());
+
             if (settingsDoc.exists()) {
               emailEnabled = settingsDoc.data().enabled;
+              console.log("🔍 Email enabled from Firestore:", emailEnabled);
+            } else {
+              console.log(
+                "⚠️ Settings document doesn't exist! Creating with default...",
+              );
             }
           } catch (error) {
-            console.log("Could not load email settings, defaulting to enabled");
+            console.error("❌ Error loading email settings:", error);
             emailEnabled = true;
           }
 
+          console.log("📧 Final emailEnabled value:", emailEnabled);
+
           // Send email notification ONLY if enabled
           if (emailEnabled) {
+            console.log("✅ Email is ENABLED - sending notification...");
             try {
               const emailResponse = await fetch("/api/send-email", {
                 method: "POST",
@@ -3058,7 +3073,7 @@
               console.error("❌ Error sending email notification:", emailError);
             }
           } else {
-            console.log("📧 Email notifications disabled - skipping email");
+            console.log("🔕 Email is DISABLED - skipping email notification");
           }
 
           const modalHTML = `
