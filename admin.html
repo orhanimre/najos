@@ -1713,6 +1713,8 @@ input[type="date"] {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex: 1; /* Allow it to grow and fit all items */
+  justify-content: flex-end; /* Push items to the right */
 }
 
 .toggle-switch {
@@ -2212,7 +2214,7 @@ tbody tr.clickable:active {
     </select>
   </div>
 
-  <!-- Bottom Row: Email Toggle + User/Logout -->
+  /* Bottom Row: Email Toggle + User/Logout */
   <div class="bottom-row">
     <!-- Email Toggle -->
     <div class="email-toggle-container">
@@ -2221,13 +2223,10 @@ tbody tr.clickable:active {
         <div id="emailToggle" class="toggle-switch active" onclick="toggleEmailNotifications()">
           <div class="toggle-slider"></div>
         </div>
+        <!-- Move user email and logout button INSIDE toggle-controls -->
+        <span class="user-email" id="userEmail"></span>
+        <button id="logoutBtn" class="logout-btn">⎋</button>
       </div>
-    </div>
-
-    <!-- User & Logout -->
-    <div class="user-row">
-      <span class="user-email" id="userEmail"></span>
-      <button id="logoutBtn" class="logout-btn">⎋</button>
     </div>
   </div>
 </div>
