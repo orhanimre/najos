@@ -1698,6 +1698,7 @@ input[type="date"] {
   border-radius: 12px;
   border: 2px solid rgba(255, 255, 255, 0.2);
   flex: 1;
+  gap: 8px; /* Add small gap between label and controls */
 }
 
 .email-toggle-label {
@@ -1712,8 +1713,8 @@ input[type="date"] {
 .toggle-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex: 1; /* Allow it to grow and fit all items */
+  gap: 8px; /* Reduce gap between toggle and email/logout */
+  flex: 0 0 auto; /* Don't let it grow, keep it compact */
   justify-content: flex-end; /* Push items to the right */
 }
 
