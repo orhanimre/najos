@@ -2422,6 +2422,24 @@ tbody tr.clickable:active {
       </select>
     </div>
   </div>
+
+  <!-- Bottom Row: Email Toggle + User/Logout (Desktop only) -->
+  <div class="bottom-row">
+    <!-- Email Toggle -->
+    <div class="email-toggle-container">
+      <div class="toggle-left">
+        <span class="email-toggle-label">Correo</span>
+        <div id="emailToggle" class="toggle-switch active" onclick="toggleEmailNotifications()">
+          <div class="toggle-slider"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="user-row">
+      <span class="user-email" id="userEmail"></span>
+      <button id="logoutBtn" class="logout-btn">⎋</button>
+    </div>
+  </div>
 </div>
   </div>
 </div>
@@ -2896,6 +2914,18 @@ function updateToggleUI(enabled) {
     if (modalToggle) modalToggle.classList.remove('active');
   }
 }
+
+
+
+// Logout from modal
+document.getElementById('logoutBtnModal').addEventListener('click', async () => {
+  try {
+    await signOut(auth);
+    closeSettingsModal();
+  } catch (error) {
+    console.error("Error signing out:", error);
+  }
+});
 
       async function loadData() {
   try {
