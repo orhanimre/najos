@@ -1691,14 +1691,14 @@ input[type="date"] {
 .email-toggle-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start; /* Changed from space-between */
   padding: 12px 16px;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
   border-radius: 12px;
   border: 2px solid rgba(255, 255, 255, 0.2);
   flex: 1;
-  gap: 8px; /* Add small gap between label and controls */
+  gap: 8px; /* Add gap */
 }
 
 .email-toggle-label {
