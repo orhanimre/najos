@@ -1125,12 +1125,6 @@ input[type="date"] {
   content: '🔍';
 }
 
-.date-presets {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-}
-
 .preset-btn {
   padding: 12px 10px;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -1156,13 +1150,61 @@ input[type="date"] {
   color: #667eea;
 }
 
+/* Mobile: Horizontal scrollable carousel */
+.date-presets {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 8px;
+}
+
+.preset-btn {
+  flex: 0 0 auto;
+  min-width: 120px;
+  scroll-snap-align: start;
+  padding: 12px 10px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  color: #495057;
+  border: 2px solid #dee2e6;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  letter-spacing: 0.2px;
+}
+
+/* Hide scrollbar but keep functionality */
+.date-presets::-webkit-scrollbar {
+  display: none;
+}
+
+.date-presets {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Tablet and Desktop: Return to grid layout */
 @media (min-width: 640px) {
   .date-presets {
+    display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
+    overflow-x: visible;
+    scroll-snap-type: none;
+    padding-bottom: 0;
   }
   
   .preset-btn {
+    min-width: auto;
+    flex: initial;
+    scroll-snap-align: none;
     padding: 12px 12px;
     font-size: 12px;
   }
