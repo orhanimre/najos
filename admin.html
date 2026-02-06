@@ -1627,12 +1627,7 @@ input[type="date"] {
   gap: 12px;
 }
 
-/* Bottom Row - Email Toggle + User/Logout */
-.bottom-row {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
+
 
 /* User & Logout Row */
 .user-row {
@@ -1814,9 +1809,23 @@ input[type="date"] {
     justify-content: space-between;
   }
 
+  .nav-dropdown-container {
+    flex: 0 0 auto;
+    max-width: 300px;
+  }
+
+  .right-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .email-toggle-container {
+    flex: 0 0 auto;
+  }
+
   .user-row {
     flex: 0 0 auto;
-    order: 3;
   }
 
   .user-email {
@@ -1826,17 +1835,6 @@ input[type="date"] {
   .logout-btn {
     padding: 10px 20px;
     font-size: 24px;
-  }
-
-  .email-toggle-container {
-    order: 2;
-    flex: 0 0 auto;
-  }
-
-  .nav-dropdown-container {
-    order: 1;
-    flex: 0 0 auto;
-    max-width: 300px;
   }
 }
 
@@ -2184,7 +2182,6 @@ tbody tr.clickable:active {
     </div>
 
     <!-- Controls Row -->
-    <!-- Controls Row -->
 <div class="header-controls">
   <!-- View Selector -->
   <div class="nav-dropdown-container">
@@ -2195,8 +2192,8 @@ tbody tr.clickable:active {
     </select>
   </div>
 
-  <!-- Bottom Row: Email Toggle + User/Logout -->
-  <div class="bottom-row">
+  <!-- Right Side: Email Toggle + User/Logout -->
+  <div class="right-controls">
     <!-- Email Toggle -->
     <div class="email-toggle-container">
       <span class="email-toggle-label">Correo</span>
