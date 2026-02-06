@@ -2215,18 +2215,8 @@ tbody tr.clickable:active {
     </div>
 
     <!-- Controls Row -->
-<!-- Controls Row -->
 <div class="header-controls">
-  <!-- View Selector -->
-  <div class="nav-dropdown-container">
-    <label class="nav-dropdown-label">Vista:</label>
-    <select id="viewSelector" class="nav-dropdown" onchange="switchViewFromDropdown()">
-      <option value="active">📋 Registros Activos</option>
-      <option value="archive">📦 Archivo</option>
-    </select>
-  </div>
-
- <!-- Bottom Row: Email Toggle + User/Logout -->
+  <!-- Bottom Row: Email Toggle + User/Logout -->
   <div class="bottom-row">
     <!-- Email Toggle -->
     <div class="email-toggle-container">
@@ -2241,6 +2231,15 @@ tbody tr.clickable:active {
         <button id="logoutBtn" class="logout-btn">⎋</button>
       </div>
     </div>
+  </div>
+
+  <!-- View Selector -->
+  <div class="nav-dropdown-container">
+    <label class="nav-dropdown-label">Vista:</label>
+    <select id="viewSelector" class="nav-dropdown" onchange="switchViewFromDropdown()">
+      <option value="active">📋 Registros Activos</option>
+      <option value="archive">📦 Archivo</option>
+    </select>
   </div>
 </div>
   </div>
