@@ -1636,6 +1636,23 @@ input[type="date"] {
   align-items: center;
   gap: 12px;
   flex: 0 0 auto;
+  min-width: 0; /* Allow shrinking */
+}
+
+.user-email {
+  font-size: 13px;
+  opacity: 0.9;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 120px; /* Limit email width on mobile */
+}
+
+@media (min-width: 640px) {
+  .user-email {
+    max-width: none; /* Remove limit on larger screens */
+  }
 }
 
 .user-email {
@@ -1784,7 +1801,6 @@ input[type="date"] {
 }
 
 /* Desktop Layout */
-/* Desktop Layout */
 @media (min-width: 768px) {
   .header {
     padding: 20px;
@@ -1819,6 +1835,7 @@ input[type="date"] {
     display: flex;
     align-items: center;
     gap: 12px;
+    flex-wrap: nowrap; /* Prevent wrapping */
   }
 
   .email-toggle-container {
@@ -1837,8 +1854,6 @@ input[type="date"] {
     padding: 10px 20px;
     font-size: 24px;
   }
-
-
   
 }
 
