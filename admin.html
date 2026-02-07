@@ -208,6 +208,19 @@
   -webkit-text-fill-color: transparent;
 }
 
+      .stay-badge {
+        background: linear-gradient(135deg, #9f7aea 0%, #6b46c1 100%);
+        color: white;
+        font-size: 12px;
+        padding: 2px 8px;
+        border-radius: 12px;
+        margin-left: 6px;
+        font-weight: 600;
+        display: inline-block;
+        vertical-align: middle;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
       .delete-btn {
         background: linear-gradient(135deg, #f56565 0%, #c53030 100%);
         color: white;
@@ -2726,8 +2739,10 @@ tbody tr.clickable:active {
   serverTimestamp,
   addDoc,
   where,
-  getDoc,  // ✅ ADD THIS
-  updateDoc,  // ✅ ADD THIS
+  getDoc,
+  updateDoc,
+  or,
+  getCountFromServer,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -3067,81 +3082,112 @@ window.switchViewFromDropdown = function() {
     ).length;
 }
 
-      function displayData(data) {
+      async function displayData(data) {
         const tableBody = document.getElementById("tableBody");
         const table = document.getElementById("dataTable");
         const noData = document.getElementById("noData");
+        const loading = document.getElementById("loading");
         const isMobile = window.innerWidth < 768;
 
+        // Show loading indicator
+        loading.style.display = "block";
         tableBody.innerHTML = "";
 
         if (data.length === 0) {
           table.style.display = "none";
           noData.style.display = "block";
+          loading.style.display = "none";
           return;
         }
 
         table.style.display = "table";
         noData.style.display = "none";
 
-        data.forEach((reg, index) => {
-          const row = document.createElement("tr");
-          if (isMobile) {
-  row.classList.add("clickable");
-  row.onclick = (e) => {
-    // Don't open modal if clicking buttons
-    if (!e.target.closest(".delete-btn") && !e.target.closest(".view-btn")) {
-      showDetailModal(reg);
-    }
-  };
-}
+        // Process data in chunks to avoid UI freezing
+        const chunkSize = 20;
+        const chunks = [];
+        for (let i = 0; i < data.length; i += chunkSize) {
+          chunks.push(data.slice(i, i + chunkSize));
+        }
 
-// Add the row to the table
-tableBody.appendChild(row);
+        // Process each chunk with a small delay
+        for (const [chunkIndex, chunk] of chunks.entries()) {
+          const rows = await Promise.all(chunk.map(async (reg, index) => {
+            const globalIndex = (chunkIndex * chunkSize) + index;
+            const row = document.createElement("tr");
+            
+            try {
+              // Get guest's stay count
+              const stayCount = await getGuestReservationCount(reg.celular || '', reg.numeroId || '');
+              const isReturningGuest = stayCount > 1;
+              const loyaltyBadge = isReturningGuest ? `<span class="stay-badge">${stayCount}ª estadía</span>` : '';
+              
+              if (isMobile) {
+                row.classList.add("clickable");
+                row.onclick = (e) => {
+                  if (!e.target.closest(".delete-btn") && !e.target.closest(".view-btn")) {
+                    showDetailModal(reg);
+                  }
+                };
+              }
 
-          const timestamp = reg.timestamp
-            ? new Date(reg.timestamp.seconds * 1000)
-            : new Date();
-          const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
+              const timestamp = reg.timestamp ? new Date(reg.timestamp.seconds * 1000) : new Date();
+              const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
 
-          // Format date from YYYY-MM-DD to DD.MM.YYYY
-          const formatDate = (dateStr) => {
-            if (!dateStr) return "N/A";
-            const [year, month, day] = dateStr.split("-");
-            return `${day}.${month}.${year}`;
-          };
+              // Format date from YYYY-MM-DD to DD.MM.YYYY
+              const formatDate = (dateStr) => {
+                if (!dateStr) return "N/A";
+                const [year, month, day] = dateStr.split("-");
+                return `${day}.${month}.${year}`;
+              };
 
-          row.innerHTML = `
-  <td class="mobile-col">${index + 1}</td>
-  <td class="mobile-col">
-    <div class="date-cell">
-      <div class="date-main">${formatDate(reg.fechaEntrada)}</div>
-      <div class="date-time">${formatDate(reg.fechaSalida)}</div>
-    </div>
-  </td>
-  <td class="mobile-col"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></td>
-  <td class="mobile-col">
-    <div class="name-cell">
-      <div class="name-main">${reg.nombre} ${reg.apellido}</div>
-      <div class="name-sub">📱 ${reg.celular}</div>
-    </div>
-  </td>
-  <td>${reg.celular}</td>
-  <td>${reg.ciudad}</td>
-  <td>${formatDate(reg.fechaEntrada)}</td>
-  <td>${formatDate(reg.fechaSalida)}</td>
-  <td><span class="guest-badge">${(reg.totalHuespedes || 0) + 1}</span></td>
-  <td class="mobile-col">
-    <button class="view-btn" onclick="event.stopPropagation(); showDetailModal(${JSON.stringify(reg).replace(/"/g, '&quot;')})">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="M9 5l7 7-7 7"/>
-      </svg>
-    </button>
-  </td>
-  <td><button class="delete-btn" onclick="deleteRegistration('${reg.id}', event)">🗑️</button></td>
-`;
-          tableBody.appendChild(row);
-        });
+              row.innerHTML = `
+                <td class="mobile-col">${globalIndex + 1}</td>
+                <td class="mobile-col">
+                  <div class="date-cell">
+                    <div class="date-main">${formatDate(reg.fechaEntrada || '')}</div>
+                    <div class="date-time">${formatDate(reg.fechaSalida || '')}</div>
+                  </div>
+                </td>
+                <td class="mobile-col"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></td>
+                <td class="mobile-col">
+                  <div class="name-cell">
+                    <div class="name-main">${reg.nombre || ''} ${reg.apellido || ''} ${loyaltyBadge}</div>
+                    <div class="name-sub">📱 ${reg.celular || 'N/A'}</div>
+                  </div>
+                </td>
+                <td>${reg.celular || 'N/A'}</td>
+                <td>${reg.ciudad || 'N/A'}</td>
+                <td>${formatDate(reg.fechaEntrada || '')}</td>
+                <td>${formatDate(reg.fechaSalida || '')}</td>
+                <td><span class="guest-badge">${(reg.totalHuespedes || 0) + 1}</span></td>
+                <td class="mobile-col">
+                  <button class="view-btn" onclick="event.stopPropagation(); showDetailModal(${JSON.stringify(reg).replace(/"/g, '&quot;')})">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <path d="M9 5l7 7-7 7"/>
+                    </svg>
+                  </button>
+                </td>
+                <td><button class="delete-btn" onclick="deleteRegistration('${reg.id}', event)">🗑️</button></td>
+              `;
+            } catch (error) {
+              console.error("Error processing row:", error);
+              return null;
+            }
+            
+            return row;
+          }));
+
+          // Filter out any null rows (from errors) and append to table
+          const validRows = rows.filter(row => row !== null);
+          validRows.forEach(row => tableBody.appendChild(row));
+          
+          // Small delay between chunks to keep the UI responsive
+          await new Promise(resolve => setTimeout(resolve, 50));
+        }
+        
+        // Hide loading indicator when done
+        loading.style.display = "none";
       }
 
       window.setDatePreset = function (preset) {  
@@ -3552,8 +3598,38 @@ window.closeConfirmModal = function() {
   document.body.style.overflow = "hidden";
 };
 
+      // Guest loyalty tracking
+      async function getGuestReservationCount(guestPhone, guestId) {
+        try {
+          // Check both phone and ID in both collections
+          const queries = [
+            query(collection(db, "registrations"), 
+              or(
+                where("celular", "==", guestPhone),
+                where("numeroId", "==", guestId)
+              )
+            ),
+            query(collection(db, "archived_registrations"),
+              or(
+                where("celular", "==", guestPhone),
+                where("numeroId", "==", guestId)
+              )
+            )
+          ];
+          
+          const [activeSnapshot, archiveSnapshot] = await Promise.all(
+            queries.map(q => getCountFromServer(q))
+          );
+          
+          return (activeSnapshot.data().count || 0) + (archiveSnapshot.data().count || 0);
+        } catch (error) {
+          console.error("Error counting reservations:", error);
+          return 1; // Default to 1 (first stay) if there's an error
+        }
+      }
+
       // Search functionality
-let searchTerm = '';
+      let searchTerm = '';
 
 window.performSearch = function() {
   const input = document.getElementById('searchInput');
