@@ -2880,16 +2880,48 @@ window.syncAvailabilityCalendar = async function() {
   }
 });
 
-      document
-        .getElementById("loginBtn")
-        .addEventListener("click", async () => {
+      document.getElementById("loginBtn").addEventListener("click", async () => {
+        const loginBtn = document.getElementById("loginBtn");
+        const originalText = loginBtn.innerHTML;
+        
+        try {
+          // Show loading state
+          loginBtn.disabled = true;
+          loginBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Iniciando sesión...';
+          
+          // Try with popup first
           try {
             await signInWithPopup(auth, provider);
-          } catch (error) {
-            console.error("Error signing in:", error);
-            alert("Error al iniciar sesión. Por favor intenta nuevamente.");
+          } catch (popupError) {
+            console.log("Popup sign-in failed, trying redirect...", popupError);
+            // If popup is blocked, try redirect
+            if (popupError.code === 'auth/popup-blocked' || 
+                popupError.code === 'auth/popup-closed-by-user') {
+              await signInWithRedirect(auth, provider);
+            } else {
+              throw popupError; // Re-throw if it's not a popup-related error
+            }
           }
-        });
+        } catch (error) {
+          console.error("Sign-in error:", error);
+          let errorMessage = "Error al iniciar sesión. Por favor intenta nuevamente.";
+          
+          // More specific error messages
+          if (error.code === 'auth/account-exists-with-different-credential') {
+            errorMessage = "Ya existe una cuenta con el mismo correo electrónico pero con un método de inicio de sesión diferente.";
+          } else if (error.code === 'auth/popup-closed-by-user') {
+            errorMessage = "La ventana de inicio de sesión se cerró antes de completar el proceso.";
+          } else if (error.code === 'auth/cancelled-popup-request') {
+            errorMessage = "Solicitud de inicio de sesión cancelada. Por favor intente nuevamente.";
+          }
+          
+          alert(errorMessage);
+        } finally {
+          // Reset button state
+          loginBtn.disabled = false;
+          loginBtn.innerHTML = originalText;
+        }
+      });
 
       document
         .getElementById("logoutBtn")
@@ -3131,121 +3163,177 @@ window.switchViewFromDropdown = function() {
 
       async function displayData(data) {
         const tableBody = document.getElementById("tableBody");
-              }
-            };
-          }
+        const table = document.getElementById("dataTable");
+        const noData = document.getElementById("noData");
+        const loading = document.getElementById("loading");
+        const isMobile = window.innerWidth < 768;
 
-          const timestamp = reg.timestamp ? new Date(reg.timestamp.seconds * 1000) : new Date();
-          const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
+        // Clear existing content
+        tableBody.innerHTML = '';
+        loading.style.display = "block";
+        noData.style.display = "none";
+        table.style.display = "table";
 
-          // Format date from YYYY-MM-DD to DD.MM.YYYY
-          const formatDate = (dateStr) => {
-            if (!dateStr) return "N/A";
-            const [year, month, day] = dateStr.split("-");
-            return `${day}.${month}.${year}`;
-          };
-
-          row.innerHTML = `
-            <td class="mobile-col">${globalIndex + 1}</td>
-            <td class="mobile-col">
-              <div class="date-cell">
-                <div class="date-main">${formatDate(reg.fechaEntrada || '')}</div>
-                <div class="date-time">${formatDate(reg.fechaSalida || '')}</div>
-              </div>
-            </td>
-            <td class="mobile-col"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></td>
-            <td class="mobile-col">
-              <div class="name-cell">
-                <div class="name-main">${loyaltyBadge}${reg.nombre || ''} ${reg.apellido || ''}</div>
-                <div class="name-sub">📱 ${reg.celular || 'N/A'}</div>
-              </div>
-            </td>
-            <td>${reg.celular || 'N/A'}</td>
-            <td>${reg.ciudad || 'N/A'}</td>
-            <td>${formatDate(reg.fechaEntrada || '')}</td>
-            <td>${formatDate(reg.fechaSalida || '')}</td>
-            <td><span class="guest-badge">${(reg.totalHuespedes || 0) + 1}</span></td>
-            <td class="mobile-col">
-              <button class="view-btn" onclick="event.stopPropagation(); showDetailModal(${JSON.stringify(reg).replace(/"/g, '&quot;')})">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M9 5l7 7-7 7"/>
-                </svg>
-              </button>
-            </td>
-            <td><button class="delete-btn" onclick="event.stopPropagation(); deleteRegistration('${reg.id}', event)">🗑️</button></td>
-          `;
-
-          return row;
-        } catch (error) {
-          console.error("Error creating row:", error);
-          return null;
+        if (!data || data.length === 0) {
+          table.style.display = "none";
+          noData.style.display = "block";
+          loading.style.display = "none";
+          return;
         }
-      }));
 
-      // Filter out any null rows from errors
-      const validRows = rows.filter(row => row !== null);
-      
-      // Append all rows at once for better performance
-      if (!displayPromise.cancel) {
-        tableBody.append(...validRows);
+        // Process data in chunks to avoid UI freezing
+        const chunkSize = 20;
+        const chunks = [];
+        for (let i = 0; i < data.length; i += chunkSize) {
+          chunks.push(data.slice(i, i + chunkSize));
+        }
+
+        // Process each chunk with a small delay
+        for (const [chunkIndex, chunk] of chunks.entries()) {
+          const rows = await Promise.all(chunk.map(async (reg, index) => {
+            const globalIndex = (chunkIndex * chunkSize) + index;
+            const row = document.createElement("tr");
+            
+            try {
+              // Get guest's stay sequence number
+              const stayCount = await getGuestReservationCount(
+                reg.celular || '', 
+                reg.numeroId || '',
+                reg.timestamp,
+                reg.tipoId || ''
+              );
+              
+              const loyaltyBadge = stayCount > 1 ? 
+                `<span class="stay-badge">${stayCount}ª</span>` : '';
+              
+              if (isMobile) {
+                row.classList.add("clickable");
+                row.onclick = (e) => {
+                  if (!e.target.closest(".delete-btn") && !e.target.closest(".view-btn")) {
+                    showDetailModal(reg);
+                  }
+                };
+              }
+
+              const timestamp = reg.timestamp ? new Date(reg.timestamp.seconds * 1000) : new Date();
+              const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
+
+              // Format date from YYYY-MM-DD to DD.MM.YYYY
+              const formatDate = (dateStr) => {
+                if (!dateStr) return "N/A";
+                const [year, month, day] = dateStr.split("-");
+                return `${day}.${month}.${year}`;
+              };
+
+              row.innerHTML = `
+                <td class="mobile-col">${globalIndex + 1}</td>
+                <td class="mobile-col">
+                  <div class="date-cell">
+                    <div class="date-main">${formatDate(reg.fechaEntrada || '')}</div>
+                    <div class="date-time">${formatDate(reg.fechaSalida || '')}</div>
+                  </div>
+                </td>
+                <td class="mobile-col"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></td>
+                <td class="mobile-col">
+                  <div class="name-cell">
+                    <div class="name-main">${loyaltyBadge}${reg.nombre || ''} ${reg.apellido || ''}</div>
+                    <div class="name-sub">📱 ${reg.celular || 'N/A'}</div>
+                  </div>
+                </td>
+                <td>${reg.celular || 'N/A'}</td>
+                <td>${reg.ciudad || 'N/A'}</td>
+                <td>${formatDate(reg.fechaEntrada || '')}</td>
+                <td>${formatDate(reg.fechaSalida || '')}</td>
+                <td><span class="guest-badge">${(reg.totalHuespedes || 0) + 1}</span></td>
+                <td class="mobile-col">
+                  <button class="view-btn" onclick="event.stopPropagation(); showDetailModal(${JSON.stringify(reg).replace(/"/g, '&quot;')})">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <path d="M9 5l7 7-7 7"/>
+                    </svg>
+                  </button>
+                </td>
+                <td><button class="delete-btn" onclick="event.stopPropagation(); deleteRegistration('${reg.id}', event)">🗑️</button></td>
+              `;
+
+              return row;
+            } catch (error) {
+              console.error("Error creating row:", error);
+              return null;
+            }
+          }));
+
+          // Filter out any null rows from errors
+          const validRows = rows.filter(row => row !== null);
+          tableBody.append(...validRows);
+          
+          // Small delay to allow UI to update
+          await new Promise(resolve => setTimeout(resolve, 10));
+        }
+
+        loading.style.display = "none";
       }
-  document.getElementById("fechaDesde").value = "";
-  document.getElementById("fechaHasta").value = "";
-  
-  // STEP 2: Clear search
-  searchTerm = '';
-  document.getElementById('searchInput').value = '';
-  document.getElementById('clearSearchBtn').style.display = 'none';
-  const searchResultsInfo = document.getElementById('searchResultsInfo');
-  if (searchResultsInfo) {
-    searchResultsInfo.style.display = 'none';
-  }
-  
-  // STEP 3: Hide personalizado and reset buttons
-  document.getElementById("customDates").classList.remove("show");
-  document.querySelectorAll(".preset-btn").forEach((btn) => btn.classList.remove("active"));
-
+// Function to set date range based on preset
+function setDateRange(preset) {
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Normalize to midnight
   let startDate, endDate;
 
+  // Clear any existing active buttons
+  document.querySelectorAll(".preset-btn").forEach(btn => btn.classList.remove("active"));
+
   switch (preset) {
     case "week":
-  // Monday to Sunday of current week
-  const monday = new Date(today);
-  const dayOfWeek = today.getDay();
-  const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-  monday.setDate(today.getDate() + daysToMonday);
-  
-  const sunday = new Date(monday);
-  sunday.setDate(monday.getDate() + 6);
-  
-  startDate = monday.toISOString().split("T")[0];
-  endDate = sunday.toISOString().split("T")[0];  // ✅ FIXED - Full week
-  document.querySelectorAll(".preset-btn")[0].classList.add("active");
-  break;
+      // Monday to Sunday of current week
+      const monday = new Date(today);
+      const dayOfWeek = today.getDay();
+      const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+      monday.setDate(today.getDate() + daysToMonday);
+      
+      const sunday = new Date(monday);
+      sunday.setDate(monday.getDate() + 6);
+      
+      startDate = monday.toISOString().split("T")[0];
+      endDate = sunday.toISOString().split("T")[0];
+      document.querySelectorAll(".preset-btn")[0]?.classList.add("active");
+      break;
 
-case "month":
-  // First day to last day of current month
-  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-  
-  startDate = firstDayOfMonth.toISOString().split("T")[0];
-  endDate = lastDayOfMonth.toISOString().split("T")[0];  // ✅ FIXED - Full month
-  document.querySelectorAll(".preset-btn")[1].classList.add("active");
-  break;
+    case "month":
+      // First day to last day of current month
+      const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+      const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      
+      startDate = firstDayOfMonth.toISOString().split("T")[0];
+      endDate = lastDayOfMonth.toISOString().split("T")[0];
+      document.querySelectorAll(".preset-btn")[1]?.classList.add("active");
+      break;
 
-case "year":
-  // January 1st to December 31st of current year
-  startDate = new Date(today.getFullYear(), 0, 1).toISOString().split("T")[0];
-  endDate = new Date(today.getFullYear(), 11, 31).toISOString().split("T")[0];  // ✅ FIXED - Full year
-  document.querySelectorAll(".preset-btn")[2].classList.add("active");
-  break;
+    case "year":
+      // January 1st to December 31st of current year
+      startDate = new Date(today.getFullYear(), 0, 1).toISOString().split("T")[0];
+      endDate = new Date(today.getFullYear(), 11, 31).toISOString().split("T")[0];
+      document.querySelectorAll(".preset-btn")[2]?.classList.add("active");
+      break;
+
+    default:
+      // Default to current month if no valid preset
+      const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+      const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      
+      startDate = firstDay.toISOString().split("T")[0];
+      endDate = lastDay.toISOString().split("T")[0];
   }
 
   if (startDate && endDate) {
-    document.getElementById("fechaDesde").value = startDate;
-    document.getElementById("fechaHasta").value = endDate;
+    const fechaDesde = document.getElementById("fechaDesde");
+    const fechaHasta = document.getElementById("fechaHasta");
+    
+    if (fechaDesde) fechaDesde.value = startDate;
+    if (fechaHasta) fechaHasta.value = endDate;
+
+    // Trigger the filter if the function exists
+    if (typeof filterTable === 'function') {
+      filterTable();
+    }
     applyFilters();
   }
 };
