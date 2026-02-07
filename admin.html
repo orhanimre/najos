@@ -3018,82 +3018,87 @@ document.getElementById('logoutBtnModal').addEventListener('click', async () => 
 });
 
       async function loadData() {
-  try {
-    // Load active registrations
-    const q = query(
-      collection(db, "registrations"),
-      orderBy("timestamp", "desc"),
-    );
-    const querySnapshot = await getDocs(q);
+        try {
+          // Clear existing data first
+          allRegistrations = [];
+          allArchived = [];
+          
+          // Show loading state
+          const loading = document.getElementById("loading");
+          loading.style.display = "block";
+          
+          // Clear the table
+          const tableBody = document.getElementById("tableBody");
+          if (tableBody) tableBody.innerHTML = "";
+          
+          // Load active registrations
+          const q = query(
+            collection(db, "registrations"),
+            orderBy("timestamp", "desc")
+          );
+          const querySnapshot = await getDocs(q);
 
-    allRegistrations = [];
-    querySnapshot.forEach((doc) => {
-      allRegistrations.push({ id: doc.id, ...doc.data() });
-    });
+          querySnapshot.forEach((doc) => {
+            allRegistrations.push({ id: doc.id, ...doc.data() });
+          });
 
-    // Load archived registrations (with error handling)
-    allArchived = [];
-    try {
-      const archiveQ = query(
-        collection(db, "archived_registrations"),
-        orderBy("archivedAt", "desc"),
-      );
-      const archiveSnapshot = await getDocs(archiveQ);
+          // Load archived registrations (with error handling)
+          try {
+            const archiveQ = query(
+              collection(db, "archived_registrations"),
+              orderBy("archivedAt", "desc")
+            );
+            const archiveSnapshot = await getDocs(archiveQ);
 
-      archiveSnapshot.forEach((doc) => {
-        allArchived.push({ id: doc.id, ...doc.data() });
-      });
-    } catch (archiveError) {
-      // Archive collection doesn't exist yet - this is fine
-      console.log("No archived data yet:", archiveError.message);
-      allArchived = [];
-    }
+            archiveSnapshot.forEach((doc) => {
+              allArchived.push({ id: doc.id, ...doc.data() });
+            });
+          } catch (archiveError) {
+            console.log("No archived data yet:", archiveError.message);
+            allArchived = [];
+          }
 
-    updateStats();
-    displayData(currentView === 'active' ? allRegistrations : allArchived);
-
-    document.getElementById("loading").style.display = "none";
-  } catch (error) {
-    console.error("Error loading data:", error);
-    document.getElementById("loading").innerHTML =
-      "Error al cargar los datos";
-  }
+          updateStats();
+          displayData(currentView === 'active' ? allRegistrations : allArchived);
+          
+        } catch (error) {
+          console.error("Error loading data:", error);
+          const loading = document.getElementById("loading");
+          if (loading) {
+            loading.innerHTML = "Error al cargar los datos";
+          }
+        } finally {
+          // Always reset loading state
+          isDataLoading = false;
+          const loading = document.getElementById("loading");
+          if (loading) {
+            loading.style.display = "none";
+          }
+        }
 }
 
+// Track loading state
+let isDataLoading = false;
+
 window.switchView = function(view) {
-  // Only update if the view is actually changing
-  if (currentView === view) return;
-  
+  if (isDataLoading || currentView === view) return;
+  isDataLoading = true;
   currentView = view;
   
-  // Update dropdown selection
+  // Update UI immediately
   const dropdown = document.getElementById('viewSelector');
-  if (dropdown) {
-    dropdown.value = view;
-  }
-
-  // Clear any existing timeouts to prevent multiple renders
-  if (window.viewSwitchTimeout) {
-    clearTimeout(window.viewSwitchTimeout);
-  }
-
-  // Debounce the view switch to prevent multiple rapid updates
-  window.viewSwitchTimeout = setTimeout(() => {
-    // Clear filters
-    clearFilters();
-    
-    // Update stats and display
-    updateStats();
-    displayData(currentView === 'active' ? allRegistrations : allArchived);
-    
-    // Update export button text
-    const exportBtn = document.querySelector('.export-btn span:last-child');
-    if (exportBtn) {
-      exportBtn.textContent = currentView === 'active' 
-        ? 'Exportar a Excel' 
-        : 'Exportar Archivo a Excel';
-    }
-  }, 50); // Small delay to ensure UI is ready
+  if (dropdown) dropdown.value = view;
+  
+  // Clear the table and show loading
+  const tableBody = document.getElementById("tableBody");
+  const loading = document.getElementById("loading");
+  tableBody.innerHTML = '';
+  loading.style.display = "block";
+  
+  // Small delay to allow UI to update
+  setTimeout(() => {
+    loadData();
+  }, 50);
 };
 
 // Function for dropdown change
@@ -3126,120 +3131,64 @@ window.switchViewFromDropdown = function() {
 
       async function displayData(data) {
         const tableBody = document.getElementById("tableBody");
-        const table = document.getElementById("dataTable");
-        const noData = document.getElementById("noData");
-        const loading = document.getElementById("loading");
-        const isMobile = window.innerWidth < 768;
-
-        // Show loading indicator
-        loading.style.display = "block";
-        tableBody.innerHTML = "";
-
-        if (data.length === 0) {
-          table.style.display = "none";
-          noData.style.display = "block";
-          loading.style.display = "none";
-          return;
-        }
-
-        table.style.display = "table";
-        noData.style.display = "none";
-
-        // Process data in chunks to avoid UI freezing
-        const chunkSize = 20;
-        const chunks = [];
-        for (let i = 0; i < data.length; i += chunkSize) {
-          chunks.push(data.slice(i, i + chunkSize));
-        }
-
-        // Process each chunk with a small delay
-        for (const [chunkIndex, chunk] of chunks.entries()) {
-          const rows = await Promise.all(chunk.map(async (reg, index) => {
-            const globalIndex = (chunkIndex * chunkSize) + index;
-            const row = document.createElement("tr");
-            
-            try {
-              // Get guest's stay sequence number (only if both tipoId and numeroId match)
-              const stayCount = await getGuestReservationCount(
-                reg.celular || '', 
-                reg.numeroId || '',
-                reg.timestamp,
-                reg.tipoId || ''
-              );
-              // Only show badge for 2nd stay or more
-              const loyaltyBadge = stayCount > 1 ? 
-                `<span class="stay-badge">${stayCount}ª</span>` : '';
-              
-              if (isMobile) {
-                row.classList.add("clickable");
-                row.onclick = (e) => {
-                  if (!e.target.closest(".delete-btn") && !e.target.closest(".view-btn")) {
-                    showDetailModal(reg);
-                  }
-                };
               }
+            };
+          }
 
-              const timestamp = reg.timestamp ? new Date(reg.timestamp.seconds * 1000) : new Date();
-              const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
+          const timestamp = reg.timestamp ? new Date(reg.timestamp.seconds * 1000) : new Date();
+          const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
 
-              // Format date from YYYY-MM-DD to DD.MM.YYYY
-              const formatDate = (dateStr) => {
-                if (!dateStr) return "N/A";
-                const [year, month, day] = dateStr.split("-");
-                return `${day}.${month}.${year}`;
-              };
+          // Format date from YYYY-MM-DD to DD.MM.YYYY
+          const formatDate = (dateStr) => {
+            if (!dateStr) return "N/A";
+            const [year, month, day] = dateStr.split("-");
+            return `${day}.${month}.${year}`;
+          };
 
-              row.innerHTML = `
-                <td class="mobile-col">${globalIndex + 1}</td>
-                <td class="mobile-col">
-                  <div class="date-cell">
-                    <div class="date-main">${formatDate(reg.fechaEntrada || '')}</div>
-                    <div class="date-time">${formatDate(reg.fechaSalida || '')}</div>
-                  </div>
-                </td>
-                <td class="mobile-col"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></td>
-                <td class="mobile-col">
-                  <div class="name-cell">
-                    <div class="name-main">${loyaltyBadge}${reg.nombre || ''} ${reg.apellido || ''}</div>
-                    <div class="name-sub">📱 ${reg.celular || 'N/A'}</div>
-                  </div>
-                </td>
-                <td>${reg.celular || 'N/A'}</td>
-                <td>${reg.ciudad || 'N/A'}</td>
-                <td>${formatDate(reg.fechaEntrada || '')}</td>
-                <td>${formatDate(reg.fechaSalida || '')}</td>
-                <td><span class="guest-badge">${(reg.totalHuespedes || 0) + 1}</span></td>
-                <td class="mobile-col">
-                  <button class="view-btn" onclick="event.stopPropagation(); showDetailModal(${JSON.stringify(reg).replace(/"/g, '&quot;')})">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                      <path d="M9 5l7 7-7 7"/>
-                    </svg>
-                  </button>
-                </td>
-                <td><button class="delete-btn" onclick="deleteRegistration('${reg.id}', event)">🗑️</button></td>
-              `;
-            } catch (error) {
-              console.error("Error processing row:", error);
-              return null;
-            }
-            
-            return row;
-          }));
+          row.innerHTML = `
+            <td class="mobile-col">${globalIndex + 1}</td>
+            <td class="mobile-col">
+              <div class="date-cell">
+                <div class="date-main">${formatDate(reg.fechaEntrada || '')}</div>
+                <div class="date-time">${formatDate(reg.fechaSalida || '')}</div>
+              </div>
+            </td>
+            <td class="mobile-col"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></td>
+            <td class="mobile-col">
+              <div class="name-cell">
+                <div class="name-main">${loyaltyBadge}${reg.nombre || ''} ${reg.apellido || ''}</div>
+                <div class="name-sub">📱 ${reg.celular || 'N/A'}</div>
+              </div>
+            </td>
+            <td>${reg.celular || 'N/A'}</td>
+            <td>${reg.ciudad || 'N/A'}</td>
+            <td>${formatDate(reg.fechaEntrada || '')}</td>
+            <td>${formatDate(reg.fechaSalida || '')}</td>
+            <td><span class="guest-badge">${(reg.totalHuespedes || 0) + 1}</span></td>
+            <td class="mobile-col">
+              <button class="view-btn" onclick="event.stopPropagation(); showDetailModal(${JSON.stringify(reg).replace(/"/g, '&quot;')})">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M9 5l7 7-7 7"/>
+                </svg>
+              </button>
+            </td>
+            <td><button class="delete-btn" onclick="event.stopPropagation(); deleteRegistration('${reg.id}', event)">🗑️</button></td>
+          `;
 
-          // Filter out any null rows (from errors) and append to table
-          const validRows = rows.filter(row => row !== null);
-          validRows.forEach(row => tableBody.appendChild(row));
-          
-          // Small delay between chunks to keep the UI responsive
-          await new Promise(resolve => setTimeout(resolve, 50));
+          return row;
+        } catch (error) {
+          console.error("Error creating row:", error);
+          return null;
         }
-        
-        // Hide loading indicator when done
-        loading.style.display = "none";
-      }
+      }));
 
-      window.setDatePreset = function (preset) {  
-  // STEP 1: Clear dates FIRST
+      // Filter out any null rows from errors
+      const validRows = rows.filter(row => row !== null);
+      
+      // Append all rows at once for better performance
+      if (!displayPromise.cancel) {
+        tableBody.append(...validRows);
+      }
   document.getElementById("fechaDesde").value = "";
   document.getElementById("fechaHasta").value = "";
   
