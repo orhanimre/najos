@@ -3637,59 +3637,34 @@ window.closeConfirmModal = function() {
           // Skip if no identifiers provided
           if (!guestPhone && !guestId) return 1;
           
-          // Create a query that matches both phone and ID
-          const createQuery = (collectionName) => {
+          // Get all reservations that match either phone or ID
+          const getMatchingReservations = async (collectionName) => {
             const conditions = [];
             if (guestPhone) conditions.push(where("celular", "==", guestPhone));
             if (guestId) conditions.push(where("numeroId", "==", guestId));
             
-            // If we have both, use 'or' to match either condition
-            // but we'll filter the results further below
-            if (conditions.length > 1) {
-              return query(collection(db, collectionName), or(...conditions));
-            } else if (conditions.length === 1) {
-              return query(collection(db, collectionName), conditions[0]);
-            }
-            return null;
+            if (conditions.length === 0) return [];
+            
+            const q = query(collection(db, collectionName), or(...conditions));
+            const snapshot = await getDocs(q);
+            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
           };
 
-          const registrationsQuery = createQuery("registrations");
-          const archivedQuery = createQuery("archived_registrations");
-
-          const [activeSnapshot, archiveSnapshot] = await Promise.all([
-            registrationsQuery ? getDocs(registrationsQuery) : { docs: [] },
-            archivedQuery ? getDocs(archivedQuery) : { docs: [] }
+          // Get all matching reservations from both collections
+          const [activeReservations, archivedReservations] = await Promise.all([
+            getMatchingReservations("registrations"),
+            getMatchingReservations("archived_registrations")
           ]);
 
-          // Combine all reservations
-          let allReservations = [];
-          
-          // Helper function to add reservations with proper filtering
-          const addReservations = (docs) => {
-            docs.forEach(doc => {
-              const data = doc.data();
-              // Only include if it matches at least one identifier
-              if ((!guestPhone || data.celular === guestPhone) && 
-                  (!guestId || data.numeroId === guestId)) {
-                allReservations.push({ id: doc.id, ...data });
-              }
-            });
-          };
-
-          // Add active and archived reservations
-          addReservations(activeSnapshot.docs);
-          addReservations(archiveSnapshot.docs);
-
-          // Remove duplicates (in case a record matches both phone and ID)
-          const uniqueReservations = [];
-          const seenIds = new Set();
-          allReservations.forEach(res => {
-            if (!seenIds.has(res.id)) {
-              seenIds.add(res.id);
-              uniqueReservations.push(res);
-            }
-          });
-          allReservations = uniqueReservations;
+          // Combine and deduplicate all reservations
+          const allReservations = [...activeReservations, ...archivedReservations]
+            .filter((res, index, self) => 
+              index === self.findIndex(t => 
+                t.id === res.id || 
+                (t.timestamp?.seconds === res.timestamp?.seconds && 
+                 t.timestamp?.nanoseconds === res.timestamp?.nanoseconds)
+              )
+            );
 
           // Sort by timestamp (oldest first)
           allReservations.sort((a, b) => {
