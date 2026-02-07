@@ -3061,6 +3061,9 @@ document.getElementById('logoutBtnModal').addEventListener('click', async () => 
 }
 
 window.switchView = function(view) {
+  // Only update if the view is actually changing
+  if (currentView === view) return;
+  
   currentView = view;
   
   // Update dropdown selection
@@ -3069,26 +3072,36 @@ window.switchView = function(view) {
     dropdown.value = view;
   }
 
-  // Clear filters
-  clearFilters();
-
-  // Update stats and display
-  updateStats();
-  displayData(currentView === 'active' ? allRegistrations : allArchived);
-
-  // Update export button text
-  const exportBtn = document.querySelector('.export-btn span:last-child');
-  if (exportBtn) {
-    exportBtn.textContent = currentView === 'active' 
-      ? 'Exportar a Excel' 
-      : 'Exportar Archivo a Excel';
+  // Clear any existing timeouts to prevent multiple renders
+  if (window.viewSwitchTimeout) {
+    clearTimeout(window.viewSwitchTimeout);
   }
+
+  // Debounce the view switch to prevent multiple rapid updates
+  window.viewSwitchTimeout = setTimeout(() => {
+    // Clear filters
+    clearFilters();
+    
+    // Update stats and display
+    updateStats();
+    displayData(currentView === 'active' ? allRegistrations : allArchived);
+    
+    // Update export button text
+    const exportBtn = document.querySelector('.export-btn span:last-child');
+    if (exportBtn) {
+      exportBtn.textContent = currentView === 'active' 
+        ? 'Exportar a Excel' 
+        : 'Exportar Archivo a Excel';
+    }
+  }, 50); // Small delay to ensure UI is ready
 };
 
-// New function for dropdown change
+// Function for dropdown change
 window.switchViewFromDropdown = function() {
   const dropdown = document.getElementById('viewSelector');
-  switchView(dropdown.value);
+  if (dropdown) {
+    switchView(dropdown.value);
+  }
 };
 
       function updateStats() {
