@@ -220,6 +220,26 @@
         vertical-align: middle;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       }
+      
+      /* Show only the desktop version by default */
+      .mobile-only {
+        display: none;
+      }
+      
+      /* On mobile, hide desktop version and show mobile version */
+      @media (max-width: 768px) {
+        .desktop-only {
+          display: none;
+        }
+        .mobile-only {
+          display: inline-block;
+        }
+        .stay-badge.mobile-only {
+          font-size: 11px;
+          padding: 1px 5px;
+          margin-left: 4px;
+        }
+      }
 
       .delete-btn {
         background: linear-gradient(135deg, #f56565 0%, #c53030 100%);
@@ -3120,7 +3140,9 @@ window.switchViewFromDropdown = function() {
               // Get guest's stay count
               const stayCount = await getGuestReservationCount(reg.celular || '', reg.numeroId || '');
               const isReturningGuest = stayCount > 1;
-              const loyaltyBadge = isReturningGuest ? `<span class="stay-badge">${stayCount}ª estadía</span>` : '';
+              const loyaltyBadge = isReturningGuest ? 
+                `<span class="stay-badge desktop-only">${stayCount}ª estadía</span>
+                 <span class="stay-badge mobile-only">${stayCount}ª</span>` : '';
               
               if (isMobile) {
                 row.classList.add("clickable");
