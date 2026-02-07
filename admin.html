@@ -1386,28 +1386,54 @@ input[type="date"] {
         background: rgba(0, 0, 0, 0.6);
         backdrop-filter: blur(4px);
         z-index: 1000;
-        padding: 20px;
+        padding: 10px;
+        box-sizing: border-box;
         overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
       }
 
       .detail-modal.show {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
+        padding-top: 20px;
+        padding-bottom: 20px;
       }
 
       .detail-content {
         background: white;
-        border-radius: 20px;
+        border-radius: 16px;
         padding: 0;
-        max-width: 480px;
-        width: calc(100% - 32px);
-        max-height: 85vh;
+        width: 95%;
+        max-width: 420px;
+        max-height: 90vh;
         overflow-y: auto;
         position: relative;
         animation: slideUp 0.3s ease;
-        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
-        margin: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        margin: 0;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      @media (max-width: 480px) {
+        .detail-content {
+          width: 100%;
+          max-width: 100%;
+          border-radius: 16px 16px 0 0;
+          max-height: 90vh;
+          margin: 0;
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          top: auto;
+          animation: slideUp 0.3s ease;
+        }
+        
+        .detail-modal.show {
+          align-items: flex-end;
+          padding: 0;
+        }
       }
 
       @keyframes slideUp {
