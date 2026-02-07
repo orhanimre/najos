@@ -2627,7 +2627,7 @@ tbody tr.clickable:active {
         <div class="table-container">
           <div id="loading" class="loading">Cargando datos...</div>
           <div class="table-scroll">
-            <table id="dataTable" class="mobile-view" style="display: none">
+            <table id="dataTable" class="mobile-view">
               <thead>
   <tr>
     <th class="mobile-col">#</th>
@@ -2739,10 +2739,29 @@ tbody tr.clickable:active {
     </div>
   </div>
 </div>
-<!-- ✅ END SETTINGS MODAL -->
-
     </div> <!-- This is the closing tag for dashboardScreen -->
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-analytics-compat.js"></script>
+    
+    <!-- Table styles -->
+    <style>
+      #dataTable {
+        display: table !important;
+        width: 100%;
+        border-collapse: collapse;
+      }
+      @media (max-width: 767px) {
+        #dataTable {
+          display: table !important;
+        }
+      }
+    </style>
+
+    <!-- Main Application Script -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import {
@@ -2754,20 +2773,20 @@ tbody tr.clickable:active {
       } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
       
       import {
-  getFirestore,
-  collection,
-  query,
-  orderBy,
-  getDocs,
-  deleteDoc,
-  doc,
-  setDoc,
-  serverTimestamp,
-  addDoc,
-  where,
-  getDoc,  // ✅ ADD THIS
-  updateDoc,  // ✅ ADD THIS
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        getFirestore,
+        collection,
+        query,
+        orderBy,
+        getDocs,
+        deleteDoc,
+        doc,
+        setDoc,
+        serverTimestamp,
+        addDoc,
+        where,
+        getDoc,
+        updateDoc,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyACEyCsx-4lhITc8s06QyZPQiS9t3f7I18",
@@ -3367,6 +3386,9 @@ window.closeConfirmModal = function() {
         // Show loading indicator
         loading.style.display = "block";
         tableBody.innerHTML = "";
+        
+        // Make sure table is visible
+        if (table) table.style.display = "table";
 
         if (data.length === 0) {
           table.style.display = "none";
