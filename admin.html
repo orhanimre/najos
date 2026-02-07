@@ -3357,6 +3357,112 @@ window.closeConfirmModal = function() {
   displayData(currentView === 'active' ? allRegistrations : allArchived);
 };
 
+      // Function to display data in the table
+      function displayData(data) {
+        const tableBody = document.getElementById("tableBody");
+        const table = document.getElementById("dataTable");
+        const noData = document.getElementById("noData");
+        const loading = document.getElementById("loading");
+
+        // Show loading indicator
+        loading.style.display = "block";
+        tableBody.innerHTML = "";
+
+        if (data.length === 0) {
+          table.style.display = "none";
+          noData.style.display = "block";
+          loading.style.display = "none";
+          return;
+        }
+
+        table.style.display = "table";
+        noData.style.display = "none";
+
+        // Process data in chunks to avoid UI freezing
+        const chunkSize = 20;
+        const chunks = [];
+        for (let i = 0; i < data.length; i += chunkSize) {
+          chunks.push(data.slice(i, i + chunkSize));
+        }
+
+        // Process each chunk with a small delay
+        const processChunk = async (chunk, chunkIndex) => {
+          const rows = await Promise.all(chunk.map(async (reg, index) => {
+            const globalIndex = (chunkIndex * chunkSize) + index;
+            const row = document.createElement("tr");
+            const isMobile = window.innerWidth < 768;
+            
+            if (isMobile) {
+              row.classList.add("clickable");
+              row.onclick = (e) => {
+                if (!e.target.closest(".delete-btn") && !e.target.closest(".view-btn")) {
+                  showDetailModal(reg);
+                }
+              };
+            }
+
+            const timestamp = reg.timestamp
+              ? new Date(reg.timestamp.seconds * 1000)
+              : new Date();
+            const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
+
+            // Format date from YYYY-MM-DD to DD.MM.YYYY
+            const formatDate = (dateStr) => {
+              if (!dateStr) return "N/A";
+              const [year, month, day] = dateStr.split("-");
+              return `${day}.${month}.${year}`;
+            };
+
+            row.innerHTML = `
+              <td class="mobile-col">${globalIndex + 1}</td>
+              <td class="mobile-col">
+                <div class="date-cell">
+                  <div class="date-main">${formatDate(reg.fechaEntrada)}</div>
+                  <div class="date-time">${formatDate(reg.fechaSalida)}</div>
+                </div>
+              </td>
+              <td class="mobile-col"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></td>
+              <td class="mobile-col">
+                <div class="name-cell">
+                  <div class="name-main">${reg.nombre || ''} ${reg.apellido || ''}</div>
+                  <div class="name-sub">📱 ${reg.celular || 'N/A'}</div>
+                </div>
+              </td>
+              <td>${reg.celular || 'N/A'}</td>
+              <td>${reg.ciudad || 'N/A'}</td>
+              <td>${formatDate(reg.fechaEntrada)}</td>
+              <td>${formatDate(reg.fechaSalida)}</td>
+              <td><span class="guest-badge">${(reg.totalHuespedes || 0) + 1}</span></td>
+              <td class="mobile-col">
+                <button class="view-btn" onclick="event.stopPropagation(); showDetailModal(${JSON.stringify(reg).replace(/"/g, '&quot;')})">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              </td>
+              <td><button class="delete-btn" onclick="deleteRegistration('${reg.id}', event)">🗑️</button></td>
+            `;
+            return row;
+          }));
+
+          // Append all rows from this chunk
+          rows.forEach(row => tableBody.appendChild(row));
+        };
+
+        // Process chunks with a small delay between them
+        const processAllChunks = async () => {
+          for (let i = 0; i < chunks.length; i++) {
+            await processChunk(chunks[i], i);
+            if (i < chunks.length - 1) {
+              await new Promise(resolve => setTimeout(resolve, 100));
+            }
+          }
+          loading.style.display = "none";
+        };
+
+        processAllChunks();
+      }
+
       function formatIdType(idType) {
         const idTypes = {
           cc: "CC",
