@@ -3305,9 +3305,10 @@ window.switchViewFromDropdown = function() {
                 <td>${formatDate(reg.fechaSalida || '')}</td>
                 <td><span class="guest-badge">${(reg.totalHuespedes || 0) + 1}</span></td>
                 <td class="mobile-col">
-                  <button class="view-btn" onclick="event.stopPropagation(); showDetailModal(${JSON.stringify(reg).replace(/"/g, '&quot;')})">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                      <path d="M9 5l7 7-7 7"/>
+                  <button class="view-btn" onclick="event.stopPropagation(); showDetailModal(${JSON.stringify(reg).replace(/"/g, '&quot;')})" title="Ver detalles">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
                     </svg>
                   </button>
                 </td>
