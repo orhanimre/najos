@@ -3146,11 +3146,12 @@ window.switchViewFromDropdown = function() {
             const row = document.createElement("tr");
             
             try {
-              // Get guest's stay sequence number
+              // Get guest's stay sequence number (only if both tipoId and numeroId match)
               const stayCount = await getGuestReservationCount(
                 reg.celular || '', 
                 reg.numeroId || '',
-                reg.timestamp
+                reg.timestamp,
+                reg.tipoId || ''
               );
               // Only show badge for 2nd stay or more
               const loyaltyBadge = stayCount > 1 ? 
@@ -3632,29 +3633,23 @@ window.closeConfirmModal = function() {
   document.body.style.overflow = "hidden";
 };
 
-      // Guest loyalty tracking - returns the sequence number of the current stay
-      async function getGuestReservationCount(guestPhone, guestId, currentTimestamp) {
+      // Guest loyalty tracking - only matches when both tipoId and numeroId match exactly
+      async function getGuestReservationCount(guestPhone, guestId, currentTimestamp, guestTipoId) {
         try {
-          // Skip if no identifiers provided
-          if (!guestPhone && !guestId) return 1;
+          // Skip if no ID number provided (we require numeroId and tipoId to match)
+          if (!guestId || !guestTipoId) return 1;
           
-          // Get all reservations that match either phone or ID
+          // Create a query that matches both tipoId and numeroId
           const getMatchingReservations = async (collectionName) => {
-            const conditions = [];
-            if (guestPhone) conditions.push(where("celular", "==", guestPhone));
-            if (guestId) conditions.push(where("numeroId", "==", guestId));
-            
-            if (conditions.length === 0) return [];
-            
-            const q = query(collection(db, collectionName), or(...conditions));
+            const q = query(
+              collection(db, collectionName),
+              where("tipoId", "==", guestTipoId),
+              where("numeroId", "==", guestId)
+            );
             const snapshot = await getDocs(q);
-            return snapshot.docs.map(doc => ({ 
-              id: doc.id, 
-              ...doc.data(),
-              // Track what matched for this reservation
-              matchType: guestPhone && doc.data().celular === guestPhone ? 
-                        (guestId && doc.data().numeroId === guestId ? 'both' : 'phone') : 
-                        'id'
+            return snapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
             }));
           };
 
@@ -3668,9 +3663,7 @@ window.closeConfirmModal = function() {
           let allReservations = [...activeReservations, ...archivedReservations];
           
           // Remove duplicates (same ID or same timestamp)
-          const uniqueReservations = [];
           const seen = new Set();
-          
           allReservations = allReservations.filter(res => {
             const key = res.id || `${res.timestamp?.seconds}_${res.timestamp?.nanoseconds}`;
             if (seen.has(key)) return false;
