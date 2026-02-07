@@ -3152,6 +3152,7 @@ window.switchViewFromDropdown = function() {
                 reg.numeroId || '',
                 reg.timestamp
               );
+              // Only show badge for 2nd stay or more
               const loyaltyBadge = stayCount > 1 ? 
                 `<span class="stay-badge">${stayCount}ª</span>` : '';
               
@@ -3647,7 +3648,14 @@ window.closeConfirmModal = function() {
             
             const q = query(collection(db, collectionName), or(...conditions));
             const snapshot = await getDocs(q);
-            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            return snapshot.docs.map(doc => ({ 
+              id: doc.id, 
+              ...doc.data(),
+              // Track what matched for this reservation
+              matchType: guestPhone && doc.data().celular === guestPhone ? 
+                        (guestId && doc.data().numeroId === guestId ? 'both' : 'phone') : 
+                        'id'
+            }));
           };
 
           // Get all matching reservations from both collections
@@ -3656,15 +3664,19 @@ window.closeConfirmModal = function() {
             getMatchingReservations("archived_registrations")
           ]);
 
-          // Combine and deduplicate all reservations
-          const allReservations = [...activeReservations, ...archivedReservations]
-            .filter((res, index, self) => 
-              index === self.findIndex(t => 
-                t.id === res.id || 
-                (t.timestamp?.seconds === res.timestamp?.seconds && 
-                 t.timestamp?.nanoseconds === res.timestamp?.nanoseconds)
-              )
-            );
+          // Combine all reservations
+          let allReservations = [...activeReservations, ...archivedReservations];
+          
+          // Remove duplicates (same ID or same timestamp)
+          const uniqueReservations = [];
+          const seen = new Set();
+          
+          allReservations = allReservations.filter(res => {
+            const key = res.id || `${res.timestamp?.seconds}_${res.timestamp?.nanoseconds}`;
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+          });
 
           // Sort by timestamp (oldest first)
           allReservations.sort((a, b) => {
