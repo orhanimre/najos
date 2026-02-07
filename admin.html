@@ -2421,19 +2421,36 @@ input[type="date"] {
   padding: 0;
   margin: 0;
   box-shadow: none;
-  border-radius: 0;
+  border-radius: 50%;
+  transition: all 0.2s ease;
 }
 
-.view-btn:hover {
-  color: #764ba2;
-  transform: translateX(2px);
-  background: none;
-  box-shadow: none;
+/* Desktop styles */
+@media (min-width: 768px) {
+  .view-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+  }
+  
+  .view-btn:hover {
+    transform: translateX(2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    color: white;
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 767px) {
+  .view-btn:hover {
+    color: #764ba2;
+    background: none;
+    box-shadow: none;
+  }
 }
 
 .view-btn:active {
   transform: scale(0.95);
-  background: none;
 }
 
 /* Enhanced Delete Button for Mobile */
