@@ -3146,12 +3146,14 @@ window.switchViewFromDropdown = function() {
             const row = document.createElement("tr");
             
             try {
-              // Get guest's stay count
-              const stayCount = await getGuestReservationCount(reg.celular || '', reg.numeroId || '');
-              const isReturningGuest = stayCount > 1;
-              const loyaltyBadge = isReturningGuest ? 
-                `<span class="stay-badge desktop-only">${stayCount}ª estadía</span>
-                 <span class="stay-badge mobile-only">${stayCount}ª</span>` : '';
+              // Get guest's stay sequence number
+              const stayCount = await getGuestReservationCount(
+                reg.celular || '', 
+                reg.numeroId || '',
+                reg.timestamp
+              );
+              const loyaltyBadge = stayCount > 1 ? 
+                `<span class="stay-badge">${stayCount}ª</span>` : '';
               
               if (isMobile) {
                 row.classList.add("clickable");
@@ -3629,33 +3631,78 @@ window.closeConfirmModal = function() {
   document.body.style.overflow = "hidden";
 };
 
-      // Guest loyalty tracking
-      async function getGuestReservationCount(guestPhone, guestId) {
+      // Guest loyalty tracking - returns the sequence number of the current stay
+      async function getGuestReservationCount(guestPhone, guestId, currentTimestamp) {
         try {
-          // Check both phone and ID in both collections
-          const queries = [
-            query(collection(db, "registrations"), 
-              or(
-                where("celular", "==", guestPhone),
-                where("numeroId", "==", guestId)
-              )
-            ),
-            query(collection(db, "archived_registrations"),
-              or(
-                where("celular", "==", guestPhone),
-                where("numeroId", "==", guestId)
-              )
-            )
-          ];
+          // Skip if no identifiers provided
+          if (!guestPhone && !guestId) return 1;
           
-          const [activeSnapshot, archiveSnapshot] = await Promise.all(
-            queries.map(q => getCountFromServer(q))
+          // Get all reservations for this guest
+          const registrationsQuery = query(
+            collection(db, "registrations"),
+            or(
+              where("celular", "==", guestPhone),
+              where("numeroId", "==", guestId)
+            )
           );
           
-          return (activeSnapshot.data().count || 0) + (archiveSnapshot.data().count || 0);
+          const archivedQuery = query(
+            collection(db, "archived_registrations"),
+            or(
+              where("celular", "==", guestPhone),
+              where("numeroId", "==", guestId)
+            )
+          );
+
+          const [activeSnapshot, archiveSnapshot] = await Promise.all([
+            getDocs(registrationsQuery),
+            getDocs(archivedQuery)
+          ]);
+
+          // Combine all reservations
+          let allReservations = [];
+          
+          // Add active reservations
+          activeSnapshot.forEach(doc => {
+            allReservations.push({ id: doc.id, ...doc.data() });
+          });
+          
+          // Add archived reservations
+          archiveSnapshot.forEach(doc => {
+            allReservations.push({ id: doc.id, ...doc.data() });
+          });
+
+          // Sort by timestamp (oldest first)
+          allReservations.sort((a, b) => {
+            const timeA = a.timestamp?.seconds || 0;
+            const timeB = b.timestamp?.seconds || 0;
+            return timeA - timeB;
+          });
+
+          // If no current timestamp provided, return total count
+          if (!currentTimestamp) {
+            return allReservations.length > 0 ? allReservations.length : 1;
+          }
+
+          // Find the current reservation's position
+          const currentReservation = allReservations.find(res => 
+            res.timestamp?.seconds === currentTimestamp.seconds &&
+            res.timestamp?.nanoseconds === currentTimestamp.nanoseconds
+          );
+
+          // If current reservation not found in the list, it's a new stay
+          if (!currentReservation) {
+            return allReservations.length + 1;
+          }
+
+          // Return 1-based index of the current reservation in the sorted array
+          return allReservations.findIndex(res => 
+            res.timestamp?.seconds === currentTimestamp.seconds &&
+            res.timestamp?.nanoseconds === currentTimestamp.nanoseconds
+          ) + 1;
         } catch (error) {
-          console.error("Error counting reservations:", error);
-          return 1; // Default to 1 (first stay) if there's an error
+          console.error("Error getting reservation sequence:", error);
+          return 1; // Default to first stay if there's an error
         }
       }
 
