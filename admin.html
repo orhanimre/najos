@@ -235,9 +235,18 @@
           display: inline-block;
         }
         .stay-badge.mobile-only {
-          font-size: 11px;
-          padding: 1px 5px;
-          margin-left: 4px;
+          font-size: 10px;
+          padding: 1px 4px;
+          margin-right: 4px;
+          position: relative;
+          top: -1px;
+          line-height: 1.2;
+          vertical-align: baseline;
+        }
+        .name-main {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
 
@@ -3174,7 +3183,7 @@ window.switchViewFromDropdown = function() {
                 <td class="mobile-col"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></td>
                 <td class="mobile-col">
                   <div class="name-cell">
-                    <div class="name-main">${reg.nombre || ''} ${reg.apellido || ''} ${loyaltyBadge}</div>
+                    <div class="name-main">${loyaltyBadge}${reg.nombre || ''} ${reg.apellido || ''}</div>
                     <div class="name-sub">📱 ${reg.celular || 'N/A'}</div>
                   </div>
                 </td>
