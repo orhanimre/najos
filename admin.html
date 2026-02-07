@@ -3063,27 +3063,39 @@ document.getElementById('logoutBtnModal').addEventListener('click', async () => 
           const tableBody = document.getElementById("tableBody");
           if (tableBody) tableBody.innerHTML = "";
           
-          // Load active registrations
-          const q = query(
-            collection(db, "registrations"),
-            orderBy("timestamp", "desc")
-          );
+          // Load active registrations - we'll sort after loading
+          const q = query(collection(db, "registrations"));
           const querySnapshot = await getDocs(q);
 
           querySnapshot.forEach((doc) => {
             allRegistrations.push({ id: doc.id, ...doc.data() });
           });
 
+          // Sort active registrations by fechaEntrada (nearest first)
+          allRegistrations.sort((a, b) => {
+            // Convert dates to timestamps for comparison
+            const dateA = a.fechaEntrada ? new Date(a.fechaEntrada).getTime() : 0;
+            const dateB = b.fechaEntrada ? new Date(b.fechaEntrada).getTime() : 0;
+            // Sort in ascending order (nearest date first)
+            return dateA - dateB;
+          });
+
           // Load archived registrations (with error handling)
           try {
-            const archiveQ = query(
-              collection(db, "archived_registrations"),
-              orderBy("archivedAt", "desc")
-            );
+            const archiveQ = query(collection(db, "archived_registrations"));
             const archiveSnapshot = await getDocs(archiveQ);
 
             archiveSnapshot.forEach((doc) => {
               allArchived.push({ id: doc.id, ...doc.data() });
+            });
+
+            // Sort archived registrations by fechaEntrada (nearest first)
+            allArchived.sort((a, b) => {
+              // Convert dates to timestamps for comparison
+              const dateA = a.fechaEntrada ? new Date(a.fechaEntrada).getTime() : 0;
+              const dateB = b.fechaEntrada ? new Date(b.fechaEntrada).getTime() : 0;
+              // Sort in ascending order (nearest date first)
+              return dateA - dateB;
             });
           } catch (archiveError) {
             console.log("No archived data yet:", archiveError.message);
