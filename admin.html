@@ -208,6 +208,45 @@
   -webkit-text-fill-color: transparent;
 }
 
+      .stay-badge {
+        background: #e9d8fd;
+        color: #553c9a;
+        font-size: 12px;
+        padding: 2px 8px;
+        border-radius: 10px;
+        margin-left: 6px;
+        font-weight: 600;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      
+      .filter-options {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+        flex-wrap: wrap;
+      }
+      
+      .filter-option {
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      
+      .filter-option:hover {
+        background: #e2e8f0;
+      }
+      
+      .filter-option.active {
+        background: #3b82f6;
+        color: white;
+        border-color: #3b82f6;
+      }
+
       .delete-btn {
         background: linear-gradient(135deg, #f56565 0%, #c53030 100%);
         color: white;
@@ -2813,49 +2852,53 @@ window.syncAvailabilityCalendar = async function() {
 // ========== END SYNC FUNCTION ==========
 
       onAuthStateChanged(auth, (user) => {
-  if (user) {
-    const authorizedEmails = [
-      "orhanimre@gmail.com",
-      "marizulynaranjo@gmail.com",
-    ];
+        if (user) {
+          const authorizedEmails = [
+            "orhanimre@gmail.com",
+            "marizulynaranjo@gmail.com",
+          ];
 
-    if (!authorizedEmails.includes(user.email)) {
-      alert("No tienes permisos para acceder a este panel.");
-      signOut(auth);
-      return;
-    }
-
-    document.getElementById("loginScreen").style.display = "none";
-    document.getElementById("dashboardScreen").style.display = "block";
-    document.getElementById("userEmail").textContent = user.email;
-    loadEmailSettings();  // ✅ ADD THIS
-    loadData();
-  } else {
-    document.getElementById("loginScreen").style.display = "flex";
-    document.getElementById("dashboardScreen").style.display = "none";
-  }
-});
-
-      document
-        .getElementById("loginBtn")
-        .addEventListener("click", async () => {
-          try {
-            await signInWithPopup(auth, provider);
-          } catch (error) {
-            console.error("Error signing in:", error);
-            alert("Error al iniciar sesión. Por favor intenta nuevamente.");
+          if (!authorizedEmails.includes(user.email)) {
+            alert("No tienes permisos para acceder a este panel.");
+            signOut(auth);
+            document.getElementById("loginScreen").style.display = "flex";
+            document.getElementById("dashboardScreen").style.display = "none";
+            return;
           }
-        });
 
-      document
-        .getElementById("logoutBtn")
-        .addEventListener("click", async () => {
-          try {
-            await signOut(auth);
-          } catch (error) {
-            console.error("Error signing out:", error);
-          }
-        });
+          // User is authorized
+          document.getElementById("loginScreen").style.display = "none";
+          document.getElementById("dashboardScreen").style.display = "block";
+          document.getElementById("userEmail").textContent = user.email;
+          loadEmailSettings();  
+          loadData();
+        } else {
+          // No user is signed in
+          document.getElementById("loginScreen").style.display = "flex";
+          document.getElementById("dashboardScreen").style.display = "none";
+        }
+      });
+
+  document
+    .getElementById("loginBtn")
+    .addEventListener("click", async () => {
+      try {
+        await signInWithPopup(auth, provider);
+      } catch (error) {
+        console.error("Error signing in:", error);
+        alert("Error al iniciar sesión. Por favor intenta nuevamente.");
+      }
+    });
+
+  document
+    .getElementById("logoutBtn")
+    .addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+      } catch (error) {
+        console.error("Error signing out:", error);
+      }
+    });
 
 // Email notifications toggle functionality
 async function loadEmailSettings() {
@@ -2973,176 +3016,92 @@ document.getElementById('logoutBtnModal').addEventListener('click', async () => 
   }
 });
 
-      async function loadData() {
-  try {
-    // Load active registrations
-    const q = query(
-      collection(db, "registrations"),
-      orderBy("timestamp", "desc"),
-    );
-    const querySnapshot = await getDocs(q);
-
-    allRegistrations = [];
-    querySnapshot.forEach((doc) => {
-      allRegistrations.push({ id: doc.id, ...doc.data() });
-    });
-
-    // Load archived registrations (with error handling)
-    allArchived = [];
-    try {
-      const archiveQ = query(
-        collection(db, "archived_registrations"),
-        orderBy("archivedAt", "desc"),
-      );
-      const archiveSnapshot = await getDocs(archiveQ);
-
-      archiveSnapshot.forEach((doc) => {
-        allArchived.push({ id: doc.id, ...doc.data() });
-      });
-    } catch (archiveError) {
-      // Archive collection doesn't exist yet - this is fine
-      console.log("No archived data yet:", archiveError.message);
-      allArchived = [];
+  async function loadData() {
+    const loading = document.getElementById("loading");
+    loading.style.display = "block";
+    document.getElementById("tableBody").innerHTML = "";
+    
+    // Add guest type filter if not already added
+    if (!document.getElementById('guestTypeFilter')) {
+      addGuestTypeFilter();
     }
 
+    try {
+      // Load active registrations
+      const q = query(
+        collection(db, "registrations"),
+        orderBy("timestamp", "desc"),
+      );
+      const querySnapshot = await getDocs(q);
+
+      allRegistrations = [];
+      querySnapshot.forEach((doc) => {
+        allRegistrations.push({ id: doc.id, ...doc.data() });
+      });
+
+      // Load archived registrations (with error handling)
+      allArchived = [];
+      try {
+        const archiveQ = query(
+          collection(db, "archived_registrations"),
+          orderBy("archivedAt", "desc"),
+        );
+        const archiveSnapshot = await getDocs(archiveQ);
+
+        archiveSnapshot.forEach((doc) => {
+          allArchived.push({ id: doc.id, ...doc.data() });
+        });
+      } catch (archiveError) {
+        // Archive collection doesn't exist yet - this is fine
+        console.log("No archived data yet:", archiveError.message);
+        allArchived = [];
+      }
+
+      updateStats();
+      displayData(currentView === 'active' ? allRegistrations : allArchived);
+
+      document.getElementById("loading").style.display = "none";
+    } catch (error) {
+      console.error("Error loading data:", error);
+      document.getElementById("loading").innerHTML =
+        "Error al cargar los datos";
+    }
+  }
+
+  window.switchView = function(view) {
+    currentView = view;
+    
+    // Update dropdown selection
+    const dropdown = document.getElementById('viewSelector');
+    if (dropdown) {
+      dropdown.value = view;
+    }
+
+    // Clear filters
+    clearFilters();
+
+    // Update stats and display
     updateStats();
     displayData(currentView === 'active' ? allRegistrations : allArchived);
 
-    document.getElementById("loading").style.display = "none";
-  } catch (error) {
-    console.error("Error loading data:", error);
-    document.getElementById("loading").innerHTML =
-      "Error al cargar los datos";
-  }
-}
-
-window.switchView = function(view) {
-  currentView = view;
-  
-  // Update dropdown selection
-  const dropdown = document.getElementById('viewSelector');
-  if (dropdown) {
-    dropdown.value = view;
-  }
-
-  // Clear filters
-  clearFilters();
-
-  // Update stats and display
-  updateStats();
-  displayData(currentView === 'active' ? allRegistrations : allArchived);
-
-  // Update export button text
-  const exportBtn = document.querySelector('.export-btn span:last-child');
-  if (exportBtn) {
-    exportBtn.textContent = currentView === 'active' 
-      ? 'Exportar a Excel' 
-      : 'Exportar Archivo a Excel';
-  }
-};
-
-// New function for dropdown change
-window.switchViewFromDropdown = function() {
-  const dropdown = document.getElementById('viewSelector');
-  switchView(dropdown.value);
-};
-
-      function updateStats() {
-  // Use the current view's data
-  const dataSource = currentView === 'active' ? allRegistrations : allArchived;
-  
-  document.getElementById("totalRegistros").textContent =
-    dataSource.length;
-  document.getElementById("totalCabana1").textContent =
-    dataSource.filter(
-      (r) => r.cabana === "Cabaña MariaMar-1",
-    ).length;
-  document.getElementById("totalCabana2").textContent =
-    dataSource.filter(
-      (r) => r.cabana === "Cabaña MariaMar-2",
-    ).length;
-  document.getElementById("totalCabana3").textContent =
-    dataSource.filter(
-      (r) => r.cabana === "Cabaña MariaMar-3",
-    ).length;
-}
-
-      function displayData(data) {
-        const tableBody = document.getElementById("tableBody");
-        const table = document.getElementById("dataTable");
-        const noData = document.getElementById("noData");
-        const isMobile = window.innerWidth < 768;
-
-        tableBody.innerHTML = "";
-
-        if (data.length === 0) {
-          table.style.display = "none";
-          noData.style.display = "block";
-          return;
-        }
-
-        table.style.display = "table";
-        noData.style.display = "none";
-
-        data.forEach((reg, index) => {
-          const row = document.createElement("tr");
-          if (isMobile) {
-  row.classList.add("clickable");
-  row.onclick = (e) => {
-    // Don't open modal if clicking buttons
-    if (!e.target.closest(".delete-btn") && !e.target.closest(".view-btn")) {
-      showDetailModal(reg);
+    // Update export button text
+    const exportBtn = document.querySelector('.export-btn span:last-child');
+    if (exportBtn) {
+      exportBtn.textContent = currentView === 'active' 
+        ? 'Exportar a Excel' 
+        : 'Exportar Archivo a Excel';
     }
   };
-}
 
-          const timestamp = reg.timestamp
-            ? new Date(reg.timestamp.seconds * 1000)
-            : new Date();
-          const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
+  // New function for dropdown change
+  window.switchViewFromDropdown = function() {
+    const dropdown = document.getElementById('viewSelector');
+    switchView(dropdown.value);
+  };
 
-          // Format date from YYYY-MM-DD to DD.MM.YYYY
-          const formatDate = (dateStr) => {
-            if (!dateStr) return "N/A";
-            const [year, month, day] = dateStr.split("-");
-            return `${day}.${month}.${year}`;
-          };
-
-          row.innerHTML = `
-  <td class="mobile-col">${index + 1}</td>
-  <td class="mobile-col">
-    <div class="date-cell">
-      <div class="date-main">${formatDate(reg.fechaEntrada)}</div>
-      <div class="date-time">${formatDate(reg.fechaSalida)}</div>
-    </div>
-  </td>
-  <td class="mobile-col"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></td>
-  <td class="mobile-col">
-    <div class="name-cell">
-      <div class="name-main">${reg.nombre} ${reg.apellido}</div>
-      <div class="name-sub">📱 ${reg.celular}</div>
-    </div>
-  </td>
-  <td>${reg.celular}</td>
-  <td>${reg.ciudad}</td>
-  <td>${formatDate(reg.fechaEntrada)}</td>
-  <td>${formatDate(reg.fechaSalida)}</td>
-  <td><span class="guest-badge">${(reg.totalHuespedes || 0) + 1}</span></td>
-  <td class="mobile-col">
-    <button class="view-btn" onclick="event.stopPropagation(); showDetailModal(${JSON.stringify(reg).replace(/"/g, '&quot;')})">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="M9 5l7 7-7 7"/>
-      </svg>
-    </button>
-  </td>
-  <td><button class="delete-btn" onclick="deleteRegistration('${reg.id}', event)">🗑️</button></td>
-`;
-          tableBody.appendChild(row);
-        });
-      }
-
-      window.setDatePreset = function (preset) {  
-  // STEP 1: Clear dates FIRST
+  function updateStats() {
+    // Use the current view's data
+    const dataSource = currentView === 'active' ? allRegistrations : allArchived;
   document.getElementById("fechaDesde").value = "";
   document.getElementById("fechaHasta").value = "";
   
@@ -3549,8 +3508,38 @@ window.closeConfirmModal = function() {
   document.body.style.overflow = "hidden";
 };
 
+      // Guest tracking functionality
+      async function getGuestReservationCount(guestPhone, guestId) {
+        try {
+          // Check both phone and ID in both collections
+          const queries = [
+            query(collection(db, "registrations"), 
+              or(
+                where("celular", "==", guestPhone),
+                where("numeroId", "==", guestId)
+              )
+            ),
+            query(collection(db, "archived_registrations"),
+              or(
+                where("celular", "==", guestPhone),
+                where("numeroId", "==", guestId)
+              )
+            )
+          ];
+          
+          const [activeSnapshot, archiveSnapshot] = await Promise.all(
+            queries.map(q => getCountFromServer(q))
+          );
+          
+          return (activeSnapshot.data().count || 0) + (archiveSnapshot.data().count || 0);
+        } catch (error) {
+          console.error("Error counting reservations:", error);
+          return 1; // Default to 1 (first stay) if there's an error
+        }
+      }
+
       // Search functionality
-let searchTerm = '';
+      let searchTerm = '';
 
 window.performSearch = function() {
   const input = document.getElementById('searchInput');
