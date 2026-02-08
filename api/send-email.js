@@ -159,7 +159,7 @@ module.exports = async (req, res) => {
       },
       body: JSON.stringify({
         from: 'Cabañas MariaMar <onboarding@resend.dev>',
-        to: ['orhanimre@gmail.com'],
+        to: ['marizulynaranjo@gmail.com'],
         subject: `${data.cabana} (Nuevo Registro)`,
         html: emailHTML
       })

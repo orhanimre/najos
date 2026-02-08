@@ -50,8 +50,9 @@ This setup adds automatic email notifications when guests complete their registr
 - The API key is currently in the code for simplicity
 - For production, consider using Vercel Environment Variables:
   1. Go to the Vercel Dashboard → Project Settings → Environment Variables
-  2. Add: `RESEND_API_KEY` = `re_Z5TteWWn_K7uUod2NCNexUzzNL6x36RTC`
+  2. Add: `RESEND_API_KEY` = `re_htsSVCCG_JvqNxLVjjAPe4RTVmDu6N6SN`
   3. Update code to use: `process.env.RESEND_API_KEY`
+  4. Domain: marizulynaranjo.com
 
 ### Testing
 
