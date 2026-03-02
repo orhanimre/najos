@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro Cabaña 3 - Cabañas MariaMar</title>
+    <title>Registro Cabaña 3 - Apto Najos</title>
     <style>
       * {
         margin: 0;
@@ -1584,18 +1584,18 @@
         <div class="header-content">
           <img
             src="https://i.imgur.com/tWfkFP8.jpg"
-            alt="Logo Cabañas MariaMar"
+            alt="Logo Apto Najos"
             class="logo"
           />
           <h1>Registro de Huéspedes</h1>
-          <div class="cabin-badge">🏡 Cabaña MariaMar-3</div>
+          <div class="cabin-badge">🏡 Cabaña Najos-4</div>
         </div>
       </div>
 
       <div class="banner-container">
         <img
           src="https://i.imgur.com/QLnvbcu.jpg"
-          alt="Cabaña MariaMar-3"
+          alt="Cabaña Najos-4"
           class="banner-image"
           onclick="showBannerLightbox()"
         />
@@ -1636,7 +1636,7 @@
           <!-- Step 1: Welcome -->
           <div class="step-container active" data-step="1">
             <div class="step-intro">
-              <h2>🌴 ¡Bienvenidos a Cabaña MariaMar-3 !</h2>
+              <h2>🌴 ¡Bienvenidos a Cabaña Najos-4 !</h2>
               <p>
                 Solo necesitamos unos datos básicos para prepararte una llegada
                 perfecta el registro.
@@ -1837,7 +1837,7 @@
                 <input type="checkbox" id="consent" name="consent" required />
                 <label for="consent">
                   Autorizo el tratamiento de mis datos personales por Cabañas
-                  MariaMar-3 conforme a la ley colombiana.
+                  Najos-4 conforme a la ley colombiana.
                   <span class="required">*</span>
                   <br /><small
                     style="
@@ -1991,17 +1991,16 @@
         serverTimestamp,
         getDocs,
         doc, // ✅ ADD THIS
-        getDoc, // ✅ ADD THIS
       } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
-        apiKey: "AIzaSyACEyCsx-4lhITc8s06QyZPQiS9t3f7I18",
-        authDomain: "cabanas-mariamar.firebaseapp.com",
-        projectId: "cabanas-mariamar",
-        storageBucket: "cabanas-mariamar.firebasestorage.app",
-        messagingSenderId: "578365907890",
-        appId: "1:578365907890:web:d1561f04e29ed64e97faab",
-        measurementId: "G-R3XMD9DPBP",
+        apiKey: "AIzaSyBGno4JfubhTO-deCJtP9ozXD_pdPrhmh8",
+        authDomain: "aptos-najos.firebaseapp.com",
+        projectId: "aptos-najos",
+        storageBucket: "aptos-najos.firebasestorage.app",
+        messagingSenderId: "773909398953",
+        appId: "1:773909398953:web:157467cae451bf125ff0b8",
+        measurementId: "G-JXZHNXDMLH",
       };
 
       const app = initializeApp(firebaseConfig);
@@ -2286,7 +2285,7 @@
           <div class="lightbox-overlay" onclick="this.remove()">
             <div class="lightbox-content" onclick="event.stopPropagation()">
               <button class="lightbox-close" onclick="this.closest('.lightbox-overlay').remove()">×</button>
-              <img src="https://i.imgur.com/QLnvbcu.jpg" alt="Cabaña MariaMar-3" class="lightbox-image" />
+              <img src="https://i.imgur.com/QLnvbcu.jpg" alt="Cabaña Najos-4" class="lightbox-image" />
             </div>
           </div>
         `;
@@ -2486,7 +2485,7 @@
           // First pass: collect all check-in and check-out dates
           querySnapshot.forEach((doc) => {
             const data = doc.data();
-            if (data.cabana === "Cabaña MariaMar-3") {
+            if (data.cabana === "Cabaña Najos-4") {
               if (data.fechaInicio) {
                 checkInDates.push(data.fechaInicio);
               }
@@ -2500,7 +2499,7 @@
           querySnapshot.forEach((doc) => {
             const data = doc.data();
             if (
-              data.cabana === "Cabaña MariaMar-3" &&
+              data.cabana === "Cabaña Najos-4" &&
               data.fechaInicio &&
               data.fechaFin
             ) {
@@ -2973,7 +2972,7 @@
         const formData = new FormData(form);
 
         const data = {
-          cabana: "Cabaña MariaMar-3",
+          cabana: "Cabaña Najos-4",
           timestamp: serverTimestamp(),
           nombre: formData.get("nombre"),
           apellido: formData.get("apellido"),
@@ -3007,7 +3006,7 @@
           );
 
           const availabilityData = {
-            cabana: "Cabaña MariaMar-3",
+            cabana: "Cabaña Najos-4",
             fechaInicio: selectedCheckIn,
             fechaFin: selectedCheckOut,
             registrationId: registrationRef.id,
