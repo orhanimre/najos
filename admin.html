@@ -2591,21 +2591,21 @@ tbody tr.clickable:active {
     <div class="stat-card cabin cabin-1">
       <h3>Apto 2</h3>
       <div class="number" id="totalApto2">-</div>
-      <button class="calendar-view-btn" onclick="openCalendarModal('Aptos Najos-2')">
+      <button class="calendar-view-btn" onclick="openCalendarModal('Apto Najos-2')">
         Ver Reservas
       </button>
     </div>
     <div class="stat-card cabin cabin-2">
       <h3>Apto 3</h3>
       <div class="number" id="totalApto3">-</div>
-      <button class="calendar-view-btn" onclick="openCalendarModal('Aptos Najos-3')">
+      <button class="calendar-view-btn" onclick="openCalendarModal('Apto Najos-3')">
         Ver Reservas
       </button>
     </div>
     <div class="stat-card cabin cabin-3">
       <h3>Apto 4</h3>
       <div class="number" id="totalApto4">-</div>
-      <button class="calendar-view-btn" onclick="openCalendarModal('Aptos Najos-4')">
+      <button class="calendar-view-btn" onclick="openCalendarModal('Apto Najos-4')">
         Ver Reservas
       </button>
     </div>
@@ -2617,9 +2617,9 @@ tbody tr.clickable:active {
             <label class="filter-label">Filtrar por Apto</label>
             <select id="cabanaFilter" onchange="applyFilters()">
               <option value="">Todas las Aptos</option>
-              <option value="Aptos Najos-2">Apto 2</option>
-              <option value="Aptos Najos-3">Apto 3</option>
-              <option value="Aptos Najos-4">Apto 4</option>
+              <option value="Apto Najos-2">Apto 2</option>
+              <option value="Apto Najos-3">Apto 3</option>
+              <option value="Apto Najos-4">Apto 4</option>
             </select>
           </div>
 
@@ -3208,15 +3208,15 @@ window.switchViewFromDropdown = function() {
     dataSource.length;
   document.getElementById("totalApto2").textContent =
     dataSource.filter(
-      (r) => r.cabana === "Aptos Najos-2",
+      (r) => r.cabana === "Apto Najos-2",
     ).length;
   document.getElementById("totalApto3").textContent =
     dataSource.filter(
-      (r) => r.cabana === "Aptos Najos-3",
+      (r) => r.cabana === "Apto Najos-3",
     ).length;
   document.getElementById("totalApto4").textContent =
     dataSource.filter(
-      (r) => r.cabana === "Aptos Najos-4",
+      (r) => r.cabana === "Apto Najos-4",
     ).length;
 }
 
