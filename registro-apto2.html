@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro Cabaña 1 - Apto Najos</title>
+    <title>Registro Apto 2 - Apto Najos</title>
     <style>
       * {
         margin: 0;
@@ -1587,14 +1587,14 @@
             class="logo"
           />
           <h1>Registro de Huéspedes</h1>
-          <div class="cabin-badge">🏡 Cabaña Najos-2</div>
+          <div class="cabin-badge">🏡 Apto Najos-2</div>
         </div>
       </div>
 
       <div class="banner-container">
         <img
           src="https://imgur.com/dVlUrNm.jpg"
-          alt="Cabaña Najos-2"
+          alt="Apto Najos-2"
           class="banner-image"
           onclick="showBannerLightbox()"
         />
@@ -1635,7 +1635,7 @@
           <!-- Step 1: Welcome -->
           <div class="step-container active" data-step="1">
             <div class="step-intro">
-              <h2>🌴 ¡Bienvenidos a Cabaña Najos-2 !</h2>
+              <h2>🌴 ¡Bienvenidos a Apto Najos-2 !</h2>
               <p>
                 Solo necesitamos unos datos básicos para prepararte una llegada
                 perfecta el registro.
@@ -1835,7 +1835,7 @@
               <div class="checkbox-group" id="consentGroup">
                 <input type="checkbox" id="consent" name="consent" required />
                 <label for="consent">
-                  Autorizo el tratamiento de mis datos personales por Cabañas
+                  Autorizo el tratamiento de mis datos personales por Aptos
                   Najos-2 conforme a la ley colombiana.
                   <span class="required">*</span>
                   <br /><small
@@ -2285,7 +2285,7 @@
           <div class="lightbox-overlay" onclick="this.remove()">
             <div class="lightbox-content" onclick="event.stopPropagation()">
               <button class="lightbox-close" onclick="this.closest('.lightbox-overlay').remove()">×</button>
-              <img src="https://imgur.com/dVlUrNm.jpg" alt="Cabaña Najos-2" class="lightbox-image" />
+              <img src="https://imgur.com/dVlUrNm.jpg" alt="Apto Najos-2" class="lightbox-image" />
             </div>
           </div>
         `;
@@ -2485,7 +2485,7 @@
           // First pass: collect all check-in and check-out dates
           querySnapshot.forEach((doc) => {
             const data = doc.data();
-            if (data.cabana === "Cabaña Najos-2") {
+            if (data.cabana === "Apto Najos-2") {
               if (data.fechaInicio) {
                 checkInDates.push(data.fechaInicio);
               }
@@ -2499,7 +2499,7 @@
           querySnapshot.forEach((doc) => {
             const data = doc.data();
             if (
-              data.cabana === "Cabaña Najos-2" &&
+              data.cabana === "Apto Najos-2" &&
               data.fechaInicio &&
               data.fechaFin
             ) {
@@ -2978,7 +2978,7 @@
         const formData = new FormData(form);
 
         const data = {
-          cabana: "Cabaña Najos-2",
+          cabana: "Apto Najos-2",
           timestamp: serverTimestamp(),
           nombre: formData.get("nombre"),
           apellido: formData.get("apellido"),
@@ -3012,7 +3012,7 @@
           );
 
           const availabilityData = {
-            cabana: "Cabaña Najos-2",
+            cabana: "Apto Najos-2",
             fechaInicio: selectedCheckIn,
             fechaFin: selectedCheckOut,
             registrationId: registrationRef.id,

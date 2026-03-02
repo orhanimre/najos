@@ -2589,21 +2589,21 @@ tbody tr.clickable:active {
   </div>
   <div class="cabins-row">
     <div class="stat-card cabin cabin-1">
-      <h3>Cabaña 1</h3>
+      <h3>Apto 1</h3>
       <div class="number" id="totalApto2">-</div>
       <button class="calendar-view-btn" onclick="openCalendarModal('Aptos Najos-2')">
         Ver Reservas
       </button>
     </div>
     <div class="stat-card cabin cabin-2">
-      <h3>Cabaña 2</h3>
+      <h3>Apto 2</h3>
       <div class="number" id="totalApto3">-</div>
       <button class="calendar-view-btn" onclick="openCalendarModal('Aptos Najos-3')">
         Ver Reservas
       </button>
     </div>
     <div class="stat-card cabin cabin-3">
-      <h3>Cabaña 3</h3>
+      <h3>Apto 3</h3>
       <div class="number" id="totalApto4">-</div>
       <button class="calendar-view-btn" onclick="openCalendarModal('Aptos Najos-4')">
         Ver Reservas
@@ -2614,12 +2614,12 @@ tbody tr.clickable:active {
 
         <div class="filters">
           <div class="filter-section">
-            <label class="filter-label">Filtrar por Cabaña</label>
+            <label class="filter-label">Filtrar por Apto</label>
             <select id="cabanaFilter" onchange="applyFilters()">
-              <option value="">Todas las Cabañas</option>
-              <option value="Aptos Najos-2">Cabaña 1</option>
-              <option value="Aptos Najos-3">Cabaña 2</option>
-              <option value="Aptos Najos-4">Cabaña 3</option>
+              <option value="">Todas las Aptos</option>
+              <option value="Aptos Najos-2">Apto 1</option>
+              <option value="Aptos Najos-3">Apto 2</option>
+              <option value="Aptos Najos-4">Apto 3</option>
             </select>
           </div>
 
@@ -2682,7 +2682,7 @@ tbody tr.clickable:active {
   <tr>
     <th class="mobile-col">#</th>
     <th class="mobile-col">Fecha</th>
-    <th class="mobile-col">Cabaña</th>
+    <th class="mobile-col">Apto</th>
     <th class="mobile-col">Nombre</th>
     <th>Celular</th>
     <th>Ciudad</th>
@@ -3292,7 +3292,7 @@ window.switchViewFromDropdown = function() {
                     <div class="date-time">${formatDate(reg.fechaSalida || '')}</div>
                   </div>
                 </td>
-                <td class="mobile-col"><span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span></td>
+                <td class="mobile-col"><span class="cabin-badge cabin-${cabanaNum}">Apto ${cabanaNum}</span></td>
                 <td class="mobile-col">
                   <div class="name-cell">
                     <div class="name-main">${loyaltyBadge}${reg.nombre || ''} ${reg.apellido || ''}</div>
@@ -3667,8 +3667,8 @@ window.closeConfirmModal = function() {
             <span class="info-value">${formatDateTime(timestamp)}</span>
           </div>
           <div class="info-line">
-            <span class="info-label">Cabaña:</span>
-            <span class="cabin-badge cabin-${cabanaNum}">Cabaña ${cabanaNum}</span>
+            <span class="info-label">Apto:</span>
+            <span class="cabin-badge cabin-${cabanaNum}">Apto ${cabanaNum}</span>
           </div>
         </div>
       </div>
@@ -3943,7 +3943,7 @@ function showSearchResults(count) {
       window.exportToExcel = function () {
   const headers = [
     "Fecha Registro",
-    "Cabaña",
+    "Apto",
     "Nombre Completo",
     "Celular",
     "ID",
@@ -4073,7 +4073,7 @@ window.openCalendarModal = function(cabinName) {
   
   const modal = document.getElementById('calendarModal');
   const cabinNum = cabinName.slice(-1);
-  document.getElementById('calendarTitle').textContent = `Calendario - Cabaña ${cabinNum}`;
+  document.getElementById('calendarTitle').textContent = `Calendario - Apto ${cabinNum}`;
   
   renderScrollableCalendar();
   modal.classList.add('show');

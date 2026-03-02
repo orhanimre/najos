@@ -489,45 +489,45 @@
                 <img src="https://i.imgur.com/tWfkFP8.jpg" alt="Logo Apto Najos" class="logo">
             </div>
             <h1>Apto Najos</h1>
-            <p class="header-subtitle">Tu escape frente al mar</p>
+            <p class="header-subtitle">Tu escape en el corazón de la naturaleza</p>
         </div>
 
         <div class="content">
             <div class="intro-section">
                 <h2>¡Bienvenido!</h2>
-                <p>Selecciona tu cabaña para comenzar el registro. Solo te tomará unos minutos y estarás listo para disfrutar del paraíso.</p>
+                <p>Selecciona tu apto para comenzar el registro. Solo te tomará unos minutos y estarás listo para disfrutar del paraíso.</p>
             </div>
 
             <div class="cabanas-grid">
                 <div class="cabana-card" onclick="selectCabana(1)">
                     <div class="cabana-image-wrapper">
-                        <img src="https://imgur.com/dVlUrNm.jpg" alt="Cabaña Najos-2" class="cabana-image">
+                        <img src="https://imgur.com/dVlUrNm.jpg" alt="Apto Najos-2" class="cabana-image">
                     </div>
                     <div class="cabana-content">
                         <h3>Najos-2</h3>
-                        <p>Cabaña a 50 metros del Mar Caribe</p>
+                        <p>Apto en el corazón de San Carlos, paraíso de ríos y cascadas</p>
                         <button class="select-btn">Registrarme Aquí</button>
                     </div>
                 </div>
 
                 <div class="cabana-card" onclick="selectCabana(2)">
                     <div class="cabana-image-wrapper">
-                        <img src="https://imgur.com/21Ay90Q.jpg" alt="Cabaña Najos-3" class="cabana-image">
+                        <img src="https://imgur.com/21Ay90Q.jpg" alt="Apto Najos-3" class="cabana-image">
                     </div>
                     <div class="cabana-content">
                         <h3>Najos-3</h3>
-                        <p>Cabaña a 50 metros del Mar Caribe</p>
+                        <p>Apto en el corazón de San Carlos, paraíso de ríos y cascadas</p>
                         <button class="select-btn">Registrarme Aquí</button>
                     </div>
                 </div>
 
                 <div class="cabana-card" onclick="selectCabana(3)">
                     <div class="cabana-image-wrapper">
-                        <img src="https://imgur.com/QLnvbcu.jpg" alt="Cabaña Najos-4" class="cabana-image">
+                        <img src="https://imgur.com/QLnvbcu.jpg" alt="Apto Najos-4" class="cabana-image">
                     </div>
                     <div class="cabana-content">
                         <h3>Najos-4</h3>
-                        <p>Cabaña a 50 metros del Mar Caribe</p>
+                        <p>Apto en el corazón de San Carlos, paraíso de ríos y cascadas</p>
                         <button class="select-btn">Registrarme Aquí</button>
                     </div>
                 </div>
@@ -536,7 +536,7 @@
 
         <div class="footer">
             <p>© 2026 Apto Najos · Todos los derechos reservados</p>
-            <p style="margin-top: 8px; font-size: 13px; opacity: 0.7;">Tu refugio en la costa</p>
+            <p style="margin-top: 8px; font-size: 13px; opacity: 0.7;">Tu refugio en el corazón de la naturaleza</p>
         </div>
     </div>
 
@@ -547,7 +547,8 @@
             
             // Navigate after brief delay for visual feedback
             setTimeout(() => {
-                window.location.href = `registro-cabana${number}.html`;
+                const aptoNumber = number + 1; // Convert 1,2,3 to 2,3,4
+                window.location.href = `registro-apto${aptoNumber}.html`;
             }, 200);
         }
 
