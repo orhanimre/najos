@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard - Cabañas MariaMar</title>
+    <title>Admin Dashboard - Aptos Najos</title>
     <style>
       * {
         margin: 0;
@@ -2503,7 +2503,7 @@ tbody tr.clickable:active {
     <div id="loginScreen" class="login-container">
       <div class="login-box">
         <div class="login-logo">🏡</div>
-        <h2>Cabañas MariaMar</h2>
+        <h2>Aptos Najos</h2>
         <p>Panel de Administración</p>
         <p>
           Inicia sesión con tu cuenta de Google para acceder al panel de control
@@ -2539,7 +2539,7 @@ tbody tr.clickable:active {
     <!-- Title -->
     <div class="header-title">
       <h1>📊 Panel de Administración</h1>
-      <p>Cabañas MariaMar - Registros de Huéspedes</p>
+      <p>Aptos Najos - Registros de Huéspedes</p>
     </div>
 
     <!-- Controls Row -->
@@ -2590,22 +2590,22 @@ tbody tr.clickable:active {
   <div class="cabins-row">
     <div class="stat-card cabin cabin-1">
       <h3>Cabaña 1</h3>
-      <div class="number" id="totalCabana1">-</div>
-      <button class="calendar-view-btn" onclick="openCalendarModal('Cabaña MariaMar-1')">
+      <div class="number" id="totalApto2">-</div>
+      <button class="calendar-view-btn" onclick="openCalendarModal('Aptos Najos-2')">
         Ver Reservas
       </button>
     </div>
     <div class="stat-card cabin cabin-2">
       <h3>Cabaña 2</h3>
-      <div class="number" id="totalCabana2">-</div>
-      <button class="calendar-view-btn" onclick="openCalendarModal('Cabaña MariaMar-2')">
+      <div class="number" id="totalApto3">-</div>
+      <button class="calendar-view-btn" onclick="openCalendarModal('Aptos Najos-3')">
         Ver Reservas
       </button>
     </div>
     <div class="stat-card cabin cabin-3">
       <h3>Cabaña 3</h3>
-      <div class="number" id="totalCabana3">-</div>
-      <button class="calendar-view-btn" onclick="openCalendarModal('Cabaña MariaMar-3')">
+      <div class="number" id="totalApto4">-</div>
+      <button class="calendar-view-btn" onclick="openCalendarModal('Aptos Najos-4')">
         Ver Reservas
       </button>
     </div>
@@ -2617,9 +2617,9 @@ tbody tr.clickable:active {
             <label class="filter-label">Filtrar por Cabaña</label>
             <select id="cabanaFilter" onchange="applyFilters()">
               <option value="">Todas las Cabañas</option>
-              <option value="Cabaña MariaMar-1">Cabaña 1</option>
-              <option value="Cabaña MariaMar-2">Cabaña 2</option>
-              <option value="Cabaña MariaMar-3">Cabaña 3</option>
+              <option value="Aptos Najos-2">Cabaña 1</option>
+              <option value="Aptos Najos-3">Cabaña 2</option>
+              <option value="Aptos Najos-4">Cabaña 3</option>
             </select>
           </div>
 
@@ -3206,17 +3206,17 @@ window.switchViewFromDropdown = function() {
   
   document.getElementById("totalRegistros").textContent =
     dataSource.length;
-  document.getElementById("totalCabana1").textContent =
+  document.getElementById("totalApto2").textContent =
     dataSource.filter(
-      (r) => r.cabana === "Cabaña MariaMar-1",
+      (r) => r.cabana === "Aptos Najos-2",
     ).length;
-  document.getElementById("totalCabana2").textContent =
+  document.getElementById("totalApto3").textContent =
     dataSource.filter(
-      (r) => r.cabana === "Cabaña MariaMar-2",
+      (r) => r.cabana === "Aptos Najos-3",
     ).length;
-  document.getElementById("totalCabana3").textContent =
+  document.getElementById("totalApto4").textContent =
     dataSource.filter(
-      (r) => r.cabana === "Cabaña MariaMar-3",
+      (r) => r.cabana === "Aptos Najos-4",
     ).length;
 }
 
