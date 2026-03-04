@@ -92,7 +92,7 @@ module.exports = async (req, res) => {
           
           <!-- Admin Button -->
           <div style="padding: 20px; text-align: center; background: #edf2f7;">
-            <a href="https://mariamar.vercel.app/admin.html" class="button-text"
+            <a href="https://najos.vercel.app/admin.html" class="button-text"
                style="display: inline-block; background: #48bb78; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; padding: 14px 28px; text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 15px; box-shadow: 0 4px 14px rgba(72, 187, 120, 0.4); mso-line-height-rule: exactly;" data-ogsc="#ffffff">
               📋 Ver Panel Admin
             </a>
@@ -158,8 +158,8 @@ module.exports = async (req, res) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'Cabañas MariaMar <onboarding@resend.dev>',
-        to: ['marizulynaranjo@gmail.com'],
+        from: 'Apart Hotel Najos <onboarding@resend.dev>',
+        to: ['hugofda79@gmail.com'],
         subject: `${data.cabana} (Nuevo Registro)`,
         html: emailHTML
       })
