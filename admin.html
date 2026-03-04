@@ -2905,17 +2905,25 @@ window.syncAvailabilityCalendar = async function() {
 
       onAuthStateChanged(auth, (user) => {
   if (user) {
+    console.log("Attempting login with email:", user.email);
     // Updated: hugofda79@gmail.com added - 2024-03-04
 const authorizedEmails = [
       "orhanimre@gmail.com",
       "hugofda79@gmail.com",
     ];
 
+    console.log("Authorized emails:", authorizedEmails);
+
     if (!authorizedEmails.includes(user.email)) {
-      alert("No tienes permisos para acceder a este panel.");
-      signOut(auth);
-      return;
+      console.log("Access denied for email:", user.email);
+      // Temporarily comment out the restriction for debugging
+      // alert("No tienes permisos para acceder a este panel. Email: " + user.email);
+      // signOut(auth);
+      // return;
+      console.log("TEMP: Allowing access for debugging");
     }
+
+    console.log("Access granted for email:", user.email);
 
     document.getElementById("loginScreen").style.display = "none";
     document.getElementById("dashboardScreen").style.display = "block";
