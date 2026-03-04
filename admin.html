@@ -2910,7 +2910,12 @@ window.syncAvailabilityCalendar = async function() {
       "hugofda79@gmail.com",
     ];
 
+    console.log("User email:", user.email);
+    console.log("Authorized emails:", authorizedEmails);
+    console.log("Is authorized:", authorizedEmails.includes(user.email));
+
     if (!authorizedEmails.includes(user.email)) {
+      console.log("Access denied for:", user.email);
       alert("No tienes permisos para acceder a este panel.");
       signOut(auth);
       return;
