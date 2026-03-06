@@ -2218,13 +2218,20 @@ interactivo.
       }
 
       function validateStep(step) {
+        console.log("Validating step:", step);
         const stepContainer = document.querySelector(
           `.step-container[data-step="${step}"]`,
         );
+        console.log("Step container found:", stepContainer);
         const requiredInputs = stepContainer.querySelectorAll("[required]");
+        console.log("Required inputs found:", requiredInputs.length);
+        requiredInputs.forEach((input, index) => {
+          console.log(`Input ${index}:`, input.type, input.name || input.id, input);
+        });
 
         for (let input of requiredInputs) {
           if (input.type === "checkbox") {
+            console.log("Found checkbox:", input.name, "checked:", input.checked);
             if (!input.checked) {
               input.focus();
               showToast("⚠️ Por favor acepta los términos para continuar");
