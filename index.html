@@ -100,54 +100,34 @@
             background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
             color: var(--white);
             padding: 20px 40px;
-            text-align: center;
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 1000;
             box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
         }
 
-        .header::before {
-            content: '🌴';
-            position: absolute;
-            font-size: 200px;
-            opacity: 0.05;
-            top: -40px;
-            left: -20px;
-            transform: rotate(-15deg);
-            animation: sway 6s ease-in-out infinite;
-        }
-
-        .header::after {
-            content: '🌴';
-            position: absolute;
-            font-size: 200px;
-            opacity: 0.05;
-            bottom: -40px;
-            right: -20px;
-            transform: rotate(15deg);
-            animation: sway 6s ease-in-out infinite reverse;
-        }
-
-        @keyframes sway {
-            0%, 100% { transform: rotate(-15deg); }
-            50% { transform: rotate(-12deg); }
-        }
-
         .header-content {
             display: flex;
-            align-items: flex-start;
-            gap: 40px;
-            max-width: 100%;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .header-left {
             flex-shrink: 0;
         }
 
+        .header-right {
+            flex-shrink: 0;
+        }
+
         .header-center {
             flex: 1;
             text-align: center;
+            padding: 0 20px;
         }
 
         .logo {
@@ -217,7 +197,7 @@
         }
 
         .content {
-            padding: 60px 40px;
+            padding: 120px 40px 60px 40px;
             position: relative;
         }
 
@@ -848,8 +828,7 @@
             .header-content {
                 flex-direction: column;
                 align-items: center;
-                gap: 24px;
-                text-align: center;
+                gap: 12px;
             }
 
             .header-left {
@@ -858,10 +837,19 @@
 
             .header-center {
                 text-align: center;
+                padding: 0;
+            }
+
+            .header-right {
+                align-self: center;
             }
 
             .logo {
                 max-width: 100px;
+            }
+
+            .content {
+                padding: 140px 24px 40px 24px;
             }
 
             .nav-menu {
@@ -1004,12 +992,14 @@
                     <img src="https://i.imgur.com/L8KoquC.jpg" alt="Logo Apart Hotel Najos" class="logo">
                 </div>
                 <div class="header-center">
+                    <h1>Apart Hotel Najos</h1>
+                    <p class="header-subtitle">Tu escape en el corazón de San Carlos</p>
+                </div>
+                <div class="header-right">
                     <nav class="nav-menu">
                         <a href="sobre-nosotros.html" class="nav-link">Sobre Nosotros</a>
                         <a href="san-carlos.html" class="nav-link">San Carlos</a>
                     </nav>
-                    <h1>Apart Hotel Najos</h1>
-                    <p class="header-subtitle">Tu escape en el corazón de San Carlos</p>
                 </div>
             </div>
         </div>
