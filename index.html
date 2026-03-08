@@ -155,36 +155,89 @@
             letter-spacing: 0.5px;
         }
 
-        /* Navigation Menu */
+        /* ── NAVIGATION MENU ── */
         .nav-menu {
             display: flex;
             justify-content: center;
-            gap: 32px;
+            gap: 10px;
             margin-bottom: 24px;
         }
 
+        @keyframes navGlowPulse {
+            0%, 100% {
+                box-shadow: 0 0 0px rgba(255, 255, 255, 0);
+                border-color: rgba(255, 255, 255, 0.35);
+            }
+            50% {
+                box-shadow: 0 0 12px rgba(255, 255, 255, 0.45), 0 0 24px rgba(77, 168, 218, 0.3);
+                border-color: rgba(255, 255, 255, 0.85);
+            }
+        }
+
         .nav-link {
-            color: var(--white);
+            position: relative;
+            color: rgba(255, 255, 255, 0.92);
             text-decoration: none;
             font-weight: 500;
-            font-size: 15px;
-            padding: 8px 16px;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.3s ease;
+            font-size: 12.5px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            padding: 8px 20px;
+            border-radius: 5px;
+            background: transparent;
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+            transition: color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+            overflow: hidden;
+            animation: navGlowPulse 2.2s ease-in-out infinite;
+        }
+
+        .nav-link:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        /* Subtle shimmer fill on hover */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.10);
+            opacity: 0;
+            transition: opacity 0.22s ease;
         }
 
         .nav-link:hover {
-            background: rgba(255,255,255,0.2);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255,255,255,0.1);
+            color: var(--white);
+            border-color: rgba(255, 255, 255, 0.80);
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+                0 3px 14px rgba(0, 0, 0, 0.18);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .nav-link:hover::after {
+            opacity: 1;
+        }
+
+        /* Thin animated underline accent */
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 2px;
+            transform: translateX(-50%);
+            transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-link:hover::before {
+            width: calc(100% - 24px);
         }
 
         /* ── CONTENT ── */
         .content {
-            /* Desktop: header is ~140px tall */
             padding: 160px 40px 60px;
             position: relative;
         }
@@ -313,7 +366,6 @@
             margin-top: 20px;
         }
 
-        /* Primary CTA */
         .select-btn {
             background: var(--ocean-dark);
             color: var(--white);
@@ -355,7 +407,6 @@
         .select-btn:hover svg { transform: translateX(3px); }
         .select-btn:active { transform: translateY(0); box-shadow: none; }
 
-        /* Secondary — orange fill */
         .info-btn {
             background: var(--sunset);
             color: var(--white);
@@ -453,8 +504,9 @@
             }
 
             .nav-link {
-                font-size: 11px;
-                padding: 4px 8px;
+                font-size: 10px;
+                padding: 6px 12px;
+                letter-spacing: 0.5px;
             }
 
             .header-title {
@@ -469,7 +521,6 @@
                 font-size: 11px;
             }
 
-            /* Use JS-measured height instead; fallback generous value */
             .content {
                 padding: 220px 24px 40px;
             }
@@ -485,14 +536,12 @@
 
             .cabana-content { padding: 0 24px 32px; }
 
-
             .footer { padding: 32px 24px; }
             .decoration { font-size: 40px; }
         }
 
         @media (max-width: 480px) {
             .content {
-                /* Extra small screens — header may be taller */
                 padding-top: 240px;
             }
         }
@@ -604,7 +653,6 @@
     </div>
 
     <script>
-        // Dynamically measure actual header height and apply it as padding-top
         function adjustContentPadding() {
             const header = document.getElementById('siteHeader');
             const content = document.getElementById('mainContent');
@@ -614,11 +662,7 @@
             }
         }
 
-        // Run on load and on resize (handles orientation changes too)
-        window.addEventListener('load', () => {
-            // Adjust content padding
-            adjustContentPadding();
-        });
+        window.addEventListener('load', adjustContentPadding);
         window.addEventListener('resize', adjustContentPadding);
 
         function selectCabana(number) {
