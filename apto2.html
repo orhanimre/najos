@@ -56,9 +56,60 @@
         }
 
         .header-left { flex-shrink: 0; }
-        .header-left a { display: block; text-decoration: none; transition: transform 0.3s ease; }
-        .header-left a:hover { transform: scale(1.05); }
         .header-right { flex-shrink: 0; }
+
+        /* ── LOGO + TOOLTIP ── */
+        .logo-link {
+            display: block;
+            text-decoration: none;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-link:hover { transform: scale(1.05); }
+
+        /* Home icon badge — bottom-right corner of logo */
+        .logo-home-badge {
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            width: 26px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25), 0 0 0 2px rgba(0,119,190,0.35);
+            pointer-events: none;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .logo-home-badge svg {
+            width: 13px;
+            height: 13px;
+            stroke: var(--ocean-dark);
+            fill: none;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .logo-link:hover .logo-home-badge {
+            transform: scale(1.18);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 0 2px var(--ocean-light);
+        }
+
+        /* Mobile size adjustment */
+        @media (max-width: 768px) {
+            .logo-home-badge {
+                width: 20px;
+                height: 20px;
+                bottom: -4px;
+                right: -4px;
+            }
+            .logo-home-badge svg { width: 10px; height: 10px; }
+        }
 
         .logo {
             max-width: 140px;
@@ -539,8 +590,11 @@
         <div class="header" id="siteHeader">
             <div class="header-content">
                 <div class="header-left">
-                    <a href="index.html">
+                    <a href="index.html" class="logo-link" aria-label="Ir al inicio">
                         <img src="https://i.imgur.com/L8KoquC.jpg" alt="Logo Apart Hotel Najos" class="logo">
+                        <span class="logo-home-badge">
+                            <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9.5z"/><polyline points="9 21 9 12 15 12 15 21"/></svg>
+                        </span>
                     </a>
                 </div>
                 <div class="header-right">
