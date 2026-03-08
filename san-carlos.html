@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>San Carlos - Apart Hotel Najos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sand: #F4E8D8;
+            --ocean: #0077BE;
+            --ocean-dark: #005A8D;
+            --ocean-light: #4DA8DA;
+            --sunset: #FF6B35;
+            --palm: #2D5016;
+            --white: #FFFFFF;
+            --cream: #FFF9F0;
+            --shadow: rgba(0, 77, 115, 0.15);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-light) 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--white);
+            min-height: 100vh;
+            box-shadow: 0 20px 60px var(--shadow);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
+            color: var(--white);
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            max-width: 120px;
+            width: 100%;
+            height: auto;
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 6vw, 52px);
+            font-weight: 900;
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+        }
+
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 24px;
+        }
+
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: var(--ocean);
+        }
+
+        .content {
+            padding: 60px 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(36px, 7vw, 48px);
+            color: var(--ocean-dark);
+            margin-bottom: 24px;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(18px, 4vw, 22px);
+            color: #5A5A5A;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        .attractions-section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 5vw, 36px);
+            color: var(--ocean-dark);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .attractions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 32px;
+        }
+
+        .attraction-card {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .attraction-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        .attraction-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .attraction-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: all 0.5s ease;
+        }
+
+        .attraction-card:hover .attraction-image img {
+            transform: scale(1.1);
+        }
+
+        .attraction-content {
+            padding: 24px;
+        }
+
+        .attraction-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--ocean-dark);
+            margin-bottom: 8px;
+        }
+
+        .attraction-description {
+            color: #6B7280;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .info-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 40px;
+            border-radius: 16px;
+            margin-top: 32px;
+        }
+
+        .info-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        .info-item h4 {
+            color: var(--ocean-dark);
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .info-item p {
+            color: #5A5A5A;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .contact-info {
+            background: var(--sand);
+            padding: 24px;
+            border-radius: 12px;
+            border-left: 4px solid var(--ocean);
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .contact-btn {
+            padding: 12px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .contact-btn.primary {
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
+            color: var(--white);
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 119, 190, 0.3);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 32px;
+            color: var(--ocean);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 2px solid var(--ocean);
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: var(--ocean);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            background: var(--ocean-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+
+        .footer p {
+            margin-bottom: 8px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header {
+                padding: 40px 20px;
+            }
+
+            .content {
+                padding: 40px 20px;
+            }
+
+            .attractions-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .attraction-image {
+                height: 180px;
+            }
+
+            .info-content {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .contact-buttons {
+                flex-direction: column;
+            gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <img src="https://i.imgur.com/L8KoquC.jpg" alt="Logo Apart Hotel Najos" class="logo">
+                <h1>San Carlos</h1>
+                <nav class="nav-menu">
+                    <a href="index.html" class="nav-link">Inicio</a>
+                    <a href="sobre-nosotros.html" class="nav-link">Sobre Nosotros</a>
+                    <a href="san-carlos.html" class="nav-link active">San Carlos</a>
+                </nav>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <h2>🗺️ El Corazón de Antioquia</h2>
+                <p class="hero-subtitle">
+                    Descubre la magia de San Carlos, donde cada río cuenta una historia 
+                    y cada amanecer promete una nueva aventura.
+                </p>
+            </div>
+
+            <!-- Attractions Section -->
+            <div class="attractions-section">
+                <h3 class="section-title">Atracciones Principales</h3>
+                <div class="attractions-grid">
+                    <div class="attraction-card">
+                        <div class="attraction-image">
+                            <img src="https://imgur.com/cascada-del-rio-claro.jpg" alt="Cascada del Río Claro">
+                        </div>
+                        <div class="attraction-content">
+                            <h4 class="attraction-title">Cascada del Río Claro</h4>
+                            <p class="attraction-description">
+                                La cascada más emblemática de la región, con sus 70 metros de altura 
+                                y aguas cristalinas que crean un paisaje de ensueño.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="attraction-card">
+                        <div class="attraction-image">
+                            <img src="https://imgur.com/rio-san-carlos.jpg" alt="Río San Carlos">
+                        </div>
+                        <div class="attraction-content">
+                            <h4 class="attraction-title">Río San Carlos</h4>
+                            <p class="attraction-description">
+                                Perfecto para nadar, relajarse y disfrutar de la naturaleza en su 
+                                estado más puro y prístino.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="attraction-card">
+                        <div class="attraction-image">
+                            <img src="https://imgur.com/mirador-natural.jpg" alt="Mirador Natural">
+                        </div>
+                        <div class="attraction-content">
+                            <h4 class="attraction-title">Mirador Natural</h4>
+                            <p class="attraction-description">
+                                Vistas panorámicas espectaculares del valle y las montañas 
+                                circundantes, un lugar perfecto para fotografías y contemplación.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="attraction-card">
+                        <div class="attraction-image">
+                            <img src="https://imgur.com/pozo-humedo.jpg" alt="Pozo Humedo">
+                        </div>
+                        <div class="attraction-content">
+                            <h4 class="attraction-title">Pozo Humedo</h4>
+                            <p class="attraction-description">
+                                Un pozo natural con aguas terapéuticas, ideal para relajarse 
+                                y conectar con la energía de la tierra.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Section -->
+            <div class="info-section">
+                <div class="info-content">
+                    <div class="info-item">
+                        <h4>📍 Cómo Llegar</h4>
+                        <p>
+                            Desde Bogotá: 4 horas en carro<br>
+                            Desde Medellín: 3 horas en carro<br>
+                            Vuelos cercanos al Aeropuerto José María Córdova
+                        </p>
+                    </div>
+                    <div class="info-item">
+                        <h4>🌤️ Mejor Época</h4>
+                        <p>
+                            Diciembre a Marzo: temporada seca<br>
+                            Abril a Noviembre: temporada de lluvias<br>
+                            Clima tropical cálido todo el año
+                        </p>
+                    </div>
+                </div>
+
+                <div class="contact-info">
+                    <h4>📞 ¿Necesitas Ayuda?</h4>
+                    <div class="contact-buttons">
+                        <a href="tel:+57XXXXXXXXXX" class="contact-btn primary">
+                            📞 Llamar Ahora
+                        </a>
+                        <a href="https://wa.me/57XXXXXXXXXX" class="contact-btn">
+                            💬 Escribir WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2026 Apart Hotel Najos · Todos los derechos reservados</p>
+            <p>Tu aventura comienza en San Carlos</p>
+            <a href="index.html" class="back-link">← Volver al Inicio</a>
+        </div>
+    </div>
+</body>
+</html>
