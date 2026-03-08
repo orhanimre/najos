@@ -355,17 +355,17 @@
         .select-btn:hover svg { transform: translateX(3px); }
         .select-btn:active { transform: translateY(0); box-shadow: none; }
 
-        /* Secondary — outlined, compact */
+        /* Secondary — orange fill */
         .info-btn {
-            background: transparent;
-            color: #5A8FAA;
-            border: 1.5px solid #C8DDE8;
+            background: var(--sunset);
+            color: var(--white);
+            border: none;
             padding: 13px 14px;
             border-radius: 10px;
             font-family: 'Poppins', sans-serif;
             cursor: pointer;
             font-weight: 500;
-            font-size: 13px;
+            font-size: 13.5px;
             flex: 1;
             display: flex;
             align-items: center;
@@ -387,9 +387,8 @@
         }
 
         .info-btn:hover {
-            border-color: var(--ocean);
-            color: var(--ocean-dark);
-            background: rgba(0, 119, 190, 0.04);
+            background: #E5561F;
+            color: var(--white);
         }
 
         .footer {
@@ -486,15 +485,6 @@
 
             .cabana-content { padding: 0 24px 32px; }
 
-            .select-btn {
-                font-size: 13px;
-                padding: 12px 14px;
-            }
-
-            .info-btn {
-                font-size: 12px;
-                padding: 12px 10px;
-            }
 
             .footer { padding: 32px 24px; }
             .decoration { font-size: 40px; }
