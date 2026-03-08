@@ -184,6 +184,33 @@
         .instagram { background: #e4405f; }
         .back-link { display: inline-block; margin-top: 20px; color: var(--ocean); text-decoration: none; padding: 12px 24px; border: 2px solid var(--ocean); border-radius: 12px; }
 
+        /* Navigation Menu */
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 24px;
+        }
+
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,255,255,0.1);
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .container {
@@ -236,7 +263,7 @@
             }
 
             .logo {
-                max-width: 50px;
+                max-width: 60px;
             }
 
             .nav-menu {
@@ -247,7 +274,7 @@
 
             .nav-link {
                 font-size: 11px;
-                padding: 3px 6px;
+                padding: 4px 8px;
             }
 
             .content {
