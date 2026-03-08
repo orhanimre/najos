@@ -77,7 +77,78 @@
             margin: 0 auto; 
         }
         .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
-        .gallery img { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; }
+        .gallery img { 
+            width: 100%; 
+            height: 200px; 
+            object-fit: cover; 
+            border-radius: 12px; 
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--white);
+            border: none;
+            font-size: 32px;
+            color: #6B7280;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            z-index: 2001;
+        }
+
+        .modal-close:hover {
+            background: #f1f5f9;
+            color: var(--ocean);
+            transform: scale(1.1);
+        }
         .section { background: #f8f9fa; padding: 40px; border-radius: 16px; margin-bottom: 40px; }
         .section h2 { color: var(--ocean-dark); margin-bottom: 20px; }
         .map-container { margin: 20px 0; }
@@ -170,12 +241,12 @@
         
         <div class="content">
             <div class="gallery">
-                <img src="https://imgur.com/dVlUrNm.jpg" alt="Najos-2">
-                <img src="https://imgur.com/image1.jpg" alt="Interior">
-                <img src="https://imgur.com/image2.jpg" alt="Cocina">
-                <img src="https://imgur.com/image3.jpg" alt="Baño">
-                <img src="https://imgur.com/image4.jpg" alt="Terraza">
-                <img src="https://imgur.com/image5.jpg" alt="Vista">
+                <img src="https://imgur.com/dVlUrNm.jpg" alt="Najos-2" onclick="openModal(this.src)">
+                <img src="https://imgur.com/image1.jpg" alt="Interior" onclick="openModal(this.src)">
+                <img src="https://imgur.com/image2.jpg" alt="Cocina" onclick="openModal(this.src)">
+                <img src="https://imgur.com/image3.jpg" alt="Baño" onclick="openModal(this.src)">
+                <img src="https://imgur.com/image4.jpg" alt="Terraza" onclick="openModal(this.src)">
+                <img src="https://imgur.com/image5.jpg" alt="Vista" onclick="openModal(this.src)">
             </div>
             
             <div class="section">
@@ -198,6 +269,44 @@
             
             <a href="index.html" class="back-link">← Volver</a>
         </div>
+
+        <!-- Photo Modal -->
+        <div id="photoModal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeModal()">×</button>
+                <img id="modalImage" src="" alt="Apartment photo">
+            </div>
+        </div>
     </div>
+
+    <script>
+        function openModal(imageSrc) {
+            const modal = document.getElementById('photoModal');
+            const modalImage = document.getElementById('modalImage');
+            modalImage.src = imageSrc;
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('photoModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Close modal on background click
+        document.getElementById('photoModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                closeModal();
+            }
+        });
+    </script>
 </body>
 </html>
