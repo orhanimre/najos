@@ -283,7 +283,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        <div class="header" id="siteHeader">
             <div class="header-content">
                 <div class="header-left">
                     <a href="index.html">
@@ -303,7 +303,7 @@
             </div>
         </div>
         
-        <div class="content">
+        <div class="content" id="mainContent">
             <div class="gallery">
                 <img src="https://imgur.com/dVlUrNm.jpg" alt="Najos-2" onclick="openModal(this.src)">
                 <img src="https://imgur.com/image1.jpg" alt="Interior" onclick="openModal(this.src)">
@@ -344,18 +344,29 @@
     </div>
 
     <script>
-        function openModal(imageSrc) {
+        // Dynamically measure actual header height and apply it as padding-top
+        function adjustContentPadding() {
+            const header = document.getElementById('siteHeader');
+            const content = document.getElementById('mainContent');
+            if (header && content) {
+                const headerHeight = header.getBoundingClientRect().height;
+                content.style.paddingTop = (headerHeight + 32) + 'px';
+            }
+        }
+
+        // Run on load and on resize (handles orientation changes too)
+        window.addEventListener('load', adjustContentPadding);
+        window.addEventListener('resize', adjustContentPadding);
+
+        function openModal(src) {
             const modal = document.getElementById('photoModal');
-            const modalImage = document.getElementById('modalImage');
-            modalImage.src = imageSrc;
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden';
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImg.src = src;
         }
 
         function closeModal() {
-            const modal = document.getElementById('photoModal');
-            modal.classList.remove('show');
-            document.body.style.overflow = 'auto';
+            document.getElementById('photoModal').style.display = 'none';
         }
 
         // Close modal on escape key

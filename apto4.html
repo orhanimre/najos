@@ -258,7 +258,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        <div class="header" id="siteHeader">
             <div class="header-content">
                 <div class="header-left">
                     <a href="index.html">
@@ -278,7 +278,7 @@
             </div>
         </div>
         
-        <div class="content">
+        <div class="content" id="mainContent">
             <div class="gallery">
                 <img src="https://imgur.com/QLnvbcu.jpg" alt="Najos-4" onclick="openModal(this.src)">
                 <img src="https://imgur.com/image11.jpg" alt="Interior" onclick="openModal(this.src)">
@@ -319,6 +319,20 @@
     </div>
 
     <script>
+        // Dynamically measure actual header height and apply it as padding-top
+        function adjustContentPadding() {
+            const header = document.getElementById('siteHeader');
+            const content = document.getElementById('mainContent');
+            if (header && content) {
+                const headerHeight = header.getBoundingClientRect().height;
+                content.style.paddingTop = (headerHeight + 32) + 'px';
+            }
+        }
+
+        // Run on load and on resize (handles orientation changes too)
+        window.addEventListener('load', adjustContentPadding);
+        window.addEventListener('resize', adjustContentPadding);
+
         function openModal(imageSrc) {
             const modal = document.getElementById('photoModal');
             const modalImage = document.getElementById('modalImage');
