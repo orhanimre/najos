@@ -45,7 +45,7 @@
         .header {
             background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
             color: var(--white);
-            padding: 20px 40px;
+            padding: 12px 40px;
             position: fixed;
             top: 0;
             left: 0;
@@ -60,30 +60,37 @@
             justify-content: space-between;
             max-width: 1200px;
             margin: 0 auto;
+            min-height: 60px;
         }
 
-        .header-left {
-            flex-shrink: 0;
-        }
-
+        .header-left { flex-shrink: 0; }
         .header-left a {
             display: block;
             text-decoration: none;
             transition: transform 0.3s ease;
         }
+        .header-left a:hover { transform: scale(1.05); }
+        .header-right { flex-shrink: 0; }
 
-        .header-left a:hover {
-            transform: scale(1.05);
-        }
-
-        .header-right {
-            flex-shrink: 0;
-        }
-
-        .header-center {
-            flex: 1;
+        .header-title {
             text-align: center;
-            padding: 0 20px;
+            padding: 6px 0 0;
+        }
+
+        .header-title h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(24px, 4vw, 32px);
+            font-weight: 900;
+            margin-bottom: 4px;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.2);
+        }
+
+        .header-subtitle {
+            font-size: clamp(12px, 2vw, 16px);
+            font-weight: 300;
+            opacity: 0.95;
+            letter-spacing: 0.5px;
         }
 
         .logo {
@@ -240,25 +247,27 @@
         .nav-menu {
             display: flex;
             justify-content: center;
-            gap: 16px;
+            gap: 32px;
+            margin-bottom: 24px;
         }
 
         .nav-link {
             color: var(--white);
             text-decoration: none;
             font-weight: 500;
-            font-size: 14px;
-            padding: 6px 12px;
+            font-size: 15px;
+            padding: 8px 16px;
             border-radius: 20px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255,255,255,0.2);
             transition: all 0.3s ease;
         }
 
         .nav-link:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.2);
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,255,255,0.1);
         }
 
         .nav-link.active {
@@ -272,30 +281,36 @@
             }
 
             .header {
-                padding: 10px 20px;
+                padding: 10px 16px;
             }
 
             .header-content {
-                align-items: center;
-                gap: 8px;
+                min-height: auto;
             }
 
-            .header-left {
-                flex-shrink: 0;
+            .logo { max-width: 70px; }
+
+            .nav-menu {
+                flex-direction: row;
+                gap: 6px;
+                margin-bottom: 0;
             }
 
-            .header-center {
-                flex: 1;
-                text-align: center;
-                padding: 0 10px;
+            .nav-link {
+                font-size: 11px;
+                padding: 4px 8px;
             }
 
-            .header-right {
-                flex-shrink: 0;
+            .header-title {
+                padding: 6px 0 4px;
             }
 
-            .logo {
-                max-width: 60px;
+            .header-title h1 {
+                font-size: clamp(18px, 5vw, 24px);
+            }
+
+            .header-subtitle {
+                font-size: 11px;
             }
 
             .header h1 {
@@ -344,16 +359,16 @@
                         <img src="https://i.imgur.com/L8KoquC.jpg" alt="Logo Apart Hotel Najos" class="logo">
                     </a>
                 </div>
-                <div class="header-center">
-                    <h1>Sobre Nosotros</h1>
-                    <p class="header-subtitle">Conoce nuestra historia y misión</p>
-                </div>
                 <div class="header-right">
                     <nav class="nav-menu">
                         <a href="sobre-nosotros.html" class="nav-link active">Sobre Nosotros</a>
                         <a href="san-carlos.html" class="nav-link">San Carlos</a>
                     </nav>
                 </div>
+            </div>
+            <div class="header-title">
+                <h1>Sobre Nosotros</h1>
+                <p class="header-subtitle">Conoce nuestra historia y misión</p>
             </div>
         </div>
 
