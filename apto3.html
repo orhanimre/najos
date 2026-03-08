@@ -15,167 +15,26 @@
         }
         body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-light) 100%); }
         .container { max-width: 1200px; margin: 0 auto; background: var(--white); min-height: 100vh; }
-        .header { 
-            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%); 
-            color: var(--white); 
-            padding: 12px 40px; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            right: 0; 
-            z-index: 1000; 
-            box-shadow: 0 4px 16px rgba(0, 119, 190, 0.3);
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-            min-height: 60px;
-        }
-
-        .header-left {
-            flex-shrink: 0;
-        }
-
-        .header-left a {
-            display: block;
-            text-decoration: none;
-            transition: transform 0.3s ease;
-        }
-
-        .header-left a:hover {
-            transform: scale(1.05);
-        }
-
-        .header-right {
-            flex-shrink: 0;
-        }
-
-        .header-center {
-            flex: 1;
-            text-align: center;
-            padding: 0 20px;
-        }
-
-        .logo {
-            max-width: 120px;
-            margin-bottom: 0;
-            display: block;
-            border-radius: 16px;
-            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
-        }
-
-        .header h1 { 
-            font-family: 'Playfair Display', serif; 
-            font-size: clamp(24px, 4vw, 32px);
-            font-weight: 900;
-            margin-bottom: 8px;
-            letter-spacing: -1px;
-            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .header-title {
-            text-align: center;
-            padding: 6px 0 0;
-        }
-
-        .header-title h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(24px, 4vw, 32px);
-            font-weight: 900;
-            margin-bottom: 4px;
-            letter-spacing: -1px;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.2);
-        }
-
-        .header-subtitle {
-            font-size: clamp(12px, 2vw, 16px);
-            font-weight: 300;
-            opacity: 0.95;
-            letter-spacing: 0.5px;
-        }
-
-        .content { 
-            padding: 170px 40px 60px 40px; 
-            max-width: 900px; 
-            margin: 0 auto; 
-        }
+        .header { background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%); color: var(--white); padding: 12px 40px; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; box-shadow: 0 4px 16px rgba(0, 119, 190, 0.3); }
+        .header-content { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; min-height: 60px; }
+        .header-left { flex-shrink: 0; }
+        .header-left a { display: block; text-decoration: none; transition: transform 0.3s ease; }
+        .header-left a:hover { transform: scale(1.05); }
+        .header-right { flex-shrink: 0; }
+        .logo { max-width: 120px; margin-bottom: 0; display: block; border-radius: 16px; filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15)); }
+        .header-title { text-align: center; padding: 6px 0 0; }
+        .header-title h1 { font-family: 'Playfair Display', serif; font-size: clamp(24px, 4vw, 32px); font-weight: 900; margin-bottom: 4px; letter-spacing: -1px; text-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+        .header-subtitle { font-size: clamp(12px, 2vw, 16px); font-weight: 300; opacity: 0.95; letter-spacing: 0.5px; }
+        .content { padding: 170px 40px 60px 40px; max-width: 900px; margin: 0 auto; }
         .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
-        .gallery img { 
-            width: 100%; 
-            height: 200px; 
-            object-fit: cover; 
-            border-radius: 12px; 
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .gallery img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 2000;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal.show {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90%;
-        }
-
-        .modal-content img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            border-radius: 12px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: var(--white);
-            border: none;
-            font-size: 32px;
-            color: #6B7280;
-            cursor: pointer;
-            padding: 0;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            z-index: 2001;
-        }
-
-        .modal-close:hover {
-            background: #f1f5f9;
-            color: var(--ocean);
-            transform: scale(1.1);
-        }
+        .gallery img { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; }
+        .gallery img:hover { transform: scale(1.05); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 2000; }
+        .modal.show { display: flex; align-items: center; justify-content: center; }
+        .modal-content { position: relative; max-width: 90%; max-height: 90%; }
+        .modal-content img { width: 100%; height: 100%; object-fit: contain; border-radius: 12px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); }
+        .modal-close { position: absolute; top: 20px; right: 20px; background: var(--white); border: none; font-size: 32px; color: #6B7280; cursor: pointer; padding: 0; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s ease; z-index: 2001; }
+        .modal-close:hover { background: #f1f5f9; color: var(--ocean); transform: scale(1.1); }
         .section { background: #f8f9fa; padding: 40px; border-radius: 16px; margin-bottom: 40px; }
         .section h2 { color: var(--ocean-dark); margin-bottom: 20px; font-size: 1.5rem; font-weight: 600; }
         .map-container { margin: 20px 0; }
@@ -184,8 +43,161 @@
         .contact a { padding: 14px 24px; border-radius: 8px; text-decoration: none; color: white; font-weight: 500; font-size: 0.95rem; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         .phone { background: #dc3545; }
         .whatsapp { background: #25d366; }
-        .instagram { background: #e4405f; }
-        .back-link { display: inline-block; margin-top: 20px; color: var(--ocean); text-decoration: none; padding: 12px 24px; border: 2px solid var(--ocean); border-radius: 12px; }
+        .footer { text-align: center; padding: 40px 32px; background: linear-gradient(180deg, transparent 0%, var(--sand) 50%); color: var(--ocean-dark); font-size: 14px; margin-top: 60px; border-top: 1px solid rgba(0, 77, 115, 0.08); }
+        .footer::before { content: '🌊'; display: block; font-size: 32px; margin-bottom: 16px; }
+        .nav-menu { display: flex; justify-content: center; gap: 32px; margin-bottom: 24px; }
+        .nav-link { color: var(--white); text-decoration: none; font-weight: 500; font-size: 15px; padding: 8px 16px; border-radius: 20px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s ease; }
+        .nav-link:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+        @media (max-width: 768px) {
+            .header { padding: 8px 20px; }
+            .logo { max-width: 70px; }
+            .nav-menu { flex-direction: row; gap: 6px; margin-bottom: 0; }
+            .nav-link { font-size: 11px; padding: 4px 8px; }
+            .content { padding: 190px 24px 40px 24px; }
+            .section { padding: 24px 20px; }
+        }
+        .contact-section {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 100%);
+            border: 1px solid #d0e8f8;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 32px;
+        }
+
+        .contact-section h2 {
+            color: var(--ocean-dark);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .contact-subtitle {
+            color: #6B7280;
+            font-size: 14px;
+            margin-bottom: 32px;
+            font-weight: 400;
+        }
+
+        .contact-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .contact-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 28px 20px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .contact-card:hover::before { opacity: 1; }
+        .contact-card:hover { transform: translateY(-3px); }
+        .contact-card:active { transform: translateY(0); }
+
+        /* WhatsApp card */
+        .card-whatsapp {
+            background: #25D366;
+            color: white;
+            box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3);
+        }
+        .card-whatsapp::before {
+            background: linear-gradient(135deg, #20bd5a 0%, #128c7e 100%);
+        }
+        .card-whatsapp:hover {
+            box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
+        }
+
+        /* Phone card */
+        .card-phone {
+            background: #dc3545;
+            color: white;
+            box-shadow: 0 4px 16px rgba(220, 53, 69, 0.3);
+        }
+        .card-phone::before {
+            background: linear-gradient(135deg, #c82333 0%, #a71d2a 100%);
+        }
+        .card-phone:hover {
+            box-shadow: 0 8px 24px rgba(220, 53, 69, 0.45);
+        }
+
+        .contact-card-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .contact-card-icon svg {
+            width: 26px;
+            height: 26px;
+            fill: white;
+        }
+
+        .contact-card-text {
+            text-align: center;
+        }
+
+        .contact-card-label {
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0.85;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .contact-card-value {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        /* ── BACK LINK ── */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--ocean);
+            text-decoration: none;
+            padding: 12px 24px;
+            border: 2px solid var(--ocean);
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            margin-top: 8px;
+        }
+        .back-link:hover {
+            background: var(--ocean);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* ── FOOTER ── */
         .footer {
             text-align: center;
             padding: 40px 32px;
@@ -202,213 +214,248 @@
             margin-bottom: 16px;
         }
 
-        /* Navigation Menu */
-        .nav-menu {
-            display: flex;
-            justify-content: center;
-            gap: 32px;
-            margin-bottom: 24px;
+        /* ── MODAL ── */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
         }
-
-        .nav-link {
-            color: var(--white);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 15px;
-            padding: 8px 16px;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.3s ease;
+        .modal.show { display: flex; align-items: center; justify-content: center; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-content { position: relative; max-width: 90%; max-height: 90%; }
+        .modal-content img { width: 100%; height: 100%; object-fit: contain; border-radius: 12px; }
+        .modal-close {
+            position: absolute;
+            top: -16px; right: -16px;
+            background: var(--white);
+            border: none;
+            font-size: 24px;
+            color: #6B7280;
+            cursor: pointer;
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            z-index: 2001;
         }
+        .modal-close:hover { background: #f1f5f9; transform: scale(1.1); }
 
-        .nav-link:hover {
-            background: rgba(255,255,255,0.2);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255,255,255,0.1);
-        }
-
-        /* Mobile Responsive */
+        /* ── MOBILE ── */
         @media (max-width: 768px) {
-            .container {
-                padding: 20px;
+            .header { padding: 8px 16px; }
+            .logo { max-width: 50px; }
+            .nav-link { font-size: 11px; padding: 4px 8px; }
+            .content { padding: 160px 20px 40px; }
+
+            .section { padding: 24px 20px; }
+            .contact-section { padding: 24px 20px; }
+
+            .contact-cards {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
             }
 
-            .header {
-                padding: 8px 20px;
+            .contact-card {
+                padding: 20px 12px;
+                gap: 10px;
             }
 
-            .header-content {
+            .contact-card-icon {
+                width: 44px;
+                height: 44px;
+            }
+
+            .contact-card-icon svg { width: 22px; height: 22px; }
+            .contact-card-value { font-size: 14px; }
+            .contact-card-label { font-size: 11px; }
+        }
+
+        @media (max-width: 420px) {
+            .contact-cards { grid-template-columns: 1fr; }
+            .contact-card { flex-direction: row; padding: 18px 20px; gap: 16px; }
+            .contact-card-text { text-align: left; }
+        }
+
+        /* Platform booking cards */
+        .platform-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .platform-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 28px 24px;
+            border-radius: 16px;
+            text-decoration: none;
+            background: transparent;
+            border: 2px solid #e5e7eb;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: none;
+        }
+
+        .platform-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            border-color: #c5d0dc;
+            background: rgba(0,0,0,0.02);
+        }
+
+        .platform-logo {
+            object-fit: contain;
+        }
+        .logo-booking {
+            width: 100%;
+            max-width: 280px;
+            height: 60px;
+        }
+        .logo-airbnb {
+            width: 160px;
+            height: 80px;
+        }
+
+        .platform-cta {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6B7280;
+            letter-spacing: 0.2px;
+            transition: color 0.2s ease;
+            text-align: center;
+            width: 100%;
+        }
+
+        .platform-card:hover .platform-cta {
+            color: var(--ocean-dark);
+        }
+
+        @media (max-width: 768px) {
+            .platform-cards {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .platform-card {
+                flex-direction: column;
+                padding: 24px 20px;
+                gap: 12px;
                 align-items: center;
-                gap: 8px;
             }
-
-            .header-left {
-                flex-shrink: 0;
+            .logo-booking {
+                width: 100%;
+                max-width: 260px;
+                height: 50px;
             }
-
-            .header-left a {
-                display: block;
-                text-decoration: none;
-                transition: transform 0.3s ease;
+            .logo-airbnb {
+                width: 140px;
+                height: 50px;
             }
-
-            .header-left a:hover {
-                transform: scale(1.05);
-            }
-
-            .header-right {
-                flex-shrink: 0;
-            }
-
-            .header-title {
-                font-family: 'Playfair Display', serif;
-                font-size: clamp(20px, 4vw, 28px);
-                font-weight: 900;
-                margin-bottom: 4px;
-                letter-spacing: -1px;
-                text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+            .platform-cta {
                 text-align: center;
-            }
-
-            .header-subtitle {
-                font-size: clamp(10px, 2vw, 14px);
-                font-weight: 300;
-                opacity: 0.95;
-                letter-spacing: 0.5px;
-                text-align: center;
-            }
-
-            .logo {
-                max-width: 70px;
-            }
-
-            .nav-menu {
-                flex-direction: row;
-                gap: 6px;
-                margin-bottom: 0;
-            }
-
-            .nav-link {
-                font-size: 11px;
-                padding: 4px 8px;
-            }
-
-            .content {
-                padding: 190px 24px 40px 24px;
+                font-size: 14px;
+                white-space: normal;
             }
         }
+
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header" id="siteHeader">
             <div class="header-content">
-                <div class="header-left">
-                    <a href="index.html">
-                        <img src="https://i.imgur.com/L8KoquC.jpg" alt="Logo Apart Hotel Najos" class="logo">
-                    </a>
-                </div>
-                <div class="header-right">
-                    <nav class="nav-menu">
-                        <a href="sobre-nosotros.html" class="nav-link">Sobre Nosotros</a>
-                        <a href="san-carlos.html" class="nav-link">San Carlos</a>
-                    </nav>
-                </div>
+                <div class="header-left"><a href="index.html"><img src="https://i.imgur.com/L8KoquC.jpg" alt="Logo Apart Hotel Najos" class="logo"></a></div>
+                <div class="header-right"><nav class="nav-menu"><a href="sobre-nosotros.html" class="nav-link">Sobre Nosotros</a><a href="san-carlos.html" class="nav-link">San Carlos</a></nav></div>
             </div>
-            <div class="header-title">
-                <h1>Najos-3</h1>
-                <p class="header-subtitle">Apartamento completo en San Carlos</p>
-            </div>
+            <div class="header-title"><h1>Najos-3</h1><p class="header-subtitle">Apartamento completo en San Carlos</p></div>
         </div>
-        
         <div class="content" id="mainContent">
             <div class="gallery">
-                <img src="https://imgur.com/21Ay90Q.jpg" alt="Najos-3" onclick="openModal(this.src)">
+                <img src="https://i.imgur.com/21Ay90Q.jpg" alt="Najos-3" onclick="openModal(this.src)">
                 <img src="https://imgur.com/image6.jpg" alt="Interior" onclick="openModal(this.src)">
                 <img src="https://imgur.com/image7.jpg" alt="Cocina" onclick="openModal(this.src)">
                 <img src="https://imgur.com/image8.jpg" alt="Baño" onclick="openModal(this.src)">
                 <img src="https://imgur.com/image9.jpg" alt="Terraza" onclick="openModal(this.src)">
                 <img src="https://imgur.com/image10.jpg" alt="Vista" onclick="openModal(this.src)">
             </div>
-            
             <div class="section">
                 <h2>📍 Ubicación</h2>
                 <p>Cl. 21 # 22-71, San Carlos, Antioquia</p>
-                <div class="map-container">
-                    <iframe src="https://www.google.com/maps?q=Cl.+21+%23+22-71,+San+Carlos,+Antioquia&output=embed" width="100%" height="300" style="border:0;" allowfullscreen></iframe>
-                </div>
+                <div class="map-container"><iframe src="https://www.google.com/maps?q=Cl.+21+%23+22-71,+San+Carlos,+Antioquia&output=embed" width="100%" height="300" style="border:0;" allowfullscreen></iframe></div>
                 <button class="map-btn" onclick="window.open('https://maps.app.goo.gl/q6hUsU9VoW3biBcBA', '_blank')">Abrir en Google Maps...</button>
             </div>
-            
+            <!-- Reservar en plataformas -->
             <div class="section">
-                <h2>📞 Comuníquese con Nosotros</h2>
-                <div class="contact">
-                    <a href="tel:+57XXXXXXXXXX" class="phone">📞 Llamar</a>
-                    <a href="https://wa.me/57XXXXXXXXXX" class="whatsapp">💬 WhatsApp</a>
+                <h2>🌐 Reserva en línea</h2>
+                <p class="contact-subtitle">¡Haz click para reservar tus vacaciones ahora mismo!</p>
+                <div class="platform-cards">
+                    <a href="https://www.booking.com/hotel/co/casa-selva-san-carlos.en-gb.html?aid=304142&label=gen173nr-10CAEoggI46AdIM1gEaDKIAQGYATO4AQfIAQzYAQPoAQH4AQGIAgGoAgG4ApXWts0GwAIB0gIkMzIxM2EzOWYtNGM0Yy00YzJjLTkzZDMtOGM3ZDJlZjkyMmZl2AIB4AIB&sid=464087cabb8d332f22d677a549a9f538&checkin=2026-04-21&checkout=2026-04-23&dest_id=14249750&dest_type=hotel&dist=0&group_adults=2&group_children=0&hapos=1&hpos=1&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&soh=1&sr_order=popularity&srepoch=1772989251&srpvid=5ac17799308602d8&type=total&ucfs=1&#no_availability_msg" class="platform-card" target="_blank" rel="noopener">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 60" class="platform-logo logo-booking" style="display:block;margin:0 auto;" aria-label="Booking.com">
+                          <text x="220" y="46" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="40" font-weight="900">
+                            <tspan fill="#003580">Booking</tspan><tspan fill="#0071C2">.com</tspan>
+                          </text>
+                        </svg>
+                        <span class="platform-cta">Reservar ahora →</span>
+                    </a>
+                    <a href="https://www.airbnb.com" class="platform-card" target="_blank" rel="noopener">
+                        <img src="https://i.imgur.com/5vFuTC4.jpg" alt="Airbnb" class="platform-logo logo-airbnb">
+                        <span class="platform-cta">Reservar ahora →</span>
+                    </a>
                 </div>
             </div>
-            
-            <a href="index.html" class="back-link">← Volver</a>
-        </div>
 
-        <div class="footer">
-            <p>© 2026 Apart Hotel Najos · Todos los derechos reservados</p>
-            <p style="margin-top: 8px; font-size: 13px; opacity: 0.7;">Tu refugio en el corazón de San Carlos</p>
-        </div>
+            <!-- Comuníquese con Nosotros -->
+            <div class="contact-section">
+                <h2>📞 Comuníquese con Nosotros</h2>
+                <p class="contact-subtitle">Estamos disponibles para ayudarte a planear tu estadía perfecta</p>
 
-        <!-- Photo Modal -->
-        <div id="photoModal" class="modal">
-            <div class="modal-content">
-                <button class="modal-close" onclick="closeModal()">×</button>
-                <img id="modalImage" src="" alt="Apartment photo">
+                <div class="contact-cards">
+                    <!-- Phone -->
+                    <a href="tel:+57XXXXXXXXXX" class="contact-card card-phone">
+                        <div class="contact-card-icon">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                            </svg>
+                        </div>
+                        <div class="contact-card-text">
+                            <div class="contact-card-label">Teléfono</div>
+                            <div class="contact-card-value">Llamar ahora</div>
+                        </div>
+                    </a>
+
+                    <!-- WhatsApp -->
+                    <a href="https://wa.me/57XXXXXXXXXX" class="contact-card card-whatsapp" target="_blank" rel="noopener">
+                        <div class="contact-card-icon">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                            </svg>
+                        </div>
+                        <div class="contact-card-text">
+                            <div class="contact-card-label">WhatsApp</div>
+                            <div class="contact-card-value">Escribir mensaje</div>
+                        </div>
+                    </a>
+                </div>
             </div>
+
         </div>
+        </div>
+        <div class="footer"><p>© 2026 Apart Hotel Najos · Todos los derechos reservados</p><p style="margin-top: 8px; font-size: 13px; opacity: 0.7;">Tu refugio en el corazón de San Carlos</p></div>
+        <div id="photoModal" class="modal"><div class="modal-content"><button class="modal-close" onclick="closeModal()">×</button><img id="modalImage" src="" alt="Apartment photo"></div></div>
     </div>
-
     <script>
-        // Dynamically measure actual header height and apply it as padding-top
-        function adjustContentPadding() {
-            const header = document.getElementById('siteHeader');
-            const content = document.getElementById('mainContent');
-            if (header && content) {
-                const headerHeight = header.getBoundingClientRect().height;
-                content.style.paddingTop = (headerHeight + 32) + 'px';
-            }
-        }
-
-        // Run on load and on resize (handles orientation changes too)
+        function adjustContentPadding() { const header = document.getElementById('siteHeader'); const content = document.getElementById('mainContent'); if (header && content) { const headerHeight = header.getBoundingClientRect().height; content.style.paddingTop = (headerHeight + 32) + 'px'; } }
         window.addEventListener('load', adjustContentPadding);
         window.addEventListener('resize', adjustContentPadding);
-
-        function openModal(imageSrc) {
-            const modal = document.getElementById('photoModal');
-            const modalImage = document.getElementById('modalImage');
-            modalImage.src = imageSrc;
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('photoModal');
-            modal.classList.remove('show');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Close modal on escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
-
-        // Close modal on background click
-        document.getElementById('photoModal').addEventListener('click', (e) => {
-            if (e.target === e.currentTarget) {
-                closeModal();
-            }
-        });
+        function openModal(imageSrc) { const modal = document.getElementById('photoModal'); const modalImage = document.getElementById('modalImage'); modalImage.src = imageSrc; modal.classList.add('show'); document.body.style.overflow = 'hidden'; }
+        function closeModal() { const modal = document.getElementById('photoModal'); modal.classList.remove('show'); document.body.style.overflow = 'auto'; }
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+        document.getElementById('photoModal').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeModal(); });
     </script>
 </body>
 </html>
