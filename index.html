@@ -163,6 +163,7 @@
             margin-bottom: 8px;
             letter-spacing: -1px;
             text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+            text-align: center;
         }
 
         .header-subtitle {
@@ -170,6 +171,7 @@
             font-weight: 300;
             opacity: 0.95;
             letter-spacing: 0.5px;
+            text-align: center;
         }
 
         /* Navigation Menu */
@@ -849,7 +851,7 @@
             }
 
             .header {
-                padding: 10px 20px;
+                padding: 8px 20px;
             }
 
             .header-content {
@@ -861,28 +863,49 @@
                 flex-shrink: 0;
             }
 
-            .header-center {
-                flex: 1;
-                text-align: center;
-                padding: 0 10px;
+            .header-left a {
+                display: block;
+                text-decoration: none;
+                transition: transform 0.3s ease;
+            }
+
+            .header-left a:hover {
+                transform: scale(1.05);
             }
 
             .header-right {
                 flex-shrink: 0;
             }
 
+            .header-title {
+                font-family: 'Playfair Display', serif;
+                font-size: clamp(20px, 4vw, 28px);
+                font-weight: 900;
+                margin-bottom: 4px;
+                letter-spacing: -1px;
+                text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+                text-align: center;
+            }
+
+            .header-subtitle {
+                font-size: clamp(10px, 2vw, 14px);
+                font-weight: 300;
+                opacity: 0.95;
+                letter-spacing: 0.5px;
+                text-align: center;
+            }
+
             .logo {
-                max-width: 60px;
+                max-width: 50px;
             }
 
             .header h1 {
-                font-size: 16px;
+                font-size: 18px;
                 margin-bottom: 2px;
             }
 
             .header-subtitle {
                 font-size: 10px;
-                margin-bottom: 4px;
             }
 
             .nav-menu {
@@ -897,7 +920,7 @@
             }
 
             .content {
-                padding: 160px 24px 40px 24px;
+                padding: 120px 24px 40px 24px;
             }
 
             .intro-section {
