@@ -16,7 +16,7 @@
         body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-light) 100%); }
         .container { max-width: 1200px; margin: 0 auto; background: var(--white); min-height: 100vh; }
         .header { 
-            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); 
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%); 
             color: var(--white); 
             padding: 20px 40px; 
             position: fixed; 
@@ -24,7 +24,7 @@
             left: 0; 
             right: 0; 
             z-index: 1000; 
-            box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
+            box-shadow: 0 4px 16px rgba(0, 119, 190, 0.3);
         }
 
         .header-content {
@@ -37,6 +37,16 @@
 
         .header-left {
             flex-shrink: 0;
+        }
+
+        .header-left a {
+            display: block;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .header-left a:hover {
+            transform: scale(1.05);
         }
 
         .header-right {
@@ -225,7 +235,9 @@
         <div class="header">
             <div class="header-content">
                 <div class="header-left">
-                    <img src="https://i.imgur.com/L8KoquC.jpg" alt="Logo" class="logo">
+                    <a href="index.html">
+                        <img src="https://i.imgur.com/L8KoquC.jpg" alt="Logo" class="logo">
+                    </a>
                 </div>
                 <div class="header-center">
                     <h1>Najos-2</h1>
