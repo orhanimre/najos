@@ -97,12 +97,14 @@
 
         /* Header with decorative elements */
         .header {
-            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
             color: var(--white);
-            padding: 60px 40px;
+            padding: 20px 40px;
             text-align: center;
-            position: relative;
-            overflow: hidden;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
         }
 
         .header::before {
@@ -132,18 +134,27 @@
             50% { transform: rotate(-12deg); }
         }
 
-        .logo-container {
-            position: relative;
-            z-index: 1;
-            margin-bottom: 24px;
+        .header-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 40px;
+            max-width: 100%;
+        }
+
+        .header-left {
+            flex-shrink: 0;
+        }
+
+        .header-center {
+            flex: 1;
+            text-align: center;
         }
 
         .logo {
-            max-width: 150px;
+            max-width: 120px;
             width: 100%;
             height: auto;
             display: block;
-            margin: 0 auto;
             filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
             border-radius: 16px;
             animation: float 3s ease-in-out infinite;
@@ -831,11 +842,26 @@
             }
 
             .header {
-                padding: 40px 24px;
+                padding: 15px 24px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: center;
+                gap: 24px;
+                text-align: center;
+            }
+
+            .header-left {
+                align-self: center;
+            }
+
+            .header-center {
+                text-align: center;
             }
 
             .logo {
-                max-width: 120px;
+                max-width: 100px;
             }
 
             .nav-menu {
@@ -973,15 +999,19 @@
     
     <div class="container">
         <div class="header">
-            <div class="logo-container">
-                <img src="https://i.imgur.com/L8KoquC.jpg" alt="Logo Apart Hotel Najos" class="logo">
+            <div class="header-content">
+                <div class="header-left">
+                    <img src="https://i.imgur.com/L8KoquC.jpg" alt="Logo Apart Hotel Najos" class="logo">
+                </div>
+                <div class="header-center">
+                    <nav class="nav-menu">
+                        <a href="sobre-nosotros.html" class="nav-link">Sobre Nosotros</a>
+                        <a href="san-carlos.html" class="nav-link">San Carlos</a>
+                    </nav>
+                    <h1>Apart Hotel Najos</h1>
+                    <p class="header-subtitle">Tu escape en el corazón de San Carlos</p>
+                </div>
             </div>
-            <nav class="nav-menu">
-                <a href="sobre-nosotros.html" class="nav-link">Sobre Nosotros</a>
-                <a href="san-carlos.html" class="nav-link">San Carlos</a>
-            </nav>
-            <h1>Apart Hotel Najos</h1>
-            <p class="header-subtitle">Tu escape en el corazón de San Carlos</p>
         </div>
 
         <div class="content">
