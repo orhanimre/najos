@@ -154,6 +154,37 @@
             50% { transform: translateY(-8px); }
         }
 
+        /* Navigation Menu */
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 24px;
+        }
+
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link:active {
+            transform: translateY(0px);
+        }
+
         .header h1 {
             font-family: 'Playfair Display', serif;
             font-size: clamp(32px, 6vw, 52px);
@@ -285,6 +316,394 @@
 
         .cabana-card:hover .cabana-image {
             transform: scale(1.08);
+        }
+
+        .cabana-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .select-btn {
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
+            color: var(--white);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .info-btn {
+            background: var(--white);
+            color: var(--ocean);
+            border: 2px solid var(--ocean);
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .select-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 119, 190, 0.3);
+        }
+
+        .info-btn:hover {
+            background: var(--ocean);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 119, 190, 0.3);
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 80px 40px;
+            background: var(--white);
+            margin-bottom: 0;
+            scroll-margin-top: 80px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 5vw, 36px);
+            color: var(--ocean-dark);
+            margin: 0;
+        }
+
+        .section-icon {
+            font-size: 36px;
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-light) 100%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-text {
+            font-size: clamp(16px, 3vw, 18px);
+            line-height: 1.7;
+            color: #5A5A5A;
+            margin-bottom: 40px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            margin-top: 40px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 32px 24px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        .feature-item h4 {
+            color: var(--ocean-dark);
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .feature-item p {
+            color: #6B7280;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .attractions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+            margin-top: 40px;
+        }
+
+        .attraction-item {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .attraction-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .attraction-image {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .attraction-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .attraction-item h4 {
+            padding: 20px 20px 8px 20px;
+            margin: 0;
+            color: var(--ocean-dark);
+            font-size: 18px;
+        }
+
+        .attraction-item p {
+            padding: 0 20px 20px 20px;
+            margin: 0;
+            color: #6B7280;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 20px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 24px 0 24px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: var(--ocean-dark);
+            font-size: 24px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #6B7280;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: #f1f5f9;
+            color: var(--white);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .apto-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .apto-gallery img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .apto-gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .apto-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .detail-item h4 {
+            color: var(--ocean-dark);
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+
+        .detail-item ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .detail-item li {
+            padding: 8px 0;
+            color: #5A5A5A;
+            font-size: 14px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .detail-item li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--ocean);
+            font-weight: bold;
+        }
+
+        .contact-section {
+            margin-top: 24px;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .contact-btn {
+            padding: 12px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .phone-btn {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: var(--white);
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            color: var(--white);
+        }
+
+        .instagram-btn {
+            background: linear-gradient(135deg, #e4405f 0%, #c13584 100%);
+            color: var(--white);
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Image Lightbox */
+        .image-lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .image-lightbox .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .image-lightbox img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-lightbox .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--white);
+            border: none;
+            font-size: 32px;
+            color: #6B7280;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            z-index: 2001;
+        }
+
+        .image-lightbox .lightbox-close:hover {
+            background: #f1f5f9;
+            color: var(--white);
+            transform: scale(1.1);
         }
 
         .cabana-content {
@@ -419,6 +838,17 @@
                 max-width: 120px;
             }
 
+            .nav-menu {
+                flex-direction: column;
+                gap: 12px;
+                margin-bottom: 16px;
+            }
+
+            .nav-link {
+                font-size: 14px;
+                padding: 6px 12px;
+            }
+
             .content {
                 padding: 40px 24px;
             }
@@ -440,9 +870,67 @@
                 padding: 0 24px 32px;
             }
 
-            .select-btn {
-                padding: 12px 28px;
-                font-size: 15px;
+            .select-btn, .info-btn {
+                font-size: 13px;
+                padding: 10px 16px;
+            }
+
+            .cabana-buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .content-section {
+                padding: 60px 24px;
+            }
+
+            .section-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+                margin-bottom: 24px;
+            }
+
+            .section-header h2 {
+                font-size: 24px;
+            }
+
+            .section-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 28px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .feature-item {
+                padding: 24px 16px;
+            }
+
+            .attractions-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .attraction-image {
+                height: 150px;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 20px;
+            }
+
+            .apto-details {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .contact-buttons {
+                flex-direction: column;
             }
 
             .footer {
@@ -450,7 +938,7 @@
             }
 
             .decoration {
-                font-size: 60px;
+                font-size: 40px;
             }
         }
 
@@ -488,6 +976,10 @@
             <div class="logo-container">
                 <img src="https://i.imgur.com/L8KoquC.jpg" alt="Logo Apart Hotel Najos" class="logo">
             </div>
+            <nav class="nav-menu">
+                <a href="#sobre-nosotros" class="nav-link">Sobre Nosotros</a>
+                <a href="#san-carlos" class="nav-link">San Carlos</a>
+            </nav>
             <h1>Apart Hotel Najos</h1>
             <p class="header-subtitle">Tu escape en el corazón de San Carlos</p>
         </div>
@@ -506,7 +998,10 @@
                     <div class="cabana-content">
                         <h3>Najos-2</h3>
                         <p>Apto en el corazón de San Carlos, paraíso de ríos y cascadas</p>
-                        <button class="select-btn">Registrarme Aquí</button>
+                        <div class="cabana-buttons">
+                            <button class="select-btn" onclick="selectCabana(1)">Registrarme Aquí</button>
+                            <button class="info-btn" onclick="showInfo(1)">Más Info</button>
+                        </div>
                     </div>
                 </div>
 
@@ -517,7 +1012,10 @@
                     <div class="cabana-content">
                         <h3>Najos-3</h3>
                         <p>Apto en el corazón de San Carlos, paraíso de ríos y cascadas</p>
-                        <button class="select-btn">Registrarme Aquí</button>
+                        <div class="cabana-buttons">
+                            <button class="select-btn" onclick="selectCabana(2)">Registrarme Aquí</button>
+                            <button class="info-btn" onclick="showInfo(2)">Más Info</button>
+                        </div>
                     </div>
                 </div>
 
@@ -528,7 +1026,121 @@
                     <div class="cabana-content">
                         <h3>Najos-4</h3>
                         <p>Apto en el corazón de San Carlos, paraíso de ríos y cascadas</p>
-                        <button class="select-btn">Registrarme Aquí</button>
+                        <div class="cabana-buttons">
+                            <button class="select-btn" onclick="selectCabana(3)">Registrarme Aquí</button>
+                            <button class="info-btn" onclick="showInfo(3)">Más Info</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sobre Nosotros Section -->
+        <div id="sobre-nosotros" class="content-section">
+            <div class="section-header">
+                <h2>Sobre Nosotros</h2>
+                <div class="section-icon">🏡</div>
+            </div>
+            <div class="section-content">
+                <p class="section-text">
+                    En Apart Hotel Najos, somos más que un simple alojamiento. Somos tu puerta de entrada al paraíso de San Carlos, 
+                    donde cada río, cada cascada y cada amanecer se convierten en recuerdos inolvidables. 
+                    Nuestra misión es ofrecerte una experiencia auténtica, cómoda y llena de naturaleza.
+                </p>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">🌊</div>
+                        <h4>Ríos y Cascadas</h4>
+                        <p>Acceso directo a los mejores charcos</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🏠</div>
+                        <h4>Aptos Completos</h4>
+                        <p>Todo lo que necesitas para tu estadía</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🌅</div>
+                        <h4>Naturaleza Puras</h4>
+                        <p>Despierta con el sonido del agua</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- San Carlos Section -->
+        <div id="san-carlos" class="content-section">
+            <div class="section-header">
+                <h2>San Carlos</h2>
+                <div class="section-icon">🗺️</div>
+            </div>
+            <div class="section-content">
+                <p class="section-text">
+                    San Carlos, Antioquia es un tesoro escondido en el corazón de Colombia. Conocido por sus 
+                    impresionantes cascadas, cristalinos ríos y paisajes que parecen sacados de un sueño, 
+                    este pueblo es el destino perfecto para quienes buscan paz, aventura y conexión con la naturaleza.
+                </p>
+                <div class="attractions-grid">
+                    <div class="attraction-item">
+                        <div class="attraction-image">
+                            <img src="https://imgur.com/example1.jpg" alt="Cascada">
+                        </div>
+                        <h4>Cascada del Río Claro</h4>
+                        <p>La cascada más emblemática de la región</p>
+                    </div>
+                    <div class="attraction-item">
+                        <div class="attraction-image">
+                            <img src="https://imgur.com/example2.jpg" alt="Río">
+                        </div>
+                        <h4>Río San Carlos</h4>
+                        <p>Perfecto para nadar y relajarse</p>
+                    </div>
+                    <div class="attraction-item">
+                        <div class="attraction-image">
+                            <img src="https://imgur.com/example3.jpg" alt="Mirador">
+                        </div>
+                        <h4>Mirador Natural</h4>
+                        <p>Vistas panorámicas espectaculares</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Apartment Detail Modals -->
+        <div id="aptoModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">Detalles del Apto</h3>
+                    <button class="modal-close" onclick="closeModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="apto-gallery" id="aptoGallery">
+                        <!-- Gallery images will be inserted here -->
+                    </div>
+                    <div class="apto-details">
+                        <div class="detail-item">
+                            <h4>🛏️ Características</h4>
+                            <ul id="aptoFeatures">
+                                <li>Apartamento completo</li>
+                                <li>Cocina equipada</li>
+                                <li>WiFi gratuito</li>
+                                <li>TV por cable</li>
+                                <li>Baño privado</li>
+                            </ul>
+                        </div>
+                        <div class="contact-section">
+                            <h4>📞 Contáctanos</h4>
+                            <div class="contact-buttons">
+                                <a href="tel:+57XXXXXXXXXX" class="contact-btn phone-btn">
+                                    📞 Llamar
+                                </a>
+                                <a href="https://wa.me/57XXXXXXXXXX" class="contact-btn whatsapp-btn">
+                                    💬 WhatsApp
+                                </a>
+                                <a href="https://instagram.com/tu-instagram" class="contact-btn instagram-btn">
+                                    📷 Instagram
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -551,6 +1163,117 @@
                 window.location.href = `registro-apto${aptoNumber}.html`;
             }, 200);
         }
+
+        function showInfo(aptoNumber) {
+            const aptoData = {
+                1: {
+                    title: 'Najos-2',
+                    images: [
+                        'https://imgur.com/dVlUrNm.jpg',
+                        'https://imgur.com/image2.jpg',
+                        'https://imgur.com/image3.jpg'
+                    ],
+                    features: [
+                        'Habitación principal con cama doble',
+                        'Sala estar cómoda',
+                        'Cocina equipada',
+                        'Baño privado con agua caliente',
+                        'Terraza con vista al río',
+                        'WiFi de alta velocidad',
+                        'TV por cable'
+                    ]
+                },
+                2: {
+                    title: 'Najos-3',
+                    images: [
+                        'https://imgur.com/21Ay90Q.jpg',
+                        'https://imgur.com/image4.jpg',
+                        'https://imgur.com/image5.jpg'
+                    ],
+                    features: [
+                        'Dos habitaciones con camas individuales',
+                        'Sala amplia',
+                        'Cocina completa',
+                        'Dos baños privados',
+                        'Balcón grande',
+                        'WiFi gratuito',
+                        'TV Smart',
+                        'Mini nevera'
+                    ]
+                },
+                3: {
+                    title: 'Najos-4',
+                    images: [
+                        'https://imgur.com/QLnvbcu.jpg',
+                        'https://imgur.com/image6.jpg',
+                        'https://imgur.com/image7.jpg'
+                    ],
+                    features: [
+                        'Suite principal con cama king',
+                        'Habitación secundaria',
+                        'Cocina de lujo',
+                        'Baño jacuzzi',
+                        'Terraza privada',
+                        'WiFi premium',
+                        'Sistema de sonido',
+                        'Mini bar'
+                    ]
+                }
+            };
+
+            const apto = aptoData[aptoNumber];
+            if (!apto) return;
+
+            // Update modal content
+            document.getElementById('modalTitle').textContent = `Detalles de ${apto.title}`;
+            
+            // Add gallery images
+            const gallery = document.getElementById('aptoGallery');
+            gallery.innerHTML = apto.images.map(img => 
+                `<img src="${img}" alt="${apto.title}" onclick="openImageLightbox('${img}')">`
+            ).join('');
+
+            // Add features list
+            const featuresList = document.getElementById('aptoFeatures');
+            featuresList.innerHTML = apto.features.map(feature => 
+                `<li>${feature}</li>`
+            ).join('');
+
+            // Show modal
+            document.getElementById('aptoModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('aptoModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function openImageLightbox(imageSrc) {
+            const lightbox = document.createElement('div');
+            lightbox.className = 'image-lightbox';
+            lightbox.innerHTML = `
+                <div class="lightbox-content">
+                    <button class="lightbox-close" onclick="this.parentElement.remove()">×</button>
+                    <img src="${imageSrc}" alt="Apartment image">
+                </div>
+            `;
+            document.body.appendChild(lightbox);
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Close modal on background click
+        document.getElementById('aptoModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                closeModal();
+            }
+        });
 
         // Add entrance animation on load
         window.addEventListener('load', () => {
