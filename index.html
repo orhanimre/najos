@@ -308,83 +308,88 @@
 
         .cabana-buttons {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: 10px;
-            margin-top: 24px;
+            margin-top: 20px;
         }
 
-        /* Primary CTA — full width, bold */
+        /* Primary CTA */
         .select-btn {
-            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
+            background: var(--ocean-dark);
             color: var(--white);
             border: none;
-            padding: 15px 24px;
-            border-radius: 12px;
+            padding: 13px 18px;
+            border-radius: 10px;
             font-family: 'Poppins', sans-serif;
-            font-size: 15px;
+            font-size: 13.5px;
             font-weight: 600;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.2px;
             cursor: pointer;
-            width: 100%;
+            flex: 2;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 14px rgba(0, 90, 141, 0.35);
-            position: relative;
-            overflow: hidden;
+            gap: 7px;
+            transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0, 90, 141, 0.28);
         }
 
-        .select-btn::after {
-            content: '→';
-            font-size: 16px;
-            transition: transform 0.25s ease;
+        .select-btn svg {
+            width: 15px;
+            height: 15px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+            transition: transform 0.2s ease;
         }
 
         .select-btn:hover {
-            background: linear-gradient(135deg, #0088D6 0%, #006AA8 100%);
-            box-shadow: 0 6px 20px rgba(0, 90, 141, 0.45);
-            transform: translateY(-2px);
+            background: #004E7C;
+            box-shadow: 0 5px 16px rgba(0, 90, 141, 0.38);
+            transform: translateY(-1px);
         }
 
-        .select-btn:hover::after {
-            transform: translateX(4px);
-        }
+        .select-btn:hover svg { transform: translateX(3px); }
+        .select-btn:active { transform: translateY(0); box-shadow: none; }
 
-        .select-btn:active { transform: translateY(0); box-shadow: 0 2px 8px rgba(0, 90, 141, 0.3); }
-
-        /* Secondary — ghost/subtle, same width */
+        /* Secondary — outlined, compact */
         .info-btn {
             background: transparent;
-            color: var(--ocean-dark);
-            border: 1.5px solid rgba(0, 90, 141, 0.25);
-            padding: 12px 24px;
-            border-radius: 12px;
+            color: #5A8FAA;
+            border: 1.5px solid #C8DDE8;
+            padding: 13px 14px;
+            border-radius: 10px;
             font-family: 'Poppins', sans-serif;
             cursor: pointer;
             font-weight: 500;
-            font-size: 14px;
-            letter-spacing: 0.2px;
-            width: 100%;
+            font-size: 13px;
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            transition: all 0.25s ease;
-            color: #4A7FA5;
+            gap: 5px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
         }
 
-        .info-btn::before {
-            content: '↗';
-            font-size: 13px;
-            opacity: 0.7;
+        .info-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
         }
 
         .info-btn:hover {
             border-color: var(--ocean);
             color: var(--ocean-dark);
-            background: rgba(0, 119, 190, 0.05);
+            background: rgba(0, 119, 190, 0.04);
         }
 
         .footer {
@@ -482,13 +487,13 @@
             .cabana-content { padding: 0 24px 32px; }
 
             .select-btn {
-                font-size: 14px;
-                padding: 13px 20px;
+                font-size: 13px;
+                padding: 12px 14px;
             }
 
             .info-btn {
-                font-size: 13px;
-                padding: 11px 20px;
+                font-size: 12px;
+                padding: 12px 10px;
             }
 
             .footer { padding: 32px 24px; }
@@ -548,8 +553,14 @@
                         <h3>Najos-2</h3>
                         <p>Apto en el corazón de San Carlos, paraíso de ríos y cascadas</p>
                         <div class="cabana-buttons">
-                            <button class="info-btn" onclick="showInfo(1)">Más Info</button>
-                            <button class="select-btn" onclick="selectCabana(1)">Registrarme Aquí</button>
+                            <button class="info-btn" onclick="showInfo(1)">
+                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                Ver detalles
+                            </button>
+                            <button class="select-btn" onclick="selectCabana(1)">
+                                Reservar
+                                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -562,8 +573,14 @@
                         <h3>Najos-3</h3>
                         <p>Apto en el corazón de San Carlos, paraíso de ríos y cascadas</p>
                         <div class="cabana-buttons">
-                            <button class="info-btn" onclick="showInfo(2)">Más Info</button>
-                            <button class="select-btn" onclick="selectCabana(2)">Registrarme Aquí</button>
+                            <button class="info-btn" onclick="showInfo(2)">
+                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                Ver detalles
+                            </button>
+                            <button class="select-btn" onclick="selectCabana(2)">
+                                Reservar
+                                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -576,8 +593,14 @@
                         <h3>Najos-4</h3>
                         <p>Apto en el corazón de San Carlos, paraíso de ríos y cascadas</p>
                         <div class="cabana-buttons">
-                            <button class="info-btn" onclick="showInfo(3)">Más Info</button>
-                            <button class="select-btn" onclick="selectCabana(3)">Registrarme Aquí</button>
+                            <button class="info-btn" onclick="showInfo(3)">
+                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                Ver detalles
+                            </button>
+                            <button class="select-btn" onclick="selectCabana(3)">
+                                Reservar
+                                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            </button>
                         </div>
                     </div>
                 </div>
