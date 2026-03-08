@@ -207,7 +207,7 @@
         }
 
         .content {
-            padding: 120px 40px 60px 40px;
+            padding: 140px 40px 60px 40px;
             position: relative;
         }
 
@@ -836,52 +836,51 @@
             }
 
             .header-content {
-                flex-direction: column;
                 align-items: center;
                 gap: 8px;
             }
 
             .header-left {
-                align-self: center;
+                flex-shrink: 0;
             }
 
             .header-center {
+                flex: 1;
                 text-align: center;
-                padding: 0;
+                padding: 0 10px;
             }
 
             .header-right {
-                align-self: center;
-                width: 100%;
+                flex-shrink: 0;
             }
 
             .logo {
-                max-width: 80px;
+                max-width: 60px;
             }
 
             .header h1 {
-                font-size: 20px;
-                margin-bottom: 4px;
+                font-size: 16px;
+                margin-bottom: 2px;
             }
 
             .header-subtitle {
-                font-size: 12px;
-                margin-bottom: 8px;
+                font-size: 10px;
+                margin-bottom: 4px;
             }
 
             .nav-menu {
                 flex-direction: row;
-                gap: 8px;
+                gap: 6px;
                 margin-bottom: 0;
             }
 
             .nav-link {
-                font-size: 12px;
-                padding: 4px 8px;
+                font-size: 11px;
+                padding: 3px 6px;
             }
 
             .content {
-                padding: 40px 24px;
+                padding: 160px 24px 40px 24px;
             }
 
             .intro-section {
@@ -1038,8 +1037,8 @@
                         <h3>Najos-2</h3>
                         <p>Apto en el corazón de San Carlos, paraíso de ríos y cascadas</p>
                         <div class="cabana-buttons">
-                            <button class="select-btn" onclick="selectCabana(1)">Registrarme Aquí</button>
                             <button class="info-btn" onclick="showInfo(1)">Más Info</button>
+                            <button class="select-btn" onclick="selectCabana(1)">Registrarme Aquí</button>
                         </div>
                     </div>
                 </div>
@@ -1052,8 +1051,8 @@
                         <h3>Najos-3</h3>
                         <p>Apto en el corazón de San Carlos, paraíso de ríos y cascadas</p>
                         <div class="cabana-buttons">
-                            <button class="select-btn" onclick="selectCabana(2)">Registrarme Aquí</button>
                             <button class="info-btn" onclick="showInfo(2)">Más Info</button>
+                            <button class="select-btn" onclick="selectCabana(2)">Registrarme Aquí</button>
                         </div>
                     </div>
                 </div>
@@ -1066,8 +1065,8 @@
                         <h3>Najos-4</h3>
                         <p>Apto en el corazón de San Carlos, paraíso de ríos y cascadas</p>
                         <div class="cabana-buttons">
-                            <button class="select-btn" onclick="selectCabana(3)">Registrarme Aquí</button>
                             <button class="info-btn" onclick="showInfo(3)">Más Info</button>
+                            <button class="select-btn" onclick="selectCabana(3)">Registrarme Aquí</button>
                         </div>
                     </div>
                 </div>
