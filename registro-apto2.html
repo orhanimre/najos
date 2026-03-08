@@ -4,21 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro Apto 2 - Apto Najos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
 
       body {
-        font-family:
-          "Inter",
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          Roboto,
-          sans-serif;
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         background: linear-gradient(135deg, #0077BE 0%, #4DA8DA 100%);
         min-height: 100vh;
         padding: 20px;
@@ -33,37 +26,54 @@
         overflow: hidden;
       }
 
-      .logo {
-        width: 100%;
-        max-width: 120px;
-        height: auto;
-        display: block;
-        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
-        border-radius: 16px;
-        animation: float 3s ease-in-out infinite;
+      /* ══════════════════════════════
+         HEADER — clean & structured
+      ══════════════════════════════ */
+      .header {
+        background: linear-gradient(135deg, #0077BE 0%, #005A8D 100%);
+        color: white;
+        padding: 14px 32px;
+        box-shadow: 0 4px 16px rgba(0, 119, 190, 0.3);
       }
 
-      .header-left { flex-shrink: 0; }
-      .header-right { flex-shrink: 0; }
+      .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        min-height: 64px;
+      }
 
-      /* ── LOGO + TOOLTIP ── */
+      /* Left: logo with home badge */
+      .header-left { flex-shrink: 0; }
+
       .logo-link {
         display: block;
         text-decoration: none;
         position: relative;
         transition: transform 0.3s ease;
       }
-
       .logo-link:hover { transform: scale(1.05); }
 
-      /* Home icon badge — bottom-right corner of logo */
+      .logo {
+        width: 80px;
+        height: auto;
+        display: block;
+        filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
+        border-radius: 14px;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50%       { transform: translateY(-6px); }
+      }
+
       .logo-home-badge {
         position: absolute;
-        bottom: -5px;
-        right: -5px;
-        width: 26px;
-        height: 26px;
-        background: rgba(255, 255, 255, 0.95);
+        bottom: -5px; right: -5px;
+        width: 24px; height: 24px;
+        background: rgba(255,255,255,0.95);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -72,91 +82,107 @@
         pointer-events: none;
         transition: transform 0.25s ease, box-shadow 0.25s ease;
       }
-
       .logo-home-badge svg {
-        width: 13px;
-        height: 13px;
-        stroke: #005A8D;
-        fill: none;
-        stroke-width: 2.2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
+        width: 12px; height: 12px;
+        stroke: #005A8D; fill: none;
+        stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
       }
-
       .logo-link:hover .logo-home-badge {
         transform: scale(1.18);
         box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 0 2px #4DA8DA;
       }
 
-      /* Mobile size adjustment */
-      @media (max-width: 768px) {
-        .logo-home-badge {
-          width: 20px;
-          height: 20px;
-          bottom: -4px;
-          right: -4px;
-        }
-        .logo-home-badge svg { width: 10px; height: 10px; }
-        
-        .header { padding: 10px 16px; }
-        .header-content { min-height: auto; }
-        .logo { max-width: 70px; }
+      /* Center: hotel name + subtitle */
+      .header-center {
+        flex: 1;
+        text-align: center;
+        min-width: 0;
       }
-
-      .header {
-        background: linear-gradient(135deg, #0077BE 0%, #4DA8DA 100%);
-        color: white;
-        padding: 12px 40px;
-        text-align: left;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .header-content {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        max-width: 1200px;
-        margin: 0 auto;
-        min-height: 60px;
-      }
-
-      .header::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
-        opacity: 0.3;
-      }
-
-      .header-content {
-        position: relative;
-        z-index: 1;
-      }
-
-      .header h1 {
-        font-size: 32px;
-        margin-bottom: 8px;
-        font-weight: 700;
+      .header-center h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(18px, 3.5vw, 26px);
+        font-weight: 900;
         letter-spacing: -0.5px;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        margin-bottom: 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
+      .header-subtitle {
+        display: inline-block;
+        font-size: clamp(11px, 1.6vw, 13px);
+        font-weight: 500;
+        letter-spacing: 0.6px;
+        padding: 5px 16px;
+        border-radius: 20px;
+        border: 1.5px solid rgba(255,255,255,0.38);
+        background: rgba(255,255,255,0.10);
+        animation: subtitleGlow 2s ease-in-out infinite, textColorCycle 2.5s linear infinite;
+      }
+
+      @keyframes subtitleGlow {
+        0%, 100% {
+          box-shadow: 0 0 0px rgba(255,255,255,0);
+          border-color: rgba(255,255,255,0.35);
+          opacity: 0.85;
+        }
+        50% {
+          box-shadow: 0 0 10px rgba(255,255,255,0.4), 0 0 20px rgba(77,168,218,0.25);
+          border-color: rgba(255,255,255,0.80);
+          opacity: 1;
+        }
+      }
+
+      @keyframes textColorCycle {
+        0%   { color: #FFFFFF; }
+        16%  { color: #FFE066; }
+        33%  { color: #7FEFBD; }
+        50%  { color: #FFA3C4; }
+        66%  { color: #A8D8FF; }
+        83%  { color: #FFD0A0; }
+        100% { color: #FFFFFF; }
+      }
+
+      /* Right: cabin pill badge */
+      .header-right { flex-shrink: 0; }
 
       .cabin-badge {
-        display: inline-block;
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(10px);
-        padding: 12px 24px;
-        border-radius: 30px;
-        margin-top: 20px;
-        font-weight: 600;
-        font-size: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255,255,255,0.13);
+        border: 1.5px solid rgba(255,255,255,0.38);
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 11.5px;
+        font-weight: 500;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.95);
+        white-space: nowrap;
+        transition: background 0.2s ease, border-color 0.2s ease;
+      }
+      .cabin-badge:hover {
+        background: rgba(255,255,255,0.22);
+        border-color: rgba(255,255,255,0.65);
       }
 
+      /* Mobile */
+      @media (max-width: 600px) {
+        .header { padding: 10px 16px; }
+        .header-content { min-height: auto; gap: 10px; }
+        .logo { width: 56px; border-radius: 12px; }
+        .logo-home-badge { width: 20px; height: 20px; bottom: -4px; right: -4px; }
+        .logo-home-badge svg { width: 10px; height: 10px; }
+        .header-center h1 { font-size: clamp(15px, 4.5vw, 20px); }
+        .header-subtitle { display: none; }
+        .cabin-badge { font-size: 10px; padding: 6px 10px; letter-spacing: 0.4px; }
+      }
+
+      /* ══════════════════════════════
+         REST OF STYLES (unchanged)
+      ══════════════════════════════ */
       .banner-container {
         margin: 20px auto 35px auto;
         width: calc(100% - 40px);
@@ -168,338 +194,184 @@
       }
 
       @keyframes fadeInScale {
-        from {
-          opacity: 0;
-          transform: scale(0.95);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
-
-      @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50%       { transform: translateY(-8px); }
+        from { opacity: 0; transform: scale(0.95); }
+        to   { opacity: 1; transform: scale(1); }
       }
 
       .banner-container::before {
         content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(
-          180deg,
-          rgba(102, 126, 234, 0.15) 0%,
-          transparent 30%,
-          transparent 70%,
-          rgba(118, 75, 162, 0.15) 100%
-        );
-        z-index: 1;
-        pointer-events: none;
+        position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(180deg, rgba(102,126,234,0.15) 0%, transparent 30%, transparent 70%, rgba(118,75,162,0.15) 100%);
+        z-index: 1; pointer-events: none;
       }
 
       .banner-container::after {
         content: "";
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(
-          45deg,
-          transparent 30%,
-          rgba(255, 255, 255, 0.1) 50%,
-          transparent 70%
-        );
+        position: absolute; top: -50%; left: -50%;
+        width: 200%; height: 200%;
+        background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
         animation: shimmer 3s infinite;
-        pointer-events: none;
-        z-index: 2;
+        pointer-events: none; z-index: 2;
       }
 
       @keyframes shimmer {
-        0% {
-          transform: translateX(-100%) translateY(-100%);
-        }
-        100% {
-          transform: translateX(100%) translateY(100%);
-        }
+        0%   { transform: translateX(-100%) translateY(-100%); }
+        100% { transform: translateX(100%) translateY(100%); }
       }
 
       .banner-image {
-        width: 100%;
-        height: auto;
-        max-height: 500px;
-        object-fit: cover;
-        object-position: center center;
+        width: 100%; height: auto;
+        max-height: 500px; object-fit: cover; object-position: center;
         display: block;
         transition: transform 0.6s ease;
         cursor: pointer;
       }
-
-      .banner-image:hover {
-        transform: scale(1.05);
-      }
+      .banner-image:hover { transform: scale(1.05); }
 
       .banner-badge {
-        position: absolute;
-        bottom: 20px;
-        right: 20px;
-        background: rgba(255, 255, 255, 0.95);
+        position: absolute; bottom: 20px; right: 20px;
+        background: rgba(255,255,255,0.95);
         backdrop-filter: blur(10px);
-        padding: 12px 20px;
-        border-radius: 30px;
-        font-weight: 700;
-        font-size: 14px;
-        color: #14b8a6;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        padding: 12px 20px; border-radius: 30px;
+        font-weight: 700; font-size: 14px; color: #14b8a6;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
         z-index: 3;
         animation: slideInRight 0.8s ease-out 0.3s backwards;
       }
 
       @keyframes slideInRight {
-        from {
-          opacity: 0;
-          transform: translateX(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
+        from { opacity: 0; transform: translateX(30px); }
+        to   { opacity: 1; transform: translateX(0); }
       }
 
-      /* Progress Bar */
       .progress-container {
         padding: 30px 40px 20px;
         background: #f7fafc;
       }
 
       .progress-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-        margin-bottom: 10px;
+        display: flex; justify-content: space-between;
+        align-items: center; position: relative; margin-bottom: 10px;
       }
 
       .progress-line {
-        position: absolute;
-        top: 20px;
-        left: 60px;
-        right: 60px;
-        height: 3px;
-        background: #e2e8f0;
-        z-index: 0;
+        position: absolute; top: 20px; left: 60px; right: 60px;
+        height: 3px; background: #e2e8f0; z-index: 0;
       }
 
       .progress-line-fill {
         height: 100%;
         background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);
-        transition: width 0.5s ease;
-        border-radius: 3px;
+        transition: width 0.5s ease; border-radius: 3px;
       }
 
       .progress-step {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        position: relative;
-        z-index: 1;
-        flex: 1;
+        display: flex; flex-direction: column;
+        align-items: center; gap: 8px;
+        position: relative; z-index: 1; flex: 1;
       }
 
       .progress-circle {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: white;
-        border: 3px solid #e2e8f0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        font-size: 16px;
-        color: #a0aec0;
+        width: 40px; height: 40px; border-radius: 50%;
+        background: white; border: 3px solid #e2e8f0;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 700; font-size: 16px; color: #a0aec0;
         transition: all 0.3s ease;
       }
 
       .progress-step.active .progress-circle {
         background: linear-gradient(135deg, #0077BE 0%, #4DA8DA 100%);
-        border-color: #14b8a6;
-        color: white;
+        border-color: #14b8a6; color: white;
         transform: scale(1.1);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 4px 12px rgba(102,126,234,0.4);
       }
 
       .progress-step.completed .progress-circle {
-        background: #48bb78;
-        border-color: #48bb78;
-        color: white;
+        background: #48bb78; border-color: #48bb78; color: white;
       }
 
       .progress-label {
-        font-size: 13px;
-        font-weight: 600;
-        color: #718096;
-        text-align: center;
-        max-width: 120px;
+        font-size: 13px; font-weight: 600; color: #718096;
+        text-align: center; max-width: 120px;
       }
 
-      .progress-step.active .progress-label {
-        color: #14b8a6;
-      }
+      .progress-step.active .progress-label   { color: #14b8a6; }
+      .progress-step.completed .progress-label { color: #48bb78; }
 
-      .progress-step.completed .progress-label {
-        color: #48bb78;
-      }
+      .form-content { padding: 40px 40px 30px; }
 
-      /* Form Content */
-      .form-content {
-        padding: 40px 40px 30px;
-      }
-
-      .step-container {
-        display: none;
-        animation: fadeIn 0.4s ease;
-      }
-
-      .step-container.active {
-        display: block;
-      }
+      .step-container { display: none; animation: fadeIn 0.4s ease; }
+      .step-container.active { display: block; }
 
       @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
       }
 
       .step-intro {
-        text-align: center;
-        margin-bottom: 35px;
-        padding: 20px;
+        text-align: center; margin-bottom: 35px; padding: 20px;
         background: linear-gradient(135deg, #ebf8ff 0%, #e6fffa 100%);
-        border-radius: 16px;
-        border-left: 4px solid #14b8a6;
+        border-radius: 16px; border-left: 4px solid #14b8a6;
       }
 
       .step-intro h2 {
-        font-size: 24px;
-        color: #2d3748;
-        margin-bottom: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
+        font-size: 24px; color: #2d3748; margin-bottom: 8px;
+        display: flex; align-items: center; justify-content: center; gap: 10px;
       }
 
-      .step-intro p {
-        color: #4a5568;
-        font-size: 15px;
-        line-height: 1.5;
-      }
+      .step-intro p { color: #4a5568; font-size: 15px; line-height: 1.5; }
 
-      .form-group {
-        margin-bottom: 24px;
-      }
+      .form-group { margin-bottom: 24px; }
 
       label {
-        display: block;
-        margin-bottom: 10px;
-        color: #2d3748;
-        font-weight: 600;
-        font-size: 14px;
-        letter-spacing: 0.2px;
+        display: block; margin-bottom: 10px; color: #2d3748;
+        font-weight: 600; font-size: 14px; letter-spacing: 0.2px;
       }
 
-      .required {
-        color: #f56565;
-      }
+      .required { color: #f56565; }
 
       input[type="text"],
       input[type="tel"],
       input[type="number"],
       input[type="time"],
       textarea {
-        width: 100%;
-        padding: 14px 18px;
-        border: 2px solid #e2e8f0;
-        border-radius: 12px;
-        font-size: 16px;
-        transition: all 0.3s ease;
-        font-family: inherit;
-        background: #fafafa;
-        -webkit-appearance: none;
-        appearance: none;
+        width: 100%; padding: 14px 18px;
+        border: 2px solid #e2e8f0; border-radius: 12px;
+        font-size: 16px; transition: all 0.3s ease;
+        font-family: inherit; background: #fafafa;
+        -webkit-appearance: none; appearance: none;
       }
 
       select {
-        width: 100%;
-        padding: 14px 18px;
-        padding-right: 45px;
-        border: 2px solid #e2e8f0;
-        border-radius: 12px;
-        font-size: 16px;
-        transition: all 0.3s ease;
+        width: 100%; padding: 14px 18px; padding-right: 45px;
+        border: 2px solid #e2e8f0; border-radius: 12px;
+        font-size: 16px; transition: all 0.3s ease;
         font-family: inherit;
-        background: #fafafa
-          url('data:image/svg+xml;charset=UTF-8,<svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L6 6.5L11 1.5" stroke="%23667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>')
-          no-repeat;
+        background: #fafafa url('data:image/svg+xml;charset=UTF-8,<svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L6 6.5L11 1.5" stroke="%23667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat;
         background-position: right 18px center;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
+        -webkit-appearance: none; -moz-appearance: none; appearance: none;
         cursor: pointer;
       }
 
-      input:focus,
-      textarea:focus,
-      select:focus {
-        outline: none;
-        border-color: #14b8a6;
-        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+      input:focus, textarea:focus, select:focus {
+        outline: none; border-color: #14b8a6;
+        box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
         background-color: white;
       }
 
-      textarea {
-        resize: vertical;
-        min-height: 120px;
-      }
+      textarea { resize: vertical; min-height: 120px; }
 
-      .grid-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-      }
+      .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
-      .helper-text {
-        font-size: 13px;
-        color: #718096;
-        margin-top: 6px;
-        font-weight: 400;
-      }
+      .helper-text { font-size: 13px; color: #718096; margin-top: 6px; font-weight: 400; }
 
-      /* Companion Section */
-      .companions-container {
-        margin-top: 20px;
-      }
+      .companions-container { margin-top: 20px; }
 
       .companion-card {
         background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-        border: 2px solid #cbd5e0;
-        border-radius: 16px;
-        padding: 20px;
-        margin-bottom: 16px;
-        position: relative;
-        animation: slideIn 0.3s ease;
-        transition: all 0.3s ease;
+        border: 2px solid #cbd5e0; border-radius: 16px;
+        padding: 20px; margin-bottom: 16px;
+        position: relative; animation: slideIn 0.3s ease; transition: all 0.3s ease;
       }
 
       .companion-card.filled {
@@ -508,48 +380,28 @@
       }
 
       @keyframes slideIn {
-        from {
-          opacity: 0;
-          transform: translateX(-20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
+        from { opacity: 0; transform: translateX(-20px); }
+        to   { opacity: 1; transform: translateX(0); }
       }
 
       .companion-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 16px;
+        display: flex; justify-content: space-between;
+        align-items: center; margin-bottom: 16px;
       }
 
       .companion-title {
-        font-weight: 700;
-        color: #4a5568;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: color 0.3s ease;
+        font-weight: 700; color: #4a5568; font-size: 16px;
+        display: flex; align-items: center; gap: 8px; transition: color 0.3s ease;
       }
 
-      .companion-card.filled .companion-title {
-        color: #48bb78;
-      }
+      .companion-card.filled .companion-title { color: #48bb78; }
 
-      /* Checkbox */
       .checkbox-group {
-        display: flex;
-        align-items: start;
-        gap: 16px;
+        display: flex; align-items: start; gap: 16px;
         padding: 20px 24px;
         background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
-        border-radius: 16px;
-        border: 2px solid #fc8181;
-        margin-bottom: 20px;
-        transition: all 0.3s ease;
+        border-radius: 16px; border: 2px solid #fc8181;
+        margin-bottom: 20px; transition: all 0.3s ease;
       }
 
       .checkbox-group.checked {
@@ -558,1103 +410,418 @@
       }
 
       .checkbox-group input[type="checkbox"] {
-        width: 22px;
-        height: 22px;
-        cursor: pointer;
-        margin-top: 2px;
-        accent-color: #14b8a6;
+        width: 22px; height: 22px; cursor: pointer;
+        margin-top: 2px; accent-color: #14b8a6;
       }
 
-      .checkbox-group label {
-        margin: 0;
-        cursor: pointer;
-        flex: 1;
-        font-weight: 500;
-      }
+      .checkbox-group label { margin: 0; cursor: pointer; flex: 1; font-weight: 500; }
 
-      /* Navigation Buttons */
       .step-navigation {
-        display: flex;
-        gap: 16px;
-        margin-top: 40px;
-        padding-top: 30px;
-        border-top: 2px solid #e2e8f0;
+        display: flex; gap: 16px; margin-top: 40px;
+        padding-top: 30px; border-top: 2px solid #e2e8f0;
       }
 
       .nav-btn {
-        padding: 16px 32px;
-        border: none;
-        border-radius: 12px;
-        font-size: 16px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        flex: 1;
+        padding: 16px 32px; border: none; border-radius: 12px;
+        font-size: 16px; font-weight: 700; cursor: pointer;
+        transition: all 0.3s ease; flex: 1;
+        font-family: inherit;
       }
 
       .btn-back {
-        background: #f7fafc;
-        color: #4a5568;
-        border: 2px solid #e2e8f0;
+        background: #f7fafc; color: #4a5568; border: 2px solid #e2e8f0;
       }
+      .btn-back:hover { background: #edf2f7; border-color: #cbd5e0; }
 
-      .btn-back:hover {
-        background: #edf2f7;
-        border-color: #cbd5e0;
-      }
-
-      .btn-next,
-      .btn-submit {
+      .btn-next, .btn-submit {
         background: linear-gradient(135deg, #0077BE 0%, #4DA8DA 100%);
         color: white;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 4px 12px rgba(102,126,234,0.4);
       }
 
       .btn-next:hover:not(:disabled),
       .btn-submit:hover:not(:disabled) {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        box-shadow: 0 6px 20px rgba(102,126,234,0.5);
       }
 
-      .btn-next:disabled,
-      .btn-submit:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
+      .btn-next:disabled, .btn-submit:disabled {
+        opacity: 0.6; cursor: not-allowed;
       }
 
-      /* Summary */
       .summary-box {
         background: linear-gradient(135deg, #ebf8ff 0%, #e6fffa 100%);
-        border: 2px solid #14b8a6;
-        border-radius: 16px;
-        padding: 24px;
-        margin-bottom: 24px;
+        border: 2px solid #14b8a6; border-radius: 16px;
+        padding: 24px; margin-bottom: 24px;
       }
 
       .summary-title {
-        font-size: 18px;
-        font-weight: 700;
-        color: #2d3748;
-        margin-bottom: 16px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+        font-size: 18px; font-weight: 700; color: #2d3748;
+        margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
       }
 
       .summary-item {
-        display: flex;
-        justify-content: space-between;
-        padding: 8px 0;
-        border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+        display: flex; justify-content: space-between;
+        padding: 8px 0; border-bottom: 1px solid rgba(102,126,234,0.2);
       }
 
-      .summary-item:last-child {
-        border-bottom: none;
-      }
+      .summary-item:last-child { border-bottom: none; }
 
-      .summary-label {
-        color: #4a5568;
-        font-weight: 600;
-        font-size: 14px;
-      }
+      .summary-label { color: #4a5568; font-weight: 600; font-size: 14px; }
+      .summary-value { color: #2d3748; font-weight: 500; font-size: 14px; }
 
-      .summary-value {
-        color: #2d3748;
-        font-weight: 500;
-        font-size: 14px;
-      }
-
-      /* Success Modal */
       .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.7);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 10000;
-        padding: 20px;
-        animation: fadeIn 0.3s ease;
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.7);
+        display: flex; align-items: center; justify-content: center;
+        z-index: 10000; padding: 20px; animation: fadeIn 0.3s ease;
       }
 
       .modal-content {
         background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-        color: white;
-        padding: 40px 30px;
-        border-radius: 20px;
-        max-width: 500px;
-        width: 100%;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        text-align: center;
-        animation: slideUp 0.4s ease;
-        position: relative;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
+        color: white; padding: 40px 30px; border-radius: 20px;
+        max-width: 500px; width: 100%;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        text-align: center; animation: slideUp 0.4s ease; position: relative;
       }
 
       @keyframes slideUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .modal-close {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        background: rgba(255, 255, 255, 0.2);
-        border: none;
-        color: white;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        font-size: 24px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-      }
-
-      .modal-close:hover {
-        background: rgba(255, 255, 255, 0.3);
-        transform: rotate(90deg);
-      }
-
-      .modal-icon {
-        font-size: 64px;
-        margin-bottom: 20px;
-        animation: bounce 0.6s ease;
-      }
-
-      @keyframes bounce {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-10px);
-        }
+        from { opacity: 0; transform: translateY(30px); }
+        to   { opacity: 1; transform: translateY(0); }
       }
 
       @keyframes fadeOut {
-        from {
-          opacity: 1;
-        }
-        to {
-          opacity: 0;
-        }
+        from { opacity: 1; }
+        to   { opacity: 0; }
       }
 
-      .modal-title {
-        font-size: 28px;
-        font-weight: 700;
-        margin-bottom: 15px;
-        line-height: 1.3;
+      .modal-close {
+        position: absolute; top: 15px; right: 15px;
+        background: rgba(255,255,255,0.2); border: none; color: white;
+        width: 36px; height: 36px; border-radius: 50%;
+        font-size: 24px; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        transition: all 0.2s ease;
+      }
+      .modal-close:hover { background: rgba(255,255,255,0.3); transform: rotate(90deg); }
+
+      .modal-icon { font-size: 64px; margin-bottom: 20px; animation: bounce 0.6s ease; }
+
+      @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50%       { transform: translateY(-10px); }
       }
 
-      .modal-text {
-        font-size: 16px;
-        line-height: 1.6;
-        margin-bottom: 25px;
-        opacity: 0.95;
-      }
+      .modal-title { font-size: 28px; font-weight: 700; margin-bottom: 15px; line-height: 1.3; }
+      .modal-text  { font-size: 16px; line-height: 1.6; margin-bottom: 25px; opacity: 0.95; }
 
-      .modal-divider {
-        margin: 25px 0;
-        padding-top: 25px;
-        border-top: 2px solid rgba(255, 255, 255, 0.3);
-      }
-
-      .modal-maps-title {
-        font-size: 18px;
-        font-weight: 700;
-        margin-bottom: 15px;
-      }
+      .modal-divider { margin: 25px 0; padding-top: 25px; border-top: 2px solid rgba(255,255,255,0.3); }
+      .modal-maps-title { font-size: 18px; font-weight: 700; margin-bottom: 15px; }
 
       .modal-map-btn {
-        display: block;
-        margin: 10px auto;
-        max-width: 280px;
-        background: white;
-        color: #48bb78;
-        padding: 14px 24px;
-        border-radius: 12px;
-        text-decoration: none;
-        font-weight: 700;
-        text-align: center;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        transition: all 0.2s ease;
-        font-size: 15px;
+        display: block; margin: 10px auto; max-width: 280px;
+        background: white; color: #48bb78;
+        padding: 14px 24px; border-radius: 12px;
+        text-decoration: none; font-weight: 700; text-align: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        transition: all 0.2s ease; font-size: 15px;
       }
+      .modal-map-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
 
-      .modal-map-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-      }
-
-      @media (max-width: 600px) {
-        .modal-content {
-          padding: 30px 20px;
-        }
-
-        .modal-icon {
-          font-size: 48px;
-        }
-
-        .modal-title {
-          font-size: 22px;
-        }
-
-        .modal-text {
-          font-size: 15px;
-        }
-      }
-
-      /* Number Stepper */
       .stepper-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: flex; align-items: center; justify-content: center;
         gap: 16px;
         background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-        border: 2px solid #e2e8f0;
-        border-radius: 16px;
-        padding: 16px 20px;
-        max-width: 280px;
-        margin: 0 auto;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border: 2px solid #e2e8f0; border-radius: 16px;
+        padding: 16px 20px; max-width: 280px; margin: 0 auto;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       }
 
       .stepper-btn {
-        width: 50px;
-        height: 50px;
-        border: none;
+        width: 50px; height: 50px; border: none;
         background: linear-gradient(135deg, #0077BE 0%, #4DA8DA 100%);
-        color: white;
-        font-size: 24px;
-        font-weight: 700;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        color: white; font-size: 24px; font-weight: 700;
+        border-radius: 12px; cursor: pointer; transition: all 0.2s ease;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 4px 12px rgba(102,126,234,0.3);
       }
 
-      .stepper-btn:hover:not(:disabled) {
-        transform: scale(1.05);
-        box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
-      }
-
-      .stepper-btn:active:not(:disabled) {
-        transform: scale(0.95);
-      }
-
-      .stepper-btn:disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-        box-shadow: none;
-      }
+      .stepper-btn:hover:not(:disabled) { transform: scale(1.05); box-shadow: 0 6px 16px rgba(102,126,234,0.5); }
+      .stepper-btn:active:not(:disabled) { transform: scale(0.95); }
+      .stepper-btn:disabled { opacity: 0.3; cursor: not-allowed; box-shadow: none; }
 
       .stepper-value {
-        flex: 1;
-        text-align: center;
-        font-size: 32px;
-        font-weight: 700;
-        color: #14b8a6;
-        min-width: 60px;
-        background: white;
-        padding: 8px 16px;
-        border-radius: 10px;
-        border: 2px solid #e2e8f0;
+        flex: 1; text-align: center; font-size: 32px; font-weight: 700;
+        color: #14b8a6; min-width: 60px;
+        background: white; padding: 8px 16px;
+        border-radius: 10px; border: 2px solid #e2e8f0;
       }
 
-      /* Airbnb-Style Date Picker */
       .date-picker-trigger {
-        width: 100%;
-        padding: 14px 18px;
-        border: 2px solid #e2e8f0;
-        border-radius: 12px;
-        font-size: 16px;
-        background: #fafafa;
-        cursor: pointer;
-        text-align: left;
-        color: #2d3748;
-        font-weight: 500;
+        width: 100%; padding: 14px 18px;
+        border: 2px solid #e2e8f0; border-radius: 12px;
+        font-size: 16px; background: #fafafa; cursor: pointer;
+        text-align: left; color: #2d3748; font-weight: 500;
         transition: all 0.3s ease;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        display: flex; justify-content: space-between; align-items: center;
       }
+      .date-picker-trigger:hover { border-color: #14b8a6; background: white; }
+      .date-picker-trigger.has-value { color: #1f2937; font-weight: 600; }
+      .date-picker-trigger .placeholder { color: #9ca3af; }
+      .date-picker-trigger .calendar-icon { color: #14b8a6; font-size: 18px; }
 
-      .date-picker-trigger:hover {
-        border-color: #14b8a6;
-        background: white;
-      }
-
-      .date-picker-trigger.has-value {
-        color: #1f2937;
-        font-weight: 600;
-      }
-
-      .date-picker-trigger .placeholder {
-        color: #9ca3af;
-      }
-
-      .date-picker-trigger .calendar-icon {
-        color: #14b8a6;
-        font-size: 18px;
-      }
-
-      /* Calendar Modal for Date Selection */
       .date-picker-modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(4px);
-        z-index: 10000;
-        padding: 20px;
-        align-items: center;
-        justify-content: center;
+        display: none; position: fixed; top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+        z-index: 10000; padding: 20px;
+        align-items: center; justify-content: center;
       }
-
-      .date-picker-modal.show {
-        display: flex;
-      }
+      .date-picker-modal.show { display: flex; }
 
       .date-picker-content {
-        background: white;
-        border-radius: 20px;
-        padding: 0;
-        max-width: 900px;
-        width: calc(100% - 32px);
-        max-height: 90vh;
-        display: flex;
-        flex-direction: column;
+        background: white; border-radius: 20px; padding: 0;
+        max-width: 900px; width: calc(100% - 32px); max-height: 90vh;
+        display: flex; flex-direction: column;
         animation: slideUp 0.3s ease;
-        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
-        overflow: hidden;
-        box-sizing: border-box;
+        box-shadow: 0 24px 48px rgba(0,0,0,0.3);
+        overflow: hidden; box-sizing: border-box;
       }
 
       .date-picker-header {
         padding: 24px;
         background: linear-gradient(135deg, #0077BE 0%, #4DA8DA 100%);
-        color: white;
-        border-radius: 20px 20px 0 0;
-        flex-shrink: 0;
+        color: white; border-radius: 20px 20px 0 0; flex-shrink: 0;
       }
+      .date-picker-header h3 { font-size: 20px; font-weight: 700; margin: 0 0 16px 0; text-align: center; }
 
-      .date-picker-header h3 {
-        font-size: 20px;
-        font-weight: 700;
-        margin: 0 0 16px 0;
-        text-align: center;
-      }
-
-      .date-selection-buttons {
-        display: flex;
-        gap: 12px;
-        margin-top: 16px;
-      }
-      .date-btn-wrapper {
-        flex: 1;
-        position: relative;
-      }
-
-      /* Keep buttons side by side on mobile */
-      @media (max-width: 600px) {
-        .date-selection-buttons {
-          display: flex;
-          flex-direction: row;
-          gap: 8px;
-        }
-
-        .date-selection-btn {
-          padding: 10px 12px;
-          font-size: 13px;
-          flex-direction: column; /* ADD THIS LINE */
-          align-items: center; /* ADD THIS LINE */
-        }
-
-        .date-selection-btn .label {
-          font-size: 9px;
-        }
-
-        .date-selection-btn .value {
-          font-size: 13px;
-        }
-      }
+      .date-selection-buttons { display: flex; gap: 12px; margin-top: 16px; }
+      .date-btn-wrapper { flex: 1; position: relative; }
 
       .date-selection-btn {
-        width: 100%;
-        padding: 12px 35px 12px 20px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-        border-radius: 12px;
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-        position: relative;
+        width: 100%; padding: 12px 35px 12px 20px;
+        border: 2px solid rgba(255,255,255,0.3);
+        background: rgba(255,255,255,0.1); color: white;
+        border-radius: 12px; font-size: 15px; font-weight: 600;
+        cursor: pointer; transition: all 0.3s ease;
+        display: flex; flex-direction: column; align-items: center;
+        gap: 4px; position: relative;
       }
 
       .date-selection-btn.active {
-        background: white;
-        color: #14b8a6;
-        border-color: white;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        background: white; color: #14b8a6; border-color: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       }
 
       .date-selection-btn .label {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        opacity: 0.8;
+        font-size: 11px; text-transform: uppercase;
+        letter-spacing: 0.5px; opacity: 0.8;
       }
+      .date-selection-btn.active .label { opacity: 1; }
+      .date-selection-btn .value { font-size: 15px; font-weight: 700; white-space: nowrap; }
 
-      .date-selection-btn.active .label {
-        opacity: 1;
-      }
-
-      .date-selection-btn .value {
-        font-size: 15px;
-        font-weight: 700;
-        white-space: nowrap;
-      }
-
-      /* Reset button for date selection */
       .date-reset-btn {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        background: #ef4444;
-        color: white;
-        border: 1.5px solid white;
-        font-size: 11px;
-        font-weight: 700;
-        cursor: pointer;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-        padding: 0;
-        line-height: 1;
-        z-index: 5;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        position: absolute; top: 8px; right: 8px;
+        width: 18px; height: 18px; border-radius: 50%;
+        background: #ef4444; color: white;
+        border: 1.5px solid white; font-size: 11px; font-weight: 700;
+        cursor: pointer; display: none;
+        align-items: center; justify-content: center;
+        transition: all 0.2s ease; padding: 0; line-height: 1;
+        z-index: 5; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
       }
+      .date-reset-btn:hover { background: #dc2626; transform: scale(1.2); }
+      .date-reset-btn.show { display: flex; }
 
-      .date-reset-btn:hover {
-        background: #dc2626;
-        transform: scale(1.2);
-      }
-
-      .date-reset-btn.show {
-        display: flex;
-      }
-      .date-picker-body {
-        flex: 1;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-      }
+      .date-picker-body { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
 
       .date-picker-scroll {
-        flex: 1;
-        overflow-y: auto;
-        overflow-x: hidden;
-        padding: 24px;
-        -webkit-overflow-scrolling: touch;
-        width: 100%;
-        box-sizing: border-box;
+        flex: 1; overflow-y: auto; overflow-x: hidden; padding: 24px;
+        -webkit-overflow-scrolling: touch; width: 100%; box-sizing: border-box;
       }
 
-      .calendar-month-section {
-        margin-bottom: 32px;
-        width: 100%;
-        box-sizing: border-box;
-        min-width: 0;
-      }
-
-      .calendar-month-section:last-child {
-        margin-bottom: 0;
-      }
+      .calendar-month-section { margin-bottom: 32px; width: 100%; box-sizing: border-box; min-width: 0; }
+      .calendar-month-section:last-child { margin-bottom: 0; }
 
       .calendar-month-title {
-        font-size: 18px;
-        font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 16px;
-        padding-bottom: 8px;
-        border-bottom: 2px solid #e5e7eb;
+        font-size: 18px; font-weight: 700; color: #1f2937;
+        margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #e5e7eb;
       }
 
       .calendar-grid {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 4px;
-        margin-top: 12px;
-        width: 100%;
-        box-sizing: border-box;
-        min-width: 0;
+        display: grid; grid-template-columns: repeat(7, 1fr);
+        gap: 4px; margin-top: 12px; width: 100%; box-sizing: border-box; min-width: 0;
       }
 
       .calendar-day-header {
-        text-align: center;
-        font-weight: 700;
-        font-size: 11px;
-        color: #14b8a6;
-        padding: 12px 8px;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        text-align: center; font-weight: 700; font-size: 11px; color: #14b8a6;
+        padding: 12px 8px; text-transform: uppercase; letter-spacing: 0.3px;
+        display: flex; align-items: center; justify-content: center;
       }
 
       .calendar-day {
-        position: relative;
-        aspect-ratio: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.2s;
-        padding: 8px;
-        background: white;
-        min-height: 50px;
-        max-height: 70px;
-        box-sizing: border-box;
-        border-radius: 8px;
+        position: relative; aspect-ratio: 1;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        cursor: pointer; transition: all 0.2s;
+        padding: 8px; background: white;
+        min-height: 50px; max-height: 70px; box-sizing: border-box; border-radius: 8px;
       }
 
-      .calendar-day.other-month {
-        visibility: hidden;
-        pointer-events: none;
-      }
+      .calendar-day.other-month { visibility: hidden; pointer-events: none; }
+      .calendar-day.today .calendar-day-number { font-weight: 700; color: #14b8a6; }
+      .calendar-day.past { opacity: 0.4; pointer-events: none; }
+      .calendar-day.past .calendar-day-number { color: #9ca3af; }
 
-      .calendar-day.today .calendar-day-number {
-        font-weight: 700;
-        color: #14b8a6;
-      }
+      .calendar-day-number { font-size: 14px; font-weight: 600; color: #1f2937; position: relative; z-index: 2; }
 
-      .calendar-day.past {
-        opacity: 0.4;
-        pointer-events: none;
-      }
+      .calendar-day.shared-booked { background: #9ca3af; color: white; cursor: not-allowed; border: 2px solid #9ca3af; }
+      .calendar-day.shared-booked .calendar-day-number { color: white; font-weight: 700; }
 
-      .calendar-day.past .calendar-day-number {
-        color: #9ca3af;
-      }
-
-      .calendar-day-number {
-        font-size: 14px;
-        font-weight: 600;
-        color: #1f2937;
-        position: relative;
-        z-index: 2;
-      }
-
-      /* Unavailable dates - medium gray (booked) */
-      /* Shared dates - FULL GRAY (not clickable) */
-      .calendar-day.shared-booked {
-        background: #9ca3af;
-        color: white;
-        cursor: not-allowed;
-        border: 2px solid #9ca3af;
-      }
-
-      .calendar-day.shared-booked .calendar-day-number {
-        color: white;
-        font-weight: 700;
-      }
-
-      /* Unshared check-in dates - HALF GRAY RIGHT (not clickable for check-in) */
       .calendar-day.checkin-only {
-        background: linear-gradient(
-          90deg,
-          white 0%,
-          white 50%,
-          #9ca3af 50%,
-          #9ca3af 100%
-        );
-        border: 2px solid #9ca3af;
-        cursor: not-allowed;
+        background: linear-gradient(90deg, white 0%, white 50%, #9ca3af 50%, #9ca3af 100%);
+        border: 2px solid #9ca3af; cursor: not-allowed;
       }
+      .calendar-day.checkin-only .calendar-day-number { color: #1f2937; font-weight: 700; }
+      .calendar-day.checkin-only.clickable { cursor: pointer; }
+      .calendar-day.checkin-only.clickable:hover { transform: scale(1.05); border-color: #14b8a6; }
 
-      .calendar-day.checkin-only .calendar-day-number {
-        color: #1f2937;
-        font-weight: 700;
-      }
-
-      /* When checkin-only date is clickable (as checkout) */
-      .calendar-day.checkin-only.clickable {
-        cursor: pointer;
-      }
-
-      .calendar-day.checkin-only.clickable:hover {
-        transform: scale(1.05);
-        border-color: #14b8a6;
-      }
-
-      /* Unshared checkout dates - HALF GRAY LEFT (available for check-in) */
       .calendar-day.checkout-available {
-        background: linear-gradient(
-          90deg,
-          #9ca3af 0%,
-          #9ca3af 50%,
-          white 50%,
-          white 100%
-        );
-        border: 2px solid #9ca3af;
-        cursor: pointer;
+        background: linear-gradient(90deg, #9ca3af 0%, #9ca3af 50%, white 50%, white 100%);
+        border: 2px solid #9ca3af; cursor: pointer;
       }
+      .calendar-day.checkout-available .calendar-day-number { color: #1f2937; font-weight: 700; }
+      .calendar-day.checkout-available:hover { transform: scale(1.05); border-color: #14b8a6; }
 
-      .calendar-day.checkout-available .calendar-day-number {
-        color: #1f2937;
-        font-weight: 700;
-      }
+      .calendar-day.middle-booked { background: #d1d5db; color: #4b5563; cursor: not-allowed; border: 1px solid #d1d5db; }
+      .calendar-day.middle-booked .calendar-day-number { color: #4b5563; font-weight: 600; }
 
-      .calendar-day.checkout-available:hover {
-        transform: scale(1.05);
-        border-color: #14b8a6;
-      }
+      .calendar-day.booked { background: #9ca3af; color: white; cursor: not-allowed; }
+      .calendar-day.booked .calendar-day-number { color: white; font-weight: 600; }
 
-      /* Middle days - LIGHT GRAY (not clickable) */
-      .calendar-day.middle-booked {
-        background: #d1d5db;
-        color: #4b5563;
-        cursor: not-allowed;
-        border: 1px solid #d1d5db;
-      }
+      .calendar-day.available { background: white; border: 1px solid #e5e7eb; cursor: pointer; }
+      .calendar-day.available .calendar-day-number { color: #1f2937; font-weight: 600; }
+      .calendar-day.available:hover { background: #f3f4f6; transform: scale(1.05); border-color: #14b8a6; }
+      .calendar-day.available:active { transform: scale(0.95); }
 
-      .calendar-day.middle-booked .calendar-day-number {
-        color: #4b5563;
-        font-weight: 600;
-      }
+      .calendar-day.check-in  { background: #4b5563; border: 2px solid #4b5563; }
+      .calendar-day.check-out { background: #4b5563; border: 2px solid #4b5563; }
+      .calendar-day.check-in  .calendar-day-number,
+      .calendar-day.check-out .calendar-day-number { color: white; font-weight: 700; }
 
-      /* Legacy booked class - keep for backward compatibility */
-      .calendar-day.booked {
-        background: #9ca3af;
-        color: white;
-        cursor: not-allowed;
-      }
+      .calendar-day.in-range { background: #d1d5db; border: 1px solid #d1d5db; }
+      .calendar-day.in-range .calendar-day-number { color: #1f2937; font-weight: 600; }
 
-      .calendar-day.booked .calendar-day-number {
-        color: white;
-        font-weight: 600;
-      }
-
-      /* Available dates - white with border */
-      .calendar-day.available {
-        background: white;
-        border: 1px solid #e5e7eb;
-        cursor: pointer;
-      }
-
-      .calendar-day.available .calendar-day-number {
-        color: #1f2937;
-        font-weight: 600;
-      }
-
-      .calendar-day.available:hover {
-        background: #f3f4f6;
-        transform: scale(1.05);
-        border-color: #14b8a6;
-      }
-
-      .calendar-day.available:active {
-        transform: scale(0.95);
-      }
-
-      /* Check-in date - DARK GRAY background */
-      .calendar-day.check-in {
-        background: #4b5563;
-        border: 2px solid #4b5563;
-      }
-
-      .calendar-day.check-in .calendar-day-number {
-        color: white;
-        font-weight: 700;
-      }
-
-      /* Check-out date - DARK GRAY background */
-      .calendar-day.check-out {
-        background: #4b5563;
-        border: 2px solid #4b5563;
-      }
-
-      .calendar-day.check-out .calendar-day-number {
-        color: white;
-        font-weight: 700;
-      }
-
-      /* Range dates - LIGHT GRAY fill */
-      .calendar-day.in-range {
-        background: #d1d5db;
-        border: 1px solid #d1d5db;
-      }
-
-      .calendar-day.in-range .calendar-day-number {
-        color: #1f2937;
-        font-weight: 600;
-      }
-
-      /* Legend */
       .calendar-legend {
-        padding: 16px 24px;
-        background: #f9fafb;
-        border-top: 1px solid #e5e7eb;
-        display: flex;
-        gap: 24px;
-        flex-wrap: wrap;
-        justify-content: center;
+        padding: 16px 24px; background: #f9fafb; border-top: 1px solid #e5e7eb;
+        display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;
       }
 
-      .legend-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 13px;
-        font-weight: 600;
-        color: #4a5568;
-      }
+      .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #4a5568; }
+      .legend-color { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+      .legend-color.booked   { background: #9ca3af; }
+      .legend-color.selected { background: #4b5563; }
+      .legend-color.range    { background: #d1d5db; }
+      .legend-color.available { background: white; border: 2px solid #e5e7eb; }
 
-      .legend-color {
-        width: 24px;
-        height: 24px;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      /* Mobile legend simplification */
-      @media (max-width: 600px) {
-        .legend-item.legend-hide-mobile {
-          display: none;
-        }
-
-        .legend-item {
-          font-size: 11px;
-          gap: 6px;
-        }
-
-        .legend-color {
-          width: 20px;
-          height: 20px;
-          flex-shrink: 0;
-        }
-
-        .calendar-legend {
-          padding: 12px 16px;
-          gap: 12px;
-          justify-content: space-around;
-        }
-      }
-
-      .legend-color.booked {
-        background: #9ca3af;
-      }
-
-      .legend-color.selected {
-        background: #4b5563;
-      }
-
-      .legend-color.range {
-        background: #d1d5db;
-      }
-
-      .legend-color.available {
-        background: white;
-        border: 2px solid #e5e7eb;
-      }
-
-      /* Image Lightbox */
       .lightbox-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.95);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 10002;
-        padding: 20px;
-        animation: fadeIn 0.3s ease;
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.95);
+        display: flex; align-items: center; justify-content: center;
+        z-index: 10002; padding: 20px; animation: fadeIn 0.3s ease;
       }
 
-      .lightbox-content {
-        max-width: 95%;
-        max-height: 95vh;
-        position: relative;
-      }
+      .lightbox-content { max-width: 95%; max-height: 95vh; position: relative; }
 
       .lightbox-image {
-        width: 100%;
-        height: auto;
-        max-height: 90vh;
-        object-fit: contain;
-        border-radius: 12px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        width: 100%; height: auto; max-height: 90vh; object-fit: contain;
+        border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.8);
       }
 
       .lightbox-close {
-        position: absolute;
-        top: -15px;
-        right: -15px;
-        background: white;
-        border: none;
-        color: #2d3748;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        font-size: 24px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        transition: all 0.2s ease;
+        position: absolute; top: -15px; right: -15px;
+        background: white; border: none; color: #2d3748;
+        width: 40px; height: 40px; border-radius: 50%;
+        font-size: 24px; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.2s ease;
       }
+      .lightbox-close:hover { background: #f56565; color: white; transform: rotate(90deg); }
 
-      .lightbox-close:hover {
-        background: #f56565;
-        color: white;
-        transform: rotate(90deg);
-      }
-
-      /* Messages */
       .message {
-        padding: 18px 24px;
-        border-radius: 12px;
-        margin-bottom: 25px;
-        text-align: center;
-        display: none;
-        font-weight: 600;
+        padding: 18px 24px; border-radius: 12px; margin-bottom: 25px;
+        text-align: center; display: none; font-weight: 600;
         animation: slideDown 0.3s ease;
       }
 
       @keyframes slideDown {
-        from {
-          opacity: 0;
-          transform: translateY(-10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(-10px); }
+        to   { opacity: 1; transform: translateY(0); }
       }
 
-      .success-message {
-        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-        color: white;
-        box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
-      }
+      .success-message { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; box-shadow: 0 4px 12px rgba(72,187,120,0.4); }
+      .error-message   { background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%); color: white; box-shadow: 0 4px 12px rgba(245,101,101,0.4); }
 
-      .error-message {
-        background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
-        color: white;
-        box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
-      }
-
-      /* Mobile Responsive */
+      /* ── Responsive ── */
       @media (max-width: 600px) {
-        body {
-          padding: 10px;
-        }
+        body { padding: 10px; }
+        .container { border-radius: 16px; }
 
-        .container {
-          border-radius: 16px;
-        }
+        .banner-container { margin: 15px auto 25px auto; }
+        .banner-image { max-height: 350px; }
+        .banner-badge { bottom: 15px; right: 15px; padding: 10px 16px; font-size: 13px; }
 
-        .header {
-          padding: 30px 20px 40px 20px;
-        }
+        .progress-container { padding: 20px 15px 15px; }
+        .progress-circle { width: 35px; height: 35px; font-size: 14px; }
+        .progress-label { font-size: 11px; max-width: 80px; }
+        .progress-line { left: 45px; right: 45px; }
 
-        .header h1 {
-          font-size: 24px;
-        }
+        .form-content { padding: 25px 18px; }
+        .step-intro { padding: 16px; margin-bottom: 25px; }
+        .step-intro h2 { font-size: 20px; }
+        .step-intro p  { font-size: 14px; }
 
-        .cabin-badge {
-          font-size: 14px;
-          padding: 8px 16px;
-        }
+        .grid-2 { grid-template-columns: 1fr; }
+        .step-container[data-step="2"] .grid-2 { grid-template-columns: 1fr 1fr; gap: 12px; }
 
-        .banner-container {
-          margin: 15px auto 25px auto;
-        }
+        .step-navigation { flex-direction: column-reverse; gap: 12px; margin-top: 30px; padding-top: 20px; }
+        .nav-btn { padding: 14px 24px; font-size: 15px; }
 
-        .banner-image {
-          max-height: 350px;
-        }
+        .stepper-container { max-width: 100%; padding: 14px 16px; gap: 12px; }
+        .stepper-btn { width: 48px; height: 48px; font-size: 22px; }
+        .stepper-value { font-size: 28px; min-width: 50px; padding: 6px 12px; }
 
-        .banner-badge {
-          bottom: 15px;
-          right: 15px;
-          padding: 10px 16px;
-          font-size: 13px;
-        }
+        .date-selection-buttons { display: flex; flex-direction: row; gap: 8px; }
+        .date-selection-btn { padding: 10px 12px; font-size: 13px; flex-direction: column; align-items: center; }
+        .date-selection-btn .label { font-size: 9px; }
+        .date-selection-btn .value { font-size: 13px; }
 
-        .logo {
-          max-width: 120px;
-        }
+        .calendar-grid { gap: 2px; }
+        .calendar-day { padding: 4px; min-height: 45px; max-height: 60px; }
+        .calendar-day-number { font-size: 12px; }
+        .calendar-day-header { font-size: 9px; padding: 6px 2px; }
+        .date-picker-scroll { padding: 16px; }
+        .calendar-month-section { margin-bottom: 24px; }
 
-        .progress-container {
-          padding: 20px 15px 15px;
-        }
+        .calendar-legend { padding: 12px 16px; gap: 12px; justify-content: space-around; }
+        .legend-item { font-size: 11px; gap: 6px; }
+        .legend-color { width: 20px; height: 20px; flex-shrink: 0; }
 
-        .progress-circle {
-          width: 35px;
-          height: 35px;
-          font-size: 14px;
-        }
-
-        .progress-label {
-          font-size: 11px;
-          max-width: 80px;
-        }
-
-        .progress-line {
-          left: 45px;
-          right: 45px;
-        }
-
-        .form-content {
-          padding: 25px 18px;
-        }
-
-        .step-intro {
-          padding: 16px;
-          margin-bottom: 25px;
-        }
-
-        .step-intro h2 {
-          font-size: 20px;
-        }
-
-        .step-intro p {
-          font-size: 14px;
-        }
-
-        .grid-2 {
-          grid-template-columns: 1fr;
-        }
-
-        /* Keep time inputs on same line */
-        .step-container[data-step="2"] .grid-2 {
-          grid-template-columns: 1fr 1fr;
-          gap: 12px;
-        }
-
-        .step-navigation {
-          flex-direction: column-reverse;
-          gap: 12px;
-          margin-top: 30px;
-          padding-top: 20px;
-        }
-
-        .nav-btn {
-          padding: 14px 24px;
-          font-size: 15px;
-        }
-
-        .stepper-container {
-          max-width: 100%;
-          padding: 14px 16px;
-          gap: 12px;
-        }
-
-        .stepper-btn {
-          width: 48px;
-          height: 48px;
-          font-size: 22px;
-        }
-
-        .stepper-value {
-          font-size: 28px;
-          min-width: 50px;
-          padding: 6px 12px;
-        }
-
-        .calendar-grid {
-          gap: 2px;
-        }
-
-        .calendar-day {
-          padding: 4px;
-          min-height: 45px;
-          max-height: 60px;
-        }
-
-        .calendar-day-number {
-          font-size: 12px;
-        }
-
-        .calendar-day-header {
-          font-size: 9px;
-          padding: 6px 2px;
-        }
-
-        .date-picker-scroll {
-          padding: 16px;
-        }
-
-        .calendar-month-section {
-          margin-bottom: 24px;
-        }
-      }
-
-      /* Very Small Screens */
-      @media (max-width: 400px) {
-        .calendar-day {
-          min-height: 40px;
-          max-height: 50px;
-          padding: 2px;
-        }
-
-        .calendar-day-number {
-          font-size: 11px;
+        @media (max-width: 400px) {
+          .calendar-day { min-height: 40px; max-height: 50px; padding: 2px; }
+          .calendar-day-number { font-size: 11px; }
         }
       }
     </style>
   </head>
   <body>
     <div class="container">
+
+      <!-- ══ HEADER ══ -->
       <div class="header">
         <div class="header-content">
+
+          <!-- Logo + home badge -->
           <div class="header-left">
             <a href="index.html" class="logo-link" aria-label="Ir al inicio">
               <img src="https://i.imgur.com/L8KoquC.jpg" alt="Logo Apart Hotel Najos" class="logo">
@@ -1663,12 +830,19 @@
               </span>
             </a>
           </div>
-          <div class="header-right">
+
+          <!-- Title + cabin name -->
+          <div class="header-center">
             <h1>Registro de Huéspedes</h1>
-            <div class="cabin-badge">🏡 Apart Hotel Najos-2</div>
+            <p class="header-subtitle">🏡 Apart Hotel Najos-2</p>
           </div>
+
+          <!-- empty right to keep layout balanced -->
+          <div class="header-right" style="width:80px;"></div>
+
         </div>
       </div>
+      <!-- ══ END HEADER ══ -->
 
       <div class="banner-container">
         <img
@@ -1685,19 +859,16 @@
           <div class="progress-line">
             <div class="progress-line-fill" id="progressFill"></div>
           </div>
-
           <div class="progress-step active" data-step="1">
             <div class="progress-circle">1</div>
             <div class="progress-label">Bienvenidos</div>
             <div class="progress-icon">🌴</div>
           </div>
-
           <div class="progress-step" data-step="2">
             <div class="progress-circle">2</div>
             <div class="progress-label">Tu Estadía</div>
             <div class="progress-icon">🏖️</div>
           </div>
-
           <div class="progress-step" data-step="3">
             <div class="progress-circle">3</div>
             <div class="progress-label">Confirmación</div>
@@ -1708,70 +879,33 @@
 
       <div class="form-content">
         <div id="successMessage" class="message success-message"></div>
-        <div id="errorMessage" class="message error-message"></div>
+        <div id="errorMessage"   class="message error-message"></div>
 
         <form id="registrationForm">
-          <!-- Step 1: Welcome -->
+          <!-- Step 1 -->
           <div class="step-container active" data-step="1">
             <div class="step-intro">
-              <h2>🌴 ¡Bienvenidos a Apart Hotel Najos-2 !</h2>
-              <p>
-                Solo necesitamos unos datos básicos para prepararte una llegada
-                perfecta el registro.
-              </p>
+              <h2>🌴 ¡Bienvenidos a Apart Hotel Najos-2!</h2>
+              <p>Solo necesitamos unos datos básicos para prepararte una llegada perfecta.</p>
             </div>
-
             <div class="grid-2">
               <div class="form-group">
-                <label for="nombre"
-                  >Nombre(s) <span class="required">*</span></label
-                >
-                <input
-                  type="text"
-                  id="nombre"
-                  name="nombre"
-                  required
-                  placeholder="Ej: Juan Carlos"
-                  autocomplete="given-name"
-                />
+                <label for="nombre">Nombre(s) <span class="required">*</span></label>
+                <input type="text" id="nombre" name="nombre" required placeholder="Ej: Juan Carlos" autocomplete="given-name" />
               </div>
               <div class="form-group">
-                <label for="apellido"
-                  >Apellido(s) <span class="required">*</span></label
-                >
-                <input
-                  type="text"
-                  id="apellido"
-                  name="apellido"
-                  required
-                  placeholder="Ej: García López"
-                  autocomplete="family-name"
-                />
+                <label for="apellido">Apellido(s) <span class="required">*</span></label>
+                <input type="text" id="apellido" name="apellido" required placeholder="Ej: García López" autocomplete="family-name" />
               </div>
             </div>
-
             <div class="form-group">
-              <label for="celular"
-                >Celular <span class="required">*</span></label
-              >
-              <input
-                type="tel"
-                id="celular"
-                name="celular"
-                required
-                placeholder="Ej: 300 123 4567"
-                autocomplete="tel"
-              />
-              <div class="helper-text">
-                Te contactaremos por WhatsApp para coordinar tu llegada
-              </div>
+              <label for="celular">Celular <span class="required">*</span></label>
+              <input type="tel" id="celular" name="celular" required placeholder="Ej: 300 123 4567" autocomplete="tel" />
+              <div class="helper-text">Te contactaremos por WhatsApp para coordinar tu llegada</div>
             </div>
-
             <div class="grid-2">
               <div class="form-group">
-                <label for="tipoId"
-                  >Tipo de Identificación <span class="required">*</span></label
-                >
+                <label for="tipoId">Tipo de Identificación <span class="required">*</span></label>
                 <select id="tipoId" name="tipoId" required>
                   <option value="">Seleccione una opción</option>
                   <option value="cc">Cédula de Ciudadanía</option>
@@ -1780,161 +914,75 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="numeroId"
-                  >Número de Documento <span class="required">*</span></label
-                >
-                <input
-                  type="text"
-                  id="numeroId"
-                  name="numeroId"
-                  required
-                  placeholder="Ej: 1234567890"
-                  autocomplete="off"
-                />
+                <label for="numeroId">Número de Documento <span class="required">*</span></label>
+                <input type="text" id="numeroId" name="numeroId" required placeholder="Ej: 1234567890" autocomplete="off" />
               </div>
             </div>
-
             <div class="form-group">
-              <label for="ciudad"
-                >Ciudad de Procedencia <span class="required">*</span></label
-              >
-              <input
-                type="text"
-                id="ciudad"
-                name="ciudad"
-                required
-                placeholder="Ej: Bogotá, Medellín, Cali"
-                autocomplete="address-level2"
-              />
+              <label for="ciudad">Ciudad de Procedencia <span class="required">*</span></label>
+              <input type="text" id="ciudad" name="ciudad" required placeholder="Ej: Bogotá, Medellín, Cali" autocomplete="address-level2" />
             </div>
           </div>
-          <!-- End Step 1 -->
 
-<!-- Step 2: Stay Details -->
-<div class="step-container" data-step="2">
-<div class="step-intro">
-<h2>🌊 ¡Genial! Ahora dime cuándo vienes a disfrutar los charcos</h2>
-<p>
-Selecciona tus fechas de entrada y salida en nuestro calendario
-interactivo.
-</p>
-</div>
-
+          <!-- Step 2 -->
+          <div class="step-container" data-step="2">
+            <div class="step-intro">
+              <h2>🌊 ¡Genial! Ahora dime cuándo vienes</h2>
+              <p>Selecciona tus fechas de entrada y salida en nuestro calendario interactivo.</p>
+            </div>
             <div class="form-group">
               <label>Fechas de Estadía <span class="required">*</span></label>
               <div class="date-picker-trigger" onclick="openDatePickerModal()">
-                <span id="dateDisplayText" class="placeholder"
-                  >Selecciona tus fechas</span
-                >
+                <span id="dateDisplayText" class="placeholder">Selecciona tus fechas</span>
                 <span class="calendar-icon">📅</span>
               </div>
-              <input
-                type="hidden"
-                id="fechaEntrada"
-                name="fechaEntrada"
-                required
-              />
-              <input
-                type="hidden"
-                id="fechaSalida"
-                name="fechaSalida"
-                required
-              />
+              <input type="hidden" id="fechaEntrada" name="fechaEntrada" required />
+              <input type="hidden" id="fechaSalida"  name="fechaSalida"  required />
             </div>
-
             <div class="grid-2">
               <div class="form-group">
-                <label for="horaEntrada"
-                  >Hora de Entrada <span class="required">*</span></label
-                >
-                <input
-                  type="time"
-                  id="horaEntrada"
-                  name="horaEntrada"
-                  min="14:00"
-                  max="21:00"
-                  required
-                />
+                <label for="horaEntrada">Hora de Entrada <span class="required">*</span></label>
+                <input type="time" id="horaEntrada" name="horaEntrada" min="14:00" max="21:00" required />
                 <div class="helper-text">Entre 2:00 PM y 9:00 PM</div>
               </div>
-
               <div class="form-group">
-                <label for="horaSalida"
-                  >Hora de Salida <span class="required">*</span></label
-                >
-                <input
-                  type="time"
-                  id="horaSalida"
-                  name="horaSalida"
-                  max="13:00"
-                  required
-                />
+                <label for="horaSalida">Hora de Salida <span class="required">*</span></label>
+                <input type="time" id="horaSalida" name="horaSalida" max="13:00" required />
                 <div class="helper-text">Antes de 1:00 PM</div>
               </div>
             </div>
           </div>
 
-          <!-- Step 3: Companions & Consent -->
+          <!-- Step 3 -->
           <div class="step-container" data-step="3">
             <div class="step-intro">
               <h2>👨‍👩‍👧‍👦 Casi listos... completa los datos de tu grupo</h2>
-              <p>
-                Indica cuántos acompañantes tienes y completa su información.
-              </p>
+              <p>Indica cuántos acompañantes tienes y completa su información.</p>
             </div>
-
             <div class="form-group">
-              <label for="totalHuespedes"
-                >Número Total de Acompañantes
-                <span class="required">*</span></label
-              >
+              <label for="totalHuespedes">Número Total de Acompañantes <span class="required">*</span></label>
               <div class="stepper-container">
-                <button type="button" class="stepper-btn" id="decreaseBtn">
-                  −
-                </button>
+                <button type="button" class="stepper-btn" id="decreaseBtn">−</button>
                 <div class="stepper-value" id="stepperValue">0</div>
-                <button type="button" class="stepper-btn" id="increaseBtn">
-                  +
-                </button>
+                <button type="button" class="stepper-btn" id="increaseBtn">+</button>
               </div>
-              <input
-                type="hidden"
-                id="totalHuespedes"
-                name="totalHuespedes"
-                value="0"
-                required
-              />
-              <div class="helper-text">
-                Máximo 3 acompañantes (sin incluirte a ti)
-              </div>
+              <input type="hidden" id="totalHuespedes" name="totalHuespedes" value="0" required />
+              <div class="helper-text">Máximo 3 acompañantes (sin incluirte a ti)</div>
             </div>
-
             <div class="companions-container" id="companionsContainer"></div>
-
             <div style="margin-top: 40px">
               <div class="checkbox-group" id="consentGroup">
                 <input type="checkbox" id="consent" name="consent" required />
                 <label for="consent">
-                  Autorizo el tratamiento de mis datos personales por Aptos
-                  Najos-2 conforme a la ley colombiana.
+                  Autorizo el tratamiento de mis datos personales por Aptos Najos-2 conforme a la ley colombiana.
                   <span class="required">*</span>
-                  <br /><small
-                    style="
-                      color: #742a2a;
-                      margin-top: 6px;
-                      display: block;
-                      font-weight: 400;
-                    "
-                  >
-                    Al marcar acepto la política de privacidad y el manejo
-                    responsable de mi información.
+                  <br /><small style="color:#742a2a; margin-top:6px; display:block; font-weight:400;">
+                    Al marcar acepto la política de privacidad y el manejo responsable de mi información.
                   </small>
                 </label>
               </div>
             </div>
-
-            <!-- Summary Box -->
-            <div class="summary-box" id="summaryBox" style="display: none">
+            <div class="summary-box" id="summaryBox" style="display:none">
               <div class="summary-title">📋 Resumen de tu Registro</div>
               <div id="summaryContent"></div>
             </div>
@@ -1942,120 +990,58 @@ interactivo.
 
           <!-- Navigation -->
           <div class="step-navigation">
-            <button
-              type="button"
-              class="nav-btn btn-back"
-              id="btnBack"
-              style="display: none"
-            >
-              ← Volver
-            </button>
-            <button type="button" class="nav-btn btn-next" id="btnNext">
-              Siguiente →
-            </button>
-            <button
-              type="submit"
-              class="nav-btn btn-submit"
-              id="btnSubmit"
-              style="display: none"
-            >
-              ✓ Enviar Registro
-            </button>
+            <button type="button" class="nav-btn btn-back" id="btnBack" style="display:none">← Volver</button>
+            <button type="button" class="nav-btn btn-next" id="btnNext">Siguiente →</button>
+            <button type="submit"  class="nav-btn btn-submit" id="btnSubmit" style="display:none">✓ Enviar Registro</button>
           </div>
         </form>
       </div>
     </div>
 
-    <!-- Date Picker Calendar Modal -->
+    <!-- Date Picker Modal -->
     <div id="datePickerModal" class="date-picker-modal">
       <div class="date-picker-content">
         <div class="date-picker-header">
           <h3>📅 Selecciona tus Fechas</h3>
           <div class="date-selection-buttons">
             <div class="date-btn-wrapper">
-              <button
-                type="button"
-                class="date-selection-btn active"
-                id="checkInBtn"
-              >
+              <button type="button" class="date-selection-btn active" id="checkInBtn">
                 <span class="label">Check-in</span>
                 <span class="value" id="checkInDisplay">Añadir fecha</span>
               </button>
-              <button
-                type="button"
-                class="date-reset-btn"
-                id="resetCheckIn"
-                title="Limpiar fecha"
-              >
-                ×
-              </button>
+              <button type="button" class="date-reset-btn" id="resetCheckIn" title="Limpiar fecha">×</button>
             </div>
             <div class="date-btn-wrapper">
               <button type="button" class="date-selection-btn" id="checkOutBtn">
                 <span class="label">Check-out</span>
                 <span class="value" id="checkOutDisplay">Añadir fecha</span>
               </button>
-              <button
-                type="button"
-                class="date-reset-btn"
-                id="resetCheckOut"
-                title="Limpiar fecha"
-              >
-                ×
-              </button>
+              <button type="button" class="date-reset-btn" id="resetCheckOut" title="Limpiar fecha">×</button>
             </div>
           </div>
-          <button class="modal-close" onclick="closeDatePickerModal()">
-            ✕
-          </button>
+          <button class="modal-close" onclick="closeDatePickerModal()">✕</button>
         </div>
         <div class="date-picker-body">
           <div class="date-picker-scroll" id="datePickerScroll"></div>
           <div class="calendar-legend">
-            <div class="legend-item legend-always-show">
+            <div class="legend-item">
               <div class="legend-color available"></div>
               <span>Disponible</span>
             </div>
-            <div class="legend-item legend-always-show">
+            <div class="legend-item">
               <div class="legend-color selected"></div>
               <span>Seleccionado</span>
             </div>
           </div>
-          <div
-            style="
-              padding: 16px 24px;
-              background: white;
-              border-top: 1px solid #e5e7eb;
-            "
-          >
+          <div style="padding:16px 24px; background:white; border-top:1px solid #e5e7eb;">
             <button
               type="button"
               id="confirmDatesBtn"
               onclick="confirmDatesAndClose()"
-              style="
-                width: 100%;
-                padding: 14px 24px;
-                background: linear-gradient(135deg, #0077BE 0%, #4DA8DA 100%);
-                color: white;
-                border: none;
-                border-radius: 12px;
-                font-size: 16px;
-                font-weight: 700;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-              "
-              onmouseover="
-                this.style.transform = 'translateY(-2px)';
-                this.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.5)';
-              "
-              onmouseout="
-                this.style.transform = 'translateY(0)';
-                this.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.4)';
-              "
-            >
-              ✓ Confirmar Fechas
-            </button>
+              style="width:100%;padding:14px 24px;background:linear-gradient(135deg,#0077BE 0%,#4DA8DA 100%);color:white;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.3s ease;box-shadow:0 4px 12px rgba(102,126,234,0.4);"
+              onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(102,126,234,0.5)'"
+              onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 12px rgba(102,126,234,0.4)'"
+            >✓ Confirmar Fechas</button>
           </div>
         </div>
       </div>
@@ -2064,12 +1050,7 @@ interactivo.
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import {
-        getFirestore,
-        collection,
-        addDoc,
-        serverTimestamp,
-        getDocs,
-        doc, // ✅ ADD THIS
+        getFirestore, collection, addDoc, serverTimestamp, getDocs, doc,
       } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -2083,14 +1064,13 @@ interactivo.
       };
 
       const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
+      const db  = getFirestore(app);
 
-      // State
       let currentStep = 1;
       let companions = [];
       let companionFilledStatus = {};
       const maxCompanions = 3;
-      let selectedCheckIn = null;
+      let selectedCheckIn  = null;
       let selectedCheckOut = null;
       let selectingCheckIn = true;
       let bookedDates = [];
@@ -2099,110 +1079,62 @@ interactivo.
       function showToast(message) {
         const toast = document.createElement("div");
         toast.innerHTML = message;
-        toast.style.cssText = `
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
-          color: white;
-          padding: 16px 24px;
-          border-radius: 12px;
-          box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
-          z-index: 9999;
-          font-weight: 600;
-          animation: slideInRight 0.3s ease;
-          max-width: 400px;
-          line-height: 1.5;
-        `;
+        toast.style.cssText = `position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#f56565 0%,#e53e3e 100%);color:white;padding:16px 24px;border-radius:12px;box-shadow:0 4px 12px rgba(245,101,101,0.4);z-index:9999;font-weight:600;max-width:400px;line-height:1.5;font-family:Poppins,sans-serif;`;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 5000);
       }
 
-      // Reset date functions
-      // Reset date functions - attach to window
-      window.resetCheckInDate = function (event) {
-        if (event) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-        selectedCheckIn = null;
-        selectedCheckOut = null;
-        selectingCheckIn = true;
-        updateDateDisplay();
-        renderCalendar();
+      window.resetCheckInDate = function(event) {
+        if (event) { event.preventDefault(); event.stopPropagation(); }
+        selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
+        updateDateDisplay(); renderCalendar();
       };
 
-      window.resetCheckOutDate = function (event) {
-        if (event) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-        selectedCheckOut = null;
-        selectingCheckIn = false;
-        updateDateDisplay();
-        renderCalendar();
+      window.resetCheckOutDate = function(event) {
+        if (event) { event.preventDefault(); event.stopPropagation(); }
+        selectedCheckOut = null; selectingCheckIn = false;
+        updateDateDisplay(); renderCalendar();
       };
 
-      // Add event listeners for reset buttons after DOM loads
-      document
-        .getElementById("resetCheckIn")
-        .addEventListener("click", resetCheckInDate);
-      document
-        .getElementById("resetCheckOut")
-        .addEventListener("click", resetCheckOutDate);
+      document.getElementById("resetCheckIn").addEventListener("click", resetCheckInDate);
+      document.getElementById("resetCheckOut").addEventListener("click", resetCheckOutDate);
 
-      // Elements
-      const form = document.getElementById("registrationForm");
-      const btnNext = document.getElementById("btnNext");
-      const btnBack = document.getElementById("btnBack");
-      const btnSubmit = document.getElementById("btnSubmit");
-      const progressFill = document.getElementById("progressFill");
-      const successMessage = document.getElementById("successMessage");
-      const errorMessage = document.getElementById("errorMessage");
-      const companionsContainer = document.getElementById(
-        "companionsContainer",
-      );
-      const summaryBox = document.getElementById("summaryBox");
-      const summaryContent = document.getElementById("summaryContent");
+      const form            = document.getElementById("registrationForm");
+      const btnNext         = document.getElementById("btnNext");
+      const btnBack         = document.getElementById("btnBack");
+      const btnSubmit       = document.getElementById("btnSubmit");
+      const progressFill    = document.getElementById("progressFill");
+      const successMessage  = document.getElementById("successMessage");
+      const errorMessage    = document.getElementById("errorMessage");
+      const companionsContainer = document.getElementById("companionsContainer");
+      const summaryBox      = document.getElementById("summaryBox");
+      const summaryContent  = document.getElementById("summaryContent");
       const totalHuespedesInput = document.getElementById("totalHuespedes");
       const consentCheckbox = document.getElementById("consent");
-      const consentGroup = document.getElementById("consentGroup");
-      const horaEntrada = document.getElementById("horaEntrada");
-      const horaSalida = document.getElementById("horaSalida");
+      const consentGroup    = document.getElementById("consentGroup");
+      const horaEntrada     = document.getElementById("horaEntrada");
+      const horaSalida      = document.getElementById("horaSalida");
 
-      // Set default time values
-      setTimeout(() => {
-        horaEntrada.value = "14:00";
-        horaSalida.value = "13:00";
-      }, 0);
+      setTimeout(() => { horaEntrada.value = "14:00"; horaSalida.value = "13:00"; }, 0);
 
-      // Validate time inputs
-      horaEntrada.addEventListener("change", function () {
-        const time = this.value;
-        if (time < "14:00" || time > "21:00") {
+      horaEntrada.addEventListener("change", function() {
+        if (this.value < "14:00" || this.value > "21:00") {
           showToast("⏰ La hora de entrada debe ser entre 2:00 PM y 9:00 PM");
           this.value = "14:00";
         }
       });
 
-      horaSalida.addEventListener("change", function () {
-        const time = this.value;
-        if (time > "13:00") {
+      horaSalida.addEventListener("change", function() {
+        if (this.value > "13:00") {
           showToast("⏰ La hora de salida debe ser antes de 1:00 PM");
           this.value = "13:00";
         }
       });
 
-      // Consent checkbox color change
-      consentCheckbox.addEventListener("change", function () {
-        if (this.checked) {
-          consentGroup.classList.add("checked");
-        } else {
-          consentGroup.classList.remove("checked");
-        }
+      consentCheckbox.addEventListener("change", function() {
+        consentGroup.classList.toggle("checked", this.checked);
       });
 
-      // Stepper functionality
       const decreaseBtn = document.getElementById("decreaseBtn");
       const increaseBtn = document.getElementById("increaseBtn");
       const stepperValue = document.getElementById("stepperValue");
@@ -2217,236 +1149,130 @@ interactivo.
         currentCompanionCount = newCount;
         stepperValue.textContent = newCount;
         totalHuespedesInput.value = newCount;
-
         updateStepperButtons();
-
         companionsContainer.innerHTML = "";
-        companions = [];
-        companionFilledStatus = {};
-
+        companions = []; companionFilledStatus = {};
         for (let i = 0; i < newCount; i++) {
           companions.push(i);
           companionFilledStatus[i] = false;
-          const card = createCompanionCard(i);
-          companionsContainer.appendChild(card);
+          companionsContainer.appendChild(createCompanionCard(i));
         }
       }
 
-      decreaseBtn.addEventListener("click", function () {
-        if (currentCompanionCount > 0) {
-          updateCompanions(currentCompanionCount - 1);
-        }
+      decreaseBtn.addEventListener("click", () => { if (currentCompanionCount > 0) updateCompanions(currentCompanionCount - 1); });
+      increaseBtn.addEventListener("click", () => {
+        if (currentCompanionCount < maxCompanions) updateCompanions(currentCompanionCount + 1);
+        else showToast(`👥 Máximo ${maxCompanions} acompañantes permitidos`);
       });
-
-      increaseBtn.addEventListener("click", function () {
-        if (currentCompanionCount < maxCompanions) {
-          updateCompanions(currentCompanionCount + 1);
-        } else {
-          showToast(`👥 Máximo ${maxCompanions} acompañantes permitidos`);
-        }
-      });
-
       updateStepperButtons();
 
-      // Step Navigation
       function updateProgress() {
-        const progress = ((currentStep - 1) / 2) * 100;
-        progressFill.style.width = progress + "%";
+        progressFill.style.width = ((currentStep - 1) / 2 * 100) + "%";
         document.querySelectorAll(".progress-step").forEach((step, index) => {
-          const stepNum = index + 1;
+          const n = index + 1;
           step.classList.remove("active", "completed");
-          if (stepNum < currentStep) {
+          if (n < currentStep) {
             step.classList.add("completed");
             step.querySelector(".progress-circle").textContent = "✓";
-          } else if (stepNum === currentStep) {
+          } else if (n === currentStep) {
             step.classList.add("active");
-            step.querySelector(".progress-circle").textContent = stepNum;
+            step.querySelector(".progress-circle").textContent = n;
           } else {
-            step.querySelector(".progress-circle").textContent = stepNum;
+            step.querySelector(".progress-circle").textContent = n;
           }
         });
       }
 
       function showStep(step) {
-        document.querySelectorAll(".step-container").forEach((container) => {
-          container.classList.remove("active");
-        });
-        document
-          .querySelector(`.step-container[data-step="${step}"]`)
-          .classList.add("active");
-
-        btnBack.style.display = step === 1 ? "none" : "block";
-        btnNext.style.display = step === 3 ? "none" : "block";
+        document.querySelectorAll(".step-container").forEach(c => c.classList.remove("active"));
+        document.querySelector(`.step-container[data-step="${step}"]`).classList.add("active");
+        btnBack.style.display   = step === 1 ? "none" : "block";
+        btnNext.style.display   = step === 3 ? "none" : "block";
         btnSubmit.style.display = step === 3 ? "block" : "none";
-
-        if (step === 3) {
-          updateSummary();
-          summaryBox.style.display = "block";
-        } else {
-          summaryBox.style.display = "none";
-        }
-
-        // Preload booked dates when entering Step 2
-        if (step === 2 && !bookedDatesLoaded) {
-          loadBookedDates().then(() => {
-            bookedDatesLoaded = true;
-            console.log("Booked dates preloaded for Step 2");
-          });
-        }
-
+        summaryBox.style.display = step === 3 ? "block" : "none";
+        if (step === 3) updateSummary();
+        if (step === 2 && !bookedDatesLoaded) loadBookedDates().then(() => { bookedDatesLoaded = true; });
         updateProgress();
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
       function validateStep(step) {
-        const stepContainer = document.querySelector(
-          `.step-container[data-step="${step}"]`,
-        );
-        const requiredInputs = stepContainer.querySelectorAll("[required]");
-
-        for (let input of requiredInputs) {
+        const container = document.querySelector(`.step-container[data-step="${step}"]`);
+        for (let input of container.querySelectorAll("[required]")) {
           if (input.type === "checkbox") {
-            if (!input.checked) {
-              input.focus();
-              showToast("⚠️ Por favor acepta los términos para continuar");
-              return false;
-            }
+            if (!input.checked) { input.focus(); showToast("⚠️ Por favor acepta los términos para continuar"); return false; }
           } else if (input.tagName === "SELECT") {
-            if (!input.value || input.value === "") {
-              input.focus();
-              input.reportValidity();
-              showToast("⚠️ Por favor completa todos los campos obligatorios");
-              return false;
-            }
+            if (!input.value) { input.focus(); input.reportValidity(); showToast("⚠️ Por favor completa todos los campos obligatorios"); return false; }
           } else if (input.type !== "hidden") {
-            if (!input.value.trim()) {
-              input.focus();
-              input.reportValidity();
-              showToast("⚠️ Por favor completa todos los campos obligatorios");
-              return false;
-            }
+            if (!input.value.trim()) { input.focus(); input.reportValidity(); showToast("⚠️ Por favor completa todos los campos obligatorios"); return false; }
           }
         }
         return true;
       }
 
-      // Close success modal function
-      window.closeSuccessModal = function () {
+      window.closeSuccessModal = function() {
         const modal = document.getElementById("successModal");
         if (modal) {
           modal.style.animation = "fadeOut 0.3s ease";
           setTimeout(() => {
-            modal.remove();
-            form.reset();
-            companions = [];
-            companionFilledStatus = {};
+            modal.remove(); form.reset();
+            companions = []; companionFilledStatus = {};
             companionsContainer.innerHTML = "";
             consentGroup.classList.remove("checked");
-            currentStep = 1;
-            currentCompanionCount = 0;
-            stepperValue.textContent = "0";
-            totalHuespedesInput.value = "0";
+            currentStep = 1; currentCompanionCount = 0;
+            stepperValue.textContent = "0"; totalHuespedesInput.value = "0";
             updateStepperButtons();
-            selectedCheckIn = null;
-            selectedCheckOut = null;
-            selectingCheckIn = true;
+            selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
             updateDateDisplay();
-            // Reset default times for next guest
-            horaEntrada.value = "14:00";
-            horaSalida.value = "13:00";
+            horaEntrada.value = "14:00"; horaSalida.value = "13:00";
             showStep(1);
           }, 300);
         }
       };
 
-      // Show banner in lightbox
-      window.showBannerLightbox = function () {
-        const lightboxHTML = `
+      window.showBannerLightbox = function() {
+        document.body.insertAdjacentHTML("beforeend", `
           <div class="lightbox-overlay" onclick="this.remove()">
             <div class="lightbox-content" onclick="event.stopPropagation()">
               <button class="lightbox-close" onclick="this.closest('.lightbox-overlay').remove()">×</button>
               <img src="https://imgur.com/dVlUrNm.jpg" alt="Apto Najos-2" class="lightbox-image" />
             </div>
           </div>
-        `;
-        document.body.insertAdjacentHTML("beforeend", lightboxHTML);
+        `);
       };
 
-      // Show map in lightbox
-      window.showMapModal = function (imageUrl, mapNumber) {
-        const lightboxHTML = `
+      window.showMapModal = function(imageUrl) {
+        document.body.insertAdjacentHTML("beforeend", `
           <div class="lightbox-overlay" onclick="this.remove()">
             <div class="lightbox-content" onclick="event.stopPropagation()">
               <button class="lightbox-close" onclick="this.closest('.lightbox-overlay').remove()">×</button>
               <img src="${imageUrl}" alt="Mapa de Sitios" class="lightbox-image" />
-              <div style="
-                background: rgba(255, 255, 255, 0.95);
-                color: #2d3748;
-                padding: 16px 20px;
-                border-radius: 12px;
-                margin-top: 20px;
-                text-align: center;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-              ">
-                <div style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">📸 Para guardar el mapa:</div>
-                <div style="font-size: 14px; color: #4a5568; line-height: 1.5;">
-                  Mantén presionada la imagen y selecciona<br>"Guardar imagen" o "Descargar imagen"
-                </div>
+              <div style="background:rgba(255,255,255,0.95);color:#2d3748;padding:16px 20px;border-radius:12px;margin-top:20px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                <div style="font-size:16px;font-weight:700;margin-bottom:6px;">📸 Para guardar el mapa:</div>
+                <div style="font-size:14px;color:#4a5568;line-height:1.5;">Mantén presionada la imagen y selecciona<br>"Guardar imagen" o "Descargar imagen"</div>
               </div>
             </div>
           </div>
-        `;
-        document.body.insertAdjacentHTML("beforeend", lightboxHTML);
+        `);
       };
 
-      btnNext.addEventListener("click", () => {
-        if (validateStep(currentStep)) {
-          currentStep++;
-          showStep(currentStep);
-        }
-      });
+      btnNext.addEventListener("click", () => { if (validateStep(currentStep)) { currentStep++; showStep(currentStep); } });
+      btnBack.addEventListener("click", () => { currentStep--; showStep(currentStep); });
 
-      btnBack.addEventListener("click", () => {
-        currentStep--;
-        showStep(currentStep);
-      });
-
-      // Check if all companion fields are filled
       function checkCompanionFilled(index) {
-        const card = document.querySelector(
-          `[data-companion-index="${index}"]`,
-        );
+        const card = document.querySelector(`[data-companion-index="${index}"]`);
         if (!card) return false;
-
-        const nombre = card
-          .querySelector(`[name="acomp${index}Nombre"]`)
-          .value.trim();
-        const apellido = card
-          .querySelector(`[name="acomp${index}Apellido"]`)
-          .value.trim();
-        const tipoId = card.querySelector(`[name="acomp${index}TipoId"]`).value;
-        const numId = card
-          .querySelector(`[name="acomp${index}NumId"]`)
-          .value.trim();
-
+        const nombre   = card.querySelector(`[name="acomp${index}Nombre"]`).value.trim();
+        const apellido = card.querySelector(`[name="acomp${index}Apellido"]`).value.trim();
+        const tipoId   = card.querySelector(`[name="acomp${index}TipoId"]`).value;
+        const numId    = card.querySelector(`[name="acomp${index}NumId"]`).value.trim();
         const isFilled = nombre && apellido && tipoId && numId;
-
-        if (isFilled) {
-          card.classList.add("filled");
-          companionFilledStatus[index] = true;
-        } else {
-          card.classList.remove("filled");
-          companionFilledStatus[index] = false;
-        }
-
-        if (currentStep === 3) {
-          updateSummary();
-        }
-
+        card.classList.toggle("filled", isFilled);
+        companionFilledStatus[index] = isFilled;
+        if (currentStep === 3) updateSummary();
         return isFilled;
       }
 
-      // Companion Management
       function createCompanionCard(index) {
         const card = document.createElement("div");
         card.className = "companion-card";
@@ -2482,302 +1308,134 @@ interactivo.
             </div>
           </div>
         `;
-
         setTimeout(() => {
-          const fields = card.querySelectorAll(".companion-field");
-          fields.forEach((field) => {
-            field.addEventListener("input", () => checkCompanionFilled(index));
-            field.addEventListener("change", () => checkCompanionFilled(index));
+          card.querySelectorAll(".companion-field").forEach(f => {
+            f.addEventListener("input",  () => checkCompanionFilled(index));
+            f.addEventListener("change", () => checkCompanionFilled(index));
           });
         }, 0);
-
         return card;
       }
 
-      // Summary
       function updateSummary() {
         const formData = new FormData(form);
-        const nombre = formData.get("nombre");
+        const nombre   = formData.get("nombre");
         const apellido = formData.get("apellido");
-
-        const filledCompanions = Object.values(companionFilledStatus).filter(
-          (status) => status === true,
-        ).length;
-
-        let summaryHTML = `
-          <div class="summary-item">
-            <span class="summary-label">Huésped Principal:</span>
-            <span class="summary-value">${nombre} ${apellido}</span>
-          </div>
+        const filled   = Object.values(companionFilledStatus).filter(s => s).length;
+        let html = `
+          <div class="summary-item"><span class="summary-label">Huésped Principal:</span><span class="summary-value">${nombre} ${apellido}</span></div>
         `;
-
         if (selectedCheckIn && selectedCheckOut) {
-          summaryHTML += `
-            <div class="summary-item">
-              <span class="summary-label">Check-in:</span>
-              <span class="summary-value">${formatDateNice(selectedCheckIn)} a las ${horaEntrada.value}</span>
-            </div>
-            <div class="summary-item">
-              <span class="summary-label">Check-out:</span>
-              <span class="summary-value">${formatDateNice(selectedCheckOut)} a las ${horaSalida.value}</span>
-            </div>
+          html += `
+            <div class="summary-item"><span class="summary-label">Check-in:</span><span class="summary-value">${formatDateNice(selectedCheckIn)} a las ${horaEntrada.value}</span></div>
+            <div class="summary-item"><span class="summary-label">Check-out:</span><span class="summary-value">${formatDateNice(selectedCheckOut)} a las ${horaSalida.value}</span></div>
           `;
         }
-
-        summaryHTML += `
-          <div class="summary-item">
-            <span class="summary-label">Acompañantes:</span>
-            <span class="summary-value">${filledCompanions} registrado(s)</span>
-          </div>
-        `;
-
-        companions.forEach((idx) => {
+        html += `<div class="summary-item"><span class="summary-label">Acompañantes:</span><span class="summary-value">${filled} registrado(s)</span></div>`;
+        companions.forEach(idx => {
           if (companionFilledStatus[idx]) {
-            const nombre = formData.get(`acomp${idx}Nombre`);
-            const apellido = formData.get(`acomp${idx}Apellido`);
-            summaryHTML += `
-              <div class="summary-item">
-                <span class="summary-label">Acompañante ${idx + 1}:</span>
-                <span class="summary-value">${nombre} ${apellido}</span>
-              </div>
-            `;
+            html += `<div class="summary-item"><span class="summary-label">Acompañante ${idx+1}:</span><span class="summary-value">${formData.get(`acomp${idx}Nombre`)} ${formData.get(`acomp${idx}Apellido`)}</span></div>`;
           }
         });
-
-        summaryContent.innerHTML = summaryHTML;
+        summaryContent.innerHTML = html;
       }
 
-      // Date Picker Functions
       async function loadBookedDates() {
         try {
-          const querySnapshot = await getDocs(
-            collection(db, "cabin_availability"),
-          );
+          const querySnapshot = await getDocs(collection(db, "cabin_availability"));
           bookedDates = [];
-          window.checkoutDates = []; // Unshared checkout dates (available for check-in, half-colored left)
-          window.checkinDates = []; // Unshared check-in dates (NOT available for check-in, half-colored right)
-          window.middleDates = []; // Middle days of reservations (light gray)
-          window.sharedDates = []; // Shared checkout/check-in dates (full gray)
-
-          const checkInDates = []; // Track all check-in dates
-          const checkOutDates = []; // Track all checkout dates
-
-          // First pass: collect all check-in and check-out dates
-          querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            if (data.cabana === "Apto Najos-2") {
-              if (data.fechaInicio) {
-                checkInDates.push(data.fechaInicio);
-              }
-              if (data.fechaFin) {
-                checkOutDates.push(data.fechaFin);
-              }
+          window.checkoutDates = []; window.checkinDates = []; window.middleDates = []; window.sharedDates = [];
+          const checkInDates = []; const checkOutDates = [];
+          querySnapshot.forEach(doc => {
+            const d = doc.data();
+            if (d.cabana === "Apto Najos-2") {
+              if (d.fechaInicio) checkInDates.push(d.fechaInicio);
+              if (d.fechaFin)    checkOutDates.push(d.fechaFin);
             }
           });
-
-          // Second pass: categorize all dates
-          querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            if (
-              data.cabana === "Apto Najos-2" &&
-              data.fechaInicio &&
-              data.fechaFin
-            ) {
-              const start = new Date(data.fechaInicio);
-              const end = new Date(data.fechaFin);
-
-              // Check if check-in is shared with another checkout
-              const isCheckInShared = checkOutDates.includes(data.fechaInicio);
-              // Check if checkout is shared with another check-in
-              const isCheckOutShared = checkInDates.includes(data.fechaFin);
-
-              // Handle check-in date
-              if (isCheckInShared) {
-                // Shared check-in/checkout date - full gray
-                if (!window.sharedDates.includes(data.fechaInicio)) {
-                  window.sharedDates.push(data.fechaInicio);
-                }
-              } else {
-                // Unshared check-in - half gray (right side)
-                if (!window.checkinDates.includes(data.fechaInicio)) {
-                  window.checkinDates.push(data.fechaInicio);
-                }
+          querySnapshot.forEach(doc => {
+            const d = doc.data();
+            if (d.cabana === "Apto Najos-2" && d.fechaInicio && d.fechaFin) {
+              const start = new Date(d.fechaInicio); const end = new Date(d.fechaFin);
+              const isCheckInShared  = checkOutDates.includes(d.fechaInicio);
+              const isCheckOutShared = checkInDates.includes(d.fechaFin);
+              if (isCheckInShared) { if (!window.sharedDates.includes(d.fechaInicio)) window.sharedDates.push(d.fechaInicio); }
+              else { if (!window.checkinDates.includes(d.fechaInicio)) window.checkinDates.push(d.fechaInicio); }
+              for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
+                const s = dt.toISOString().split("T")[0];
+                if (s !== d.fechaInicio && s !== d.fechaFin && !window.middleDates.includes(s)) window.middleDates.push(s);
               }
-
-              // Handle middle dates (between check-in and checkout)
-              for (
-                let d = new Date(start);
-                d < end;
-                d.setDate(d.getDate() + 1)
-              ) {
-                const dateStr = d.toISOString().split("T")[0];
-                if (dateStr !== data.fechaInicio && dateStr !== data.fechaFin) {
-                  if (!window.middleDates.includes(dateStr)) {
-                    window.middleDates.push(dateStr);
-                  }
-                }
+              if (isCheckOutShared) { if (!window.sharedDates.includes(d.fechaFin)) window.sharedDates.push(d.fechaFin); }
+              else { if (!window.checkoutDates.includes(d.fechaFin)) window.checkoutDates.push(d.fechaFin); }
+              for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
+                const s = dt.toISOString().split("T")[0];
+                if (!bookedDates.includes(s)) bookedDates.push(s);
               }
-
-              // Handle checkout date
-              if (isCheckOutShared) {
-                // Shared checkout/check-in date - full gray
-                if (!window.sharedDates.includes(data.fechaFin)) {
-                  window.sharedDates.push(data.fechaFin);
-                }
-              } else {
-                // Unshared checkout - half gray (left side), available for new check-in
-                if (!window.checkoutDates.includes(data.fechaFin)) {
-                  window.checkoutDates.push(data.fechaFin);
-                }
-              }
-
-              // Add all booked dates (for backward compatibility)
-              for (
-                let d = new Date(start);
-                d < end;
-                d.setDate(d.getDate() + 1)
-              ) {
-                const dateStr = d.toISOString().split("T")[0];
-                if (!bookedDates.includes(dateStr)) {
-                  bookedDates.push(dateStr);
-                }
-              }
-              if (isCheckOutShared && !bookedDates.includes(data.fechaFin)) {
-                bookedDates.push(data.fechaFin);
-              }
+              if (isCheckOutShared && !bookedDates.includes(d.fechaFin)) bookedDates.push(d.fechaFin);
             }
           });
-
-          console.log(
-            "Loaded unshared check-in dates (half gray right):",
-            window.checkinDates,
-          );
-          console.log("Loaded middle dates (light gray):", window.middleDates);
-          console.log("Loaded shared dates (full gray):", window.sharedDates);
-          console.log(
-            "Loaded unshared checkout dates (half gray left, available):",
-            window.checkoutDates,
-          );
-        } catch (error) {
-          console.error("Error loading booked dates:", error);
-        }
+        } catch (err) { console.error("Error loading booked dates:", err); }
       }
 
-      window.openDatePickerModal = function () {
+      window.openDatePickerModal = function() {
         const modal = document.getElementById("datePickerModal");
-
-        // Show modal immediately
         modal.classList.add("show");
         document.body.style.overflow = "hidden";
-
-        // If data is already loaded, render immediately
-        if (bookedDatesLoaded) {
-          renderCalendar();
-        } else {
-          // Show loading state
-          const scroll = document.getElementById("datePickerScroll");
-          scroll.innerHTML =
-            '<div style="text-align: center; padding: 40px; color: #14b8a6; font-size: 18px;">⏳ Cargando disponibilidad...</div>';
-
-          // Load data if not already loaded
-          loadBookedDates().then(() => {
-            bookedDatesLoaded = true;
-            renderCalendar();
-          });
+        if (bookedDatesLoaded) { renderCalendar(); }
+        else {
+          document.getElementById("datePickerScroll").innerHTML = '<div style="text-align:center;padding:40px;color:#14b8a6;font-size:18px;">⏳ Cargando disponibilidad...</div>';
+          loadBookedDates().then(() => { bookedDatesLoaded = true; renderCalendar(); });
         }
       };
 
-      window.closeDatePickerModal = function () {
-        const modal = document.getElementById("datePickerModal");
-        modal.classList.remove("show");
+      window.closeDatePickerModal = function() {
+        document.getElementById("datePickerModal").classList.remove("show");
         document.body.style.overflow = "";
       };
 
-      window.confirmDatesAndClose = function () {
-        if (selectedCheckIn && selectedCheckOut) {
-          closeDatePickerModal();
-        } else {
-          showToast(
-            "⚠️ Por favor selecciona ambas fechas: check-in y check-out",
-          );
-        }
+      window.confirmDatesAndClose = function() {
+        if (selectedCheckIn && selectedCheckOut) closeDatePickerModal();
+        else showToast("⚠️ Por favor selecciona ambas fechas: check-in y check-out");
       };
 
       function formatDateNice(dateStr) {
-        const date = new Date(dateStr + "T00:00:00");
-        const options = { weekday: "short", day: "numeric", month: "short" };
-        return date.toLocaleDateString("es-ES", options);
+        return new Date(dateStr + "T00:00:00").toLocaleDateString("es-ES", { weekday:"short", day:"numeric", month:"short" });
       }
 
       function updateDateDisplay() {
-        const displayText = document.getElementById("dateDisplayText");
-        const trigger = document.querySelector(".date-picker-trigger");
-        const checkInDisplay = document.getElementById("checkInDisplay");
+        const displayText   = document.getElementById("dateDisplayText");
+        const trigger       = document.querySelector(".date-picker-trigger");
+        const checkInDisplay  = document.getElementById("checkInDisplay");
         const checkOutDisplay = document.getElementById("checkOutDisplay");
-        const confirmBtn = document.getElementById("confirmDatesBtn");
-        const checkInBtn = document.getElementById("checkInBtn");
-        const checkOutBtn = document.getElementById("checkOutBtn");
-        const resetCheckInBtn = document.getElementById("resetCheckIn");
-        const resetCheckOutBtn = document.getElementById("resetCheckOut");
+        const confirmBtn    = document.getElementById("confirmDatesBtn");
+        const checkInBtn    = document.getElementById("checkInBtn");
+        const checkOutBtn   = document.getElementById("checkOutBtn");
+        const resetCI  = document.getElementById("resetCheckIn");
+        const resetCO  = document.getElementById("resetCheckOut");
 
         if (selectedCheckIn && selectedCheckOut) {
           displayText.textContent = `${formatDateNice(selectedCheckIn)} → ${formatDateNice(selectedCheckOut)}`;
-          displayText.classList.remove("placeholder");
-          trigger.classList.add("has-value");
-
+          displayText.classList.remove("placeholder"); trigger.classList.add("has-value");
           checkInDisplay.textContent = formatDateNice(selectedCheckIn);
           checkOutDisplay.textContent = formatDateNice(selectedCheckOut);
-
-          // Show both reset buttons
-          if (resetCheckInBtn) resetCheckInBtn.classList.add("show");
-          if (resetCheckOutBtn) resetCheckOutBtn.classList.add("show");
-
-          // Enable confirm button
-          if (confirmBtn) {
-            confirmBtn.disabled = false;
-            confirmBtn.style.opacity = "1";
-          }
+          if (resetCI) resetCI.classList.add("show"); if (resetCO) resetCO.classList.add("show");
+          if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.style.opacity = "1"; }
         } else if (selectedCheckIn) {
           displayText.textContent = `${formatDateNice(selectedCheckIn)} → Selecciona check-out`;
-          displayText.classList.remove("placeholder");
-          trigger.classList.add("has-value");
-
+          displayText.classList.remove("placeholder"); trigger.classList.add("has-value");
           checkInDisplay.textContent = formatDateNice(selectedCheckIn);
           checkOutDisplay.textContent = "Añadir fecha";
-
-          // Show only check-in reset button
-          if (resetCheckInBtn) resetCheckInBtn.classList.add("show");
-          if (resetCheckOutBtn) resetCheckOutBtn.classList.remove("show");
-
-          // Disable confirm button
-          if (confirmBtn) {
-            confirmBtn.disabled = true;
-            confirmBtn.style.opacity = "0.5";
-          }
+          if (resetCI) resetCI.classList.add("show"); if (resetCO) resetCO.classList.remove("show");
+          if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.style.opacity = "0.5"; }
         } else {
           displayText.textContent = "Selecciona tus fechas";
-          displayText.classList.add("placeholder");
-          trigger.classList.remove("has-value");
-
-          checkInDisplay.textContent = "Añadir fecha";
-          checkOutDisplay.textContent = "Añadir fecha";
-
-          // Hide both reset buttons
-          if (resetCheckInBtn) resetCheckInBtn.classList.remove("show");
-          if (resetCheckOutBtn) resetCheckOutBtn.classList.remove("show");
-
-          // Disable confirm button
-          if (confirmBtn) {
-            confirmBtn.disabled = true;
-            confirmBtn.style.opacity = "0.5";
-          }
+          displayText.classList.add("placeholder"); trigger.classList.remove("has-value");
+          checkInDisplay.textContent = "Añadir fecha"; checkOutDisplay.textContent = "Añadir fecha";
+          if (resetCI) resetCI.classList.remove("show"); if (resetCO) resetCO.classList.remove("show");
+          if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.style.opacity = "0.5"; }
         }
-
-        // Update hidden inputs
-        document.getElementById("fechaEntrada").value = selectedCheckIn || "";
-        document.getElementById("fechaSalida").value = selectedCheckOut || "";
-
-        // Update button states
+        document.getElementById("fechaEntrada").value = selectedCheckIn  || "";
+        document.getElementById("fechaSalida").value  = selectedCheckOut || "";
         if (selectingCheckIn) {
           if (checkInBtn) checkInBtn.classList.add("active");
           if (checkOutBtn) checkOutBtn.classList.remove("active");
@@ -2787,375 +1445,131 @@ interactivo.
         }
       }
 
-      // Button click handlers
-      document
-        .getElementById("checkInBtn")
-        .addEventListener("click", function () {
-          selectingCheckIn = true;
-          updateDateDisplay();
-          renderCalendar();
-        });
-
-      document
-        .getElementById("checkOutBtn")
-        .addEventListener("click", function () {
-          if (selectedCheckIn) {
-            selectingCheckIn = false;
-            updateDateDisplay();
-            renderCalendar();
-          } else {
-            showToast("⚠️ Primero selecciona tu fecha de check-in");
-          }
-        });
+      document.getElementById("checkInBtn").addEventListener("click", () => { selectingCheckIn = true; updateDateDisplay(); renderCalendar(); });
+      document.getElementById("checkOutBtn").addEventListener("click", () => {
+        if (selectedCheckIn) { selectingCheckIn = false; updateDateDisplay(); renderCalendar(); }
+        else showToast("⚠️ Primero selecciona tu fecha de check-in");
+      });
 
       function renderCalendar() {
         const scroll = document.getElementById("datePickerScroll");
         scroll.innerHTML = "";
-
         const today = new Date();
-        const currentYear = today.getFullYear();
-        const currentMonth = today.getMonth();
-
         for (let i = 0; i < 6; i++) {
-          const date = new Date(currentYear, currentMonth + i, 1);
-          const monthSection = createMonthSection(date);
-          scroll.appendChild(monthSection);
+          scroll.appendChild(createMonthSection(new Date(today.getFullYear(), today.getMonth() + i, 1)));
         }
       }
 
       function createMonthSection(date) {
         const section = document.createElement("div");
         section.className = "calendar-month-section";
-
-        const monthName = date.toLocaleDateString("es-ES", {
-          month: "long",
-          year: "numeric",
-        });
-        const monthTitle = document.createElement("div");
-        monthTitle.className = "calendar-month-title";
-        monthTitle.textContent =
-          monthName.charAt(0).toUpperCase() + monthName.slice(1);
-        section.appendChild(monthTitle);
-
+        const monthName = date.toLocaleDateString("es-ES", { month:"long", year:"numeric" });
+        const title = document.createElement("div");
+        title.className = "calendar-month-title";
+        title.textContent = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+        section.appendChild(title);
         const grid = document.createElement("div");
         grid.className = "calendar-grid";
-
-        const dayHeaders = ["L", "M", "X", "J", "V", "S", "D"];
-        dayHeaders.forEach((day) => {
-          const header = document.createElement("div");
-          header.className = "calendar-day-header";
-          header.textContent = day;
-          grid.appendChild(header);
+        ["L","M","X","J","V","S","D"].forEach(d => {
+          const h = document.createElement("div");
+          h.className = "calendar-day-header"; h.textContent = d; grid.appendChild(h);
         });
-
-        const firstDay = new Date(
-          date.getFullYear(),
-          date.getMonth(),
-          1,
-        ).getDay();
-        const daysInMonth = new Date(
-          date.getFullYear(),
-          date.getMonth() + 1,
-          0,
-        ).getDate();
-
+        const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+        const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
         for (let i = 0; i < (firstDay === 0 ? 6 : firstDay - 1); i++) {
-          const emptyCell = document.createElement("div");
-          emptyCell.className = "calendar-day other-month";
-          grid.appendChild(emptyCell);
+          const e = document.createElement("div"); e.className = "calendar-day other-month"; grid.appendChild(e);
         }
-
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
+        const today = new Date(); today.setHours(0,0,0,0);
         for (let day = 1; day <= daysInMonth; day++) {
-          const dayCell = document.createElement("div");
-          dayCell.className = "calendar-day";
-
+          const cell = document.createElement("div"); cell.className = "calendar-day";
           const cellDate = new Date(date.getFullYear(), date.getMonth(), day);
-          const dateStr = cellDate.toISOString().split("T")[0];
-
-          if (cellDate < today) {
-            dayCell.classList.add("past");
-          }
-
-          if (cellDate.toDateString() === today.toDateString()) {
-            dayCell.classList.add("today");
-          }
-
+          const dateStr  = cellDate.toISOString().split("T")[0];
+          if (cellDate < today) cell.classList.add("past");
+          if (cellDate.toDateString() === today.toDateString()) cell.classList.add("today");
           let isClickable = false;
-
-          // Check if this date is the selected check-in
-          if (selectedCheckIn === dateStr) {
-            dayCell.classList.add("check-in");
-            isClickable = true; // Allow clicking to reset
+          if (selectedCheckIn === dateStr) { cell.classList.add("check-in"); isClickable = true; }
+          else if (selectedCheckOut === dateStr) { cell.classList.add("check-out"); isClickable = true; }
+          else if (selectedCheckIn && selectedCheckOut && dateStr > selectedCheckIn && dateStr < selectedCheckOut) { cell.classList.add("in-range"); isClickable = true; }
+          else if (window.sharedDates?.includes(dateStr))   { cell.classList.add("shared-booked"); isClickable = false; }
+          else if (window.checkinDates?.includes(dateStr))  {
+            cell.classList.add("checkin-only");
+            isClickable = !selectingCheckIn && selectedCheckIn && dateStr > selectedCheckIn && cellDate >= today;
           }
-          // Check if this date is the selected check-out
-          else if (selectedCheckOut === dateStr) {
-            dayCell.classList.add("check-out");
-            isClickable = true; // Allow clicking to reset
+          else if (window.checkoutDates?.includes(dateStr) && cellDate >= today) {
+            cell.classList.add("checkout-available");
+            isClickable = selectingCheckIn || (!selectingCheckIn && selectedCheckIn && dateStr > selectedCheckIn);
           }
-          // Check if date is between check-in and check-out
-          else if (
-            selectedCheckIn &&
-            selectedCheckOut &&
-            dateStr > selectedCheckIn &&
-            dateStr < selectedCheckOut
-          ) {
-            dayCell.classList.add("in-range");
-            isClickable = true; // Allow clicking to reset
-          }
-          // Check if this is a SHARED date (full gray - not clickable)
-          else if (window.sharedDates && window.sharedDates.includes(dateStr)) {
-            dayCell.classList.add("shared-booked");
-            isClickable = false;
-          }
-          // Check if this is an UNSHARED CHECK-IN date (half gray right - only clickable for checkout selection)
-          else if (
-            window.checkinDates &&
-            window.checkinDates.includes(dateStr)
-          ) {
-            dayCell.classList.add("checkin-only");
-            // Only clickable when selecting check-out AND it's after selected check-in
-            if (
-              !selectingCheckIn &&
-              selectedCheckIn &&
-              dateStr > selectedCheckIn &&
-              cellDate >= today
-            ) {
-              isClickable = true;
-            } else {
-              isClickable = false;
-            }
-          }
-          // Check if this is an UNSHARED CHECKOUT date (half gray left - available for check-in)
-          else if (
-            window.checkoutDates &&
-            window.checkoutDates.includes(dateStr) &&
-            cellDate >= today
-          ) {
-            dayCell.classList.add("checkout-available");
-            // Only clickable when selecting check-in
-            if (selectingCheckIn) {
-              isClickable = true;
-            } else if (
-              !selectingCheckIn &&
-              selectedCheckIn &&
-              dateStr > selectedCheckIn
-            ) {
-              // Also clickable as checkout if after check-in
-              isClickable = true;
-            } else {
-              isClickable = false;
-            }
-          }
-          // Check if this is a MIDDLE day (light gray - not clickable)
-          else if (window.middleDates && window.middleDates.includes(dateStr)) {
-            dayCell.classList.add("middle-booked");
-            isClickable = false;
-          }
-          // Check if available
+          else if (window.middleDates?.includes(dateStr))   { cell.classList.add("middle-booked"); isClickable = false; }
           else if (cellDate >= today) {
-            // Available only if: after today AND (no check-in selected OR after check-in)
-            if (
-              !selectingCheckIn &&
-              selectedCheckIn &&
-              dateStr <= selectedCheckIn
-            ) {
-              // Can't select check-out on or before check-in
-              dayCell.classList.add("past");
-              isClickable = false;
-            } else {
-              dayCell.classList.add("available");
-              isClickable = true;
-            }
+            if (!selectingCheckIn && selectedCheckIn && dateStr <= selectedCheckIn) { cell.classList.add("past"); isClickable = false; }
+            else { cell.classList.add("available"); isClickable = true; }
           }
-
-          const dayNumber = document.createElement("div");
-          dayNumber.className = "calendar-day-number";
-          dayNumber.textContent = day;
-          dayCell.appendChild(dayNumber);
-
-          if (isClickable) {
-            dayCell.style.cursor = "pointer";
-            dayCell.addEventListener("click", () => selectDate(dateStr));
-          }
-
-          grid.appendChild(dayCell);
+          const num = document.createElement("div"); num.className = "calendar-day-number"; num.textContent = day;
+          cell.appendChild(num);
+          if (isClickable) { cell.style.cursor = "pointer"; cell.addEventListener("click", () => selectDate(dateStr)); }
+          grid.appendChild(cell);
         }
-
         section.appendChild(grid);
         return section;
       }
 
       function selectDate(dateStr) {
         if (selectingCheckIn) {
-          // Selecting check-in
-          selectedCheckIn = dateStr;
-          selectedCheckOut = null;
-          selectingCheckIn = false;
-          updateDateDisplay();
-          renderCalendar();
+          selectedCheckIn = dateStr; selectedCheckOut = null; selectingCheckIn = false;
+          updateDateDisplay(); renderCalendar();
         } else {
-          // Selecting check-out
-          if (dateStr <= selectedCheckIn) {
-            showToast("⚠️ La fecha de check-out debe ser después del check-in");
-            return;
-          }
-
-          // Check if any booked dates exist between check-in and check-out
-          const checkInDate = new Date(selectedCheckIn);
-          const checkOutDate = new Date(dateStr);
+          if (dateStr <= selectedCheckIn) { showToast("⚠️ La fecha de check-out debe ser después del check-in"); return; }
           let hasConflict = false;
-
-          for (
-            let d = new Date(checkInDate);
-            d < checkOutDate;
-            d.setDate(d.getDate() + 1)
-          ) {
-            const checkDateStr = d.toISOString().split("T")[0];
-            if (bookedDates.includes(checkDateStr)) {
-              hasConflict = true;
-              break;
-            }
+          for (let d = new Date(selectedCheckIn); d < new Date(dateStr); d.setDate(d.getDate() + 1)) {
+            if (bookedDates.includes(d.toISOString().split("T")[0])) { hasConflict = true; break; }
           }
-
-          if (hasConflict) {
-            showToast(
-              "⚠️ Hay fechas reservadas en este rango. Por favor selecciona otras fechas.",
-            );
-            return;
-          }
-
-          selectedCheckOut = dateStr;
-
-          // After selecting check-out, prepare for next selection (which will reset)
-          selectingCheckIn = true;
-
-          updateDateDisplay();
-          renderCalendar();
+          if (hasConflict) { showToast("⚠️ Hay fechas reservadas en este rango. Por favor selecciona otras fechas."); return; }
+          selectedCheckOut = dateStr; selectingCheckIn = true;
+          updateDateDisplay(); renderCalendar();
         }
       }
 
-      // Close modal when clicking outside
-      document
-        .getElementById("datePickerModal")
-        .addEventListener("click", function (e) {
-          if (e.target === this) {
-            closeDatePickerModal();
-          }
-        });
+      document.getElementById("datePickerModal").addEventListener("click", function(e) {
+        if (e.target === this) closeDatePickerModal();
+      });
 
-      // Form Submission
-      form.addEventListener("submit", async function (e) {
+      form.addEventListener("submit", async function(e) {
         e.preventDefault();
-
-        if (!selectedCheckIn || !selectedCheckOut) {
-          showToast("⚠️ Por favor selecciona tus fechas de estadía");
-          return;
-        }
-
+        if (!selectedCheckIn || !selectedCheckOut) { showToast("⚠️ Por favor selecciona tus fechas de estadía"); return; }
         const formData = new FormData(form);
-
         const data = {
           cabana: "Apto Najos-2",
           timestamp: serverTimestamp(),
-          nombre: formData.get("nombre"),
-          apellido: formData.get("apellido"),
-          celular: formData.get("celular"),
-          tipoId: formData.get("tipoId"),
-          numeroId: formData.get("numeroId"),
-          ciudad: formData.get("ciudad"),
+          nombre: formData.get("nombre"), apellido: formData.get("apellido"),
+          celular: formData.get("celular"), tipoId: formData.get("tipoId"),
+          numeroId: formData.get("numeroId"), ciudad: formData.get("ciudad"),
           totalHuespedes: Number(formData.get("totalHuespedes") || 0),
-          fechaEntrada: selectedCheckIn,
-          horaEntrada: formData.get("horaEntrada"),
-          fechaSalida: selectedCheckOut,
-          horaSalida: formData.get("horaSalida"),
+          fechaEntrada: selectedCheckIn, horaEntrada: formData.get("horaEntrada"),
+          fechaSalida: selectedCheckOut, horaSalida: formData.get("horaSalida"),
           consent: formData.get("consent") === "on",
         };
-
-        companions.forEach((idx) => {
-          data[`acomp${idx}Nombre`] = formData.get(`acomp${idx}Nombre`) || "";
-          data[`acomp${idx}Apellido`] =
-            formData.get(`acomp${idx}Apellido`) || "";
-          data[`acomp${idx}TipoId`] = formData.get(`acomp${idx}TipoId`) || "";
-          data[`acomp${idx}NumId`] = formData.get(`acomp${idx}NumId`) || "";
+        companions.forEach(idx => {
+          data[`acomp${idx}Nombre`]   = formData.get(`acomp${idx}Nombre`)   || "";
+          data[`acomp${idx}Apellido`] = formData.get(`acomp${idx}Apellido`) || "";
+          data[`acomp${idx}TipoId`]   = formData.get(`acomp${idx}TipoId`)   || "";
+          data[`acomp${idx}NumId`]    = formData.get(`acomp${idx}NumId`)    || "";
         });
-
-        btnSubmit.textContent = "Enviando...";
-        btnSubmit.disabled = true;
-
+        btnSubmit.textContent = "Enviando..."; btnSubmit.disabled = true;
         try {
-          const registrationRef = await addDoc(
-            collection(db, "registrations"),
-            data,
-          );
-
-          const availabilityData = {
-            cabana: "Apto Najos-2",
-            fechaInicio: selectedCheckIn,
-            fechaFin: selectedCheckOut,
-            registrationId: registrationRef.id,
-            createdAt: serverTimestamp(),
-          };
-
-          await addDoc(collection(db, "cabin_availability"), availabilityData);
-
-          // ✅ Check email settings from Firestore BEFORE sending (WITH DEBUG LOGGING)
-          let emailEnabled = true; // Default to enabled
-
-          console.log("🔍 Starting email settings check...");
-
+          const regRef = await addDoc(collection(db, "registrations"), data);
+          await addDoc(collection(db, "cabin_availability"), {
+            cabana: "Apto Najos-2", fechaInicio: selectedCheckIn, fechaFin: selectedCheckOut,
+            registrationId: regRef.id, createdAt: serverTimestamp(),
+          });
           try {
-            const settingsRef = doc(db, "settings", "email_notifications");
-            console.log("🔍 Settings ref created:", settingsRef);
+            const emailResp = await fetch("/api/send-email", {
+              method: "POST", headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ ...data, emailEnabled: true }),
+            });
+            if (!emailResp.ok) console.error("⚠️ Email failed but registration succeeded");
+          } catch (emailErr) { console.error("❌ Error sending email:", emailErr); }
 
-            const settingsDoc = await getDoc(settingsRef);
-            console.log("🔍 Settings doc fetched:", settingsDoc.exists());
-
-            if (settingsDoc.exists()) {
-              emailEnabled = settingsDoc.data().enabled;
-              console.log("🔍 Email enabled from Firestore:", emailEnabled);
-            } else {
-              console.log(
-                "⚠️ Settings document doesn't exist! Creating with default...",
-              );
-            }
-          } catch (error) {
-            console.error("❌ Error loading email settings:", error);
-            emailEnabled = true;
-          }
-
-          console.log("📧 Final emailEnabled value:", emailEnabled);
-
-          // Send email notification ONLY if enabled
-          if (emailEnabled) {
-            console.log("✅ Email is ENABLED - sending notification...");
-            try {
-              const emailResponse = await fetch("/api/send-email", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  ...data,
-                  emailEnabled: true,
-                }),
-              });
-
-              if (emailResponse.ok) {
-                console.log("✅ Email notification sent successfully");
-              } else {
-                console.error("⚠️ Email failed but registration succeeded");
-              }
-            } catch (emailError) {
-              console.error("❌ Error sending email notification:", emailError);
-            }
-          } else {
-            console.log("🔕 Email is DISABLED - skipping email notification");
-          }
-
-          const modalHTML = `
+          document.body.insertAdjacentHTML("beforeend", `
             <div class="modal-overlay" id="successModal">
               <div class="modal-content">
                 <button class="modal-close" onclick="closeSuccessModal()">×</button>
@@ -3164,48 +1578,28 @@ interactivo.
                 <div class="modal-text">Te esperamos con ríos, naturaleza y buenas vibras.</div>
                 <div class="modal-divider">
                   <div class="modal-maps-title">📍 Mapa de Sitios de Interés</div>
-                  <button type="button" onclick="showMapModal('https://i.imgur.com/BYI9UgDh.jpg', 'Normal')" class="modal-map-btn" style="cursor: pointer; border: none;">
-                    🗺️ Mapa de Sitios Interes
-                  </button>
-                  <button type="button" onclick="showMapModal('https://i.imgur.com/ReEBkiph.jpg', 'Satelite')" class="modal-map-btn" style="cursor: pointer; border: none;">
-                    🛰️ Lista de Sitios Interes
-                  </button>
+                  <button type="button" onclick="showMapModal('https://i.imgur.com/BYI9UgDh.jpg')" class="modal-map-btn" style="cursor:pointer;border:none;">🗺️ Mapa de Sitios Interes</button>
+                  <button type="button" onclick="showMapModal('https://i.imgur.com/ReEBkiph.jpg')" class="modal-map-btn" style="cursor:pointer;border:none;">🛰️ Lista de Sitios Interes</button>
                 </div>
               </div>
             </div>
-          `;
-          document.body.insertAdjacentHTML("beforeend", modalHTML);
+          `);
           errorMessage.style.display = "none";
         } catch (error) {
           console.error("Error:", error);
-          errorMessage.textContent =
-            "Error al enviar. Por favor intenta nuevamente o contáctanos por WhatsApp.";
+          errorMessage.textContent = "Error al enviar. Por favor intenta nuevamente o contáctanos por WhatsApp.";
           errorMessage.style.display = "block";
-          successMessage.style.display = "none";
-          setTimeout(() => {
-            errorMessage.style.display = "none";
-          }, 5000);
+          setTimeout(() => { errorMessage.style.display = "none"; }, 5000);
         } finally {
-          btnSubmit.textContent = "✓ Enviar Registro";
-          btnSubmit.disabled = false;
+          btnSubmit.textContent = "✓ Enviar Registro"; btnSubmit.disabled = false;
         }
       });
 
-      // Custom validation messages
-      const requiredInputs = document.querySelectorAll("[required]");
-      requiredInputs.forEach((input) => {
-        input.addEventListener("invalid", function (e) {
-          e.preventDefault();
-          if (input.validity.valueMissing) {
-            input.setCustomValidity("Por favor complete este campo");
-          }
-        });
-        input.addEventListener("input", function () {
-          input.setCustomValidity("");
-        });
+      document.querySelectorAll("[required]").forEach(input => {
+        input.addEventListener("invalid", e => { e.preventDefault(); if (input.validity.valueMissing) input.setCustomValidity("Por favor complete este campo"); });
+        input.addEventListener("input", () => input.setCustomValidity(""));
       });
 
-      // Initialize
       updateProgress();
       updateDateDisplay();
     </script>
