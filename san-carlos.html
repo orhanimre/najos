@@ -79,7 +79,7 @@
 
         .header-title h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(24px, 4vw, 32px);
+            font-size: clamp(28px, 5vw, 36px);
             font-weight: 900;
             margin-bottom: 4px;
             letter-spacing: -1px;
@@ -87,7 +87,7 @@
         }
 
         .header-subtitle {
-            font-size: clamp(12px, 2vw, 16px);
+            font-size: clamp(14px, 2.5vw, 18px);
             font-weight: 300;
             opacity: 0.95;
             letter-spacing: 0.5px;
@@ -299,11 +299,20 @@
         }
 
         .footer {
-            background: var(--ocean-dark);
-            color: var(--white);
             text-align: center;
-            padding: 40px 20px;
+            padding: 40px 32px;
+            background: linear-gradient(180deg, transparent 0%, var(--sand) 50%);
+            color: var(--ocean-dark);
+            font-size: 14px;
             margin-top: 60px;
+            border-top: 1px solid rgba(0, 77, 115, 0.08);
+        }
+
+        .footer::before {
+            content: '🌊';
+            display: block;
+            font-size: 32px;
+            margin-bottom: 16px;
         }
 
         .footer p {
@@ -548,8 +557,7 @@
 
         <div class="footer">
             <p>© 2026 Apart Hotel Najos · Todos los derechos reservados</p>
-            <p>Tu aventura comienza en San Carlos</p>
-            <a href="index.html" class="back-link">← Volver al Inicio</a>
+            <p style="margin-top: 8px; font-size: 13px; opacity: 0.7;">Tu refugio en el corazón de San Carlos</p>
         </div>
     </div>
 </body>
