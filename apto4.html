@@ -169,6 +169,66 @@
         .whatsapp { background: #25d366; }
         .instagram { background: #e4405f; }
         .back-link { display: inline-block; margin-top: 20px; color: var(--ocean); text-decoration: none; padding: 12px 24px; border: 2px solid var(--ocean); border-radius: 12px; }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header {
+                padding: 10px 20px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .header-left {
+                align-self: center;
+            }
+
+            .header-center {
+                text-align: center;
+                padding: 0;
+            }
+
+            .header-right {
+                align-self: center;
+                width: 100%;
+            }
+
+            .logo {
+                max-width: 80px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+                margin-bottom: 4px;
+            }
+
+            .header-subtitle {
+                font-size: 12px;
+                margin-bottom: 8px;
+            }
+
+            .nav-menu {
+                flex-direction: row;
+                gap: 8px;
+                margin-bottom: 0;
+            }
+
+            .nav-link {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+
+            .content {
+                padding: 140px 24px 40px 24px;
+            }
+        }
     </style>
 </head>
 <body>
