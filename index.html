@@ -108,45 +108,47 @@
 
         .logo-link:hover { transform: scale(1.05); }
 
-        .logo-tooltip {
+        /* Home icon badge — bottom-right corner of logo */
+        .logo-home-badge {
             position: absolute;
-            bottom: -46px;
-            left: 50%;
-            transform: translateX(-50%) translateY(6px);
-            background: rgba(0, 18, 45, 0.93);
-            color: #fff;
-            font-family: 'Poppins', sans-serif;
-            font-size: 11.5px;
-            font-weight: 500;
-            letter-spacing: 0.2px;
-            padding: 7px 14px;
-            border-radius: 7px;
-            white-space: nowrap;
+            bottom: -5px;
+            right: -5px;
+            width: 26px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25), 0 0 0 2px rgba(0,119,190,0.35);
             pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.22s ease, transform 0.22s ease;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.32);
-            z-index: 20;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
 
-        /* Arrow */
-        .logo-tooltip::before {
-            content: '';
-            position: absolute;
-            top: -6px;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 6px solid transparent;
-            border-top: none;
-            border-bottom-color: rgba(0, 18, 45, 0.93);
+        .logo-home-badge svg {
+            width: 13px;
+            height: 13px;
+            stroke: var(--ocean-dark);
+            fill: none;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
-        /* Show states */
-        .logo-link:hover .logo-tooltip,
-        .logo-link:focus .logo-tooltip,
-        .logo-link.tip-show .logo-tooltip {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
+        .logo-link:hover .logo-home-badge {
+            transform: scale(1.18);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 0 2px var(--ocean-light);
+        }
+
+        /* Mobile size adjustment */
+        @media (max-width: 768px) {
+            .logo-home-badge {
+                width: 20px;
+                height: 20px;
+                bottom: -4px;
+                right: -4px;
+            }
+            .logo-home-badge svg { width: 10px; height: 10px; }
         }
 
         .logo {
@@ -460,7 +462,6 @@
             .header { padding: 10px 16px; }
             .header-content { min-height: auto; }
             .logo { max-width: 70px; }
-            .logo-tooltip { bottom: -42px; font-size: 11px; padding: 6px 11px; }
             .nav-menu { gap: 6px; margin-bottom: 0; }
             .nav-link { font-size: 10px; padding: 6px 12px; letter-spacing: 0.5px; }
             .header-title { padding: 6px 0 4px; }
@@ -488,9 +489,11 @@
         <div class="header" id="siteHeader">
             <div class="header-content">
                 <div class="header-left">
-                    <a href="index.html" class="logo-link" id="logoLink" aria-label="Ir al inicio">
+                    <a href="index.html" class="logo-link" aria-label="Ir al inicio">
                         <img src="https://i.imgur.com/L8KoquC.jpg" alt="Logo Apart Hotel Najos" class="logo">
-                        <span class="logo-tooltip">🏠 Ir al inicio</span>
+                        <span class="logo-home-badge">
+                            <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9.5z"/><polyline points="9 21 9 12 15 12 15 21"/></svg>
+                        </span>
                     </a>
                 </div>
                 <div class="header-right">
@@ -592,24 +595,6 @@
         }
         window.addEventListener('load', adjustContentPadding);
         window.addEventListener('resize', adjustContentPadding);
-
-        // Mobile tooltip: first tap shows tooltip for 2s, second tap navigates
-        const logoLink = document.getElementById('logoLink');
-        let tipActive = false;
-        let tipTimer = null;
-
-        logoLink.addEventListener('touchstart', function (e) {
-            if (!tipActive) {
-                e.preventDefault();           // block navigation on first tap
-                tipActive = true;
-                logoLink.classList.add('tip-show');
-                tipTimer = setTimeout(() => {
-                    logoLink.classList.remove('tip-show');
-                    tipActive = false;
-                }, 2000);
-            }
-            // second tap falls through and navigates normally
-        }, { passive: false });
 
         function selectCabana(number) {
             setTimeout(() => {
