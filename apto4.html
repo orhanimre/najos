@@ -27,6 +27,7 @@
             display: block;
             border-radius: 16px;
             filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+            animation: float 3s ease-in-out infinite;
         }
         .header-title { text-align: center; padding: 6px 0 0; }
         .header-title h1 { font-family: 'Playfair Display', serif; font-size: clamp(24px, 4vw, 32px); font-weight: 900; margin-bottom: 4px; letter-spacing: -1px; text-shadow: 0 2px 12px rgba(0,0,0,0.2); }
@@ -103,6 +104,11 @@
                 right: -4px;
             }
             .logo-home-badge svg { width: 10px; height: 10px; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-8px); }
         }
 
         @keyframes navGlowPulse {

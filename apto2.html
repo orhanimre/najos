@@ -118,6 +118,7 @@
             display: block;
             border-radius: 16px;
             filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+            animation: float 3s ease-in-out infinite;
         }
 
         .header-title { text-align: center; padding: 6px 0 0; }
@@ -137,6 +138,11 @@
         }
 
         .nav-menu { display: flex; justify-content: center; gap: 10px; margin-bottom: 24px; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-8px); }
+        }
 
         @keyframes navGlowPulse {
             0%, 100% {
