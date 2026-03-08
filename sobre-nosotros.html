@@ -8,21 +8,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --sand: #F4E8D8;
             --ocean: #0077BE;
             --ocean-dark: #005A8D;
             --ocean-light: #4DA8DA;
+            --sand: #F4E8D8;
             --sunset: #FF6B35;
-            --palm: #2D5016;
             --white: #FFFFFF;
-            --cream: #FFF9F0;
             --shadow: rgba(0, 77, 115, 0.15);
         }
 
@@ -42,18 +36,16 @@
             box-shadow: 0 20px 60px var(--shadow);
         }
 
+        /* ── HEADER ── */
         .header {
             background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
             color: var(--white);
             padding: 12px 40px;
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 1000;
             box-shadow: 0 4px 16px rgba(0, 119, 190, 0.3);
         }
-
         .header-content {
             display: flex;
             align-items: center;
@@ -62,175 +54,134 @@
             margin: 0 auto;
             min-height: 60px;
         }
-
         .header-left { flex-shrink: 0; }
-        .header-left a {
-            display: block;
-            text-decoration: none;
-            transition: transform 0.3s ease;
-        }
+        .header-left a { display: block; text-decoration: none; transition: transform 0.3s ease; }
         .header-left a:hover { transform: scale(1.05); }
         .header-right { flex-shrink: 0; }
+        .logo { max-width: 120px; display: block; border-radius: 16px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
+        .header-title { text-align: center; padding: 6px 0 0; }
+        .header-title h1 { font-family: 'Playfair Display', serif; font-size: clamp(24px, 4vw, 32px); font-weight: 900; margin-bottom: 4px; letter-spacing: -1px; text-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+        .header-subtitle { font-size: clamp(12px, 2vw, 16px); font-weight: 300; opacity: 0.95; letter-spacing: 0.5px; }
+        .nav-menu { display: flex; gap: 16px; }
+        .nav-link { color: var(--white); text-decoration: none; font-weight: 500; font-size: 15px; padding: 8px 16px; border-radius: 20px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s ease; }
+        .nav-link:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+        .nav-link.active { background: rgba(255,255,255,0.25); }
 
-        .header-title {
-            text-align: center;
-            padding: 6px 0 0;
-        }
-
-        .header-title h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(24px, 4vw, 32px) !important;
-            font-weight: 900;
-            margin-bottom: 4px;
-            letter-spacing: -1px;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.2);
-        }
-
-        .header-subtitle {
-            font-size: clamp(12px, 2vw, 16px) !important;
-            font-weight: 300;
-            opacity: 0.95;
-            letter-spacing: 0.5px;
-        }
-
-        .logo {
-            max-width: 120px;
-            width: 100%;
-            height: auto;
-            display: block;
-            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
-            border-radius: 16px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-        }
-
-        .header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(24px, 4vw, 32px);
-            font-weight: 900;
-            margin-bottom: 8px;
-            letter-spacing: -1px;
-            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .header-subtitle {
-            font-size: clamp(12px, 2vw, 16px);
-            font-weight: 300;
-            opacity: 0.95;
-            letter-spacing: 0.5px;
-        }
-
+        /* ── CONTENT ── */
         .content {
-            padding: 140px 40px 60px 40px;
-            max-width: 1200px;
+            padding: 170px 40px 60px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
-        .section {
-            margin-bottom: 30px;
-        }
-
-        .section h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(28px, 5vw, 36px);
-            color: var(--ocean-dark);
-            margin-bottom: 24px;
+        /* ── HERO INTRO ── */
+        .hero-intro {
             text-align: center;
+            margin-bottom: 48px;
+            padding: 40px 32px;
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
+            border-radius: 20px;
+            border: 1px solid #bae6fd;
         }
-
-        .story-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 40px;
-            border-radius: 16px;
-            margin-bottom: 40px;
-        }
-
-        .story-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 32px;
-            align-items: center;
-        }
-
-        .story-text {
-            font-size: clamp(16px, 3vw, 18px);
-            line-height: 1.7;
-            color: #5A5A5A;
-        }
-
-        .story-text h3 {
+        .hero-intro h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(22px, 4vw, 30px);
             color: var(--ocean-dark);
             margin-bottom: 12px;
-            font-size: 20px;
+        }
+        .hero-intro p {
+            font-size: 15px;
+            color: #4B5563;
+            line-height: 1.75;
+            max-width: 620px;
+            margin: 0 auto;
         }
 
-        .story-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        /* ── SECTION BLOCKS ── */
+        .nos-section {
+            margin-bottom: 52px;
         }
 
-        .team-section {
-            text-align: center;
-            padding: 40px 0;
+        .nos-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+            padding-bottom: 14px;
+            border-bottom: 3px solid var(--ocean);
         }
-
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 32px;
-            margin-top: 32px;
-        }
-
-        .team-member {
-            background: var(--white);
-            padding: 32px 24px;
-            border-radius: 16px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-
-        .team-member:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-        }
-
-        .team-member h3 {
+        .nos-header-icon { font-size: 28px; line-height: 1; }
+        .nos-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(20px, 3vw, 26px);
+            font-weight: 700;
             color: var(--ocean-dark);
-            margin-bottom: 8px;
-            font-size: 18px;
         }
 
-        .team-member p {
-            color: #6B7280;
-            font-size: 14px;
-            line-height: 1.5;
+        /* ── CARDS GRID ── */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
         }
 
-        .back-link {
-            display: inline-block;
-            margin-top: 32px;
-            color: var(--ocean);
-            text-decoration: none;
-            font-weight: 500;
-            padding: 12px 24px;
-            border-radius: 12px;
-            border: 2px solid var(--ocean);
+        .info-card {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
+            background: #fff;
+            border: 1px solid #f0f0f0;
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.14);
         }
 
-        .back-link:hover {
-            background: var(--ocean);
-            color: var(--white);
-            transform: translateY(-2px);
+        .card-top-band {
+            height: 6px;
+        }
+        .band-historia { background: linear-gradient(90deg, var(--ocean), var(--ocean-light)); }
+        .band-mision   { background: linear-gradient(90deg, #16A34A, #4ADE80); }
+        .band-valor    { background: linear-gradient(90deg, var(--sunset), #FBBF24); }
+        .band-equipo   { background: linear-gradient(90deg, #6366F1, #A78BFA); }
+
+        .info-card-body {
+            padding: 22px 22px 24px;
+        }
+        .info-card-body h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--ocean-dark);
+            margin-bottom: 10px;
+        }
+        .info-card-body p {
+            font-size: 13.5px;
+            color: #6B7280;
+            line-height: 1.7;
         }
 
+        /* ── STORY SINGLE (wide card) ── */
+        .story-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f7ff 100%);
+            border-radius: 16px;
+            padding: 32px 36px;
+            border: 1px solid #dbeafe;
+            margin-bottom: 20px;
+        }
+        .story-card h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--ocean-dark);
+            margin-bottom: 12px;
+        }
+        .story-card p {
+            font-size: 14.5px;
+            color: #4B5563;
+            line-height: 1.8;
+        }
+
+        /* ── FOOTER ── */
         .footer {
             text-align: center;
             padding: 40px 32px;
@@ -240,133 +191,32 @@
             margin-top: 60px;
             border-top: 1px solid rgba(0, 77, 115, 0.08);
         }
+        .footer::before { content: '🌊'; display: block; font-size: 32px; margin-bottom: 16px; }
 
-        .footer::before {
-            content: '🌊';
-            display: block;
-            font-size: 32px;
-            margin-bottom: 16px;
-        }
-
-        .footer p {
-            margin-bottom: 8px;
-        }
-
-        /* Navigation Menu */
-        .nav-menu {
-            display: flex;
-            justify-content: center;
-            gap: 32px;
-            margin-bottom: 24px;
-        }
-
-        .nav-link {
-            color: var(--white);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 15px;
-            padding: 8px 16px;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.3s ease;
-        }
-
-        .nav-link:hover {
-            background: rgba(255,255,255,0.2);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255,255,255,0.1);
-        }
-
-        .nav-link.active {
-            background: var(--ocean);
-        }
-
-        /* Mobile Responsive */
+        /* ── MOBILE ── */
         @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-
-            .header {
-                padding: 10px 16px;
-            }
-
-            .header-content {
-                min-height: auto;
-            }
-
+            .header { padding: 8px 20px; }
             .logo { max-width: 70px; }
+            .nav-menu { gap: 6px; }
+            .nav-link { font-size: 11px; padding: 4px 8px; }
+            .content { padding: 190px 20px 40px; }
+            .hero-intro { padding: 28px 20px; }
+            .cards-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+            .info-card-body { padding: 16px 16px 18px; }
+            .story-card { padding: 24px 20px; }
+        }
 
-            .nav-menu {
-                flex-direction: row;
-                gap: 6px;
-                margin-bottom: 0;
-            }
-
-            .nav-link {
-                font-size: 11px;
-                padding: 4px 8px;
-            }
-
-            .header-title {
-                padding: 6px 0 4px;
-            }
-
-            .header-title h1 {
-                font-size: clamp(18px, 5vw, 24px);
-            }
-
-            .header-subtitle {
-                font-size: 11px;
-            }
-
-            .header h1 {
-                font-size: 16px;
-                margin-bottom: 2px;
-            }
-
-            .header-subtitle {
-                font-size: 10px;
-                margin-bottom: 4px;
-            }
-
-            .nav-menu {
-                flex-direction: row;
-                gap: 6px;
-                margin-bottom: 0;
-            }
-
-            .nav-link {
-                font-size: 11px;
-                padding: 3px 6px;
-            }
-
-            .content {
-                padding: 160px 24px 40px 24px;
-            }
-
-            .story-content {
-                grid-template-columns: 1fr;
-                gap: 24px;
-            }
-
-            .team-grid {
-                grid-template-columns: 1fr;
-                gap: 24px;
-            }
+        @media (max-width: 480px) {
+            .cards-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        <div class="header" id="siteHeader">
             <div class="header-content">
                 <div class="header-left">
-                    <a href="index.html">
-                        <img src="https://i.imgur.com/L8KoquC.jpg" alt="Logo Apart Hotel Najos" class="logo">
-                    </a>
+                    <a href="index.html"><img src="https://i.imgur.com/L8KoquC.jpg" alt="Logo Apart Hotel Najos" class="logo"></a>
                 </div>
                 <div class="header-right">
                     <nav class="nav-menu">
@@ -381,112 +231,138 @@
             </div>
         </div>
 
-        <div class="content">
-            <!-- Our Story Section -->
-            <div class="section">
-                <h2>Nuestra Historia</h2>
-                <div class="story-section">
-                    <div class="story-text">
-                        <h3>🏡 Nuestro Sueño en el Corazón de San Carlos</h3>
-                        <p>
-                            En Apart Hotel Najos, nacimos de un sueño simple: crear un espacio 
-                            donde la comodidad urbana y la aventura natural se encuentren en perfecta armonía. 
-                            Ubicados en el centro de San Carlos, a pasos del parque principal, 
-                            somos tu puerta de entrada fácil a los charcos, cascadas, senderismo 
-                            y la vibrante cultura local. Queremos que cada huésped no solo encuentre un lugar para dormir, 
-                            sino un hogar estratégico para vivir la mejor experiencia de San Carlos.
-                        </p>
+        <div class="content" id="mainContent">
+
+            <!-- Hero intro -->
+            <div class="hero-intro">
+                <h2>🏡 Un hogar en el corazón de San Carlos</h2>
+                <p>Apart Hotel Najos nació de la pasión por San Carlos y el deseo de compartirlo con el mundo. Somos más que un lugar para dormir — somos tu base de aventuras, tu refugio después de un día entre charcos y cascadas, y tu conexión auténtica con la cultura local.</p>
+            </div>
+
+            <!-- ── NUESTRA HISTORIA ── -->
+            <div class="nos-section">
+                <div class="nos-header">
+                    <span class="nos-header-icon">📖</span>
+                    <h2>Nuestra Historia</h2>
+                </div>
+                <div class="story-card">
+                    <h3>🏡 Nuestro Sueño en el Corazón de San Carlos</h3>
+                    <p>Todo comenzó con un sueño simple: crear un espacio donde la comodidad urbana y la aventura natural se encontraran en perfecta armonía. Ubicados a pasos del parque principal de San Carlos, decidimos abrir las puertas de Apart Hotel Najos para que cada viajero tuviera no solo un techo, sino un punto de partida estratégico para vivir San Carlos en toda su plenitud — los charcos de aguas esmeralda, las cascadas imponentes, los senderos llenos de vida y la calidez de su gente.</p>
+                </div>
+            </div>
+
+            <!-- ── NUESTRA MISIÓN ── -->
+            <div class="nos-section">
+                <div class="nos-header">
+                    <span class="nos-header-icon">🌊</span>
+                    <h2>Nuestra Misión</h2>
+                </div>
+                <div class="cards-grid">
+                    <div class="info-card">
+                        <div class="card-top-band band-mision"></div>
+                        <div class="info-card-body">
+                            <h3>🌿 Conectar con la naturaleza</h3>
+                            <p>Facilitamos que cada huésped descubra la riqueza natural de San Carlos — desde sus charcos más emblemáticos hasta sus rincones más escondidos.</p>
+                        </div>
                     </div>
-                    <div class="story-image">
-                        <img src="https://imgur.com/example-story.jpg" alt="Nuestra historia">
+                    <div class="info-card">
+                        <div class="card-top-band band-mision"></div>
+                        <div class="info-card-body">
+                            <h3>🤝 Crear experiencias auténticas</h3>
+                            <p>Nos esforzamos por que cada visita sea memorable, conectando a nuestros huéspedes con la cultura local y las experiencias únicas que solo San Carlos puede ofrecer.</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="card-top-band band-mision"></div>
+                        <div class="info-card-body">
+                            <h3>🏠 Brindar confort y tranquilidad</h3>
+                            <p>Ofrecemos apartamentos completamente equipados para que puedas descansar, recargar energías y volver a la aventura al día siguiente.</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Our Mission Section -->
-            <div class="section">
-                <h2>Nuestra Misión</h2>
-                <div class="story-section">
-                    <div class="story-text">
-                        <h3>🌊 Tu Puerta al Paraíso</h3>
-                        <p>
-                            Ofrecerte una experiencia auténtica en San Carlos es nuestra mayor satisfacción. 
-                            Nos apasiona conectar a nuestros visitantes con la belleza natural 
-                            de la región mientras proporcionamos el confort y la atención 
-                            que mereces.
-                        </p>
+            <!-- ── NUESTROS VALORES ── -->
+            <div class="nos-section">
+                <div class="nos-header">
+                    <span class="nos-header-icon">⭐</span>
+                    <h2>Nuestros Valores</h2>
+                </div>
+                <div class="cards-grid">
+                    <div class="info-card">
+                        <div class="card-top-band band-valor"></div>
+                        <div class="info-card-body">
+                            <h3>🤝 Hospitalidad</h3>
+                            <p>Tratamos a cada huésped como familia. La calidez y la atención personalizada son la base de todo lo que hacemos, desde la reserva hasta la despedida.</p>
+                        </div>
                     </div>
-                    <div class="story-image">
-                        <img src="https://imgur.com/example-mission.jpg" alt="Nuestra misión">
+                    <div class="info-card">
+                        <div class="card-top-band band-valor"></div>
+                        <div class="info-card-body">
+                            <h3>🌅 Autenticidad</h3>
+                            <p>Celebramos la dualidad única de San Carlos: el corazón vibrante de su cultura local y la majestuosidad de sus paisajes. Todo a tu alcance desde nuestra ubicación céntrica.</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="card-top-band band-valor"></div>
+                        <div class="info-card-body">
+                            <h3>✨ Calidad</h3>
+                            <p>Mantenemos altos estándares de limpieza, comodidad y servicio en cada detalle, porque creemos que una buena estancia comienza con un espacio impecable.</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Our Values Section -->
-            <div class="section">
-                <h2>Nuestros Valores</h2>
-                <div class="story-section">
-                    <div class="story-text">
-                        <h3>🤝 Hospitalidad</h3>
-                        <p>
-                            Tratamos a cada huésped como familia, con calidez y atención personalizada 
-                            para que se sienta bienvenido y cuidado desde el primer momento.
-                        </p>
-                    </div>
-                    <div class="story-text">
-                        <h3>🌅 Autenticidad</h3>
-                        <p>
-                            Celebramos la dualidad única de San Carlos: el corazón vibrante de la cultura local 
-                            y la majestuosidad de sus paisajes naturales. Compartimos experiencias auténticas 
-                            que van desde explorar charcos y cascadas hasta disfrutar la vida urbana, 
-                            todo a tu alcance desde nuestra ubicación céntrica.
-                        </p>
-                    </div>
-                    <div class="story-text">
-                        <h3>🏠️ Calidad</h3>
-                        <p>
-                            Mantenemos altos estándares de limpieza, comodidad y servicio para garantizar 
-                            tu estancia sea perfecta en cada detalle.
-                        </p>
-                    </div>
+            <!-- ── EL EQUIPO ── -->
+            <div class="nos-section">
+                <div class="nos-header">
+                    <span class="nos-header-icon">👥</span>
+                    <h2>El Equipo Najos</h2>
                 </div>
-            </div>
-
-            <!-- Team Section -->
-            <div class="section">
-                <h2>El Equipo Najos</h2>
-                <div class="team-section">
-                    <div class="team-grid">
-                        <div class="team-member">
+                <div class="cards-grid">
+                    <div class="info-card">
+                        <div class="card-top-band band-equipo"></div>
+                        <div class="info-card-body">
                             <h3>🏡 Gestión</h3>
-                            <p>
-                                Nuestro equipo administrativo se encarga de que cada aspecto de tu estancia 
-                                sea impecable, desde la reserva hasta tu partida.
-                            </p>
+                            <p>Nuestro equipo administrativo vela por que cada aspecto de tu estancia sea impecable — desde la reserva, la llegada, hasta tu partida.</p>
                         </div>
-                        <div class="team-member">
-                            <h3>🧹 Limpieza</h3>
-                            <p>
-                                Personal de mantenimiento dedicado a mantener cada espacio limpio, 
-                                cómodo y listo para tu llegada.
-                            </p>
+                    </div>
+                    <div class="info-card">
+                        <div class="card-top-band band-equipo"></div>
+                        <div class="info-card-body">
+                            <h3>🧹 Mantenimiento</h3>
+                            <p>Personal dedicado a mantener cada rincón limpio, ordenado y listo para recibirte como te mereces. La limpieza no es opcional para nosotros, es un estándar.</p>
                         </div>
-                        <div class="team-member">
-                            <h3>🌟 Atención</h3>
-                            <p>
-                                Siempre disponibles para ayudarte con cualquier necesidad y hacer 
-                                tu estancia inolvidable.
-                            </p>
+                    </div>
+                    <div class="info-card">
+                        <div class="card-top-band band-equipo"></div>
+                        <div class="info-card-body">
+                            <h3>🌟 Atención al huésped</h3>
+                            <p>Siempre disponibles para resolver tus dudas, recomendarte lugares y ayudarte a que tu visita a San Carlos sea verdaderamente inolvidable.</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+        </div><!-- end content -->
 
         <div class="footer">
             <p>© 2026 Apart Hotel Najos · Todos los derechos reservados</p>
             <p style="margin-top: 8px; font-size: 13px; opacity: 0.7;">Tu refugio en el corazón de San Carlos</p>
         </div>
     </div>
+
+    <script>
+        function adjustContentPadding() {
+            const header = document.getElementById('siteHeader');
+            const content = document.getElementById('mainContent');
+            if (header && content) {
+                const headerHeight = header.getBoundingClientRect().height;
+                content.style.paddingTop = (headerHeight + 32) + 'px';
+            }
+        }
+        window.addEventListener('load', adjustContentPadding);
+        window.addEventListener('resize', adjustContentPadding);
+    </script>
 </body>
 </html>
