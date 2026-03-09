@@ -47,13 +47,20 @@
       /* Left: logo with home badge */
       .header-left { flex-shrink: 0; }
 
+      /* Float animation on the link wrapper so logo + badge move together */
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50%       { transform: translateY(-6px); }
+      }
+
       .logo-link {
-        display: block;
+        display: inline-block;
         text-decoration: none;
         position: relative;
-        transition: transform 0.3s ease;
+        animation: float 3s ease-in-out infinite;
+        transition: opacity 0.3s ease;
       }
-      .logo-link:hover { transform: scale(1.05); }
+      .logo-link:hover { opacity: 0.9; }
 
       .logo {
         width: 80px;
@@ -61,29 +68,20 @@
         display: block;
         filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
         border-radius: 14px;
-        animation: float 3s ease-in-out infinite;
       }
 
-      @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50%       { transform: translateY(-6px); }
-      }
-
-      /* Home icon badge — bottom-right corner of logo */
       .logo-home-badge {
         position: absolute;
-        bottom: -8px;
-        right: -8px;
-        width: 24px;
-        height: 24px;
+        bottom: -10px; right: -6px;
+        width: 24px; height: 24px;
         background: rgba(255,255,255,0.95);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.25), 0 0 0 2px rgba(0,119,190,0.35);
         pointer-events: none;
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
-        float: none;
+        transition: box-shadow 0.25s ease;
       }
       .logo-home-badge svg {
         width: 12px; height: 12px;
@@ -91,7 +89,6 @@
         stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
       }
       .logo-link:hover .logo-home-badge {
-        transform: scale(1.18);
         box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 0 2px #4DA8DA;
       }
 
@@ -177,7 +174,7 @@
         .header { padding: 10px 16px; }
         .header-content { min-height: auto; gap: 10px; }
         .logo { width: 56px; border-radius: 12px; }
-        .logo-home-badge { width: 20px; height: 20px; bottom: -6px; right: -6px; }
+        .logo-home-badge { width: 20px; height: 20px; bottom: -9px; right: -4px; }
         .logo-home-badge svg { width: 10px; height: 10px; }
         .header-center h1 { font-size: clamp(15px, 4.5vw, 20px); }
         .header-subtitle { font-size: 13px; padding: 4px 10px; letter-spacing: 0.3px; }
