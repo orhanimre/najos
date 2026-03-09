@@ -845,6 +845,28 @@
         margin: 0; cursor: pointer; flex: 1;
         font-weight: 500; font-size: 14px; color: #374151; line-height: 1.5;
       }
+      .rules-modal-consent {
+        padding: 14px 0 12px;
+        display: flex;
+        align-items: flex-start;
+      }
+      .rules-modal-consent-label {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        color: #374151;
+        line-height: 1.45;
+      }
+      .rules-modal-consent-label input[type="checkbox"] {
+        width: 20px; height: 20px;
+        accent-color: #0077BE;
+        flex-shrink: 0;
+        margin-top: 1px;
+        cursor: pointer;
+      }
 
       /* ── Responsive ── */
       @media (max-width: 600px) {
@@ -1032,7 +1054,7 @@
               <div class="form-group">
                 <label for="horaSalida">Hora de Salida <span class="required">*</span></label>
                 <input type="time" id="horaSalida" name="horaSalida" max="13:00" required />
-                <div class="helper-text">Antes de 1:00 PM</div>
+                <div class="helper-text">Antes de las 11:00 AM</div>
               </div>
             </div>
           </div>
@@ -1069,20 +1091,11 @@
 
             <!-- Apartment Rules -->
             <div style="margin-top: 16px">
-              <button type="button" class="rules-trigger-btn" onclick="openRulesModal()">
+              <button type="button" class="rules-trigger-btn" id="rulesTriggerBtn" onclick="openRulesModal()">
                 <span class="rules-btn-left">📋 <span>Reglamento del Apartamento</span></span>
-                <span class="rules-arrow">👆 Toca para leer</span>
+                <span class="rules-arrow" id="rulesTriggerStatus">👆 Toca para leer</span>
               </button>
-              <div class="rules-checkbox-group" id="rulesGroup">
-                <input type="checkbox" id="rulesConsent" name="rulesConsent" required />
-                <label for="rulesConsent">
-                  He leído y acepto el reglamento del apartamento.
-                  <span class="required">*</span>
-                  <br /><small style="color:#92400e; margin-top:6px; display:block; font-weight:400;">
-                    Debes abrir y leer el reglamento primero tocando el botón amarillo.
-                  </small>
-                </label>
-              </div>
+              <input type="hidden" id="rulesConsent" name="rulesConsent" value="" />
             </div>
 
             <div class="summary-box" id="summaryBox" style="display:none">
@@ -1098,6 +1111,51 @@
             <button type="submit"  class="nav-btn btn-submit" id="btnSubmit" style="display:none">✓ Enviar Registro</button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- Apartment Rules Modal -->
+    <div id="rulesModal" class="rules-modal-overlay">
+      <div class="rules-modal">
+        <div class="rules-modal-header">
+          <h3>📋 Reglamento del Apartamento</h3>
+          <button class="rules-modal-close" onclick="closeRulesModal()">×</button>
+        </div>
+        <div class="rules-modal-body">
+          <p class="rules-section-title">🏠 Uso del Apartamento</p>
+          <div class="rules-rule-item"><span class="rules-rule-icon">👥</span><div class="rules-rule-text"><strong>Capacidad máxima</strong>El apartamento tiene una capacidad máxima indicada en su reserva. No se permite exceder este número de huéspedes.</div></div>
+          <div class="rules-rule-item"><span class="rules-rule-icon">🚭</span><div class="rules-rule-text"><strong>No fumar</strong>Está prohibido fumar dentro del apartamento. Si desea fumar, por favor hágalo en el exterior del edificio.</div></div>
+          <div class="rules-rule-item"><span class="rules-rule-icon">🌿</span><div class="rules-rule-text"><strong>No drogas ni sustancias</strong>Está totalmente prohibido el consumo, tenencia o distribución de drogas, marihuana u cualquier sustancia ilícita dentro del apartamento y sus instalaciones. El incumplimiento resultará en desalojo inmediato y notificación a las autoridades.</div></div>
+          <div class="rules-rule-item"><span class="rules-rule-icon">🚫</span><div class="rules-rule-text"><strong>No prostitución</strong>Queda estrictamente prohibido el ejercicio de la prostitución o cualquier actividad de este tipo dentro del apartamento. El incumplimiento resultará en desalojo inmediato.</div></div>
+          <div class="rules-rule-item"><span class="rules-rule-icon">🐾</span><div class="rules-rule-text"><strong>No mascotas</strong>No se permite el ingreso de mascotas sin autorización previa del administrador.</div></div>
+          <div class="rules-rule-item"><span class="rules-rule-icon">🎉</span><div class="rules-rule-text"><strong>No fiestas ni eventos</strong>Queda prohibido realizar fiestas, eventos o reuniones ruidosas que puedan molestar a los demás huéspedes y vecinos.</div></div>
+
+          <p class="rules-section-title">🕐 Horarios</p>
+          <div class="rules-rule-item"><span class="rules-rule-icon">🔑</span><div class="rules-rule-text"><strong>Check-in</strong>El ingreso es a partir de las 2:00 PM (14:00). Llegadas tardías deben coordinarse con anticipación por WhatsApp.</div></div>
+          <div class="rules-rule-item"><span class="rules-rule-icon">🧳</span><div class="rules-rule-text"><strong>Check-out</strong>La salida debe realizarse antes de las 11:00 AM. Salidas tardías tienen un costo adicional.</div></div>
+          <div class="rules-rule-item"><span class="rules-rule-icon">🔇</span><div class="rules-rule-text"><strong>Silencio nocturno</strong>Se solicita guardar silencio a partir de las 10:00 PM para respetar a los demás huéspedes y vecinos.</div></div>
+
+          <p class="rules-section-title">🛋️ Cuidado de las Instalaciones</p>
+          <div class="rules-rule-item"><span class="rules-rule-icon">🧹</span><div class="rules-rule-text"><strong>Limpieza</strong>Se espera que el apartamento sea entregado en condiciones razonables de orden y limpieza.</div></div>
+          <div class="rules-rule-item"><span class="rules-rule-icon">💡</span><div class="rules-rule-text"><strong>Ahorro de recursos</strong>Por favor apaga las luces, ventiladores y aires acondicionados cuando salgas del apartamento.</div></div>
+          <div class="rules-rule-item"><span class="rules-rule-icon">🛠️</span><div class="rules-rule-text"><strong>Daños</strong>Cualquier daño causado a los muebles, electrodomésticos o instalaciones deberá ser asumido económicamente por el huésped.</div></div>
+
+          <p class="rules-section-title">⚠️ Responsabilidades</p>
+          <div class="rules-rule-item"><span class="rules-rule-icon">🔐</span><div class="rules-rule-text"><strong>Seguridad</strong>El huésped es responsable de mantener cerradas las puertas y ventanas al salir.</div></div>
+          <div class="rules-rule-item"><span class="rules-rule-icon">📵</span><div class="rules-rule-text"><strong>Objetos de valor</strong>Apart Hotel Najos no se hace responsable por la pérdida de objetos de valor dejados en el apartamento.</div></div>
+          <div class="rules-rule-item"><span class="rules-rule-icon">🤝</span><div class="rules-rule-text"><strong>Cumplimiento</strong>El incumplimiento de cualquiera de estas normas puede resultar en el desalojo inmediato sin derecho a reembolso.</div></div>
+        </div>
+        <div class="rules-modal-footer">
+          <div class="rules-modal-consent">
+            <label class="rules-modal-consent-label">
+              <input type="checkbox" id="rulesModalCheck" onchange="handleModalRulesCheck(this)" />
+              <span>He leído y acepto el reglamento del apartamento <span style="color:#ef4444">*</span></span>
+            </label>
+          </div>
+          <button type="button" class="rules-confirm-btn" id="rulesConfirmBtn" onclick="confirmRulesRead()" disabled style="opacity:0.5;cursor:not-allowed;">
+            ✓ Cerrar — He leído el reglamento
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1300,6 +1358,11 @@
       }
 
       function validateStep(step) {
+        // Custom check: rules must be accepted on step 3
+        if (step === 3 && rulesConsentHidden.value !== "accepted") {
+          showToast("📋 Debes leer y aceptar el Reglamento del Apartamento para continuar.");
+          return false;
+        }
         const container = document.querySelector(`.step-container[data-step="${step}"]`);
         for (let input of container.querySelectorAll("[required]")) {
           if (input.type === "checkbox") {
@@ -1322,7 +1385,15 @@
             companions = []; companionFilledStatus = {};
             companionsContainer.innerHTML = "";
             consentGroup.classList.remove("checked");
-            if (typeof rulesGroup !== "undefined") { rulesGroup.classList.remove("checked"); rulesModalOpened = false; }
+            rulesConsentHidden.value = "";
+            const mc = document.getElementById("rulesModalCheck");
+            if (mc) mc.checked = false;
+            const cb = document.getElementById("rulesConfirmBtn");
+            if (cb) { cb.disabled = true; cb.style.opacity = "0.5"; cb.style.cursor = "not-allowed"; }
+            const st = document.getElementById("rulesTriggerStatus");
+            if (st) st.textContent = "👆 Toca para leer";
+            const tb = document.getElementById("rulesTriggerBtn");
+            if (tb) { tb.style.background = ""; tb.style.borderColor = ""; tb.style.color = ""; }
             currentStep = 1; currentCompanionCount = 0;
             stepperValue.textContent = "0"; totalHuespedesInput.value = "0";
             updateStepperButtons();
@@ -1708,32 +1779,47 @@
       updateDateDisplay();
 
       // ── Rules Modal ──
-      const rulesGroup   = document.getElementById("rulesGroup");
-      const rulesConsent = document.getElementById("rulesConsent");
-      let rulesModalOpened = false;
+      const rulesConsentHidden = document.getElementById("rulesConsent");
 
       window.openRulesModal = function() {
         document.getElementById("rulesModal").classList.add("show");
         document.body.style.overflow = "hidden";
-        rulesModalOpened = true;
       };
       window.closeRulesModal = function() {
         document.getElementById("rulesModal").classList.remove("show");
         document.body.style.overflow = "";
       };
-      window.confirmRulesRead = function() {
-        closeRulesModal();
-        rulesConsent.checked = true;
-        rulesGroup.classList.add("checked");
+      window.handleModalRulesCheck = function(checkbox) {
+        const confirmBtn = document.getElementById("rulesConfirmBtn");
+        if (checkbox.checked) {
+          confirmBtn.disabled = false;
+          confirmBtn.style.opacity = "1";
+          confirmBtn.style.cursor = "pointer";
+        } else {
+          confirmBtn.disabled = true;
+          confirmBtn.style.opacity = "0.5";
+          confirmBtn.style.cursor = "not-allowed";
+        }
       };
-      rulesConsent.addEventListener("change", function() {
-        if (this.checked && !rulesModalOpened) {
-          this.checked = false;
-          showToast("📋 Por favor abre y lee el reglamento primero tocando el botón amarillo.");
+      window.confirmRulesRead = function() {
+        const modalCheck = document.getElementById("rulesModalCheck");
+        if (!modalCheck.checked) {
+          showToast("📋 Por favor marca la casilla de aceptación primero.");
           return;
         }
-        rulesGroup.classList.toggle("checked", this.checked);
-      });
+        closeRulesModal();
+        // Mark hidden input so validateStep passes
+        rulesConsentHidden.value = "accepted";
+        // Update trigger button to show checkmark
+        const statusEl = document.getElementById("rulesTriggerStatus");
+        const triggerBtn = document.getElementById("rulesTriggerBtn");
+        if (statusEl) statusEl.textContent = "✅ Leído y aceptado";
+        if (triggerBtn) {
+          triggerBtn.style.background = "linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%)";
+          triggerBtn.style.borderColor = "#48bb78";
+          triggerBtn.style.color = "#276749";
+        }
+      };
       document.getElementById("rulesModal").addEventListener("click", function(e) {
         if (e.target === this) closeRulesModal();
       });
