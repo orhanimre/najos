@@ -58,21 +58,27 @@
         .header-left { flex-shrink: 0; }
         .header-right { flex-shrink: 0; }
 
-        /* ── LOGO + TOOLTIP ── */
-        .logo-link {
-            display: block;
-            text-decoration: none;
-            position: relative;
-            transition: transform 0.3s ease;
-            float: left;
+        /* ── LOGO + BADGE ── */
+        /* Float animation on wrapper so logo + badge move together */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-8px); }
         }
 
-        .logo-link:hover { transform: scale(1.05); }
+        .logo-link {
+            display: inline-block;
+            text-decoration: none;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+            transition: opacity 0.3s ease;
+        }
 
-        /* Home icon badge — bottom-right corner of logo */
+        .logo-link:hover { opacity: 0.9; }
+
+        /* Home icon badge — top-right corner of logo */
         .logo-home-badge {
             position: absolute;
-            bottom: -8px;
+            top: -8px;
             right: -8px;
             width: 26px;
             height: 26px;
@@ -83,8 +89,7 @@
             justify-content: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.25), 0 0 0 2px rgba(0,119,190,0.35);
             pointer-events: none;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            float: none;
+            transition: box-shadow 0.25s ease;
         }
 
         .logo-home-badge svg {
@@ -98,7 +103,6 @@
         }
 
         .logo-link:hover .logo-home-badge {
-            transform: scale(1.18);
             box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 0 2px var(--ocean-light);
         }
 
@@ -107,8 +111,8 @@
             .logo-home-badge {
                 width: 20px;
                 height: 20px;
-                bottom: -4px;
-                right: -4px;
+                top: -6px;
+                right: -6px;
             }
             .logo-home-badge svg { width: 10px; height: 10px; }
         }
@@ -120,7 +124,6 @@
             display: block;
             border-radius: 16px;
             filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
-            animation: float 3s ease-in-out infinite;
         }
 
         .header-title { text-align: center; padding: 6px 0 0; }
@@ -140,11 +143,6 @@
         }
 
         .nav-menu { display: flex; justify-content: center; gap: 10px; margin-bottom: 24px; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50%       { transform: translateY(-8px); }
-        }
 
         @keyframes navGlowPulse {
             0%, 100% {
@@ -174,11 +172,8 @@
             animation: navGlowPulse 2.2s ease-in-out infinite;
         }
 
-        .nav-link:nth-child(2) {
-            animation-delay: 0.5s;
-        }
+        .nav-link:nth-child(2) { animation-delay: 0.5s; }
 
-        /* Subtle shimmer fill on hover */
         .nav-link::after {
             content: '';
             position: absolute;
@@ -191,33 +186,24 @@
         .nav-link:hover {
             color: var(--white);
             border-color: rgba(255, 255, 255, 0.80);
-            box-shadow:
-                0 0 0 1px rgba(255, 255, 255, 0.15) inset,
-                0 3px 14px rgba(0, 0, 0, 0.18);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15) inset, 0 3px 14px rgba(0, 0, 0, 0.18);
             background: rgba(255, 255, 255, 0.06);
         }
 
-        .nav-link:hover::after {
-            opacity: 1;
-        }
+        .nav-link:hover::after { opacity: 1; }
 
-        /* Thin animated underline accent */
         .nav-link::before {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
+            bottom: 0; left: 50%;
+            width: 0; height: 2px;
             background: rgba(255, 255, 255, 0.7);
             border-radius: 2px;
             transform: translateX(-50%);
             transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .nav-link:hover::before {
-            width: calc(100% - 24px);
-        }
+        .nav-link:hover::before { width: calc(100% - 24px); }
 
         /* ── CONTENT ── */
         .content {
@@ -234,363 +220,137 @@
             margin-bottom: 40px;
         }
         .gallery img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            width: 100%; height: 200px;
+            object-fit: cover; border-radius: 12px;
+            cursor: pointer; transition: all 0.3s ease;
         }
-        .gallery img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        }
+        .gallery img:hover { transform: scale(1.05); box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
 
         /* ── SECTIONS ── */
         .section {
-            background: #f8f9fa;
-            padding: 40px;
-            border-radius: 16px;
-            margin-bottom: 32px;
+            background: #f8f9fa; padding: 40px;
+            border-radius: 16px; margin-bottom: 32px;
         }
-        .section h2 {
-            color: var(--ocean-dark);
-            margin-bottom: 20px;
-            font-size: 1.4rem;
-            font-weight: 600;
-        }
+        .section h2 { color: var(--ocean-dark); margin-bottom: 20px; font-size: 1.4rem; font-weight: 600; }
 
         /* ── MAP ── */
         .map-container { margin: 20px 0; border-radius: 12px; overflow: hidden; }
         .map-container iframe { display: block; }
         .map-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #dc3545;
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 0.9rem;
-            margin-top: 16px;
-            transition: all 0.2s ease;
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #dc3545; color: white;
+            padding: 12px 24px; border: none; border-radius: 10px;
+            cursor: pointer; font-weight: 500; font-size: 0.9rem;
+            margin-top: 16px; transition: all 0.2s ease;
         }
         .map-btn:hover { background: #c82333; transform: translateY(-1px); }
 
         /* ── CONTACT SECTION ── */
         .contact-section {
             background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 100%);
-            border: 1px solid #d0e8f8;
-            padding: 40px;
-            border-radius: 20px;
-            margin-bottom: 32px;
+            border: 1px solid #d0e8f8; padding: 40px;
+            border-radius: 20px; margin-bottom: 32px;
         }
-
-        .contact-section h2 {
-            color: var(--ocean-dark);
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .contact-subtitle {
-            color: #6B7280;
-            font-size: 14px;
-            margin-bottom: 32px;
-            font-weight: 400;
-        }
-
-        .contact-cards {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
+        .contact-section h2 { color: var(--ocean-dark); font-size: 1.4rem; font-weight: 600; margin-bottom: 8px; }
+        .contact-subtitle { color: #6B7280; font-size: 14px; margin-bottom: 32px; font-weight: 400; }
+        .contact-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
         .contact-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 28px 20px;
-            border-radius: 16px;
-            text-decoration: none;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 15px;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; gap: 12px; padding: 28px 20px;
+            border-radius: 16px; text-decoration: none;
+            font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 15px;
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
-            border: none;
-            cursor: pointer;
+            position: relative; overflow: hidden; border: none; cursor: pointer;
         }
-
-        .contact-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            transition: opacity 0.25s ease;
-        }
-
+        .contact-card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.25s ease; }
         .contact-card:hover::before { opacity: 1; }
         .contact-card:hover { transform: translateY(-3px); }
         .contact-card:active { transform: translateY(0); }
 
-        /* WhatsApp card */
-        .card-whatsapp {
-            background: #25D366;
-            color: white;
-            box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3);
-        }
-        .card-whatsapp::before {
-            background: linear-gradient(135deg, #20bd5a 0%, #128c7e 100%);
-        }
-        .card-whatsapp:hover {
-            box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
-        }
+        .card-whatsapp { background: #25D366; color: white; box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3); }
+        .card-whatsapp::before { background: linear-gradient(135deg, #20bd5a 0%, #128c7e 100%); }
+        .card-whatsapp:hover { box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45); }
 
-        /* Phone card */
-        .card-phone {
-            background: #dc3545;
-            color: white;
-            box-shadow: 0 4px 16px rgba(220, 53, 69, 0.3);
-        }
-        .card-phone::before {
-            background: linear-gradient(135deg, #c82333 0%, #a71d2a 100%);
-        }
-        .card-phone:hover {
-            box-shadow: 0 8px 24px rgba(220, 53, 69, 0.45);
-        }
+        .card-phone { background: #dc3545; color: white; box-shadow: 0 4px 16px rgba(220, 53, 69, 0.3); }
+        .card-phone::before { background: linear-gradient(135deg, #c82333 0%, #a71d2a 100%); }
+        .card-phone:hover { box-shadow: 0 8px 24px rgba(220, 53, 69, 0.45); }
 
         .contact-card-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
+            width: 52px; height: 52px; border-radius: 50%;
             background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-
-        .contact-card-icon svg {
-            width: 26px;
-            height: 26px;
-            fill: white;
-        }
-
-        .contact-card-text {
-            text-align: center;
-        }
-
-        .contact-card-label {
-            font-size: 12px;
-            font-weight: 500;
-            opacity: 0.85;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 2px;
-        }
-
-        .contact-card-value {
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        /* ── BACK LINK ── */
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--ocean);
-            text-decoration: none;
-            padding: 12px 24px;
-            border: 2px solid var(--ocean);
-            border-radius: 12px;
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            margin-top: 8px;
-        }
-        .back-link:hover {
-            background: var(--ocean);
-            color: white;
-            transform: translateY(-1px);
-        }
+        .contact-card-icon svg { width: 26px; height: 26px; fill: white; }
+        .contact-card-text { text-align: center; }
+        .contact-card-label { font-size: 12px; font-weight: 500; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+        .contact-card-value { font-size: 16px; font-weight: 700; }
 
         /* ── FOOTER ── */
         .footer {
-            text-align: center;
-            padding: 40px 32px;
+            text-align: center; padding: 40px 32px;
             background: linear-gradient(180deg, transparent 0%, var(--sand) 50%);
-            color: var(--ocean-dark);
-            font-size: 14px;
-            margin-top: 60px;
-            border-top: 1px solid rgba(0, 77, 115, 0.08);
+            color: var(--ocean-dark); font-size: 14px;
+            margin-top: 60px; border-top: 1px solid rgba(0, 77, 115, 0.08);
         }
-        .footer::before {
-            content: '🌊';
-            display: block;
-            font-size: 32px;
-            margin-bottom: 16px;
-        }
+        .footer::before { content: '🌊'; display: block; font-size: 32px; margin-bottom: 16px; }
 
         /* ── MODAL ── */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 2000;
-            animation: fadeIn 0.3s ease;
-        }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; animation: fadeIn 0.3s ease; }
         .modal.show { display: flex; align-items: center; justify-content: center; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .modal-content { position: relative; max-width: 90%; max-height: 90%; }
         .modal-content img { width: 100%; height: 100%; object-fit: contain; border-radius: 12px; }
         .modal-close {
-            position: absolute;
-            top: -16px; right: -16px;
-            background: var(--white);
-            border: none;
-            font-size: 24px;
-            color: #6B7280;
-            cursor: pointer;
-            width: 40px; height: 40px;
+            position: absolute; top: -16px; right: -16px;
+            background: var(--white); border: none; font-size: 24px; color: #6B7280;
+            cursor: pointer; width: 40px; height: 40px;
             display: flex; align-items: center; justify-content: center;
-            border-radius: 50%;
-            transition: all 0.2s ease;
-            z-index: 2001;
+            border-radius: 50%; transition: all 0.2s ease; z-index: 2001;
         }
         .modal-close:hover { background: #f1f5f9; transform: scale(1.1); }
+
+        /* Platform booking cards */
+        .platform-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .platform-card {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; gap: 16px; padding: 28px 24px;
+            border-radius: 16px; text-decoration: none;
+            background: transparent; border: 2px solid #e5e7eb;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: none;
+        }
+        .platform-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); border-color: #c5d0dc; background: rgba(0,0,0,0.02); }
+        .platform-logo { object-fit: contain; }
+        .logo-booking { width: 100%; max-width: 280px; height: 60px; }
+        .logo-airbnb { width: 160px; height: 80px; }
+        .platform-cta { font-size: 13px; font-weight: 600; color: #6B7280; letter-spacing: 0.2px; transition: color 0.2s ease; text-align: center; width: 100%; }
+        .platform-card:hover .platform-cta { color: var(--ocean-dark); }
 
         /* ── MOBILE ── */
         @media (max-width: 768px) {
             .header { padding: 10px 16px; }
             .header-content { min-height: auto; }
             .logo { max-width: 70px; }
-            .nav-link {
-                font-size: 10px;
-                padding: 6px 12px;
-                letter-spacing: 0.5px;
-            }
+            .nav-link { font-size: 10px; padding: 6px 12px; letter-spacing: 0.5px; }
             .content { padding: 160px 20px 40px; }
-
             .section { padding: 24px 20px; }
             .contact-section { padding: 24px 20px; }
-
-            .contact-cards {
-                grid-template-columns: 1fr 1fr;
-                gap: 12px;
-            }
-
-            .contact-card {
-                padding: 20px 12px;
-                gap: 10px;
-            }
-
-            .contact-card-icon {
-                width: 44px;
-                height: 44px;
-            }
-
+            .contact-cards { grid-template-columns: 1fr 1fr; gap: 12px; }
+            .contact-card { padding: 20px 12px; gap: 10px; }
+            .contact-card-icon { width: 44px; height: 44px; }
             .contact-card-icon svg { width: 22px; height: 22px; }
             .contact-card-value { font-size: 14px; }
             .contact-card-label { font-size: 11px; }
+            .platform-cards { grid-template-columns: 1fr; gap: 12px; }
+            .platform-card { padding: 24px 20px; gap: 12px; }
+            .logo-booking { max-width: 260px; height: 50px; }
+            .logo-airbnb { width: 140px; height: 50px; }
         }
 
         @media (max-width: 420px) {
             .contact-cards { grid-template-columns: 1fr; }
             .contact-card { flex-direction: row; padding: 18px 20px; gap: 16px; }
             .contact-card-text { text-align: left; }
-        }
-
-        /* Platform booking cards */
-        .platform-cards {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        .platform-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            padding: 28px 24px;
-            border-radius: 16px;
-            text-decoration: none;
-            background: transparent;
-            border: 2px solid #e5e7eb;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: none;
-        }
-
-        .platform-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            border-color: #c5d0dc;
-            background: rgba(0,0,0,0.02);
-        }
-
-        .platform-logo {
-            object-fit: contain;
-        }
-        .logo-booking {
-            width: 100%;
-            max-width: 280px;
-            height: 60px;
-        }
-        .logo-airbnb {
-            width: 160px;
-            height: 80px;
-        }
-
-        .platform-cta {
-            font-size: 13px;
-            font-weight: 600;
-            color: #6B7280;
-            letter-spacing: 0.2px;
-            transition: color 0.2s ease;
-            text-align: center;
-            width: 100%;
-        }
-
-        .platform-card:hover .platform-cta {
-            color: var(--ocean-dark);
-        }
-
-        @media (max-width: 768px) {
-            .platform-cards {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-            .platform-card {
-                flex-direction: column;
-                padding: 24px 20px;
-                gap: 12px;
-                align-items: center;
-            }
-            .logo-booking {
-                width: 100%;
-                max-width: 260px;
-                height: 50px;
-            }
-            .logo-airbnb {
-                width: 140px;
-                height: 50px;
-            }
-            .platform-cta {
-                text-align: center;
-                font-size: 14px;
-                white-space: normal;
-            }
         }
     </style>
 </head>
@@ -630,7 +390,6 @@
                 <img src="https://imgur.com/image5.jpg" alt="Vista" onclick="openModal(this.src)">
             </div>
 
-            <!-- Ubicación -->
             <div class="section">
                 <h2>📍 Ubicación</h2>
                 <p>Cl. 21 # 22-71, San Carlos, Antioquia</p>
@@ -643,23 +402,18 @@
                 </button>
             </div>
 
-<!-- Reservar en plataformas -->
             <div class="section">
                 <h2>🌐 Reserva en línea</h2>
                 <p class="contact-subtitle">¡Haz click para reservar tus vacaciones ahora mismo!</p>
-
                 <div class="platform-cards">
-                    <!-- Booking.com -->
                     <a href="https://www.booking.com/hotel/co/casa-selva-san-carlos.en-gb.html?aid=304142&label=gen173nr-10CAEoggI46AdIM1gEaDKIAQGYATO4AQfIAQzYAQPoAQH4AQGIAgGoAgG4ApXWts0GwAIB0gIkMzIxM2EzOWYtNGM0Yy00YzJjLTkzZDMtOGM3ZDJlZjkyMmZl2AIB4AIB&sid=464087cabb8d332f22d677a549a9f538&checkin=2026-04-21&checkout=2026-04-23&dest_id=14249750&dest_type=hotel&dist=0&group_adults=2&group_children=0&hapos=1&hpos=1&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&soh=1&sr_order=popularity&srepoch=1772989251&srpvid=5ac17799308602d8&type=total&ucfs=1&#no_availability_msg" class="platform-card" target="_blank" rel="noopener">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 60" class="platform-logo logo-booking" style="display:block;margin:0 auto;" aria-label="Booking.com">
-  <text x="220" y="46" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="40" font-weight="900">
-    <tspan fill="#003580">Booking</tspan><tspan fill="#0071C2">.com</tspan>
-  </text>
-</svg>
+                            <text x="220" y="46" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="40" font-weight="900">
+                                <tspan fill="#003580">Booking</tspan><tspan fill="#0071C2">.com</tspan>
+                            </text>
+                        </svg>
                         <span class="platform-cta">Reservar ahora →</span>
                     </a>
-
-                    <!-- Airbnb -->
                     <a href="https://www.airbnb.com" class="platform-card" target="_blank" rel="noopener">
                         <img src="https://i.imgur.com/5vFuTC4.jpg" alt="Airbnb" class="platform-logo logo-airbnb">
                         <span class="platform-cta">Reservar ahora →</span>
@@ -667,13 +421,10 @@
                 </div>
             </div>
 
-                        <!-- Comuníquese con Nosotros -->
             <div class="contact-section">
                 <h2>📞 Comuníquese con Nosotros</h2>
                 <p class="contact-subtitle">Estamos disponibles para ayudarte a planear tu estadía perfecta</p>
-
                 <div class="contact-cards">
-                    <!-- Phone -->
                     <a href="tel:+57XXXXXXXXXX" class="contact-card card-phone">
                         <div class="contact-card-icon">
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -685,8 +436,6 @@
                             <div class="contact-card-value">Llamar ahora</div>
                         </div>
                     </a>
-
-                    <!-- WhatsApp -->
                     <a href="https://wa.me/57XXXXXXXXXX" class="contact-card card-whatsapp" target="_blank" rel="noopener">
                         <div class="contact-card-icon">
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -702,12 +451,12 @@
             </div>
 
         </div>
+
         <div class="footer">
             <p>© 2026 Apart Hotel Najos · Todos los derechos reservados</p>
             <p style="margin-top: 8px; font-size: 13px; opacity: 0.7;">Tu refugio en el corazón de San Carlos</p>
         </div>
 
-        <!-- Photo Modal -->
         <div id="photoModal" class="modal">
             <div class="modal-content">
                 <button class="modal-close" onclick="closeModal()">×</button>

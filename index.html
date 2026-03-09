@@ -99,20 +99,27 @@
         .header-right { flex-shrink: 0; }
 
         /* ── LOGO + TOOLTIP ── */
-        .logo-link {
-            display: block;
-            text-decoration: none;
-            position: relative;
-            transition: transform 0.3s ease;
+        /* Float animation on wrapper so logo + badge move together */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-8px); }
         }
 
-        .logo-link:hover { transform: scale(1.05); }
+        .logo-link {
+            display: inline-block;
+            text-decoration: none;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+            transition: opacity 0.3s ease;
+        }
 
-        /* Home icon badge — bottom-right corner of logo */
+        .logo-link:hover { opacity: 0.9; }
+
+        /* Home icon badge — top-right corner of logo */
         .logo-home-badge {
             position: absolute;
-            bottom: -5px;
-            right: -5px;
+            top: -8px;
+            right: -8px;
             width: 26px;
             height: 26px;
             background: rgba(255, 255, 255, 0.95);
@@ -122,7 +129,7 @@
             justify-content: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.25), 0 0 0 2px rgba(0,119,190,0.35);
             pointer-events: none;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            transition: box-shadow 0.25s ease;
         }
 
         .logo-home-badge svg {
@@ -136,7 +143,6 @@
         }
 
         .logo-link:hover .logo-home-badge {
-            transform: scale(1.18);
             box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 0 2px var(--ocean-light);
         }
 
@@ -145,8 +151,8 @@
             .logo-home-badge {
                 width: 20px;
                 height: 20px;
-                bottom: -4px;
-                right: -4px;
+                top: -6px;
+                right: -6px;
             }
             .logo-home-badge svg { width: 10px; height: 10px; }
         }
@@ -158,12 +164,6 @@
             display: block;
             filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
             border-radius: 16px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50%       { transform: translateY(-8px); }
         }
 
         .header-title { text-align: center; padding: 6px 0 0; }

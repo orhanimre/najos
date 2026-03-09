@@ -9,325 +9,74 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         :root {
-            --ocean: #0077BE;
-            --ocean-dark: #005A8D;
-            --ocean-light: #4DA8DA;
-            --sand: #F4E8D8;
-            --sunset: #FF6B35;
-            --white: #FFFFFF;
-            --shadow: rgba(0, 77, 115, 0.15);
-            /* Category colors */
-            --charco: #0EA5E9;
-            --cascada: #6366F1;
-            --sendero: #16A34A;
-            --reserva: #0D9488;
-            --recreativo: #F59E0B;
-            --urbano: #EC4899;
+            --ocean: #0077BE; --ocean-dark: #005A8D; --ocean-light: #4DA8DA;
+            --sand: #F4E8D8; --sunset: #FF6B35; --white: #FFFFFF; --shadow: rgba(0,77,115,0.15);
+            --charco: #0EA5E9; --cascada: #6366F1; --sendero: #16A34A;
+            --reserva: #0D9488; --recreativo: #F59E0B; --urbano: #EC4899;
         }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-light) 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: var(--white);
-            min-height: 100vh;
-            box-shadow: 0 20px 60px var(--shadow);
-        }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-light) 100%); min-height: 100vh; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; background: var(--white); min-height: 100vh; box-shadow: 0 20px 60px var(--shadow); }
 
         /* ── HEADER ── */
-        .header {
-            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
-            color: var(--white);
-            padding: 12px 40px;
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 16px rgba(0, 119, 190, 0.3);
-        }
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-            min-height: 60px;
-        }
+        .header { background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%); color: var(--white); padding: 12px 40px; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; box-shadow: 0 4px 16px rgba(0,119,190,0.3); }
+        .header-content { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; min-height: 60px; }
         .header-left { flex-shrink: 0; }
         .header-right { flex-shrink: 0; }
 
-        /* ── LOGO + TOOLTIP ── */
-        .logo-link {
-            display: block;
-            text-decoration: none;
-            position: relative;
-            transition: transform 0.3s ease;
-            float: left;
-        }
+        /* ── LOGO + BADGE — float on wrapper ── */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .logo-link { display: inline-block; text-decoration: none; position: relative; animation: float 3s ease-in-out infinite; transition: opacity 0.3s ease; }
+        .logo-link:hover { opacity: 0.9; }
+        .logo-home-badge { position: absolute; top: -8px; right: -8px; width: 26px; height: 26px; background: rgba(255,255,255,0.95); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.25), 0 0 0 2px rgba(0,119,190,0.35); pointer-events: none; transition: box-shadow 0.25s ease; }
+        .logo-home-badge svg { width: 13px; height: 13px; stroke: var(--ocean-dark); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+        .logo-link:hover .logo-home-badge { box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 0 2px var(--ocean-light); }
+        @media (max-width: 768px) { .logo-home-badge { width: 20px; height: 20px; top: -6px; right: -6px; } .logo-home-badge svg { width: 10px; height: 10px; } }
+        .logo { max-width: 120px; display: block; border-radius: 16px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
 
-        .logo-link:hover { transform: scale(1.05); }
-
-        /* Home icon badge — bottom-right corner of logo */
-        .logo-home-badge {
-            position: absolute;
-            bottom: -8px;
-            right: -8px;
-            width: 26px;
-            height: 26px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.25), 0 0 0 2px rgba(0,119,190,0.35);
-            pointer-events: none;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            float: none;
-        }
-
-        .logo-home-badge svg {
-            width: 13px;
-            height: 13px;
-            stroke: var(--ocean-dark);
-            fill: none;
-            stroke-width: 2.2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .logo-link:hover .logo-home-badge {
-            transform: scale(1.18);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 0 2px var(--ocean-light);
-        }
-
-        /* Mobile size adjustment */
-        @media (max-width: 768px) {
-            .logo-home-badge {
-                width: 20px;
-                height: 20px;
-                bottom: -4px;
-                right: -4px;
-            }
-            .logo-home-badge svg { width: 10px; height: 10px; }
-        }
-
-                .logo { max-width: 120px; display: block; border-radius: 16px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); animation: float 3s ease-in-out infinite; }
         .header-title { text-align: center; padding: 6px 0 0; }
         .header-title h1 { font-family: 'Playfair Display', serif; font-size: clamp(24px, 4vw, 32px); font-weight: 900; margin-bottom: 4px; letter-spacing: -1px; text-shadow: 0 2px 12px rgba(0,0,0,0.2); }
         .header-subtitle { font-size: clamp(12px, 2vw, 16px); font-weight: 300; opacity: 0.95; letter-spacing: 0.5px; }
         .nav-menu { display: flex; justify-content: center; gap: 10px; margin-bottom: 24px; }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50%       { transform: translateY(-8px); }
-        }
-
         @keyframes navGlowPulse {
-            0%, 100% {
-                box-shadow: 0 0 0px rgba(255, 255, 255, 0);
-                border-color: rgba(255, 255, 255, 0.35);
-            }
-            50% {
-                box-shadow: 0 0 12px rgba(255, 255, 255, 0.45), 0 0 24px rgba(77, 168, 218, 0.3);
-                border-color: rgba(255, 255, 255, 0.85);
-            }
+            0%, 100% { box-shadow: 0 0 0px rgba(255,255,255,0); border-color: rgba(255,255,255,0.35); }
+            50% { box-shadow: 0 0 12px rgba(255,255,255,0.45), 0 0 24px rgba(77,168,218,0.3); border-color: rgba(255,255,255,0.85); }
         }
-
-        .nav-link {
-            position: relative;
-            color: rgba(255, 255, 255, 0.92);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 12.5px;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            padding: 8px 20px;
-            border-radius: 5px;
-            background: transparent;
-            border: 1.5px solid rgba(255, 255, 255, 0.35);
-            transition: color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
-            overflow: hidden;
-            animation: navGlowPulse 2.2s ease-in-out infinite;
-        }
-
-        .nav-link:nth-child(2) {
-            animation-delay: 0.5s;
-        }
-
-        /* Subtle shimmer fill on hover */
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(255, 255, 255, 0.10);
-            opacity: 0;
-            transition: opacity 0.22s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--white);
-            border-color: rgba(255, 255, 255, 0.80);
-            box-shadow:
-                0 0 0 1px rgba(255, 255, 255, 0.15) inset,
-                0 3px 14px rgba(0, 0, 0, 0.18);
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-        .nav-link:hover::after {
-            opacity: 1;
-        }
-
-        /* Thin animated underline accent */
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 2px;
-            transform: translateX(-50%);
-            transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .nav-link:hover::before {
-            width: calc(100% - 24px);
-        }
-
-        .nav-link.active {
-            background: rgba(255,255,255,0.25);
-        }
+        .nav-link { position: relative; color: rgba(255,255,255,0.92); text-decoration: none; font-weight: 500; font-size: 12.5px; letter-spacing: 0.8px; text-transform: uppercase; padding: 8px 20px; border-radius: 5px; background: transparent; border: 1.5px solid rgba(255,255,255,0.35); transition: color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease; overflow: hidden; animation: navGlowPulse 2.2s ease-in-out infinite; }
+        .nav-link:nth-child(2) { animation-delay: 0.5s; }
+        .nav-link::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.10); opacity: 0; transition: opacity 0.22s ease; }
+        .nav-link:hover { color: var(--white); border-color: rgba(255,255,255,0.80); box-shadow: 0 0 0 1px rgba(255,255,255,0.15) inset, 0 3px 14px rgba(0,0,0,0.18); background: rgba(255,255,255,0.06); }
+        .nav-link:hover::after { opacity: 1; }
+        .nav-link::before { content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 2px; background: rgba(255,255,255,0.7); border-radius: 2px; transform: translateX(-50%); transition: width 0.25s cubic-bezier(0.16,1,0.3,1); }
+        .nav-link:hover::before { width: calc(100% - 24px); }
+        .nav-link.active { background: rgba(255,255,255,0.25); }
 
         /* ── CONTENT ── */
-        .content {
-            padding: 170px 40px 60px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
+        .content { padding: 170px 40px 60px; max-width: 900px; margin: 0 auto; }
+        .hero-intro { text-align: center; margin-bottom: 48px; padding: 40px 32px; background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%); border-radius: 20px; border: 1px solid #bae6fd; }
+        .hero-intro h2 { font-family: 'Playfair Display', serif; font-size: clamp(22px, 4vw, 30px); color: var(--ocean-dark); margin-bottom: 12px; }
+        .hero-intro p { font-size: 15px; color: #4B5563; line-height: 1.75; max-width: 600px; margin: 0 auto; }
 
-        /* ── HERO INTRO ── */
-        .hero-intro {
-            text-align: center;
-            margin-bottom: 48px;
-            padding: 40px 32px;
-            background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
-            border-radius: 20px;
-            border: 1px solid #bae6fd;
-        }
-        .hero-intro h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(22px, 4vw, 30px);
-            color: var(--ocean-dark);
-            margin-bottom: 12px;
-        }
-        .hero-intro p {
-            font-size: 15px;
-            color: #4B5563;
-            line-height: 1.75;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+        .category-section { margin-bottom: 52px; }
+        .category-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 3px solid; }
+        .category-icon { font-size: 28px; line-height: 1; }
+        .category-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(20px, 3vw, 26px); font-weight: 700; }
+        .category-count { margin-left: auto; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: rgba(0,0,0,0.07); color: #555; }
 
-        /* ── CATEGORY SECTION ── */
-        .category-section {
-            margin-bottom: 52px;
-        }
+        .cat-charco .category-header { border-color: var(--charco); } .cat-charco .category-header h2 { color: var(--charco); }
+        .cat-cascada .category-header { border-color: var(--cascada); } .cat-cascada .category-header h2 { color: var(--cascada); }
+        .cat-sendero .category-header { border-color: var(--sendero); } .cat-sendero .category-header h2 { color: var(--sendero); }
+        .cat-reserva .category-header { border-color: var(--reserva); } .cat-reserva .category-header h2 { color: var(--reserva); }
+        .cat-recreativo .category-header { border-color: var(--recreativo); } .cat-recreativo .category-header h2 { color: var(--recreativo); }
+        .cat-urbano .category-header { border-color: var(--urbano); } .cat-urbano .category-header h2 { color: var(--urbano); }
 
-        .category-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 24px;
-            padding-bottom: 14px;
-            border-bottom: 3px solid;
-        }
-        .category-icon {
-            font-size: 28px;
-            line-height: 1;
-        }
-        .category-header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(20px, 3vw, 26px);
-            font-weight: 700;
-        }
-        .category-count {
-            margin-left: auto;
-            font-size: 12px;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 20px;
-            background: rgba(0,0,0,0.07);
-            color: #555;
-        }
+        .attractions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+        .attraction-card { border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: all 0.3s ease; background: #fff; border: 1px solid #f0f0f0; }
+        .attraction-card:hover { transform: translateY(-5px); box-shadow: 0 12px 28px rgba(0,0,0,0.14); }
 
-        /* Category color theming */
-        .cat-charco .category-header { border-color: var(--charco); }
-        .cat-charco .category-header h2 { color: var(--charco); }
-        .cat-cascada .category-header { border-color: var(--cascada); }
-        .cat-cascada .category-header h2 { color: var(--cascada); }
-        .cat-sendero .category-header { border-color: var(--sendero); }
-        .cat-sendero .category-header h2 { color: var(--sendero); }
-        .cat-reserva .category-header { border-color: var(--reserva); }
-        .cat-reserva .category-header h2 { color: var(--reserva); }
-        .cat-recreativo .category-header { border-color: var(--recreativo); }
-        .cat-recreativo .category-header h2 { color: var(--recreativo); }
-        .cat-urbano .category-header { border-color: var(--urbano); }
-        .cat-urbano .category-header h2 { color: var(--urbano); }
-
-        /* ── ATTRACTION CARDS ── */
-        .attractions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 20px;
-        }
-
-        .attraction-card {
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            background: #fff;
-            border: 1px solid #f0f0f0;
-        }
-        .attraction-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 28px rgba(0,0,0,0.14);
-        }
-
-        .card-image {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            display: block;
-            background: #e5e7eb;
-        }
-
-        /* Placeholder image with icon */
-        .card-placeholder {
-            width: 100%;
-            height: 160px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 36px;
-        }
-        .card-placeholder span {
-            font-size: 12px;
-            font-weight: 500;
-            opacity: 0.6;
-            font-family: 'Poppins', sans-serif;
-        }
-
+        .card-placeholder { width: 100%; height: 160px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font-size: 36px; }
+        .card-placeholder span { font-size: 12px; font-weight: 500; opacity: 0.6; font-family: 'Poppins', sans-serif; }
         .cat-charco .card-placeholder { background: linear-gradient(135deg, #bae6fd, #e0f2fe); }
         .cat-cascada .card-placeholder { background: linear-gradient(135deg, #c7d2fe, #ede9fe); }
         .cat-sendero .card-placeholder { background: linear-gradient(135deg, #bbf7d0, #dcfce7); }
@@ -335,52 +84,12 @@
         .cat-recreativo .card-placeholder { background: linear-gradient(135deg, #fde68a, #fef9c3); }
         .cat-urbano .card-placeholder { background: linear-gradient(135deg, #fbcfe8, #fce7f3); }
 
-        .card-body {
-            padding: 18px 20px 20px;
-        }
-
-        .card-top {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-
-        .card-name {
-            font-size: 15px;
-            font-weight: 600;
-            color: #1F2937;
-            line-height: 1.3;
-        }
-
-        .card-rating {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #F59E0B;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .card-desc {
-            font-size: 13px;
-            color: #6B7280;
-            line-height: 1.6;
-        }
-
-        .card-badge {
-            display: inline-block;
-            margin-top: 10px;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 3px 10px;
-            border-radius: 20px;
-            letter-spacing: 0.3px;
-        }
-
+        .card-body { padding: 18px 20px 20px; }
+        .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+        .card-name { font-size: 15px; font-weight: 600; color: #1F2937; line-height: 1.3; }
+        .card-rating { display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: #F59E0B; white-space: nowrap; flex-shrink: 0; }
+        .card-desc { font-size: 13px; color: #6B7280; line-height: 1.6; }
+        .card-badge { display: inline-block; margin-top: 10px; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.3px; }
         .cat-charco .card-badge { background: #e0f2fe; color: #0369a1; }
         .cat-cascada .card-badge { background: #ede9fe; color: #5B21B6; }
         .cat-sendero .card-badge { background: #dcfce7; color: #15803D; }
@@ -388,29 +97,15 @@
         .cat-recreativo .card-badge { background: #fef9c3; color: #A16207; }
         .cat-urbano .card-badge { background: #fce7f3; color: #BE185D; }
 
-        /* ── FOOTER ── */
-        .footer {
-            text-align: center;
-            padding: 40px 32px;
-            background: linear-gradient(180deg, transparent 0%, var(--sand) 50%);
-            color: var(--ocean-dark);
-            font-size: 14px;
-            margin-top: 60px;
-            border-top: 1px solid rgba(0, 77, 115, 0.08);
-        }
+        .footer { text-align: center; padding: 40px 32px; background: linear-gradient(180deg, transparent 0%, var(--sand) 50%); color: var(--ocean-dark); font-size: 14px; margin-top: 60px; border-top: 1px solid rgba(0,77,115,0.08); }
         .footer::before { content: '🌊'; display: block; font-size: 32px; margin-bottom: 16px; }
 
-        /* ── MOBILE ── */
         @media (max-width: 768px) {
             .header { padding: 10px 16px; }
             .header-content { min-height: auto; }
             .logo { max-width: 70px; }
             .nav-menu { gap: 6px; }
-            .nav-link {
-                font-size: 10px;
-                padding: 6px 12px;
-                letter-spacing: 0.5px;
-            }
+            .nav-link { font-size: 10px; padding: 6px 12px; letter-spacing: 0.5px; }
             .content { padding: 190px 20px 40px; }
             .hero-intro { padding: 28px 20px; }
             .attractions-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -419,11 +114,7 @@
             .card-name { font-size: 13px; }
             .card-desc { font-size: 12px; }
         }
-
-        @media (max-width: 480px) {
-            .attractions-grid { grid-template-columns: 1fr; }
-            .card-placeholder { height: 150px; }
-        }
+        @media (max-width: 480px) { .attractions-grid { grid-template-columns: 1fr; } .card-placeholder { height: 150px; } }
     </style>
 </head>
 <body>
@@ -452,278 +143,69 @@
         </div>
 
         <div class="content" id="mainContent">
-
-            <!-- Hero intro -->
             <div class="hero-intro">
                 <h2>🌿 Bienvenido al Paraíso de las Aguas</h2>
                 <p>San Carlos, Antioquia, es conocido como el municipio de los charcos. Con más de 200 fuentes de agua entre ríos, quebradas y cascadas, ofrece una experiencia natural única en Colombia. Desde Apart Hotel Najos, a pasos del parque principal, tienes acceso fácil a todos estos tesoros.</p>
             </div>
 
-            <!-- ── CHARCOS ── -->
+            <!-- CHARCOS -->
             <div class="category-section cat-charco">
-                <div class="category-header">
-                    <span class="category-icon">💧</span>
-                    <h2>Charcos</h2>
-                    <span class="category-count">6 lugares</span>
-                </div>
+                <div class="category-header"><span class="category-icon">💧</span><h2>Charcos</h2><span class="category-count">6 lugares</span></div>
                 <div class="attractions-grid">
-
-                    <div class="attraction-card">
-                        <div class="card-placeholder">💧<span>Foto próximamente</span></div>
-                        <div class="card-body">
-                            <div class="card-top">
-                                <div class="card-name">El Chispero</div>
-                                <div class="card-rating">⭐ 4.8</div>
-                            </div>
-                            <div class="card-desc">Piscina natural con cascada y trampolín de roca. Aguas de color esmeralda rodeadas de vegetación exuberante.</div>
-                            <span class="card-badge">Charco</span>
-                        </div>
-                    </div>
-
-                    <div class="attraction-card">
-                        <div class="card-placeholder">💧<span>Foto próximamente</span></div>
-                        <div class="card-body">
-                            <div class="card-top">
-                                <div class="card-name">Charco La Natalia</div>
-                                <div class="card-rating">⭐ 4.4</div>
-                            </div>
-                            <div class="card-desc">Aguas tranquilas, ideal para familias con niños. Ubicado cerca al casco urbano, de fácil acceso.</div>
-                            <span class="card-badge">Charco</span>
-                        </div>
-                    </div>
-
-                    <div class="attraction-card">
-                        <div class="card-placeholder">💧<span>Foto próximamente</span></div>
-                        <div class="card-body">
-                            <div class="card-top">
-                                <div class="card-name">Charco Los Anillos</div>
-                                <div class="card-rating">⭐ 5.0</div>
-                            </div>
-                            <div class="card-desc">Piscina natural espectacular ubicada cerca al centro del pueblo. Calificación perfecta por sus visitantes.</div>
-                            <span class="card-badge">Charco</span>
-                        </div>
-                    </div>
-
-                    <div class="attraction-card">
-                        <div class="card-placeholder">💧<span>Foto próximamente</span></div>
-                        <div class="card-body">
-                            <div class="card-top">
-                                <div class="card-name">Charco Negro</div>
-                                <div class="card-rating">⭐ 5.0</div>
-                            </div>
-                            <div class="card-desc">Aguas rojizas únicas por sus minerales naturales. Situado cerca a La Chorrera, un destino especial.</div>
-                            <span class="card-badge">Charco</span>
-                        </div>
-                    </div>
-
-                    <div class="attraction-card">
-                        <div class="card-placeholder">💧<span>Foto próximamente</span></div>
-                        <div class="card-body">
-                            <div class="card-top">
-                                <div class="card-name">Charco San Antonio</div>
-                                <div class="card-rating">⭐ 4.7</div>
-                            </div>
-                            <div class="card-desc">Piscina popular con alquiler de kayak y zona de camping. Perfecto para una aventura de un día completo.</div>
-                            <span class="card-badge">Charco</span>
-                        </div>
-                    </div>
-
-                    <div class="attraction-card">
-                        <div class="card-placeholder">💧<span>Foto próximamente</span></div>
-                        <div class="card-body">
-                            <div class="card-top">
-                                <div class="card-name">Charco Redondo</div>
-                                <div class="card-rating">⭐ 4.9</div>
-                            </div>
-                            <div class="card-desc">Hermosa piscina natural accesible por una caminata de 20 a 40 minutos entre paisajes verdes.</div>
-                            <span class="card-badge">Charco</span>
-                        </div>
-                    </div>
-
+                    <div class="attraction-card"><div class="card-placeholder">💧<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">El Chispero</div><div class="card-rating">⭐ 4.8</div></div><div class="card-desc">Piscina natural con cascada y trampolín de roca. Aguas de color esmeralda rodeadas de vegetación exuberante.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">💧<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Charco La Natalia</div><div class="card-rating">⭐ 4.4</div></div><div class="card-desc">Aguas tranquilas, ideal para familias con niños. Ubicado cerca al casco urbano, de fácil acceso.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">💧<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Charco Los Anillos</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">Piscina natural espectacular ubicada cerca al centro del pueblo. Calificación perfecta por sus visitantes.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">💧<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Charco Negro</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">Aguas rojizas únicas por sus minerales naturales. Situado cerca a La Chorrera, un destino especial.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">💧<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Charco San Antonio</div><div class="card-rating">⭐ 4.7</div></div><div class="card-desc">Piscina popular con alquiler de kayak y zona de camping. Perfecto para una aventura de un día completo.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">💧<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Charco Redondo</div><div class="card-rating">⭐ 4.9</div></div><div class="card-desc">Hermosa piscina natural accesible por una caminata de 20 a 40 minutos entre paisajes verdes.</div><span class="card-badge">Charco</span></div></div>
                 </div>
             </div>
 
-            <!-- ── CASCADAS ── -->
+            <!-- CASCADAS -->
             <div class="category-section cat-cascada">
-                <div class="category-header">
-                    <span class="category-icon">🌊</span>
-                    <h2>Cascadas</h2>
-                    <span class="category-count">2 lugares</span>
-                </div>
+                <div class="category-header"><span class="category-icon">🌊</span><h2>Cascadas</h2><span class="category-count">2 lugares</span></div>
                 <div class="attractions-grid">
-
-                    <div class="attraction-card">
-                        <div class="card-placeholder">🌊<span>Foto próximamente</span></div>
-                        <div class="card-body">
-                            <div class="card-top">
-                                <div class="card-name">Atractivo Turístico La Chorrera</div>
-                                <div class="card-rating">⭐ 5.0</div>
-                            </div>
-                            <div class="card-desc">Impresionante cascada a solo 30 minutos del casco urbano. Una de las más visitadas y admiradas de la región.</div>
-                            <span class="card-badge">Cascada</span>
-                        </div>
-                    </div>
-
-                    <div class="attraction-card">
-                        <div class="card-placeholder">🌊<span>Foto próximamente</span></div>
-                        <div class="card-body">
-                            <div class="card-top">
-                                <div class="card-name">Sendero Cascada La Chorrera</div>
-                                <div class="card-rating">⭐ 4.8</div>
-                            </div>
-                            <div class="card-desc">Sendero ecológico que conduce hasta la cascada, con entrada gratuita. Ideal para senderismo y fotografía.</div>
-                            <span class="card-badge">Cascada</span>
-                        </div>
-                    </div>
-
+                    <div class="attraction-card"><div class="card-placeholder">🌊<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Atractivo Turístico La Chorrera</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">Impresionante cascada a solo 30 minutos del casco urbano. Una de las más visitadas y admiradas de la región.</div><span class="card-badge">Cascada</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">🌊<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Sendero Cascada La Chorrera</div><div class="card-rating">⭐ 4.8</div></div><div class="card-desc">Sendero ecológico que conduce hasta la cascada, con entrada gratuita. Ideal para senderismo y fotografía.</div><span class="card-badge">Cascada</span></div></div>
                 </div>
             </div>
 
-            <!-- ── SENDEROS ── -->
+            <!-- SENDEROS -->
             <div class="category-section cat-sendero">
-                <div class="category-header">
-                    <span class="category-icon">🥾</span>
-                    <h2>Senderos y Senderismo</h2>
-                    <span class="category-count">2 lugares</span>
-                </div>
+                <div class="category-header"><span class="category-icon">🥾</span><h2>Senderos y Senderismo</h2><span class="category-count">2 lugares</span></div>
                 <div class="attractions-grid">
-
-                    <div class="attraction-card">
-                        <div class="card-placeholder">🥾<span>Foto próximamente</span></div>
-                        <div class="card-body">
-                            <div class="card-top">
-                                <div class="card-name">Sendero San Antonio</div>
-                                <div class="card-rating">⭐ 4.6</div>
-                            </div>
-                            <div class="card-desc">Recorrido ecológico con piscinas naturales y una cascada al final del trayecto. Una experiencia completa en la naturaleza.</div>
-                            <span class="card-badge">Senderismo</span>
-                        </div>
-                    </div>
-
-                    <div class="attraction-card">
-                        <div class="card-placeholder">🥾<span>Foto próximamente</span></div>
-                        <div class="card-body">
-                            <div class="card-top">
-                                <div class="card-name">Cima Piedra El Tabor</div>
-                                <div class="card-rating">⭐ 5.0</div>
-                            </div>
-                            <div class="card-desc">Caminata hasta la cima con una vista panorámica de 360° sobre San Carlos y sus alrededores. Imperdible.</div>
-                            <span class="card-badge">Senderismo</span>
-                        </div>
-                    </div>
-
+                    <div class="attraction-card"><div class="card-placeholder">🥾<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Sendero San Antonio</div><div class="card-rating">⭐ 4.6</div></div><div class="card-desc">Recorrido ecológico con piscinas naturales y una cascada al final del trayecto. Una experiencia completa en la naturaleza.</div><span class="card-badge">Senderismo</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">🥾<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Cima Piedra El Tabor</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">Caminata hasta la cima con una vista panorámica de 360° sobre San Carlos y sus alrededores. Imperdible.</div><span class="card-badge">Senderismo</span></div></div>
                 </div>
             </div>
 
-            <!-- ── RESERVAS NATURALES ── -->
+            <!-- RESERVAS -->
             <div class="category-section cat-reserva">
-                <div class="category-header">
-                    <span class="category-icon">🌿</span>
-                    <h2>Reservas Naturales y Ecoturismo</h2>
-                    <span class="category-count">2 lugares</span>
-                </div>
+                <div class="category-header"><span class="category-icon">🌿</span><h2>Reservas Naturales y Ecoturismo</h2><span class="category-count">2 lugares</span></div>
                 <div class="attractions-grid">
-
-                    <div class="attraction-card">
-                        <div class="card-placeholder">🌿<span>Foto próximamente</span></div>
-                        <div class="card-body">
-                            <div class="card-top">
-                                <div class="card-name">Cielo Escondido – Paraíso Natural</div>
-                                <div class="card-rating">⭐ 4.9</div>
-                            </div>
-                            <div class="card-desc">Cañón oculto con piscinas de aguas cristalinas. Visita guiada obligatoria para adentrarse en este paraíso escondido.</div>
-                            <span class="card-badge">Ecoturismo</span>
-                        </div>
-                    </div>
-
-                    <div class="attraction-card">
-                        <div class="card-placeholder">🌿<span>Foto próximamente</span></div>
-                        <div class="card-body">
-                            <div class="card-top">
-                                <div class="card-name">Cañón del Cielo Escondido</div>
-                                <div class="card-rating">⭐ 5.0</div>
-                            </div>
-                            <div class="card-desc">Tramo del cañón dentro de la reserva Cielo Escondido. Aguas turquesas y paredes rocosas de impresionante belleza.</div>
-                            <span class="card-badge">Ecoturismo</span>
-                        </div>
-                    </div>
-
+                    <div class="attraction-card"><div class="card-placeholder">🌿<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Cielo Escondido – Paraíso Natural</div><div class="card-rating">⭐ 4.9</div></div><div class="card-desc">Cañón oculto con piscinas de aguas cristalinas. Visita guiada obligatoria para adentrarse en este paraíso escondido.</div><span class="card-badge">Ecoturismo</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">🌿<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Cañón del Cielo Escondido</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">Tramo del cañón dentro de la reserva Cielo Escondido. Aguas turquesas y paredes rocosas de impresionante belleza.</div><span class="card-badge">Ecoturismo</span></div></div>
                 </div>
             </div>
 
-            <!-- ── CENTROS RECREATIVOS ── -->
+            <!-- CENTROS RECREATIVOS -->
             <div class="category-section cat-recreativo">
-                <div class="category-header">
-                    <span class="category-icon">🏊</span>
-                    <h2>Centros Recreativos</h2>
-                    <span class="category-count">3 lugares</span>
-                </div>
+                <div class="category-header"><span class="category-icon">🏊</span><h2>Centros Recreativos</h2><span class="category-count">3 lugares</span></div>
                 <div class="attractions-grid">
-
-                    <div class="attraction-card">
-                        <div class="card-placeholder">🏊<span>Foto próximamente</span></div>
-                        <div class="card-body">
-                            <div class="card-top">
-                                <div class="card-name">Los Colores Centro Recreativo</div>
-                                <div class="card-rating">⭐ 4.5</div>
-                            </div>
-                            <div class="card-desc">Toboganes, piscina, zona infantil y restaurante. El lugar perfecto para un día en familia con todas las comodidades.</div>
-                            <span class="card-badge">Centro Recreativo</span>
-                        </div>
-                    </div>
-
-                    <div class="attraction-card">
-                        <div class="card-placeholder">🏊<span>Foto próximamente</span></div>
-                        <div class="card-body">
-                            <div class="card-top">
-                                <div class="card-name">Centro Turístico La Planta</div>
-                                <div class="card-rating">⭐ 4.6</div>
-                            </div>
-                            <div class="card-desc">Camping junto al río con BBQ, voleibol y fútbol. Un ambiente relajado rodeado de naturaleza para toda la familia.</div>
-                            <span class="card-badge">Centro Recreativo</span>
-                        </div>
-                    </div>
-
-                    <div class="attraction-card">
-                        <div class="card-placeholder">🏊<span>Foto próximamente</span></div>
-                        <div class="card-body">
-                            <div class="card-top">
-                                <div class="card-name">C.T. y Recreativo San Antonio</div>
-                                <div class="card-rating">⭐ 4.5</div>
-                            </div>
-                            <div class="card-desc">Camping, canotaje y cascadas en un solo lugar. Ideal para quienes buscan aventura y convivencia al aire libre.</div>
-                            <span class="card-badge">Centro Recreativo</span>
-                        </div>
-                    </div>
-
+                    <div class="attraction-card"><div class="card-placeholder">🏊<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Los Colores Centro Recreativo</div><div class="card-rating">⭐ 4.5</div></div><div class="card-desc">Toboganes, piscina, zona infantil y restaurante. El lugar perfecto para un día en familia con todas las comodidades.</div><span class="card-badge">Centro Recreativo</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">🏊<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Centro Turístico La Planta</div><div class="card-rating">⭐ 4.6</div></div><div class="card-desc">Camping junto al río con BBQ, voleibol y fútbol. Un ambiente relajado rodeado de naturaleza para toda la familia.</div><span class="card-badge">Centro Recreativo</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">🏊<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">C.T. y Recreativo San Antonio</div><div class="card-rating">⭐ 4.5</div></div><div class="card-desc">Camping, canotaje y cascadas en un solo lugar. Ideal para quienes buscan aventura y convivencia al aire libre.</div><span class="card-badge">Centro Recreativo</span></div></div>
                 </div>
             </div>
 
-            <!-- ── URBANO / CULTURAL ── -->
+            <!-- URBANO -->
             <div class="category-section cat-urbano">
-                <div class="category-header">
-                    <span class="category-icon">🏛️</span>
-                    <h2>Urbano y Cultural</h2>
-                    <span class="category-count">1 lugar</span>
-                </div>
+                <div class="category-header"><span class="category-icon">🏛️</span><h2>Urbano y Cultural</h2><span class="category-count">1 lugar</span></div>
                 <div class="attractions-grid">
-
-                    <div class="attraction-card">
-                        <div class="card-placeholder">🏛️<span>Foto próximamente</span></div>
-                        <div class="card-body">
-                            <div class="card-top">
-                                <div class="card-name">Parque Principal San Carlos</div>
-                                <div class="card-rating">⭐ 4.7</div>
-                            </div>
-                            <div class="card-desc">Plaza central del municipio, colorida y animada. Punto de encuentro de la vida local y puerta de entrada a todas las aventuras.</div>
-                            <span class="card-badge">Urbano</span>
-                        </div>
-                    </div>
-
+                    <div class="attraction-card"><div class="card-placeholder">🏛️<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Parque Principal San Carlos</div><div class="card-rating">⭐ 4.7</div></div><div class="card-desc">Plaza central del municipio, colorida y animada. Punto de encuentro de la vida local y puerta de entrada a todas las aventuras.</div><span class="card-badge">Urbano</span></div></div>
                 </div>
             </div>
-
-        </div><!-- end content -->
+        </div>
 
         <div class="footer">
             <p>© 2026 Apart Hotel Najos · Todos los derechos reservados</p>

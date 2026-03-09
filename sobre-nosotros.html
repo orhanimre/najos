@@ -9,347 +9,91 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         :root {
-            --ocean: #0077BE;
-            --ocean-dark: #005A8D;
-            --ocean-light: #4DA8DA;
-            --sand: #F4E8D8;
-            --sunset: #FF6B35;
-            --white: #FFFFFF;
-            --shadow: rgba(0, 77, 115, 0.15);
+            --ocean: #0077BE; --ocean-dark: #005A8D; --ocean-light: #4DA8DA;
+            --sand: #F4E8D8; --sunset: #FF6B35; --white: #FFFFFF; --shadow: rgba(0, 77, 115, 0.15);
         }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-light) 100%);
-            min-height: 100vh;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: var(--white);
-            min-height: 100vh;
-            box-shadow: 0 20px 60px var(--shadow);
-        }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-light) 100%); min-height: 100vh; color: #333; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; background: var(--white); min-height: 100vh; box-shadow: 0 20px 60px var(--shadow); }
 
         /* ── HEADER ── */
-        .header {
-            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
-            color: var(--white);
-            padding: 12px 40px;
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 16px rgba(0, 119, 190, 0.3);
-        }
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-            min-height: 60px;
-        }
+        .header { background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%); color: var(--white); padding: 12px 40px; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; box-shadow: 0 4px 16px rgba(0, 119, 190, 0.3); }
+        .header-content { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; min-height: 60px; }
         .header-left { flex-shrink: 0; }
         .header-right { flex-shrink: 0; }
 
-        /* ── LOGO + TOOLTIP ── */
-        .logo-link {
-            display: block;
-            text-decoration: none;
-            position: relative;
-            transition: transform 0.3s ease;
-            float: left;
-        }
+        /* ── LOGO + BADGE — float on wrapper ── */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .logo-link { display: inline-block; text-decoration: none; position: relative; animation: float 3s ease-in-out infinite; transition: opacity 0.3s ease; }
+        .logo-link:hover { opacity: 0.9; }
+        .logo-home-badge { position: absolute; top: -8px; right: -8px; width: 26px; height: 26px; background: rgba(255,255,255,0.95); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.25), 0 0 0 2px rgba(0,119,190,0.35); pointer-events: none; transition: box-shadow 0.25s ease; }
+        .logo-home-badge svg { width: 13px; height: 13px; stroke: var(--ocean-dark); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+        .logo-link:hover .logo-home-badge { box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 0 2px var(--ocean-light); }
+        @media (max-width: 768px) { .logo-home-badge { width: 20px; height: 20px; top: -6px; right: -6px; } .logo-home-badge svg { width: 10px; height: 10px; } }
+        .logo { max-width: 120px; display: block; border-radius: 16px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
 
-        .logo-link:hover { transform: scale(1.05); }
-
-        /* Home icon badge — bottom-right corner of logo */
-        .logo-home-badge {
-            position: absolute;
-            bottom: -8px;
-            right: -8px;
-            width: 26px;
-            height: 26px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.25), 0 0 0 2px rgba(0,119,190,0.35);
-            pointer-events: none;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            float: none;
-        }
-
-        .logo-home-badge svg {
-            width: 13px;
-            height: 13px;
-            stroke: var(--ocean-dark);
-            fill: none;
-            stroke-width: 2.2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .logo-link:hover .logo-home-badge {
-            transform: scale(1.18);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 0 2px var(--ocean-light);
-        }
-
-        /* Mobile size adjustment */
-        @media (max-width: 768px) {
-            .logo-home-badge {
-                width: 20px;
-                height: 20px;
-                bottom: -4px;
-                right: -4px;
-            }
-            .logo-home-badge svg { width: 10px; height: 10px; }
-        }
-
-                .logo { max-width: 120px; display: block; border-radius: 16px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); animation: float 3s ease-in-out infinite; }
         .header-title { text-align: center; padding: 6px 0 0; }
         .header-title h1 { font-family: 'Playfair Display', serif; font-size: clamp(24px, 4vw, 32px); font-weight: 900; margin-bottom: 4px; letter-spacing: -1px; text-shadow: 0 2px 12px rgba(0,0,0,0.2); }
         .header-subtitle { font-size: clamp(12px, 2vw, 16px); font-weight: 300; opacity: 0.95; letter-spacing: 0.5px; }
         .nav-menu { display: flex; justify-content: center; gap: 10px; margin-bottom: 24px; }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50%       { transform: translateY(-8px); }
-        }
-
         @keyframes navGlowPulse {
-            0%, 100% {
-                box-shadow: 0 0 0px rgba(255, 255, 255, 0);
-                border-color: rgba(255, 255, 255, 0.35);
-            }
-            50% {
-                box-shadow: 0 0 12px rgba(255, 255, 255, 0.45), 0 0 24px rgba(77, 168, 218, 0.3);
-                border-color: rgba(255, 255, 255, 0.85);
-            }
+            0%, 100% { box-shadow: 0 0 0px rgba(255,255,255,0); border-color: rgba(255,255,255,0.35); }
+            50% { box-shadow: 0 0 12px rgba(255,255,255,0.45), 0 0 24px rgba(77,168,218,0.3); border-color: rgba(255,255,255,0.85); }
         }
-
-        .nav-link {
-            position: relative;
-            color: rgba(255, 255, 255, 0.92);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 12.5px;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            padding: 8px 20px;
-            border-radius: 5px;
-            background: transparent;
-            border: 1.5px solid rgba(255, 255, 255, 0.35);
-            transition: color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
-            overflow: hidden;
-            animation: navGlowPulse 2.2s ease-in-out infinite;
-        }
-
-        .nav-link:nth-child(2) {
-            animation-delay: 0.5s;
-        }
-
-        /* Subtle shimmer fill on hover */
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(255, 255, 255, 0.10);
-            opacity: 0;
-            transition: opacity 0.22s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--white);
-            border-color: rgba(255, 255, 255, 0.80);
-            box-shadow:
-                0 0 0 1px rgba(255, 255, 255, 0.15) inset,
-                0 3px 14px rgba(0, 0, 0, 0.18);
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-        .nav-link:hover::after {
-            opacity: 1;
-        }
-
-        /* Thin animated underline accent */
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 2px;
-            transform: translateX(-50%);
-            transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .nav-link:hover::before {
-            width: calc(100% - 24px);
-        }
-
-        .nav-link.active {
-            background: rgba(255,255,255,0.25);
-        }
+        .nav-link { position: relative; color: rgba(255,255,255,0.92); text-decoration: none; font-weight: 500; font-size: 12.5px; letter-spacing: 0.8px; text-transform: uppercase; padding: 8px 20px; border-radius: 5px; background: transparent; border: 1.5px solid rgba(255,255,255,0.35); transition: color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease; overflow: hidden; animation: navGlowPulse 2.2s ease-in-out infinite; }
+        .nav-link:nth-child(2) { animation-delay: 0.5s; }
+        .nav-link::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.10); opacity: 0; transition: opacity 0.22s ease; }
+        .nav-link:hover { color: var(--white); border-color: rgba(255,255,255,0.80); box-shadow: 0 0 0 1px rgba(255,255,255,0.15) inset, 0 3px 14px rgba(0,0,0,0.18); background: rgba(255,255,255,0.06); }
+        .nav-link:hover::after { opacity: 1; }
+        .nav-link::before { content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 2px; background: rgba(255,255,255,0.7); border-radius: 2px; transform: translateX(-50%); transition: width 0.25s cubic-bezier(0.16,1,0.3,1); }
+        .nav-link:hover::before { width: calc(100% - 24px); }
+        .nav-link.active { background: rgba(255,255,255,0.25); }
 
         /* ── CONTENT ── */
-        .content {
-            padding: 170px 40px 40px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
+        .content { padding: 170px 40px 40px; max-width: 900px; margin: 0 auto; }
+        .hero-intro { text-align: center; margin-bottom: 48px; padding: 40px 32px; background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%); border-radius: 20px; border: 1px solid #bae6fd; }
+        .hero-intro h2 { font-family: 'Playfair Display', serif; font-size: clamp(22px, 4vw, 30px); color: var(--ocean-dark); margin-bottom: 12px; }
+        .hero-intro p { font-size: 15px; color: #4B5563; line-height: 1.75; max-width: 620px; margin: 0 auto; }
 
-        /* ── HERO INTRO ── */
-        .hero-intro {
-            text-align: center;
-            margin-bottom: 48px;
-            padding: 40px 32px;
-            background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
-            border-radius: 20px;
-            border: 1px solid #bae6fd;
-        }
-        .hero-intro h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(22px, 4vw, 30px);
-            color: var(--ocean-dark);
-            margin-bottom: 12px;
-        }
-        .hero-intro p {
-            font-size: 15px;
-            color: #4B5563;
-            line-height: 1.75;
-            max-width: 620px;
-            margin: 0 auto;
-        }
-
-        /* ── SECTION BLOCKS ── */
-        .nos-section {
-            margin-bottom: 52px;
-        }
-        .nos-section:last-child {
-            margin-bottom: 0;
-        }
-
-        .nos-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 24px;
-            padding-bottom: 14px;
-            border-bottom: 3px solid var(--ocean);
-        }
+        .nos-section { margin-bottom: 52px; }
+        .nos-section:last-child { margin-bottom: 0; }
+        .nos-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 3px solid var(--ocean); }
         .nos-header-icon { font-size: 28px; line-height: 1; }
-        .nos-header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(20px, 3vw, 26px);
-            font-weight: 700;
-            color: var(--ocean-dark);
-        }
+        .nos-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(20px, 3vw, 26px); font-weight: 700; color: var(--ocean-dark); }
 
-        /* ── CARDS GRID ── */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 20px;
-        }
-
-        .info-card {
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            background: #fff;
-            border: 1px solid #f0f0f0;
-        }
-        .info-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 28px rgba(0,0,0,0.14);
-        }
-
-        .card-top-band {
-            height: 6px;
-        }
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+        .info-card { border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: all 0.3s ease; background: #fff; border: 1px solid #f0f0f0; }
+        .info-card:hover { transform: translateY(-5px); box-shadow: 0 12px 28px rgba(0,0,0,0.14); }
+        .card-top-band { height: 6px; }
         .band-historia { background: linear-gradient(90deg, var(--ocean), var(--ocean-light)); }
         .band-mision   { background: linear-gradient(90deg, #16A34A, #4ADE80); }
         .band-valor    { background: linear-gradient(90deg, var(--sunset), #FBBF24); }
         .band-equipo   { background: linear-gradient(90deg, #6366F1, #A78BFA); }
+        .info-card-body { padding: 22px 22px 24px; }
+        .info-card-body h3 { font-size: 16px; font-weight: 600; color: var(--ocean-dark); margin-bottom: 10px; }
+        .info-card-body p { font-size: 13.5px; color: #6B7280; line-height: 1.7; }
 
-        .info-card-body {
-            padding: 22px 22px 24px;
-        }
-        .info-card-body h3 {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--ocean-dark);
-            margin-bottom: 10px;
-        }
-        .info-card-body p {
-            font-size: 13.5px;
-            color: #6B7280;
-            line-height: 1.7;
-        }
+        .story-card { background: linear-gradient(135deg, #f8fafc 0%, #f0f7ff 100%); border-radius: 16px; padding: 32px 36px; border: 1px solid #dbeafe; margin-bottom: 20px; }
+        .story-card h3 { font-size: 17px; font-weight: 600; color: var(--ocean-dark); margin-bottom: 12px; }
+        .story-card p { font-size: 14.5px; color: #4B5563; line-height: 1.8; }
 
-        /* ── STORY SINGLE (wide card) ── */
-        .story-card {
-            background: linear-gradient(135deg, #f8fafc 0%, #f0f7ff 100%);
-            border-radius: 16px;
-            padding: 32px 36px;
-            border: 1px solid #dbeafe;
-            margin-bottom: 20px;
-        }
-        .story-card h3 {
-            font-size: 17px;
-            font-weight: 600;
-            color: var(--ocean-dark);
-            margin-bottom: 12px;
-        }
-        .story-card p {
-            font-size: 14.5px;
-            color: #4B5563;
-            line-height: 1.8;
-        }
-
-        /* ── FOOTER ── */
-        .footer {
-            text-align: center;
-            padding: 40px 32px;
-            background: linear-gradient(180deg, transparent 0%, var(--sand) 50%);
-            color: var(--ocean-dark);
-            font-size: 14px;
-            margin-top: 0;
-            border-top: 1px solid rgba(0, 77, 115, 0.08);
-        }
+        .footer { text-align: center; padding: 40px 32px; background: linear-gradient(180deg, transparent 0%, var(--sand) 50%); color: var(--ocean-dark); font-size: 14px; margin-top: 0; border-top: 1px solid rgba(0,77,115,0.08); }
         .footer::before { content: '🌊'; display: block; font-size: 32px; margin-bottom: 16px; }
 
-        /* ── MOBILE ── */
         @media (max-width: 768px) {
             .header { padding: 10px 16px; }
             .header-content { min-height: auto; }
             .logo { max-width: 70px; }
             .nav-menu { gap: 6px; }
-            .nav-link {
-                font-size: 10px;
-                padding: 6px 12px;
-                letter-spacing: 0.5px;
-            }
+            .nav-link { font-size: 10px; padding: 6px 12px; letter-spacing: 0.5px; }
             .content { padding: 190px 20px 40px; }
             .hero-intro { padding: 28px 20px; }
             .cards-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
             .info-card-body { padding: 16px 16px 18px; }
             .story-card { padding: 24px 20px; }
         }
-
-        @media (max-width: 480px) {
-            .cards-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 480px) { .cards-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -378,119 +122,46 @@
         </div>
 
         <div class="content" id="mainContent">
-
-            <!-- Hero intro -->
             <div class="hero-intro">
                 <h2>🏡 Un hogar en el corazón de San Carlos</h2>
                 <p>Apart Hotel Najos nació de la pasión por San Carlos y el deseo de compartirlo con el mundo. Somos más que un lugar para dormir — somos tu base de aventuras, tu refugio después de un día entre charcos y cascadas, y tu conexión auténtica con la cultura local.</p>
             </div>
 
-            <!-- ── NUESTRA HISTORIA ── -->
             <div class="nos-section">
-                <div class="nos-header">
-                    <span class="nos-header-icon">📖</span>
-                    <h2>Nuestra Historia</h2>
-                </div>
+                <div class="nos-header"><span class="nos-header-icon">📖</span><h2>Nuestra Historia</h2></div>
                 <div class="story-card">
                     <h3>🏡 Nuestro Sueño en el Corazón de San Carlos</h3>
                     <p>Todo comenzó con un sueño simple: crear un espacio donde la comodidad urbana y la aventura natural se encontraran en perfecta armonía. Ubicados a pasos del parque principal de San Carlos, decidimos abrir las puertas de Apart Hotel Najos para que cada viajero tuviera no solo un techo, sino un punto de partida estratégico para vivir San Carlos en toda su plenitud — los charcos de aguas esmeralda, las cascadas imponentes, los senderos llenos de vida y la calidez de su gente.</p>
                 </div>
             </div>
 
-            <!-- ── NUESTRA MISIÓN ── -->
             <div class="nos-section">
-                <div class="nos-header">
-                    <span class="nos-header-icon">🌊</span>
-                    <h2>Nuestra Misión</h2>
-                </div>
+                <div class="nos-header"><span class="nos-header-icon">🌊</span><h2>Nuestra Misión</h2></div>
                 <div class="cards-grid">
-                    <div class="info-card">
-                        <div class="card-top-band band-mision"></div>
-                        <div class="info-card-body">
-                            <h3>🌿 Conectar con la naturaleza</h3>
-                            <p>Facilitamos que cada huésped descubra la riqueza natural de San Carlos — desde sus charcos más emblemáticos hasta sus rincones más escondidos.</p>
-                        </div>
-                    </div>
-                    <div class="info-card">
-                        <div class="card-top-band band-mision"></div>
-                        <div class="info-card-body">
-                            <h3>🤝 Crear experiencias auténticas</h3>
-                            <p>Nos esforzamos por que cada visita sea memorable, conectando a nuestros huéspedes con la cultura local y las experiencias únicas que solo San Carlos puede ofrecer.</p>
-                        </div>
-                    </div>
-                    <div class="info-card">
-                        <div class="card-top-band band-mision"></div>
-                        <div class="info-card-body">
-                            <h3>🏠 Brindar confort y tranquilidad</h3>
-                            <p>Ofrecemos apartamentos completamente equipados para que puedas descansar, recargar energías y volver a la aventura al día siguiente.</p>
-                        </div>
-                    </div>
+                    <div class="info-card"><div class="card-top-band band-mision"></div><div class="info-card-body"><h3>🌿 Conectar con la naturaleza</h3><p>Facilitamos que cada huésped descubra la riqueza natural de San Carlos — desde sus charcos más emblemáticos hasta sus rincones más escondidos.</p></div></div>
+                    <div class="info-card"><div class="card-top-band band-mision"></div><div class="info-card-body"><h3>🤝 Crear experiencias auténticas</h3><p>Nos esforzamos por que cada visita sea memorable, conectando a nuestros huéspedes con la cultura local y las experiencias únicas que solo San Carlos puede ofrecer.</p></div></div>
+                    <div class="info-card"><div class="card-top-band band-mision"></div><div class="info-card-body"><h3>🏠 Brindar confort y tranquilidad</h3><p>Ofrecemos apartamentos completamente equipados para que puedas descansar, recargar energías y volver a la aventura al día siguiente.</p></div></div>
                 </div>
             </div>
 
-            <!-- ── NUESTROS VALORES ── -->
             <div class="nos-section">
-                <div class="nos-header">
-                    <span class="nos-header-icon">⭐</span>
-                    <h2>Nuestros Valores</h2>
-                </div>
+                <div class="nos-header"><span class="nos-header-icon">⭐</span><h2>Nuestros Valores</h2></div>
                 <div class="cards-grid">
-                    <div class="info-card">
-                        <div class="card-top-band band-valor"></div>
-                        <div class="info-card-body">
-                            <h3>🤝 Hospitalidad</h3>
-                            <p>Tratamos a cada huésped como familia. La calidez y la atención personalizada son la base de todo lo que hacemos, desde la reserva hasta la despedida.</p>
-                        </div>
-                    </div>
-                    <div class="info-card">
-                        <div class="card-top-band band-valor"></div>
-                        <div class="info-card-body">
-                            <h3>🌅 Autenticidad</h3>
-                            <p>Celebramos la dualidad única de San Carlos: el corazón vibrante de su cultura local y la majestuosidad de sus paisajes. Todo a tu alcance desde nuestra ubicación céntrica.</p>
-                        </div>
-                    </div>
-                    <div class="info-card">
-                        <div class="card-top-band band-valor"></div>
-                        <div class="info-card-body">
-                            <h3>✨ Calidad</h3>
-                            <p>Mantenemos altos estándares de limpieza, comodidad y servicio en cada detalle, porque creemos que una buena estancia comienza con un espacio impecable.</p>
-                        </div>
-                    </div>
+                    <div class="info-card"><div class="card-top-band band-valor"></div><div class="info-card-body"><h3>🤝 Hospitalidad</h3><p>Tratamos a cada huésped como familia. La calidez y la atención personalizada son la base de todo lo que hacemos, desde la reserva hasta la despedida.</p></div></div>
+                    <div class="info-card"><div class="card-top-band band-valor"></div><div class="info-card-body"><h3>🌅 Autenticidad</h3><p>Celebramos la dualidad única de San Carlos: el corazón vibrante de su cultura local y la majestuosidad de sus paisajes. Todo a tu alcance desde nuestra ubicación céntrica.</p></div></div>
+                    <div class="info-card"><div class="card-top-band band-valor"></div><div class="info-card-body"><h3>✨ Calidad</h3><p>Mantenemos altos estándares de limpieza, comodidad y servicio en cada detalle, porque creemos que una buena estancia comienza con un espacio impecable.</p></div></div>
                 </div>
             </div>
 
-            <!-- ── EL EQUIPO ── -->
             <div class="nos-section">
-                <div class="nos-header">
-                    <span class="nos-header-icon">👥</span>
-                    <h2>El Equipo Najos</h2>
-                </div>
+                <div class="nos-header"><span class="nos-header-icon">👥</span><h2>El Equipo Najos</h2></div>
                 <div class="cards-grid">
-                    <div class="info-card">
-                        <div class="card-top-band band-equipo"></div>
-                        <div class="info-card-body">
-                            <h3>🏡 Gestión</h3>
-                            <p>Nuestro equipo administrativo vela por que cada aspecto de tu estancia sea impecable — desde la reserva, la llegada, hasta tu partida.</p>
-                        </div>
-                    </div>
-                    <div class="info-card">
-                        <div class="card-top-band band-equipo"></div>
-                        <div class="info-card-body">
-                            <h3>🧹 Mantenimiento</h3>
-                            <p>Personal dedicado a mantener cada rincón limpio, ordenado y listo para recibirte como te mereces. La limpieza no es opcional para nosotros, es un estándar.</p>
-                        </div>
-                    </div>
-                    <div class="info-card">
-                        <div class="card-top-band band-equipo"></div>
-                        <div class="info-card-body">
-                            <h3>🌟 Atención al huésped</h3>
-                            <p>Siempre disponibles para resolver tus dudas, recomendarte lugares y ayudarte a que tu visita a San Carlos sea verdaderamente inolvidable.</p>
-                        </div>
-                    </div>
+                    <div class="info-card"><div class="card-top-band band-equipo"></div><div class="info-card-body"><h3>🏡 Gestión</h3><p>Nuestro equipo administrativo vela por que cada aspecto de tu estancia sea impecable — desde la reserva, la llegada, hasta tu partida.</p></div></div>
+                    <div class="info-card"><div class="card-top-band band-equipo"></div><div class="info-card-body"><h3>🧹 Mantenimiento</h3><p>Personal dedicado a mantener cada rincón limpio, ordenado y listo para recibirte como te mereces. La limpieza no es opcional para nosotros, es un estándar.</p></div></div>
+                    <div class="info-card"><div class="card-top-band band-equipo"></div><div class="info-card-body"><h3>🌟 Atención al huésped</h3><p>Siempre disponibles para resolver tus dudas, recomendarte lugares y ayudarte a que tu visita a San Carlos sea verdaderamente inolvidable.</p></div></div>
                 </div>
             </div>
-
-        </div><!-- end content -->
+        </div>
 
         <div class="footer">
             <p>© 2026 Apart Hotel Najos · Todos los derechos reservados</p>
