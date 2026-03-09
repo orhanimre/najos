@@ -1053,7 +1053,7 @@
               </div>
               <div class="form-group">
                 <label for="horaSalida">Hora de Salida <span class="required">*</span></label>
-                <input type="time" id="horaSalida" name="horaSalida" max="13:00" required />
+                <input type="time" id="horaSalida" name="horaSalida" max="11:00" required />
                 <div class="helper-text">Antes de las 11:00 AM</div>
               </div>
             </div>
@@ -1276,7 +1276,7 @@
       const horaEntrada     = document.getElementById("horaEntrada");
       const horaSalida      = document.getElementById("horaSalida");
 
-      setTimeout(() => { horaEntrada.value = "14:00"; horaSalida.value = "13:00"; }, 0);
+      setTimeout(() => { horaEntrada.value = "14:00"; horaSalida.value = "11:00"; }, 0);
 
       horaEntrada.addEventListener("change", function() {
         if (this.value < "14:00" || this.value > "21:00") {
@@ -1286,9 +1286,9 @@
       });
 
       horaSalida.addEventListener("change", function() {
-        if (this.value > "13:00") {
-          showToast("⏰ La hora de salida debe ser antes de 1:00 PM");
-          this.value = "13:00";
+        if (this.value > "11:00") {
+          showToast("⏰ La hora de salida debe ser antes de las 11:00 AM");
+          this.value = "11:00";
         }
       });
 
@@ -1351,7 +1351,7 @@
         btnNext.style.display   = step === 3 ? "none" : "block";
         btnSubmit.style.display = step === 3 ? "block" : "none";
         summaryBox.style.display = step === 3 ? "block" : "none";
-        if (step === 3) updateSummary();
+        if (step === 3) { updateSummary(); updateSubmitBtn(); }
         if (step === 2 && !bookedDatesLoaded) loadBookedDates().then(() => { bookedDatesLoaded = true; });
         updateProgress();
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1399,7 +1399,7 @@
             updateStepperButtons();
             selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
             updateDateDisplay();
-            horaEntrada.value = "14:00"; horaSalida.value = "13:00";
+            horaEntrada.value = "14:00"; horaSalida.value = "11:00";
             showStep(1);
           }, 300);
         }
@@ -1775,6 +1775,20 @@
         input.addEventListener("input", () => input.setCustomValidity(""));
       });
 
+      // ── Submit button state ──
+      function updateSubmitBtn() {
+        const btn = document.getElementById("btnSubmit");
+        if (!btn) return;
+        const consentOk = consentCheckbox.checked;
+        const rulesOk   = rulesConsentHidden.value === "accepted";
+        if (consentOk && rulesOk) {
+          btn.disabled = false; btn.style.opacity = "1"; btn.style.cursor = "pointer"; btn.style.filter = "";
+        } else {
+          btn.disabled = true; btn.style.opacity = "0.5"; btn.style.cursor = "not-allowed"; btn.style.filter = "grayscale(30%)";
+        }
+      }
+      consentCheckbox.addEventListener("change", updateSubmitBtn);
+
       updateProgress();
       updateDateDisplay();
 
@@ -1799,6 +1813,13 @@
           confirmBtn.disabled = true;
           confirmBtn.style.opacity = "0.5";
           confirmBtn.style.cursor = "not-allowed";
+          // Revert trigger button and hidden input if user unchecks inside modal
+          rulesConsentHidden.value = "";
+          const statusEl = document.getElementById("rulesTriggerStatus");
+          const triggerBtn = document.getElementById("rulesTriggerBtn");
+          if (statusEl) statusEl.textContent = "👆 Toca para leer";
+          if (triggerBtn) { triggerBtn.style.background = ""; triggerBtn.style.borderColor = ""; triggerBtn.style.color = ""; }
+          updateSubmitBtn();
         }
       };
       window.confirmRulesRead = function() {
