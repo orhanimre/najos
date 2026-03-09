@@ -769,25 +769,29 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 14px 20px;
-        background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
-        border: 2px solid #f59e0b;
-        border-radius: 14px;
+        padding: 18px 24px;
+        background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+        border: 2px solid #fc8181;
+        border-radius: 16px;
         cursor: pointer;
         font-size: 15px;
         font-weight: 600;
-        color: #92400e;
-        transition: all 0.25s ease;
-        margin-bottom: 12px;
+        color: #742a2a;
+        transition: all 0.3s ease;
+        margin-bottom: 0;
+        text-align: left;
       }
       .rules-trigger-btn:hover {
-        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-        border-color: #d97706;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(245,158,11,0.25);
+        background: linear-gradient(135deg, #fff0f0 0%, #fecaca 100%);
+        border-color: #f56565;
+      }
+      .rules-trigger-btn.accepted {
+        background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%);
+        border-color: #48bb78;
+        color: #276749;
       }
       .rules-trigger-btn .rules-btn-left { display: flex; align-items: center; gap: 10px; }
-      .rules-trigger-btn .rules-arrow { font-size: 18px; transition: transform 0.2s ease; }
+      .rules-trigger-btn .rules-arrow { font-size: 14px; flex-shrink: 0; }
 
       .rules-modal-overlay {
         display: none;
@@ -1158,7 +1162,7 @@
           <div class="step-navigation">
             <button type="button" class="nav-btn btn-back" id="btnBack" style="display:none">← Volver</button>
             <button type="button" class="nav-btn btn-next" id="btnNext">Siguiente →</button>
-            <button type="submit"  class="nav-btn btn-submit" id="btnSubmit" style="display:none">✓ Enviar Registro</button>
+            <button type="submit"  class="nav-btn btn-submit" id="btnSubmit" style="display:none" disabled>✓ Enviar Registro</button>
           </div>
         </form>
       </div>
@@ -1401,7 +1405,7 @@
         btnNext.style.display   = step === 3 ? "none" : "block";
         btnSubmit.style.display = step === 3 ? "block" : "none";
         summaryBox.style.display = step === 3 ? "block" : "none";
-        if (step === 3) updateSummary();
+        if (step === 3) { updateSummary(); updateSubmitBtn(); }
         if (step === 2 && !bookedDatesLoaded) loadBookedDates().then(() => { bookedDatesLoaded = true; });
         updateProgress();
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1809,7 +1813,7 @@
           errorMessage.style.display = "block";
           setTimeout(() => { errorMessage.style.display = "none"; }, 5000);
         } finally {
-          btnSubmit.textContent = "✓ Enviar Registro"; btnSubmit.disabled = false;
+          btnSubmit.textContent = "✓ Enviar Registro"; updateSubmitBtn();
         }
       });
 
@@ -1844,7 +1848,7 @@
           const statusEl = document.getElementById("rulesTriggerStatus");
           const triggerBtn = document.getElementById("rulesTriggerBtn");
           if (statusEl) statusEl.textContent = "👆 Toca para leer";
-          if (triggerBtn) { triggerBtn.style.background = ""; triggerBtn.style.borderColor = ""; triggerBtn.style.color = ""; }
+          if (triggerBtn) triggerBtn.classList.remove("accepted");
           updateSubmitBtn();
         }
       };
@@ -1859,11 +1863,7 @@
         const statusEl = document.getElementById("rulesTriggerStatus");
         const triggerBtn = document.getElementById("rulesTriggerBtn");
         if (statusEl) statusEl.textContent = "✅ Leído y aceptado";
-        if (triggerBtn) {
-          triggerBtn.style.background = "linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%)";
-          triggerBtn.style.borderColor = "#48bb78";
-          triggerBtn.style.color = "#276749";
-        }
+        if (triggerBtn) triggerBtn.classList.add("accepted");
         updateSubmitBtn();
       };
       document.getElementById("rulesModal").addEventListener("click", function(e) {
