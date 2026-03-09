@@ -1844,6 +1844,7 @@
         const triggerBtn = document.getElementById("rulesTriggerBtn");
         if (statusEl) statusEl.textContent = "✅ Leído y aceptado";
         if (triggerBtn) triggerBtn.classList.add("accepted");
+        updateSubmitBtn();
       };
       document.getElementById("rulesModal").addEventListener("click", function(e) {
         if (e.target === this) closeRulesModal();
