@@ -13,7 +13,7 @@
             --ocean: #0077BE; --ocean-dark: #005A8D; --ocean-light: #4DA8DA;
             --sand: #F4E8D8; --sunset: #FF6B35; --white: #FFFFFF; --shadow: rgba(0,77,115,0.15);
             --charco: #0EA5E9; --cascada: #6366F1; --sendero: #16A34A;
-            --reserva: #0D9488; --recreativo: #F59E0B; --urbano: #EC4899;
+            --reserva: #0D9488; --recreativo: #F59E0B; --urbano: #EC4899; --aventura: #DC2626;
         }
         body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-light) 100%); min-height: 100vh; color: #333; }
         .container { max-width: 1200px; margin: 0 auto; background: var(--white); min-height: 100vh; box-shadow: 0 20px 60px var(--shadow); }
@@ -24,7 +24,6 @@
         .header-left { flex-shrink: 0; }
         .header-right { flex-shrink: 0; }
 
-        /* ── LOGO + BADGE — float on wrapper ── */
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         .logo-link { display: inline-block; text-decoration: none; position: relative; animation: float 3s ease-in-out infinite; transition: opacity 0.3s ease; }
         .logo-link:hover { opacity: 0.9; }
@@ -70,6 +69,7 @@
         .cat-reserva .category-header { border-color: var(--reserva); } .cat-reserva .category-header h2 { color: var(--reserva); }
         .cat-recreativo .category-header { border-color: var(--recreativo); } .cat-recreativo .category-header h2 { color: var(--recreativo); }
         .cat-urbano .category-header { border-color: var(--urbano); } .cat-urbano .category-header h2 { color: var(--urbano); }
+        .cat-aventura .category-header { border-color: var(--aventura); } .cat-aventura .category-header h2 { color: var(--aventura); }
 
         .attractions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
         .attraction-card { border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: all 0.3s ease; background: #fff; border: 1px solid #f0f0f0; }
@@ -83,6 +83,7 @@
         .cat-reserva .card-placeholder { background: linear-gradient(135deg, #99f6e4, #ccfbf1); }
         .cat-recreativo .card-placeholder { background: linear-gradient(135deg, #fde68a, #fef9c3); }
         .cat-urbano .card-placeholder { background: linear-gradient(135deg, #fbcfe8, #fce7f3); }
+        .cat-aventura .card-placeholder { background: linear-gradient(135deg, #fecaca, #fee2e2); }
 
         .card-body { padding: 18px 20px 20px; }
         .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
@@ -96,6 +97,7 @@
         .cat-reserva .card-badge { background: #ccfbf1; color: #0F766E; }
         .cat-recreativo .card-badge { background: #fef9c3; color: #A16207; }
         .cat-urbano .card-badge { background: #fce7f3; color: #BE185D; }
+        .cat-aventura .card-badge { background: #fee2e2; color: #B91C1C; }
 
         .footer { text-align: center; padding: 40px 32px; background: linear-gradient(180deg, transparent 0%, var(--sand) 50%); color: var(--ocean-dark); font-size: 14px; margin-top: 60px; border-top: 1px solid rgba(0,77,115,0.08); }
         .footer::before { content: '🌊'; display: block; font-size: 32px; margin-bottom: 16px; }
@@ -148,57 +150,68 @@
                 <p>San Carlos, Antioquia, es conocido como el municipio de los charcos. Con más de 200 fuentes de agua entre ríos, quebradas y cascadas, ofrece una experiencia natural única en Colombia. Desde Apart Hotel Najos, a pasos del parque principal, tienes acceso fácil a todos estos tesoros.</p>
             </div>
 
-            <!-- CHARCOS -->
+            <!-- CHARCOS: 9 lugares -->
             <div class="category-section cat-charco">
-                <div class="category-header"><span class="category-icon">💧</span><h2>Charcos</h2><span class="category-count">6 lugares</span></div>
+                <div class="category-header"><span class="category-icon">💧</span><h2>Charcos</h2><span class="category-count">9 lugares</span></div>
                 <div class="attractions-grid">
-                    <div class="attraction-card"><div class="card-placeholder">💧<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">El Chispero</div><div class="card-rating">⭐ 4.8</div></div><div class="card-desc">Piscina natural con cascada y trampolín de roca. Aguas de color esmeralda rodeadas de vegetación exuberante.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">💧<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">El Chispero</div><div class="card-rating">⭐ 4.8</div></div><div class="card-desc">Piscina natural con cascada y trampolín de roca. Aguas de color esmeralda rodeadas de vegetación exuberante. A 20 min del pueblo en carro, más 7 min a pie.</div><span class="card-badge">Charco</span></div></div>
                     <div class="attraction-card"><div class="card-placeholder">💧<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Charco La Natalia</div><div class="card-rating">⭐ 4.4</div></div><div class="card-desc">Aguas tranquilas, ideal para familias con niños. Ubicado cerca al casco urbano, de fácil acceso.</div><span class="card-badge">Charco</span></div></div>
                     <div class="attraction-card"><div class="card-placeholder">💧<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Charco Los Anillos</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">Piscina natural espectacular ubicada cerca al centro del pueblo. Calificación perfecta por sus visitantes.</div><span class="card-badge">Charco</span></div></div>
-                    <div class="attraction-card"><div class="card-placeholder">💧<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Charco Negro</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">Aguas rojizas únicas por sus minerales naturales. Situado cerca a La Chorrera, un destino especial.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">💧<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Charco Negro (Río Tinto)</div><div class="card-rating">⭐ 4.7</div></div><div class="card-desc">Charco único en la vereda Puerto Rico. Sus aguas toman un tono oscuro por los taninos de las hojas caídas, aunque permanecen cristalinas y refrescantes. También conocido como Río Tinto.</div><span class="card-badge">Charco</span></div></div>
                     <div class="attraction-card"><div class="card-placeholder">💧<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Charco San Antonio</div><div class="card-rating">⭐ 4.7</div></div><div class="card-desc">Piscina popular con alquiler de kayak y zona de camping. Perfecto para una aventura de un día completo.</div><span class="card-badge">Charco</span></div></div>
                     <div class="attraction-card"><div class="card-placeholder">💧<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Charco Redondo</div><div class="card-rating">⭐ 4.9</div></div><div class="card-desc">Hermosa piscina natural accesible por una caminata de 20 a 40 minutos entre paisajes verdes.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">💧<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Charco Cajones</div><div class="card-rating">⭐ 4.8</div></div><div class="card-desc">Piscinas naturales de aguas cristalinas ubicadas río arriba. Se llega vadeando el río, lo que lo convierte en una aventura en sí misma.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">💧<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Charco El Submarino</div><div class="card-rating">—</div></div><div class="card-desc">Charco de exploración con acceso por sendero natural. Un destino para los amantes de la aventura fuera de los circuitos más concurridos.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">💧<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Zona de Baja Corriente</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">Aguas cristalinas con pozos cada vez más profundos río arriba. A 20 minutos encontrarás saltos de más de 6 metros sobre una poza insondable.</div><span class="card-badge">Charco</span></div></div>
                 </div>
             </div>
 
-            <!-- CASCADAS -->
+            <!-- CASCADAS: 3 lugares (added Cascada San Antonio, fixed La Chorrera descriptions) -->
             <div class="category-section cat-cascada">
-                <div class="category-header"><span class="category-icon">🌊</span><h2>Cascadas</h2><span class="category-count">2 lugares</span></div>
+                <div class="category-header"><span class="category-icon">🌊</span><h2>Cascadas</h2><span class="category-count">3 lugares</span></div>
                 <div class="attractions-grid">
-                    <div class="attraction-card"><div class="card-placeholder">🌊<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Atractivo Turístico La Chorrera</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">Impresionante cascada a solo 30 minutos del casco urbano. Una de las más visitadas y admiradas de la región.</div><span class="card-badge">Cascada</span></div></div>
-                    <div class="attraction-card"><div class="card-placeholder">🌊<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Sendero Cascada La Chorrera</div><div class="card-rating">⭐ 4.8</div></div><div class="card-desc">Sendero ecológico que conduce hasta la cascada, con entrada gratuita. Ideal para senderismo y fotografía.</div><span class="card-badge">Cascada</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">🌊<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">La Chorrera — Mirador y Atractivo</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">El atractivo turístico principal: impresionante cascada a solo 30 minutos del casco urbano. Vista espectacular que mezcla aventura y naturaleza.</div><span class="card-badge">Cascada</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">🌊<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">La Chorrera — Sendero Ecológico</div><div class="card-rating">⭐ 4.8</div></div><div class="card-desc">El sendero que lleva hasta La Chorrera, con entrada gratuita. Se puede ir caminando desde el pueblo (~2 h) o en mototaxi hasta la vía y luego 25 min a pie.</div><span class="card-badge">Cascada</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">🌊<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Cascada San Antonio</div><div class="card-rating">⭐ 4.8</div></div><div class="card-desc">Cascada de dos saltos a pocos minutos del casco urbano. Hay una pequeña poza al pie del primer salto. Evita visitarla los fines de semana, pues se llena mucho.</div><span class="card-badge">Cascada</span></div></div>
                 </div>
             </div>
 
-            <!-- SENDEROS -->
+            <!-- SENDEROS: 2 lugares (unchanged) -->
             <div class="category-section cat-sendero">
                 <div class="category-header"><span class="category-icon">🥾</span><h2>Senderos y Senderismo</h2><span class="category-count">2 lugares</span></div>
                 <div class="attractions-grid">
                     <div class="attraction-card"><div class="card-placeholder">🥾<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Sendero San Antonio</div><div class="card-rating">⭐ 4.6</div></div><div class="card-desc">Recorrido ecológico con piscinas naturales y una cascada al final del trayecto. Una experiencia completa en la naturaleza.</div><span class="card-badge">Senderismo</span></div></div>
-                    <div class="attraction-card"><div class="card-placeholder">🥾<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Cima Piedra El Tabor</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">Caminata hasta la cima con una vista panorámica de 360° sobre San Carlos y sus alrededores. Imperdible.</div><span class="card-badge">Senderismo</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">🥾<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Cima Piedra El Tabor</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">Caminata hasta la cima con una vista panorámica de 360° sobre San Carlos y sus alrededores. Ingreso: $5.000 por persona. Llevar agua, repelente y botas de senderismo.</div><span class="card-badge">Senderismo</span></div></div>
                 </div>
             </div>
 
-            <!-- RESERVAS -->
+            <!-- RESERVAS: 1 lugar (removed duplicate Cañón del Cielo Escondido) -->
             <div class="category-section cat-reserva">
-                <div class="category-header"><span class="category-icon">🌿</span><h2>Reservas Naturales y Ecoturismo</h2><span class="category-count">2 lugares</span></div>
+                <div class="category-header"><span class="category-icon">🌿</span><h2>Reservas Naturales y Ecoturismo</h2><span class="category-count">1 lugar</span></div>
                 <div class="attractions-grid">
-                    <div class="attraction-card"><div class="card-placeholder">🌿<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Cielo Escondido – Paraíso Natural</div><div class="card-rating">⭐ 4.9</div></div><div class="card-desc">Cañón oculto con piscinas de aguas cristalinas. Visita guiada obligatoria para adentrarse en este paraíso escondido.</div><span class="card-badge">Ecoturismo</span></div></div>
-                    <div class="attraction-card"><div class="card-placeholder">🌿<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Cañón del Cielo Escondido</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">Tramo del cañón dentro de la reserva Cielo Escondido. Aguas turquesas y paredes rocosas de impresionante belleza.</div><span class="card-badge">Ecoturismo</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">🌿<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Cielo Escondido — Paraíso Natural</div><div class="card-rating">⭐ 4.9</div></div><div class="card-desc">Cañón oculto con piscinas de aguas turquesas y paredes rocosas de impresionante belleza. Visita guiada obligatoria. Abierto jue–lun 8 am–5 pm. A ~40 min del parque principal.</div><span class="card-badge">Ecoturismo</span></div></div>
                 </div>
             </div>
 
-            <!-- CENTROS RECREATIVOS -->
+            <!-- CENTROS RECREATIVOS: 3 lugares (unchanged) -->
             <div class="category-section cat-recreativo">
                 <div class="category-header"><span class="category-icon">🏊</span><h2>Centros Recreativos</h2><span class="category-count">3 lugares</span></div>
                 <div class="attractions-grid">
-                    <div class="attraction-card"><div class="card-placeholder">🏊<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Los Colores Centro Recreativo</div><div class="card-rating">⭐ 4.5</div></div><div class="card-desc">Toboganes, piscina, zona infantil y restaurante. El lugar perfecto para un día en familia con todas las comodidades.</div><span class="card-badge">Centro Recreativo</span></div></div>
-                    <div class="attraction-card"><div class="card-placeholder">🏊<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Centro Turístico La Planta</div><div class="card-rating">⭐ 4.6</div></div><div class="card-desc">Camping junto al río con BBQ, voleibol y fútbol. Un ambiente relajado rodeado de naturaleza para toda la familia.</div><span class="card-badge">Centro Recreativo</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">🏊<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Los Colores Centro Recreativo</div><div class="card-rating">⭐ 4.5</div></div><div class="card-desc">Toboganes, piscina de agua natural, zona infantil y restaurante. El lugar perfecto para un día en familia con todas las comodidades. A 3 km del pueblo.</div><span class="card-badge">Centro Recreativo</span></div></div>
+                    <div class="attraction-card"><div class="card-placeholder">🏊<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Centro Turístico La Planta</div><div class="card-rating">⭐ 4.6</div></div><div class="card-desc">Camping junto al río con BBQ, voleibol, fútbol y acceso directo al Río San Carlos. Un ambiente relajado rodeado de naturaleza para toda la familia.</div><span class="card-badge">Centro Recreativo</span></div></div>
                     <div class="attraction-card"><div class="card-placeholder">🏊<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">C.T. y Recreativo San Antonio</div><div class="card-rating">⭐ 4.5</div></div><div class="card-desc">Camping, canotaje y cascadas en un solo lugar. Ideal para quienes buscan aventura y convivencia al aire libre.</div><span class="card-badge">Centro Recreativo</span></div></div>
                 </div>
             </div>
 
-            <!-- URBANO -->
+            <!-- TOURS Y AVENTURA: new category -->
+            <div class="category-section cat-aventura">
+                <div class="category-header"><span class="category-icon">🧗</span><h2>Tours y Aventura</h2><span class="category-count">1 lugar</span></div>
+                <div class="attractions-grid">
+                    <div class="attraction-card"><div class="card-placeholder">🧗<span>Foto próximamente</span></div><div class="card-body"><div class="card-top"><div class="card-name">Eco Guías Colombia</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">La operadora de aventura mejor calificada de San Carlos (112 reseñas). Cañoning, rapel en cascadas, senderismo y tubing. Guías expertos, seguros y en precios accesibles. Ubicados junto al parque principal.</div><span class="card-badge">Tours & Aventura</span></div></div>
+                </div>
+            </div>
+
+            <!-- URBANO: 1 lugar (unchanged) -->
             <div class="category-section cat-urbano">
                 <div class="category-header"><span class="category-icon">🏛️</span><h2>Urbano y Cultural</h2><span class="category-count">1 lugar</span></div>
                 <div class="attractions-grid">
