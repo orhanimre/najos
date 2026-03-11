@@ -134,6 +134,14 @@
         .admin-logo {
           max-width: 40px;
         }
+        
+        /* Ensure email toggle is visible on mobile */
+        .bottom-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 8px;
+        }
       }
 
       
@@ -1137,12 +1145,6 @@ input[type="date"] {
   transform: translateY(0);
 }
 
-/* Hide email toggle and logout on mobile */
-@media (max-width: 767px) {
-  .bottom-row {
-    display: none;
-  }
-}
 
 /* Desktop - hide settings button, show original controls */
 @media (min-width: 768px) {
