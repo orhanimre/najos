@@ -114,6 +114,28 @@
         text-align: center;
       }
 
+      /* Mobile responsive styles */
+      @media (max-width: 768px) {
+        .header-content {
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+        }
+        
+        .header-logo {
+          margin-top: 0;
+          align-self: flex-start;
+        }
+        
+        .header-title {
+          text-align: center;
+        }
+        
+        .admin-logo {
+          max-width: 40px;
+        }
+      }
+
       
       /* Container */
       .container {
