@@ -327,7 +327,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <script>
         // ── MAP INIT ──
-        const map = L.map('attractionsMap', { zoomControl: true, scrollWheelZoom: false }).setView([6.1886, -74.9967], 13);
+        const map = L.map('attractionsMap', { zoomControl: true, scrollWheelZoom: false }).setView([6.1887, -74.9975], 12);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -391,7 +391,7 @@
         }
 
         // ── APART HOTEL NAJOS (home base) ──
-        const hotelLat = 6.18964, hotelLng = -74.99778;
+        const hotelLat = 6.1887, hotelLng = -74.9921;
         const hotelMarker = L.marker([hotelLat, hotelLng], { icon: makeIcon('#0077BE', true, '🏨 Apart Hotel Najos'), zIndexOffset: 1000 }).addTo(map);
         hotelMarker.bindPopup(`
             <div class="map-popup">
@@ -405,40 +405,40 @@
             </div>`, { maxWidth: 260 });
 
         // ── CHARCOS ──
-        addMarker(6.1943, -74.9908, 'Charco Los Anillos',    'Charco', '5.0');
-        addMarker(6.2020, -74.9850, 'Charco Redondo',         'Charco', '4.9');
-        addMarker(6.1650, -74.9600, 'Charco El Chispero',     'Charco', '4.8');
-        addMarker(6.2100, -75.0100, 'Charco Los Cajones',     'Charco', '4.8');
-        addMarker(6.1780, -75.0250, 'Charco Negro (Río Tinto)','Charco', '4.7');
-        addMarker(6.2200, -74.9700, 'Charco San Antonio',     'Charco', '4.7');
-        addMarker(6.1720, -74.9820, 'Charco El Indio',        'Charco', '4.6');
-        addMarker(6.1850, -74.9650, 'Charco El Marino',       'Charco', '4.5');
-        addMarker(6.1960, -74.9990, 'Charco La Natalia',      'Charco', '4.4');
+        addMarker(6.1911, -75.0220, 'Charco Los Anillos',      'Charco', '5.0');
+        addMarker(6.1868, -74.9519, 'Charco Redondo',           'Charco', '4.9');
+        addMarker(6.1953, -75.0238, 'Charco El Chispero',       'Charco', '4.8');
+        addMarker(6.1867, -75.0115, 'Charco Los Cajones',       'Charco', '4.8');
+        addMarker(6.1899, -75.0367, 'Charco Negro (Río Tinto)', 'Charco', '4.7');
+        addMarker(6.1879, -74.9998, 'Charco San Antonio',       'Charco', '4.7');
+        addMarker(6.1838, -75.0018, 'Charco El Indio',          'Charco', '4.6');
+        addMarker(6.1846, -74.9989, 'Charco El Marino',         'Charco', '4.5');
+        addMarker(6.1941, -74.9910, 'Charco La Natalia',        'Charco', '4.4');
 
         // ── CASCADAS ──
-        addMarker(6.1560, -74.9750, 'Cascada La Chorrera',        'Cascada', '5.0');
-        addMarker(6.2180, -74.9680, 'Cascada San Antonio',        'Cascada', '4.8');
-        addMarker(6.1700, -74.9580, 'Cascada Sardinita',          'Cascada', '4.8');
-        addMarker(6.2050, -75.0150, 'Cascada El Salto del Tigre', 'Cascada', null);
+        addMarker(6.1901, -75.0387, 'Cascada La Chorrera',         'Cascada', '5.0');
+        addMarker(6.1939, -75.0051, 'Cascada San Antonio',         'Cascada', '4.8');
+        addMarker(6.1578, -74.9836, 'Cascada Sardinita',           'Cascada', '4.8');
+        addMarker(6.1664, -75.0457, 'Cascada El Salto del Tigre',  'Cascada', null);
 
         // ── SENDEROS ──
-        addMarker(6.1800, -74.9900, 'Cima Piedra El Tabor',       'Senderismo', '5.0');
-        addMarker(6.1580, -74.9770, 'La Chorrera — Sendero Ecológico', 'Senderismo', '4.8');
-        addMarker(6.2150, -74.9720, 'Sendero San Antonio',        'Senderismo', '4.6');
+        addMarker(6.2151, -74.9948, 'Cima Piedra El Tabor',            'Senderismo', '5.0');
+        addMarker(6.1901, -75.0387, 'La Chorrera — Sendero Ecológico', 'Senderismo', '4.8');
+        addMarker(6.1887, -75.0000, 'Sendero San Antonio',             'Senderismo', '4.6');
 
         // ── RESERVAS ──
-        addMarker(6.1420, -74.9500, 'Cielo Escondido — Paraíso Natural', 'Ecoturismo', '4.9');
+        addMarker(6.1895, -75.0146, 'Cielo Escondido — Paraíso Natural', 'Ecoturismo', '4.9');
 
         // ── CENTROS RECREATIVOS ──
-        addMarker(6.1870, -74.9870, 'Centro Turístico La Planta',     'Centro Recreativo', '4.6');
-        addMarker(6.1930, -75.0050, 'Los Colores Centro Recreativo',  'Centro Recreativo', '4.5');
-        addMarker(6.2120, -74.9740, 'Centro Recreativo San Antonio',  'Centro Recreativo', '4.5');
+        addMarker(6.1832, -75.0040, 'Centro Turístico La Planta',    'Centro Recreativo', '4.6');
+        addMarker(6.1670, -75.0220, 'Los Colores Centro Recreativo', 'Centro Recreativo', '4.5');
+        addMarker(6.1883, -74.9999, 'Centro Recreativo San Antonio', 'Centro Recreativo', '4.5');
 
         // ── TOURS Y AVENTURA ──
-        addMarker(6.1895, -74.9980, 'Eco Guías Colombia', 'Tours & Aventura', '5.0');
+        addMarker(6.1888, -74.9916, 'Eco Guías Colombia', 'Tours & Aventura', '5.0');
 
         // ── URBANO ──
-        addMarker(6.1893, -74.9975, 'Parque Principal San Carlos', 'Urbano', '4.7');
+        addMarker(6.1887, -74.9921, 'Parque Principal San Carlos', 'Urbano', '4.7');
     </script>
 
     <script>
