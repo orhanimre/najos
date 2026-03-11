@@ -225,7 +225,7 @@
                 <div class="map-section-header">
                     <span class="category-icon">🗺️</span>
                     <h2>Mapa de Atracciones</h2>
-                    <span class="category-count">23 lugares</span>
+                    <span class="category-count">24 lugares</span>
                 </div>
                 <div class="map-wrapper">
                     <div id="attractionsMap"></div>
@@ -287,11 +287,12 @@
                 </div>
             </div>
 
-            <!-- CENTROS RECREATIVOS: 3 lugares -->
+            <!-- CENTROS RECREATIVOS: 4 lugares -->
             <div class="category-section cat-recreativo">
-                <div class="category-header"><span class="category-icon">🏊</span><h2>Centros Recreativos</h2><span class="category-count">3 lugares</span></div>
+                <div class="category-header"><span class="category-icon">🏊</span><h2>Centros Recreativos</h2><span class="category-count">4 lugares</span></div>
                 <div class="attractions-grid">
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/4qY7CzDh.jpg" alt="Centro Turístico La Planta" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Centro Turístico La Planta</div><div class="card-rating">⭐ 4.6</div></div><div class="card-desc">Camping junto al río con BBQ, voleibol, fútbol y acceso directo al Río San Carlos. Un ambiente relajado rodeado de naturaleza para toda la familia.</div><span class="card-badge">Centro Recreativo</span></div></div>
+                    <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/alH9gnZ.jpg" alt="Hostería El Cóndor Centro Recreativo" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Hostería El Cóndor Centro Recreativo</div><div class="card-rating">⭐ 4.5</div></div><div class="card-desc">Centro recreativo en San Carlos. Ideal para disfrutar en familia en un entorno natural.</div><span class="card-badge">Centro Recreativo</span></div></div>
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/TN3nUKGh.jpg" alt="Los Colores Centro Recreativo" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Los Colores Centro Recreativo</div><div class="card-rating">⭐ 4.5</div></div><div class="card-desc">Toboganes, piscina de agua natural, zona infantil y restaurante. El lugar perfecto para un día en familia con todas las comodidades. A 3 km del pueblo.</div><span class="card-badge">Centro Recreativo</span></div></div>
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/jv0NgvZh.jpg" alt="Centro Recreativo San Antonio" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Centro Recreativo San Antonio</div><div class="card-rating">⭐ 4.5</div></div><div class="card-desc">Camping, canotaje y cascadas en un solo lugar. Ideal para quienes buscan aventura y convivencia al aire libre.</div><span class="card-badge">Centro Recreativo</span></div></div>
                 </div>
@@ -332,6 +333,7 @@
     <script>
         // ── MAP INIT ──
         const map = L.map('attractionsMap', { zoomControl: true, scrollWheelZoom: false }).setView([6.1887, -74.9975], 12);
+
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -415,40 +417,41 @@
             </div>`, { maxWidth: 260 });
 
         // ── CHARCOS ──
-        addMarker(6.1911, -75.0220, 'Charco Los Anillos',      'Charco', '5.0', 'https://i.imgur.com/K6YGUKbh.jpg');
-        addMarker(6.1868, -74.9519, 'Charco Redondo',           'Charco', '4.9', 'https://i.imgur.com/g8Le3i4h.jpg');
-        addMarker(6.1953, -75.0238, 'Charco El Chispero',       'Charco', '4.8', 'https://i.imgur.com/X9iE6hNh.jpg');
-        addMarker(6.1867, -75.0115, 'Charco Los Cajones',       'Charco', '4.8', 'https://i.imgur.com/fnOhUCfh.jpg');
-        addMarker(6.1899, -75.0367, 'Charco Negro (Río Tinto)', 'Charco', '4.7', 'https://i.imgur.com/KrH4euOh.jpg');
-        addMarker(6.1879, -74.9998, 'Charco San Antonio',       'Charco', '4.7', 'https://i.imgur.com/1GSLd3Eh.jpg');
-        addMarker(6.1838, -75.0018, 'Charco El Indio',          'Charco', '4.6', 'https://i.imgur.com/HRScZGJh.jpg');
-        addMarker(6.1846, -74.9989, 'Charco El Marino',         'Charco', '4.5', 'https://i.imgur.com/M6EwvJeh.jpg');
-        addMarker(6.1941, -74.9910, 'Charco La Natalia',        'Charco', '4.4', 'https://i.imgur.com/qiAIBSth.jpg');
+        addMarker(6.191341, -75.022040, 'Charco Los Anillos',      'Charco', '5.0', 'https://i.imgur.com/K6YGUKbh.jpg');
+        addMarker(6.187072, -74.951929, 'Charco Redondo',           'Charco', '4.9', 'https://i.imgur.com/g8Le3i4h.jpg');
+        addMarker(6.195420, -75.023804, 'Charco El Chispero',       'Charco', '4.8', 'https://i.imgur.com/X9iE6hNh.jpg');
+        addMarker(6.186860, -75.011334, 'Charco Los Cajones',       'Charco', '4.8', 'https://i.imgur.com/fnOhUCfh.jpg');
+        addMarker(6.190061, -75.036686, 'Charco Negro (Río Tinto)', 'Charco', '4.7', 'https://i.imgur.com/KrH4euOh.jpg');
+        addMarker(6.188296, -75.000710, 'Charco San Antonio',       'Charco', '4.7', 'https://i.imgur.com/1GSLd3Eh.jpg');
+        addMarker(6.183872, -75.001825, 'Charco El Indio',          'Charco', '4.6', 'https://i.imgur.com/HRScZGJh.jpg');
+        addMarker(6.184613, -74.998920, 'Charco El Marino',         'Charco', '4.5', 'https://i.imgur.com/M6EwvJeh.jpg');
+        addMarker(6.194241, -74.990933, 'Charco La Natalia',        'Charco', '4.4', 'https://i.imgur.com/qiAIBSth.jpg');
 
         // ── CASCADAS ──
-        addMarker(6.1901, -75.0387, 'Cascada La Chorrera',         'Cascada', '5.0', 'https://i.imgur.com/FaB0wYoh.jpg');
-        addMarker(6.1939, -75.0051, 'Cascada San Antonio',         'Cascada', '4.8', 'https://i.imgur.com/wb8klNch.jpg');
-        addMarker(6.1578, -74.9836, 'Cascada Sardinita',           'Cascada', '4.8', 'https://i.imgur.com/I2EZTB2h.jpg');
-        addMarker(6.1664, -75.0457, 'Cascada El Salto del Tigre',  'Cascada', null,  'https://i.imgur.com/q1YxDWgh.jpg');
+        addMarker(6.194044, -75.041524, 'Cascada La Chorrera',         'Cascada', '5.0', 'https://i.imgur.com/FaB0wYoh.jpg');
+        addMarker(6.193979, -75.005066, 'Cascada San Antonio',         'Cascada', '4.8', 'https://i.imgur.com/wb8klNch.jpg');
+        addMarker(6.157802, -74.983583, 'Cascada Sardinita',           'Cascada', '4.8', 'https://i.imgur.com/I2EZTB2h.jpg');
+        addMarker(6.166412, -75.045664, 'Cascada El Salto del Tigre',  'Cascada', null,  'https://i.imgur.com/q1YxDWgh.jpg');
 
         // ── SENDEROS ──
-        addMarker(6.2151, -74.9948, 'Cima Piedra El Tabor',            'Senderismo', '5.0', 'https://i.imgur.com/Ns4qOPqh.jpg');
-        addMarker(6.1901, -75.0387, 'La Chorrera — Sendero Ecológico', 'Senderismo', '4.8', 'https://i.imgur.com/FcvJEYZh.jpg');
-        addMarker(6.1887, -75.0000, 'Sendero San Antonio',             'Senderismo', '4.6', 'https://i.imgur.com/nkC3r0Ph.jpg');
+        addMarker(6.215228, -74.994492, 'Cima Piedra El Tabor',            'Senderismo', '5.0', 'https://i.imgur.com/Ns4qOPqh.jpg');
+        addMarker(6.190367, -75.038588, 'La Chorrera — Sendero Ecológico', 'Senderismo', '4.8', 'https://i.imgur.com/FcvJEYZh.jpg');
+        addMarker(6.188729, -74.999978, 'Sendero San Antonio',             'Senderismo', '4.6', 'https://i.imgur.com/nkC3r0Ph.jpg');
 
         // ── RESERVAS ──
-        addMarker(6.1895, -75.0146, 'Cielo Escondido — Paraíso Natural', 'Ecoturismo', '4.9', 'https://i.imgur.com/evm8v6fh.jpg');
+        addMarker(6.189609, -75.014350, 'Cielo Escondido — Paraíso Natural', 'Ecoturismo', '4.9', 'https://i.imgur.com/evm8v6fh.jpg');
 
         // ── CENTROS RECREATIVOS ──
-        addMarker(6.1832, -75.0040, 'Centro Turístico La Planta',    'Centro Recreativo', '4.6', 'https://i.imgur.com/4qY7CzDh.jpg');
-        addMarker(6.1670, -75.0220, 'Los Colores Centro Recreativo', 'Centro Recreativo', '4.5', 'https://i.imgur.com/TN3nUKGh.jpg');
-        addMarker(6.1883, -74.9999, 'Centro Recreativo San Antonio', 'Centro Recreativo', '4.5', 'https://i.imgur.com/jv0NgvZh.jpg');
+        addMarker(6.183193, -75.004044, 'Centro Turístico La Planta',      'Centro Recreativo', '4.6', 'https://i.imgur.com/4qY7CzDh.jpg');
+        addMarker(6.190960, -75.000849, 'Hostería El Cóndor',              'Centro Recreativo', '4.5', 'https://i.imgur.com/alH9gnZ.jpg');
+        addMarker(6.167255, -75.022051, 'Los Colores Centro Recreativo',   'Centro Recreativo', '4.5', 'https://i.imgur.com/TN3nUKGh.jpg');
+        addMarker(6.188397, -74.999720, 'Centro Recreativo San Antonio',   'Centro Recreativo', '4.5', 'https://i.imgur.com/jv0NgvZh.jpg');
 
         // ── TOURS Y AVENTURA ──
-        addMarker(6.1888, -74.9916, 'Eco Guías Colombia', 'Tours & Aventura', '5.0', 'https://i.imgur.com/00VDd2Qh.jpg');
+        addMarker(6.189024, -74.991657, 'Eco Guías Colombia', 'Tours & Aventura', '5.0', 'https://i.imgur.com/00VDd2Qh.jpg');
 
         // ── URBANO ──
-        addMarker(6.1887, -74.9921, 'Parque Principal San Carlos', 'Urbano', '4.7', 'https://i.imgur.com/Xp0KOH5h.jpg');
+        addMarker(6.188888, -74.992072, 'Parque Principal San Carlos', 'Urbano', '4.7', 'https://i.imgur.com/Xp0KOH5h.jpg');
     </script>
 
     <script>
