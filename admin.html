@@ -1480,6 +1480,30 @@ input[type="date"] {
         z-index: 10;
       }
 
+      .header {
+        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+        color: white;
+        padding: 12px 32px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      /* Admin Logo Styles */
+      .admin-logo-link {
+        display: inline-block;
+        text-decoration: none;
+        margin-right: 12px;
+        vertical-align: middle;
+      }
+
+      .admin-logo {
+        max-width: 32px;
+        height: auto;
+        border-radius: 8px;
+        vertical-align: middle;
+      }
+
       .detail-header h3 {
         font-size: 18px;
         font-weight: 700;
@@ -2538,7 +2562,7 @@ tbody tr.clickable:active {
   <div class="header-content">
     <!-- Title -->
     <div class="header-title">
-      <h1>📊 Panel de Administración</h1>
+      <h1><a href="/" class="admin-logo-link"><img src="https://i.imgur.com/jv0NgvZh.jpg" alt="Aptos Najos" class="admin-logo"></a>Panel de Administración</h1>
       <p>Apart Hotel Najos - Registros de Huéspedes</p>
     </div>
 
