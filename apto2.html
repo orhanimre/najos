@@ -471,7 +471,7 @@
             const content = document.getElementById('mainContent');
             if (header && content) {
                 const headerHeight = header.getBoundingClientRect().height;
-                content.style.paddingTop = (headerHeight + 32) + 'px';
+                content.style.paddingTop = (headerHeight + 16) + 'px';
             }
         }
         window.addEventListener('load', adjustContentPadding);
