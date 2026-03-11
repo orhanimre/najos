@@ -20,7 +20,7 @@
         .header { background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%); color: var(--white); padding: 12px 40px; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; box-shadow: 0 4px 16px rgba(0,119,190,0.3); transition: padding 0.3s ease, box-shadow 0.3s ease; }
         .header-content { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; min-height: 60px; transition: min-height 0.3s ease; }
         .header.scrolled { padding: 6px 40px; box-shadow: 0 2px 12px rgba(0,119,190,0.4); }
-        .header.scrolled .header-content { min-height: 30px; }
+        .header.scrolled .header-content { min-height: 40px; }
         .header-left { flex-shrink: 0; }
         .header-right { flex-shrink: 0; }
 
@@ -33,14 +33,16 @@
         .logo-link:hover .logo-home-badge { box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 0 2px var(--ocean-light); }
         @media (max-width: 768px) { .logo-home-badge { width: 20px; height: 20px; top: -6px; right: -6px; } .logo-home-badge svg { width: 10px; height: 10px; } }
         .logo { max-width: 120px; display: block; border-radius: 16px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); transition: max-width 0.3s ease; }
-        .header.scrolled .logo { max-width: 45px; }
+        .header.scrolled .logo { max-width: 50px; }
 
         .header-title { text-align: center; padding: 6px 0 0; transition: padding 0.3s ease; }
         .header.scrolled .header-title { padding: 0; }
         .header-title h1 { font-family: 'Playfair Display', serif; font-size: clamp(24px, 4vw, 32px); font-weight: 900; margin-bottom: 4px; letter-spacing: -1px; text-shadow: 0 2px 12px rgba(0,0,0,0.2); transition: font-size 0.3s ease, margin-bottom 0.3s ease; }
-        .header.scrolled .header-title h1 { font-size: 16px; margin-bottom: 0; }
-        .header-subtitle { font-size: clamp(12px, 2vw, 16px); font-weight: 300; opacity: 0.95; letter-spacing: 0.5px; }
-        .nav-menu { display: flex; justify-content: center; gap: 10px; margin-bottom: 24px; }
+        .header.scrolled .header-title h1 { font-size: 18px; margin-bottom: 0; }
+        .header-subtitle { font-size: clamp(12px, 2vw, 16px); font-weight: 300; opacity: 0.95; letter-spacing: 0.5px; transition: opacity 0.3s ease, max-height 0.3s ease; max-height: 30px; overflow: hidden; }
+        .header.scrolled .header-subtitle { opacity: 0; max-height: 0; }
+        .nav-menu { display: flex; justify-content: center; gap: 10px; margin-bottom: 24px; transition: margin-bottom 0.3s ease; }
+        .header.scrolled .nav-menu { margin-bottom: 6px; }
 
         @keyframes navGlowPulse {
             0%, 100% { box-shadow: 0 0 0px rgba(255,255,255,0); border-color: rgba(255,255,255,0.35); }

@@ -148,7 +148,11 @@
             font-weight: 300;
             opacity: 0.95;
             letter-spacing: 0.5px;
+            transition: opacity 0.3s ease, max-height 0.3s ease;
+            max-height: 30px;
+            overflow: hidden;
         }
+        .header.scrolled .header-subtitle { opacity: 0; max-height: 0; }
 
         .nav-menu { display: flex; justify-content: center; gap: 10px; margin-bottom: 24px; transition: margin-bottom 0.3s ease; }
         .header.scrolled .nav-menu { margin-bottom: 6px; }
