@@ -98,6 +98,20 @@
       .header-content {
         max-width: 1400px;
         margin: 0 auto;
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      /* Logo positioned in top left */
+      .header-logo {
+        flex-shrink: 0;
+        margin-top: 4px;
+      }
+
+      .header-title {
+        flex: 1;
+        text-align: center;
       }
 
       
@@ -2560,9 +2574,16 @@ tbody tr.clickable:active {
     <div id="dashboardScreen">
       <div class="header">
   <div class="header-content">
+    <!-- Logo in top left -->
+    <div class="header-logo">
+      <a href="/" class="admin-logo-link">
+        <img src="https://i.imgur.com/L8KoquC.jpg" alt="Aptos Najos" class="admin-logo">
+      </a>
+    </div>
+    
     <!-- Title -->
     <div class="header-title">
-      <h1><a href="/" class="admin-logo-link"><img src="https://i.imgur.com/L8KoquC.jpg" alt="Aptos Najos" class="admin-logo"></a>Panel de Administración</h1>
+      <h1>Panel de Administración</h1>
       <p>Apart Hotel Najos - Registros de Huéspedes</p>
     </div>
 
