@@ -14,6 +14,15 @@
             --sand: #F4E8D8; --sunset: #FF6B35; --white: #FFFFFF; --shadow: rgba(0,77,115,0.15);
             --charco: #0EA5E9; --cascada: #6366F1; --sendero: #16A34A;
             --reserva: #0D9488; --recreativo: #F59E0B; --urbano: #EC4899; --aventura: #DC2626;
+
+            /* Pastel card backgrounds per category */
+            --card-bg-charco:     #E0F7FA;   /* soft aqua */
+            --card-bg-cascada:    #EDE7F6;   /* periwinkle lavender */
+            --card-bg-sendero:    #E8F5E9;   /* sage green */
+            --card-bg-reserva:    #E0F2F1;   /* mint teal */
+            --card-bg-recreativo: #FFF3E0;   /* warm peach */
+            --card-bg-aventura:   #FCE4EC;   /* coral rose */
+            --card-bg-urbano:     #FFFDE7;   /* soft golden yellow */
         }
         body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-light) 100%); min-height: 100vh; color: #333; }
         .container { max-width: 1200px; margin: 0 auto; background: var(--white); min-height: 100vh; box-shadow: 0 20px 60px var(--shadow); }
@@ -72,8 +81,24 @@
         .cat-aventura .category-header { border-color: var(--aventura); } .cat-aventura .category-header h2 { color: var(--aventura); }
 
         .attractions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
-        .attraction-card { border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: all 0.3s ease; background: #fff; border: 1px solid #f0f0f0; }
+
+        /* ── CARD BASE ── */
+        .attraction-card {
+            border-radius: 16px; overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.06);
+        }
         .attraction-card:hover { transform: translateY(-5px); box-shadow: 0 12px 28px rgba(0,0,0,0.14); }
+
+        /* ── PASTEL CARD BACKGROUNDS PER CATEGORY ── */
+        .cat-charco     .attraction-card { background: var(--card-bg-charco); }
+        .cat-cascada    .attraction-card { background: var(--card-bg-cascada); }
+        .cat-sendero    .attraction-card { background: var(--card-bg-sendero); }
+        .cat-reserva    .attraction-card { background: var(--card-bg-reserva); }
+        .cat-recreativo .attraction-card { background: var(--card-bg-recreativo); }
+        .cat-aventura   .attraction-card { background: var(--card-bg-aventura); }
+        .cat-urbano     .attraction-card { background: var(--card-bg-urbano); }
 
         .card-img { width: 100%; height: 160px; overflow: hidden; cursor: zoom-in; }
         .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
@@ -99,15 +124,15 @@
         .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
         .card-name { font-size: 15px; font-weight: 600; color: #1F2937; line-height: 1.3; }
         .card-rating { display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: #F59E0B; white-space: nowrap; flex-shrink: 0; }
-        .card-desc { font-size: 13px; color: #6B7280; line-height: 1.6; }
+        .card-desc { font-size: 13px; color: #4B5563; line-height: 1.6; }
         .card-badge { display: inline-block; margin-top: 10px; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.3px; }
-        .cat-charco .card-badge { background: #e0f2fe; color: #0369a1; }
-        .cat-cascada .card-badge { background: #ede9fe; color: #5B21B6; }
-        .cat-sendero .card-badge { background: #dcfce7; color: #15803D; }
-        .cat-reserva .card-badge { background: #ccfbf1; color: #0F766E; }
-        .cat-recreativo .card-badge { background: #fef9c3; color: #A16207; }
-        .cat-urbano .card-badge { background: #fce7f3; color: #BE185D; }
-        .cat-aventura .card-badge { background: #fee2e2; color: #B91C1C; }
+        .cat-charco .card-badge     { background: rgba(14,165,233,0.15); color: #0369a1; }
+        .cat-cascada .card-badge    { background: rgba(99,102,241,0.15); color: #5B21B6; }
+        .cat-sendero .card-badge    { background: rgba(22,163,74,0.15);  color: #15803D; }
+        .cat-reserva .card-badge    { background: rgba(13,148,136,0.15); color: #0F766E; }
+        .cat-recreativo .card-badge { background: rgba(245,158,11,0.15); color: #A16207; }
+        .cat-urbano .card-badge     { background: rgba(236,72,153,0.15); color: #BE185D; }
+        .cat-aventura .card-badge   { background: rgba(220,38,38,0.15);  color: #B91C1C; }
 
         .footer { text-align: center; padding: 40px 32px; background: linear-gradient(180deg, transparent 0%, var(--sand) 50%); color: var(--ocean-dark); font-size: 14px; margin-top: 60px; border-top: 1px solid rgba(0,77,115,0.08); }
         .footer::before { content: '🌊'; display: block; font-size: 32px; margin-bottom: 16px; }
@@ -173,8 +198,6 @@
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/HRScZGJh.jpg" alt="Charco El Indio" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco El Indio</div><div class="card-rating">⭐ 4.6</div></div><div class="card-desc">Piscina natural de aguas cristalinas y temperatura agradable. Buenas vistas y ambiente tranquilo, perfecto para un baño relajante en la naturaleza.</div><span class="card-badge">Charco</span></div></div>
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/M6EwvJeh.jpg" alt="Charco El Marino" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco El Marino</div><div class="card-rating">⭐ 4.5</div></div><div class="card-desc">Aguas cristalinas y abundantes del Río San Carlos. Cuenta con cabañas y servicio de comida, ideal para pasar el día con comodidad.</div><span class="card-badge">Charco</span></div></div>
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/qiAIBSth.jpg" alt="Charco La Natalia" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco La Natalia</div><div class="card-rating">⭐ 4.4</div></div><div class="card-desc">Aguas tranquilas, ideal para familias con niños. Ubicado cerca al casco urbano, de fácil acceso.</div><span class="card-badge">Charco</span></div></div>
-
-
                 </div>
             </div>
 
@@ -199,7 +222,7 @@
                 </div>
             </div>
 
-            <!-- RESERVAS: 1 lugar (removed duplicate Cañón del Cielo Escondido) -->
+            <!-- RESERVAS: 1 lugar -->
             <div class="category-section cat-reserva">
                 <div class="category-header"><span class="category-icon">🌿</span><h2>Reservas Naturales y Ecoturismo</h2><span class="category-count">1 lugar</span></div>
                 <div class="attractions-grid">
@@ -217,7 +240,7 @@
                 </div>
             </div>
 
-            <!-- TOURS Y AVENTURA: new category -->
+            <!-- TOURS Y AVENTURA -->
             <div class="category-section cat-aventura">
                 <div class="category-header"><span class="category-icon">🧗</span><h2>Tours y Aventura</h2><span class="category-count">1 lugar</span></div>
                 <div class="attractions-grid">
@@ -225,7 +248,7 @@
                 </div>
             </div>
 
-            <!-- URBANO: 1 lugar (unchanged) -->
+            <!-- URBANO: 1 lugar -->
             <div class="category-section cat-urbano">
                 <div class="category-header"><span class="category-icon">🏛️</span><h2>Urbano y Cultural</h2><span class="category-count">1 lugar</span></div>
                 <div class="attractions-grid">
