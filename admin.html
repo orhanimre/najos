@@ -117,30 +117,22 @@
       /* Mobile responsive styles */
       @media (max-width: 768px) {
         .header-content {
-          flex-direction: column;
+          flex-direction: row;
           align-items: center;
-          gap: 8px;
+          gap: 16px;
         }
         
         .header-logo {
-          margin-top: 0;
+          margin-top: 4px;
           align-self: flex-start;
         }
         
         .header-title {
-          text-align: center;
+          text-align: left;
         }
         
         .admin-logo {
           max-width: 40px;
-        }
-        
-        /* Ensure email toggle is visible on mobile */
-        .bottom-row {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-top: 8px;
         }
       }
 
@@ -1143,6 +1135,13 @@ input[type="date"] {
 
 .logout-btn-modal:active {
   transform: translateY(0);
+}
+
+/* Hide email toggle and logout on mobile */
+@media (max-width: 767px) {
+  .bottom-row {
+    display: none;
+  }
 }
 
 
