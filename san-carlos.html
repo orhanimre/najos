@@ -158,7 +158,10 @@
         .legend-dot { width: 13px; height: 13px; border-radius: 50%; flex-shrink: 0; border: 2px solid rgba(0,0,0,0.12); }
         .leaflet-popup-content-wrapper { border-radius: 12px !important; box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important; padding: 0 !important; overflow: hidden; }
         .leaflet-popup-content { margin: 0 !important; min-width: 210px; }
-        .map-popup { padding: 14px 16px; }
+        .map-popup-img { width: 100%; height: 140px; object-fit: cover; display: block; cursor: zoom-in; transition: opacity 0.2s; }
+        .map-popup-img:hover { opacity: 0.9; }
+        .map-popup-img-placeholder { width: 100%; height: 140px; display: flex; align-items: center; justify-content: center; font-size: 32px; background: #f1f5f9; }
+        .map-popup { padding: 12px 14px 14px; }
         .map-popup-cat { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
         .map-popup-name { font-size: 14px; font-weight: 700; color: #1F2937; margin-bottom: 5px; line-height: 1.3; font-family: 'Poppins', sans-serif; }
         .map-popup-rating { font-size: 12px; color: #F59E0B; font-weight: 600; margin-bottom: 10px; }
@@ -373,19 +376,25 @@
             return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&destination_place_id=${encodeURIComponent(name)}`;
         }
 
-        function addMarker(lat, lng, name, cat, rating) {
+        function addMarker(lat, lng, name, cat, rating, photo) {
             const color = catColors[cat] || '#888';
             const marker = L.marker([lat, lng], { icon: makeIcon(color, false, name) }).addTo(map);
             const ratingHtml = rating ? `<div class="map-popup-rating">⭐ ${rating}</div>` : `<div style="height:4px"></div>`;
+            const photoHtml = photo
+                ? `<img class="map-popup-img" src="${photo}" alt="${name}" onclick="openModal('${photo}')" loading="lazy">`
+                : `<div class="map-popup-img-placeholder">📍</div>`;
             marker.bindPopup(`
-                <div class="map-popup">
-                    <div class="map-popup-cat" style="color:${color}">${cat}</div>
-                    <div class="map-popup-name">${name}</div>
-                    ${ratingHtml}
-                    <a class="map-popup-link" href="${gmapsUrl(lat, lng, name)}" target="_blank" rel="noopener">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-                        Cómo llegar
-                    </a>
+                <div>
+                    ${photoHtml}
+                    <div class="map-popup">
+                        <div class="map-popup-cat" style="color:${color}">${cat}</div>
+                        <div class="map-popup-name">${name}</div>
+                        ${ratingHtml}
+                        <a class="map-popup-link" href="${gmapsUrl(lat, lng, name)}" target="_blank" rel="noopener">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                            Cómo llegar
+                        </a>
+                    </div>
                 </div>`, { maxWidth: 260 });
             return marker;
         }
@@ -405,40 +414,40 @@
             </div>`, { maxWidth: 260 });
 
         // ── CHARCOS ──
-        addMarker(6.1911, -75.0220, 'Charco Los Anillos',      'Charco', '5.0');
-        addMarker(6.1868, -74.9519, 'Charco Redondo',           'Charco', '4.9');
-        addMarker(6.1953, -75.0238, 'Charco El Chispero',       'Charco', '4.8');
-        addMarker(6.1867, -75.0115, 'Charco Los Cajones',       'Charco', '4.8');
-        addMarker(6.1899, -75.0367, 'Charco Negro (Río Tinto)', 'Charco', '4.7');
-        addMarker(6.1879, -74.9998, 'Charco San Antonio',       'Charco', '4.7');
-        addMarker(6.1838, -75.0018, 'Charco El Indio',          'Charco', '4.6');
-        addMarker(6.1846, -74.9989, 'Charco El Marino',         'Charco', '4.5');
-        addMarker(6.1941, -74.9910, 'Charco La Natalia',        'Charco', '4.4');
+        addMarker(6.1911, -75.0220, 'Charco Los Anillos',      'Charco', '5.0', 'https://i.imgur.com/K6YGUKbh.jpg');
+        addMarker(6.1868, -74.9519, 'Charco Redondo',           'Charco', '4.9', 'https://i.imgur.com/g8Le3i4h.jpg');
+        addMarker(6.1953, -75.0238, 'Charco El Chispero',       'Charco', '4.8', 'https://i.imgur.com/X9iE6hNh.jpg');
+        addMarker(6.1867, -75.0115, 'Charco Los Cajones',       'Charco', '4.8', 'https://i.imgur.com/fnOhUCfh.jpg');
+        addMarker(6.1899, -75.0367, 'Charco Negro (Río Tinto)', 'Charco', '4.7', 'https://i.imgur.com/KrH4euOh.jpg');
+        addMarker(6.1879, -74.9998, 'Charco San Antonio',       'Charco', '4.7', 'https://i.imgur.com/1GSLd3Eh.jpg');
+        addMarker(6.1838, -75.0018, 'Charco El Indio',          'Charco', '4.6', 'https://i.imgur.com/HRScZGJh.jpg');
+        addMarker(6.1846, -74.9989, 'Charco El Marino',         'Charco', '4.5', 'https://i.imgur.com/M6EwvJeh.jpg');
+        addMarker(6.1941, -74.9910, 'Charco La Natalia',        'Charco', '4.4', 'https://i.imgur.com/qiAIBSth.jpg');
 
         // ── CASCADAS ──
-        addMarker(6.1901, -75.0387, 'Cascada La Chorrera',         'Cascada', '5.0');
-        addMarker(6.1939, -75.0051, 'Cascada San Antonio',         'Cascada', '4.8');
-        addMarker(6.1578, -74.9836, 'Cascada Sardinita',           'Cascada', '4.8');
-        addMarker(6.1664, -75.0457, 'Cascada El Salto del Tigre',  'Cascada', null);
+        addMarker(6.1901, -75.0387, 'Cascada La Chorrera',         'Cascada', '5.0', 'https://i.imgur.com/FaB0wYoh.jpg');
+        addMarker(6.1939, -75.0051, 'Cascada San Antonio',         'Cascada', '4.8', 'https://i.imgur.com/wb8klNch.jpg');
+        addMarker(6.1578, -74.9836, 'Cascada Sardinita',           'Cascada', '4.8', 'https://i.imgur.com/I2EZTB2h.jpg');
+        addMarker(6.1664, -75.0457, 'Cascada El Salto del Tigre',  'Cascada', null,  'https://i.imgur.com/q1YxDWgh.jpg');
 
         // ── SENDEROS ──
-        addMarker(6.2151, -74.9948, 'Cima Piedra El Tabor',            'Senderismo', '5.0');
-        addMarker(6.1901, -75.0387, 'La Chorrera — Sendero Ecológico', 'Senderismo', '4.8');
-        addMarker(6.1887, -75.0000, 'Sendero San Antonio',             'Senderismo', '4.6');
+        addMarker(6.2151, -74.9948, 'Cima Piedra El Tabor',            'Senderismo', '5.0', 'https://i.imgur.com/Ns4qOPqh.jpg');
+        addMarker(6.1901, -75.0387, 'La Chorrera — Sendero Ecológico', 'Senderismo', '4.8', 'https://i.imgur.com/FcvJEYZh.jpg');
+        addMarker(6.1887, -75.0000, 'Sendero San Antonio',             'Senderismo', '4.6', 'https://i.imgur.com/nkC3r0Ph.jpg');
 
         // ── RESERVAS ──
-        addMarker(6.1895, -75.0146, 'Cielo Escondido — Paraíso Natural', 'Ecoturismo', '4.9');
+        addMarker(6.1895, -75.0146, 'Cielo Escondido — Paraíso Natural', 'Ecoturismo', '4.9', 'https://i.imgur.com/evm8v6fh.jpg');
 
         // ── CENTROS RECREATIVOS ──
-        addMarker(6.1832, -75.0040, 'Centro Turístico La Planta',    'Centro Recreativo', '4.6');
-        addMarker(6.1670, -75.0220, 'Los Colores Centro Recreativo', 'Centro Recreativo', '4.5');
-        addMarker(6.1883, -74.9999, 'Centro Recreativo San Antonio', 'Centro Recreativo', '4.5');
+        addMarker(6.1832, -75.0040, 'Centro Turístico La Planta',    'Centro Recreativo', '4.6', 'https://i.imgur.com/4qY7CzDh.jpg');
+        addMarker(6.1670, -75.0220, 'Los Colores Centro Recreativo', 'Centro Recreativo', '4.5', 'https://i.imgur.com/TN3nUKGh.jpg');
+        addMarker(6.1883, -74.9999, 'Centro Recreativo San Antonio', 'Centro Recreativo', '4.5', 'https://i.imgur.com/jv0NgvZh.jpg');
 
         // ── TOURS Y AVENTURA ──
-        addMarker(6.1888, -74.9916, 'Eco Guías Colombia', 'Tours & Aventura', '5.0');
+        addMarker(6.1888, -74.9916, 'Eco Guías Colombia', 'Tours & Aventura', '5.0', 'https://i.imgur.com/00VDd2Qh.jpg');
 
         // ── URBANO ──
-        addMarker(6.1887, -74.9921, 'Parque Principal San Carlos', 'Urbano', '4.7');
+        addMarker(6.1887, -74.9921, 'Parque Principal San Carlos', 'Urbano', '4.7', 'https://i.imgur.com/Xp0KOH5h.jpg');
     </script>
 
     <script>
