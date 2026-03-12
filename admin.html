@@ -199,6 +199,7 @@
         margin: 0 auto;
         padding: 20px;
         padding-top: 160px; /* overridden by JS — safe fallback */
+        transition: padding-top 0.3s ease;
       }
 
       /* ── STATS ── */
@@ -705,51 +706,40 @@
          CSS does the rest
          ══════════════════════ */
       const adminHeader = document.getElementById('adminHeader');
+      const mainContainer = document.getElementById('mainContainer');
 
-      // Padding is set from the FULL (unscrolled) header height only.
-      // It must never be called inside the scroll handler — that causes
-      // a reflow loop: header shrinks → content shifts → scrollY changes → repeat.
-      function adjustPadding() {
-        // Temporarily measure full height (remove scrolled if present)
-        const wasScrolled = adminHeader.classList.contains('scrolled');
-        if (wasScrolled) adminHeader.classList.remove('scrolled');
-        const fullHeight = adminHeader.getBoundingClientRect().height;
-        if (wasScrolled) adminHeader.classList.add('scrolled');
-        document.getElementById('mainContainer').style.paddingTop = (fullHeight + 16) + 'px';
-      }
+      // Measure both states once, then CSS transition handles the animation.
+      // We never touch padding-top during scroll — zero reflow loop possible.
+      let paddingFull = 160;
+      let paddingScrolled = 60;
 
-      let rafId = null;
-      let isTransitioning = false;
-
-      function trackHeaderHeight() {
-        if (!isTransitioning) return;
-        const h = adminHeader.getBoundingClientRect().height;
-        document.getElementById('mainContainer').style.paddingTop = (h + 16) + 'px';
-        rafId = requestAnimationFrame(trackHeaderHeight);
-      }
-      function stopTracking() {
-        isTransitioning = false;
-        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-        // Set final resting padding once transition is done
-        adjustPadding();
+      function measurePaddings() {
+        // Measure full (expanded) height
+        adminHeader.classList.remove('scrolled');
+        paddingFull = adminHeader.getBoundingClientRect().height + 16;
+        // Measure scrolled (collapsed) height
+        adminHeader.classList.add('scrolled');
+        paddingScrolled = adminHeader.getBoundingClientRect().height + 16;
+        // Restore correct state
+        adminHeader.classList.toggle('scrolled', window.scrollY > 50);
+        // Apply current correct padding (no transition on first set)
+        mainContainer.style.transition = 'none';
+        mainContainer.style.paddingTop = (window.scrollY > 50 ? paddingScrolled : paddingFull) + 'px';
+        requestAnimationFrame(() => {
+          mainContainer.style.transition = 'padding-top 0.3s ease';
+        });
       }
 
       window.addEventListener('scroll', () => {
         const shouldShrink = window.scrollY > 50;
         const isScrolled = adminHeader.classList.contains('scrolled');
-        if (shouldShrink && !isScrolled) {
-          stopTracking();
-          adminHeader.classList.add('scrolled');
-        } else if (!shouldShrink && isScrolled) {
-          adminHeader.classList.remove('scrolled');
-          isTransitioning = true;
-          if (rafId) cancelAnimationFrame(rafId);
-          rafId = requestAnimationFrame(trackHeaderHeight);
-          setTimeout(stopTracking, 350);
-        }
+        if (shouldShrink === isScrolled) return; // no state change, do nothing
+        adminHeader.classList.toggle('scrolled', shouldShrink);
+        // CSS transition animates both header AND padding simultaneously
+        mainContainer.style.paddingTop = (shouldShrink ? paddingScrolled : paddingFull) + 'px';
       }, { passive: true });
 
-      window.addEventListener('resize', adjustPadding);
+      window.addEventListener('resize', measurePaddings);
 
       /* ── AUTH ── */
       onAuthStateChanged(auth, user => {
@@ -758,7 +748,7 @@
           document.getElementById("dashboardScreen").style.display = "block";
           document.getElementById("userEmail").textContent = user.email;
           // Measure header NOW that the dashboard is visible
-          adjustPadding();
+          measurePaddings();
           loadEmailSettings(); loadData();
         } else {
           document.getElementById("loginScreen").style.display = "flex";
