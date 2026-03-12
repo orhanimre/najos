@@ -93,10 +93,6 @@
         position: sticky;
         top: 0;
         z-index: 100;
-        /* GPU-accelerated slide — no layout shift, no feedback loop */
-        transform: translateY(0);
-        transition: transform 0.3s ease;
-        will-change: transform;
       }
 
       .header-content {
@@ -136,11 +132,38 @@
 
         .admin-logo {
           max-width: 50px;
+          transition: max-width 0.3s ease;
         }
 
-        /* Slide header off-screen when scrolling down — no layout shift */
+        /* Subtitle: hide smoothly — use opacity only, no max-height (causes layout shift) */
+        .header-title p {
+          opacity: 1;
+          transition: opacity 0.25s ease;
+        }
+
+        /* Title font size */
+        .header-title h1 {
+          transition: font-size 0.25s ease;
+        }
+
+        /* Header padding */
+        .header {
+          transition: padding 0.3s ease;
+        }
+
+        /* ── Scrolled state ── */
         .header.scrolled {
-          transform: translateY(-100%);
+          padding: 6px 32px;
+        }
+        .header.scrolled .admin-logo {
+          max-width: 36px;
+        }
+        .header.scrolled .header-title p {
+          opacity: 0;
+          pointer-events: none;
+        }
+        .header.scrolled .header-title h1 {
+          font-size: 15px !important;
         }
       }
 
@@ -1710,40 +1733,27 @@ tbody tr.clickable:active { background: #edf2f7; }
       window.doc = doc;
       window.deleteDoc = deleteDoc;
 
-      // ── MOBILE HEADER: slide out on scroll-down, slide in on scroll-up ──
+      // ── MOBILE HEADER: shrink on scroll-down, restore on scroll-up ──
       const adminHeader = document.getElementById('adminHeader');
       let lastScrollY = window.scrollY;
-      let ticking = false;
 
       window.addEventListener('scroll', () => {
-        if (!ticking) {
-          window.requestAnimationFrame(() => {
-            const isMobile = window.innerWidth <= 768;
-            const currentY = window.scrollY;
-            const delta = currentY - lastScrollY;
+        if (window.innerWidth > 768) return;
 
-            if (isMobile) {
-              // Only act when scroll movement is intentional (>4px)
-              if (Math.abs(delta) > 4) {
-                if (delta > 0 && currentY > 80) {
-                  // Scrolling DOWN past 80px → hide header
-                  adminHeader.classList.add('scrolled');
-                } else if (delta < 0) {
-                  // Scrolling UP → show header
-                  adminHeader.classList.remove('scrolled');
-                }
-                lastScrollY = currentY;
-              }
-            } else {
-              adminHeader.classList.remove('scrolled');
-              lastScrollY = currentY;
-            }
+        const currentY = window.scrollY;
+        const delta = currentY - lastScrollY;
 
-            ticking = false;
-          });
-          ticking = true;
+        // Ignore tiny jitters under 6px
+        if (Math.abs(delta) < 6) return;
+
+        if (delta > 0 && currentY > 60) {
+          adminHeader.classList.add('scrolled');
+        } else if (delta < 0) {
+          adminHeader.classList.remove('scrolled');
         }
-      });
+
+        lastScrollY = currentY;
+      }, { passive: true });
 
       window.syncAvailabilityCalendar = async function() {
         if (!confirm("This will sync all existing registrations to the availability calendar. Continue?")) return;
