@@ -723,11 +723,6 @@
         // ← NO adjustPadding() here
       }, { passive: true });
 
-      window.addEventListener('load', () => {
-        adjustPadding();
-        // Re-measure after a tick in case fonts/images shifted layout
-        setTimeout(adjustPadding, 200);
-      });
       window.addEventListener('resize', adjustPadding);
 
       /* ── AUTH ── */
@@ -736,6 +731,8 @@
           document.getElementById("loginScreen").style.display = "none";
           document.getElementById("dashboardScreen").style.display = "block";
           document.getElementById("userEmail").textContent = user.email;
+          // Measure header NOW that the dashboard is visible
+          adjustPadding();
           loadEmailSettings(); loadData();
         } else {
           document.getElementById("loginScreen").style.display = "flex";
