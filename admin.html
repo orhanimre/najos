@@ -198,8 +198,29 @@
         max-width: 1400px;
         margin: 0 auto;
         padding: 20px;
-        padding-top: 160px; /* overridden by JS — safe fallback */
-        transition: padding-top 0.3s ease;
+        padding-top: 20px; /* spacer div handles the header offset */
+      }
+
+      /* Spacer that mirrors header height exactly via CSS — no JS during scroll */
+      #header-spacer {
+        /* Mobile expanded: 10+10 padding + 54 inner + 6 margin + 52 controls-row = 132 */
+        height: 132px;
+        transition: height 0.3s ease;
+      }
+      body.header-scrolled #header-spacer {
+        /* Mobile scrolled: 4+4 padding + 32 inner = 40 */
+        height: 40px;
+      }
+      @media (min-width: 769px) {
+        #header-spacer {
+          /* Desktop expanded: 10+10 padding + 54 inner + 6 margin + 48 bottom-row = 128 */
+          height: 128px;
+        }
+        body.header-scrolled #header-spacer {
+          /* Desktop scrolled: 4+4 padding + 32 inner = 40 */
+          height: 40px;
+        }
+      }
       }
 
       /* ── STATS ── */
@@ -509,6 +530,7 @@
       </div><!-- /.header -->
 
       <div class="container" id="mainContainer">
+        <div id="header-spacer"></div>
 
         <div class="stats-grid">
           <div class="stat-card total total-card">
@@ -706,40 +728,19 @@
          CSS does the rest
          ══════════════════════ */
       const adminHeader = document.getElementById('adminHeader');
-      const mainContainer = document.getElementById('mainContainer');
-
-      // Measure both states once, then CSS transition handles the animation.
-      // We never touch padding-top during scroll — zero reflow loop possible.
-      let paddingFull = 160;
-      let paddingScrolled = 60;
-
-      function measurePaddings() {
-        // Measure full (expanded) height
-        adminHeader.classList.remove('scrolled');
-        paddingFull = adminHeader.getBoundingClientRect().height + 16;
-        // Measure scrolled (collapsed) height
-        adminHeader.classList.add('scrolled');
-        paddingScrolled = adminHeader.getBoundingClientRect().height + 16;
-        // Restore correct state
-        adminHeader.classList.toggle('scrolled', window.scrollY > 50);
-        // Apply current correct padding (no transition on first set)
-        mainContainer.style.transition = 'none';
-        mainContainer.style.paddingTop = (window.scrollY > 50 ? paddingScrolled : paddingFull) + 'px';
-        requestAnimationFrame(() => {
-          mainContainer.style.transition = 'padding-top 0.3s ease';
-        });
-      }
 
       window.addEventListener('scroll', () => {
-        const shouldShrink = window.scrollY > 50;
-        const isScrolled = adminHeader.classList.contains('scrolled');
-        if (shouldShrink === isScrolled) return; // no state change, do nothing
-        adminHeader.classList.toggle('scrolled', shouldShrink);
-        // CSS transition animates both header AND padding simultaneously
-        mainContainer.style.paddingTop = (shouldShrink ? paddingScrolled : paddingFull) + 'px';
+        const shrink = window.scrollY > 50;
+        adminHeader.classList.toggle('scrolled', shrink);
+        document.body.classList.toggle('header-scrolled', shrink);
       }, { passive: true });
 
-      window.addEventListener('resize', measurePaddings);
+      window.addEventListener('resize', () => {
+        // Re-check state on resize in case breakpoint changed
+        const shrink = window.scrollY > 50;
+        adminHeader.classList.toggle('scrolled', shrink);
+        document.body.classList.toggle('header-scrolled', shrink);
+      });
 
       /* ── AUTH ── */
       onAuthStateChanged(auth, user => {
@@ -747,8 +748,6 @@
           document.getElementById("loginScreen").style.display = "none";
           document.getElementById("dashboardScreen").style.display = "block";
           document.getElementById("userEmail").textContent = user.email;
-          // Measure header NOW that the dashboard is visible
-          measurePaddings();
           loadEmailSettings(); loadData();
         } else {
           document.getElementById("loginScreen").style.display = "flex";
