@@ -184,9 +184,9 @@
         padding: 20px;
       }
 
-      /* Spacer height is set dynamically by JS — syncs perfectly with real header height */
+      /* Spacer height is set dynamically by JS — no transition, stays in perfect sync */
       #header-spacer {
-        transition: height 0.3s ease;
+        transition: none;
       }
 
       /* ── STATS ── */
@@ -700,16 +700,29 @@
         headerSpacer.style.height = adminHeader.offsetHeight + 'px';
       }
 
+      // Continuously track header height during its CSS transition (300ms)
+      // so the spacer never lags behind and content never jumps
+      let spacerRafId = null;
+      function trackHeaderDuringTransition() {
+        if (spacerRafId) cancelAnimationFrame(spacerRafId);
+        const start = performance.now();
+        function tick(now) {
+          updateHeaderSpacer();
+          if (now - start < 350) spacerRafId = requestAnimationFrame(tick);
+        }
+        spacerRafId = requestAnimationFrame(tick);
+      }
+
       window.addEventListener('scroll', () => {
         const shrink = window.scrollY > 50;
         adminHeader.classList.toggle('scrolled', shrink);
-        updateHeaderSpacer();
+        trackHeaderDuringTransition();
       }, { passive: true });
 
       window.addEventListener('resize', () => {
         const shrink = window.scrollY > 50;
         adminHeader.classList.toggle('scrolled', shrink);
-        updateHeaderSpacer();
+        trackHeaderDuringTransition();
       });
 
       // Set correct height before any scrolling happens
