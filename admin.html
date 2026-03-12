@@ -719,8 +719,15 @@
       }
 
       window.addEventListener('scroll', () => {
-        adminHeader.classList.toggle('scrolled', window.scrollY > 50);
-        // ← NO adjustPadding() here
+        const shouldShrink = window.scrollY > 50;
+        const isScrolled = adminHeader.classList.contains('scrolled');
+        if (shouldShrink && !isScrolled) {
+          adminHeader.classList.add('scrolled');
+        } else if (!shouldShrink && isScrolled) {
+          adminHeader.classList.remove('scrolled');
+          // Header is expanding back — re-measure after transition finishes (300ms)
+          setTimeout(adjustPadding, 320);
+        }
       }, { passive: true });
 
       window.addEventListener('resize', adjustPadding);
