@@ -703,7 +703,10 @@
       let isShrunk = false;
       let spacerRafId = null;
 
+      const isDesktop = () => window.innerWidth >= 769;
+
       function trackHeaderDuringTransition() {
+        if (!isDesktop()) return; // never run RAF on mobile
         if (spacerRafId) cancelAnimationFrame(spacerRafId);
         const start = performance.now();
         function tick(now) {
@@ -715,19 +718,18 @@
       }
 
       window.addEventListener('scroll', () => {
-        if (window.innerWidth < 769) return; // mobile: no shrink, no shake
-        // Clamp scrollY to valid range — prevents overscroll bounce at top/bottom
-        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        const clampedY = Math.max(0, Math.min(window.scrollY, maxScroll));
-        const shrink = clampedY > 50;
+        if (!isDesktop()) return;
+        const shrink = window.scrollY > 50;
         if (shrink === isShrunk) return;
         isShrunk = shrink;
         adminHeader.classList.toggle('scrolled', shrink);
         trackHeaderDuringTransition();
       }, { passive: true });
 
+      // resize only fires on orientation change / window resize — safe on both
       window.addEventListener('resize', () => {
-        if (window.innerWidth < 769) {
+        if (!isDesktop()) {
+          if (spacerRafId) { cancelAnimationFrame(spacerRafId); spacerRafId = null; }
           adminHeader.classList.remove('scrolled');
           isShrunk = false;
         } else {
