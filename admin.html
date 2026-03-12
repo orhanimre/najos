@@ -5,1494 +5,444 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - Aptos Najos</title>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
 
       body {
-        font-family:
-          "Inter",
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          Roboto,
-          sans-serif;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         background: #f8fafc;
         min-height: 100vh;
       }
 
-      /* Login Screen */
-      .login-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-        padding: 20px;
-      }
+      /* ── LOGIN ── */
+      .login-container { display:flex; align-items:center; justify-content:center; min-height:100vh; background:linear-gradient(135deg,#14b8a6,#0d9488); padding:20px; }
+      .login-box { background:white; padding:40px 30px; border-radius:20px; box-shadow:0 20px 60px rgba(0,0,0,0.3); text-align:center; max-width:420px; width:100%; }
+      .login-logo { font-size:48px; margin-bottom:20px; }
+      .login-box h2 { color:#2d3748; margin-bottom:12px; font-size:26px; font-weight:700; }
+      .login-box p { color:#718096; margin-bottom:32px; font-size:15px; line-height:1.6; }
+      .google-btn { background:white; border:2px solid #e2e8f0; padding:16px 28px; border-radius:12px; cursor:pointer; font-size:16px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:12px; width:100%; transition:all 0.3s; }
+      .google-btn:hover { border-color:#14b8a6; transform:translateY(-2px); box-shadow:0 8px 16px rgba(0,0,0,0.15); }
 
-      .login-box {
-        background: white;
-        padding: 40px 30px;
-        border-radius: 20px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        text-align: center;
-        max-width: 420px;
-        width: 100%;
-      }
-
-      .login-logo {
-        font-size: 48px;
-        margin-bottom: 20px;
-      }
-
-      .login-box h2 {
-        color: #2d3748;
-        margin-bottom: 12px;
-        font-size: 26px;
-        font-weight: 700;
-      }
-
-      .login-box p {
-        color: #718096;
-        margin-bottom: 32px;
-        font-size: 15px;
-        line-height: 1.6;
-      }
-
-      .google-btn {
-        background: white;
-        border: 2px solid #e2e8f0;
-        padding: 16px 28px;
-        border-radius: 12px;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        width: 100%;
-        transition: all 0.3s;
-      }
-
-      .google-btn:hover {
-        border-color: #14b8a6;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-      }
-
-      /* ── HEADER ── */
+      /* ══════════════════════════════════════════
+         HEADER — fixed, shrinks on scroll
+         Same technique as index.html:
+           • min-height on .header-inner collapses
+           • logo shrinks via max-width
+           • subtitle hides via max-height + opacity
+           • right controls hide via max-width + opacity (mobile only)
+           • desktop bottom row hides via max-height + opacity
+         ══════════════════════════════════════════ */
       .header {
         background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
         color: white;
-        padding: 12px 32px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
+        top: 0; left: 0; right: 0;
         z-index: 100;
-        will-change: transform;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        padding: 10px 24px;
+        transition: padding 0.3s ease, box-shadow 0.3s ease;
+      }
+      .header.scrolled {
+        padding: 4px 24px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
       }
 
-      .header-content {
+      /* Row 1: logo + title + controls */
+      .header-inner {
         max-width: 1400px;
         margin: 0 auto;
         display: flex;
-        align-items: flex-start;
-        gap: 16px;
+        align-items: center;
+        gap: 12px;
+        min-height: 58px;
+        transition: min-height 0.3s ease;
       }
+      .header.scrolled .header-inner { min-height: 34px; }
 
-      .header-logo {
+      /* Logo */
+      .admin-logo-link { display:inline-block; text-decoration:none; flex-shrink:0; }
+      .admin-logo {
+        max-width: 52px; height:auto; border-radius:8px; display:block;
+        transition: max-width 0.3s ease;
+      }
+      .header.scrolled .admin-logo { max-width: 30px; }
+
+      /* Title */
+      .header-title { flex:1; text-align:center; overflow:hidden; }
+      .header-title h1 {
+        font-size: 19px; font-weight:700; line-height:1.2;
+        transition: font-size 0.3s ease;
+      }
+      .header.scrolled .header-title h1 { font-size: 13px; }
+
+      .header-subtitle {
+        font-size: 12px; font-weight:300; opacity:0.9;
+        max-height: 24px; overflow:hidden;
+        transition: max-height 0.3s ease, opacity 0.25s ease;
+      }
+      .header.scrolled .header-subtitle { max-height:0; opacity:0; }
+
+      /* Right controls wrapper */
+      .header-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
         flex-shrink: 0;
-        margin-top: 4px;
+        overflow: hidden;
+        transition: max-width 0.3s ease, opacity 0.25s ease;
       }
 
-      .header-title {
-        flex: 1;
-        text-align: center;
-      }
-
-      /* Mobile responsive styles */
+      /* On mobile: hide controls when scrolled */
       @media (max-width: 768px) {
-        .header-content {
-          flex-direction: column;
-          align-items: center;
-          gap: 8px;
+        .header-controls {
+          max-width: 280px;
+          transition: max-width 0.3s ease, opacity 0.25s ease;
         }
-
-        .header-logo {
-          margin-top: 0;
-          align-self: flex-start;
-        }
-
-        .header-title {
-          text-align: center;
-        }
-
-        .admin-logo {
-          max-width: 50px;
-          transition: max-width 0.3s ease;
-        }
-
-        .header-title p {
-          opacity: 1;
-          transition: opacity 0.25s ease;
-        }
-
-        .header-title h1 {
-          transition: font-size 0.25s ease;
-        }
-
-        .header {
-          transition: padding 0.3s ease;
-        }
-
-        /* ── Scrolled state ── */
-        .header.scrolled {
-          padding: 6px 32px;
-        }
-        .header.scrolled .admin-logo {
-          max-width: 36px;
-        }
-        .header.scrolled .header-title p {
+        .header.scrolled .header-controls {
+          max-width: 0;
           opacity: 0;
           pointer-events: none;
-        }
-        .header.scrolled .header-title h1 {
-          font-size: 15px !important;
-        }
-
-        /* Hide controls when scrolled so header can shrink */
-        .header.scrolled .settings-btn {
-          opacity: 0;
-          pointer-events: none;
-          width: 0;
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-        }
-        .header.scrolled .nav-dropdown-container {
-          opacity: 0;
-          pointer-events: none;
-          width: 0;
-          overflow: hidden;
-        }
-        .header.scrolled .top-controls-row {
-          justify-content: center;
         }
       }
 
-      /* Container */
+      /* Settings button — mobile only */
+      .settings-btn {
+        background: rgba(255,255,255,0.15);
+        border: 2px solid rgba(255,255,255,0.3);
+        color: white;
+        width: 40px; height: 40px;
+        border-radius: 10px;
+        cursor: pointer; font-size: 20px;
+        display: none; /* shown only on mobile via media query */
+        align-items: center; justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+      }
+      .settings-btn:hover { background:rgba(255,255,255,0.25); transform:rotate(90deg); }
+
+      @media (max-width: 768px) {
+        .settings-btn { display:flex; }
+      }
+
+      /* Vista dropdown */
+      .nav-dropdown-container { display:flex; align-items:center; gap:6px; }
+      .nav-dropdown-label { font-size:12px; font-weight:600; color:white; white-space:nowrap; }
+      .nav-dropdown {
+        padding: 7px 32px 7px 12px;
+        background: rgba(255,255,255,0.95); color:#14b8a6;
+        border: 2px solid rgba(255,255,255,0.3); border-radius:9px;
+        font-size: 13px; font-weight:600; cursor:pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2314b8a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat; background-position: right 10px center;
+      }
+      .nav-dropdown:focus { outline:none; }
+
+      /* Row 2 (desktop): email toggle + user — collapses on scroll */
+      .desktop-bottom-row {
+        display: none; /* shown on desktop via media query */
+        align-items: center;
+        gap: 12px;
+        max-width: 1400px;
+        margin: 0 auto;
+        max-height: 48px;
+        overflow: hidden;
+        padding-top: 6px;
+        transition: max-height 0.3s ease, opacity 0.25s ease, padding-top 0.3s ease;
+      }
+      .header.scrolled .desktop-bottom-row {
+        max-height: 0;
+        opacity: 0;
+        padding-top: 0;
+        pointer-events: none;
+      }
+
+      @media (min-width: 769px) {
+        .desktop-bottom-row { display:flex; }
+        .settings-btn { display:none !important; }
+        /* On desktop, controls never hide */
+        .header.scrolled .header-controls {
+          max-width: unset !important;
+          opacity: 1 !important;
+          pointer-events: auto !important;
+        }
+      }
+
+      .email-toggle-container {
+        display:flex; align-items:center; gap:8px;
+        padding: 7px 14px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 10px; border: 2px solid rgba(255,255,255,0.2);
+      }
+      .email-toggle-label { font-size:13px; font-weight:600; color:white; }
+      .toggle-switch {
+        position:relative; width:44px; height:24px;
+        background:rgba(255,255,255,0.3); border-radius:12px;
+        cursor:pointer; border:2px solid rgba(255,255,255,0.4);
+        transition:all 0.3s; flex-shrink:0;
+      }
+      .toggle-switch.active { background:#48bb78; border-color:#48bb78; }
+      .toggle-slider {
+        position:absolute; top:2px; left:2px;
+        width:16px; height:16px; background:white;
+        border-radius:50%; transition:all 0.3s;
+        box-shadow:0 2px 4px rgba(0,0,0,0.2);
+      }
+      .toggle-switch.active .toggle-slider { transform:translateX(20px); }
+
+      .user-row { display:flex; align-items:center; gap:8px; margin-left:auto; }
+      .user-email { font-size:12px; opacity:0.9; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:180px; }
+      .logout-btn {
+        background:linear-gradient(135deg,#ef4444,#dc2626);
+        border:2px solid rgba(255,255,255,0.3);
+        color:white; padding:6px 14px; border-radius:8px;
+        cursor:pointer; font-weight:600; font-size:18px;
+        box-shadow:0 3px 8px rgba(239,68,68,0.3);
+        transition:all 0.3s; white-space:nowrap; flex-shrink:0;
+      }
+      .logout-btn:hover { transform:translateY(-1px); box-shadow:0 5px 12px rgba(239,68,68,0.4); }
+
+      /* ── CONTAINER ── */
       .container {
         max-width: 1400px;
         margin: 0 auto;
         padding: 20px;
-        padding-top: 90px;
-      }
-
-      /* Stats Grid */
-      .stats-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 16px;
-        margin-bottom: 24px;
-      }
-
-      .total-card {
-        grid-column: 1 / -1;
-      }
-
-      .cabins-row {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-        grid-column: 1 / -1;
-      }
-
-      .stat-card {
-        background: white;
-        padding: 20px;
-        border-radius: 16px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        text-align: center;
-        transition:
-          transform 0.3s,
-          box-shadow 0.3s;
-      }
-
-      .stat-card.total {
-        padding: 28px 20px;
-      }
-
-      .stat-card.cabin {
-        padding: 18px 10px;
-      }
-
-      .stat-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-      }
-
-      .stat-card h3 {
-        color: #718096;
-        font-size: 13px;
-        font-weight: 600;
-        margin-bottom: 8px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-
-      .stat-card.total h3 {
-        font-size: 15px;
-        margin-bottom: 12px;
-      }
-
-      .stat-card.cabin h3 {
-        font-size: 11px;
-        margin-bottom: 6px;
-      }
-
-      .stat-card .number {
-        font-size: 36px;
-        font-weight: 700;
-        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-
-      .stat-card.total .number {
-        font-size: 48px;
-      }
-
-      .stat-card.cabin .number {
-        font-size: 26px;
-      }
-
-      .stat-card.cabin-1 .number {
-        background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-
-      .stat-card.cabin-2 .number {
-        background: linear-gradient(135deg, #00cc00 0%, #00a300 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-
-      .stat-card.cabin-3 .number {
-        background: linear-gradient(135deg, #cc0066 0%, #a30052 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-
-      .stay-badge {
-        background: linear-gradient(135deg, #9f7aea 0%, #6b46c1 100%);
-        color: white;
-        font-size: 12px;
-        padding: 2px 8px;
-        border-radius: 12px;
-        margin-left: 6px;
-        font-weight: 600;
-        display: inline-block;
-        vertical-align: middle;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      }
-      
-      .mobile-only { display: none; }
-      
-      @media (max-width: 768px) {
-        .desktop-only { display: none; }
-        .mobile-only { display: inline-block; }
-        .stay-badge.mobile-only {
-          font-size: 10px;
-          padding: 1px 4px;
-          margin-right: 4px;
-          position: relative;
-          top: -1px;
-          line-height: 1.2;
-          vertical-align: baseline;
-        }
-        .name-main {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-      }
-
-      .delete-btn {
-        background: linear-gradient(135deg, #f56565 0%, #c53030 100%);
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 13px;
-        transition: all 0.3s;
-        margin-top: 8px;
-      }
-
-      .delete-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(245, 101, 101, 0.3);
-      }
-
-      .delete-btn:active { transform: translateY(0); }
-
-      .custom-dates {
-        display: none;
-        grid-template-columns: 1fr 1fr;
-        gap: 32px;
-        margin-top: 20px;
-        padding: 24px;
-        background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-        border-radius: 16px;
-        border: 2px solid #e2e8f0;
-      }
-
-      .custom-dates.show { display: grid; }
-
-      .date-input-group {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-
-      .date-input-group label {
-        font-size: 11px;
-        color: #14b8a6;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 0;
-      }
-
-      input[type="date"] {
-        width: 100%;
-        padding: 8px 10px;
-        border: 2px solid #cbd5e0;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 500;
-        background: white;
-        color: #1f2937;
-        transition: all 0.3s;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        box-sizing: border-box;
-      }
-
-      .date-input-group label {
-        font-size: 13px;
-        color: #14b8a6;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-
-      .filter-buttons { display: none; gap: 10px; margin-top: 16px; }
-      .filter-buttons.show { display: flex; }
-
-      select {
-        width: 100%;
-        padding: 12px 16px;
-        border: 2px solid #e2e8f0;
-        border-radius: 10px;
-        font-size: 14px;
-        background: #fafafa;
-        transition: all 0.3s;
-      }
-
-      select:focus {
-        outline: none;
-        border-color: #14b8a6;
-        background: white;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-      }
-
-      input[type="date"]:focus {
-        outline: none;
-        border-color: #14b8a6;
-        background: white;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1), 0 2px 6px rgba(102, 126, 234, 0.15);
-      }
-
-      input[type="date"]:hover {
-        border-color: #a0aec0;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-      }
-
-      .btn-primary {
-        flex: 1;
-        padding: 12px 20px;
-        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 14px;
-        transition: all 0.3s;
-      }
-
-      .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
-      }
-
-      .btn-secondary {
-        flex: 1;
-        padding: 12px 20px;
-        background: #718096;
-        color: white;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 14px;
-        transition: all 0.3s;
-      }
-
-      .btn-secondary:hover {
-        background: #4a5568;
-        transform: translateY(-2px);
-      }
-
-      .export-btn {
-        width: 100%;
-        padding: 14px 24px;
-        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-        color: white;
-        border: none;
-        border-radius: 12px;
-        cursor: pointer;
-        font-weight: 600;
-        margin-bottom: 20px;
-        font-size: 15px;
-        transition: all 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-      }
-
-      .export-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(72, 187, 120, 0.3);
-      }
-
-      /* Table */
-      .table-container {
-        background: white;
-        border-radius: 16px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        overflow: hidden;
-      }
-
-      .table-scroll {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      table { width: 100%; border-collapse: collapse; }
-
-      table.mobile-view { min-width: auto; }
-
-      table.mobile-view th:not(.mobile-col),
-      table.mobile-view td:not(.mobile-col) { display: none; }
-
-      .expand-icon { cursor: pointer; font-size: 18px; transition: transform 0.3s; }
-      .expand-icon.expanded { transform: rotate(90deg); }
-
-      /* Calendar View Button */
-      .calendar-view-btn {
-        margin-top: 12px;
-        padding: 10px 16px;
-        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 13px;
-        transition: all 0.3s;
-        width: 100%;
-      }
-
-      .calendar-view-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
-      }
-
-      /* Calendar Modal */
-      .calendar-modal {
-        display: none;
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(4px);
-        z-index: 10001;
-        padding: 20px;
-      }
-
-      .calendar-modal.show {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .calendar-content {
-        background: white;
-        border-radius: 20px;
-        padding: 0;
-        max-width: 900px;
-        width: calc(100% - 32px);
-        max-height: 90vh;
-        display: flex;
-        flex-direction: column;
-        animation: slideUp 0.3s ease;
-        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
-        overflow: hidden;
-        box-sizing: border-box;
-      }
-
-      .calendar-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 24px;
-        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-        color: white;
-        border-radius: 20px 20px 0 0;
-        flex-shrink: 0;
-      }
-
-      .calendar-header h3 { font-size: 20px; font-weight: 700; margin: 0; }
-
-      .calendar-body {
-        flex: 1;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .calendar-scroll-container {
-        flex: 1;
-        overflow-y: auto;
-        overflow-x: hidden;
-        padding: 24px;
-        -webkit-overflow-scrolling: touch;
-        width: 100%;
-        box-sizing: border-box;
-      }
-
-      .calendar-month-section {
-        margin-bottom: 32px;
-        width: 100%;
-        box-sizing: border-box;
-        min-width: 0;
-      }
-
-      .calendar-month-section:last-child { margin-bottom: 0; }
-
-      .calendar-month-title {
-        font-size: 18px;
-        font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 16px;
-        padding-bottom: 8px;
-        border-bottom: 2px solid #e5e7eb;
-      }
-
-      .calendar-grid {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 4px;
-        margin-top: 12px;
-        width: 100%;
-        box-sizing: border-box;
-        min-width: 0;
-        grid-auto-flow: dense;
-      }
-
-      .calendar-day-header {
-        text-align: center;
-        font-weight: 700;
-        font-size: 11px;
-        color: #14b8a6;
-        padding: 12px 8px;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .calendar-day {
-        position: relative;
-        aspect-ratio: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.2s;
-        padding: 8px;
-        background: white;
-        min-height: 50px;
-        max-height: 70px;
-        box-sizing: border-box;
-      }
-
-      .calendar-day:nth-child(7n) { border-right: none; }
-      .calendar-day.other-month { visibility: hidden; pointer-events: none; }
-      .calendar-day.today .calendar-day-number { font-weight: 700; color: #14b8a6; }
-      .calendar-day.past { opacity: 0.4; }
-      .calendar-day.past .calendar-day-number { color: #9ca3af; }
-
-      .calendar-day-number {
-        font-size: 14px;
-        font-weight: 600;
-        color: #1f2937;
-        position: relative;
-        z-index: 2;
-      }
-
-      .calendar-day.reserved .calendar-day-number { color: white; font-weight: 700; }
-
-      .calendar-day.reservation-start-1,.calendar-day.reservation-end-1,.calendar-day.reservation-single-1 { background: #3b82f6; border-radius: 8px; }
-      .calendar-day.reservation-start-2,.calendar-day.reservation-end-2,.calendar-day.reservation-single-2 { background: #10b981; border-radius: 8px; }
-      .calendar-day.reservation-start-3,.calendar-day.reservation-end-3,.calendar-day.reservation-single-3 { background: #f59e0b; border-radius: 8px; }
-      .calendar-day.reservation-start-4,.calendar-day.reservation-end-4,.calendar-day.reservation-single-4 { background: #ec4899; border-radius: 8px; }
-      .calendar-day.reservation-start-5,.calendar-day.reservation-end-5,.calendar-day.reservation-single-5 { background: #8b5cf6; border-radius: 8px; }
-      .calendar-day.reservation-start-6,.calendar-day.reservation-end-6,.calendar-day.reservation-single-6 { background: #ef4444; border-radius: 8px; }
-      .calendar-day.reservation-start-7,.calendar-day.reservation-end-7,.calendar-day.reservation-single-7 { background: #14b8a6; border-radius: 8px; }
-      .calendar-day.reservation-start-8,.calendar-day.reservation-end-8,.calendar-day.reservation-single-8 { background: #f97316; border-radius: 8px; }
-      .calendar-day.reservation-start-9,.calendar-day.reservation-end-9,.calendar-day.reservation-single-9 { background: #06b6d4; border-radius: 8px; }
-      .calendar-day.reservation-start-10,.calendar-day.reservation-end-10,.calendar-day.reservation-single-10 { background: #84cc16; border-radius: 8px; }
-      .calendar-day.reservation-start-11,.calendar-day.reservation-end-11,.calendar-day.reservation-single-11 { background: #d946ef; border-radius: 8px; }
-      .calendar-day.reservation-start-12,.calendar-day.reservation-end-12,.calendar-day.reservation-single-12 { background: #0ea5e9; border-radius: 8px; }
-
-      .calendar-day.reservation-middle-1 { background: rgba(59,130,246,0.25); border-radius: 0 !important; }
-      .calendar-day.reservation-middle-1 .calendar-day-number { color: #1e40af; font-weight: 600; }
-      .calendar-day.reservation-middle-2 { background: rgba(16,185,129,0.25); }
-      .calendar-day.reservation-middle-2 .calendar-day-number { color: #065f46; font-weight: 600; }
-      .calendar-day.reservation-middle-3 { background: rgba(245,158,11,0.25); }
-      .calendar-day.reservation-middle-3 .calendar-day-number { color: #92400e; font-weight: 600; }
-      .calendar-day.reservation-middle-4 { background: rgba(236,72,153,0.25); }
-      .calendar-day.reservation-middle-4 .calendar-day-number { color: #9f1239; font-weight: 600; }
-      .calendar-day.reservation-middle-5 { background: rgba(139,92,246,0.25); }
-      .calendar-day.reservation-middle-5 .calendar-day-number { color: #5b21b6; font-weight: 600; }
-      .calendar-day.reservation-middle-6 { background: rgba(239,68,68,0.25); }
-      .calendar-day.reservation-middle-6 .calendar-day-number { color: #991b1b; font-weight: 600; }
-      .calendar-day.reservation-middle-7 { background: rgba(20,184,166,0.25); }
-      .calendar-day.reservation-middle-7 .calendar-day-number { color: #0f766e; font-weight: 600; }
-      .calendar-day.reservation-middle-8 { background: rgba(249,115,22,0.25); }
-      .calendar-day.reservation-middle-8 .calendar-day-number { color: #9a3412; font-weight: 600; }
-      .calendar-day.reservation-middle-9 { background: rgba(6,182,212,0.25); }
-      .calendar-day.reservation-middle-9 .calendar-day-number { color: #0e7490; font-weight: 600; }
-      .calendar-day.reservation-middle-10 { background: rgba(132,204,22,0.25); }
-      .calendar-day.reservation-middle-10 .calendar-day-number { color: #4d7c0f; font-weight: 600; }
-      .calendar-day.reservation-middle-11 { background: rgba(217,70,239,0.25); }
-      .calendar-day.reservation-middle-11 .calendar-day-number { color: #a21caf; font-weight: 600; }
-      .calendar-day.reservation-middle-12 { background: rgba(14,165,233,0.25); }
-      .calendar-day.reservation-middle-12 .calendar-day-number { color: #075985; font-weight: 600; }
-
-      .reservation-popup {
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #1f2937;
-        color: white;
-        padding: 8px 12px;
-        border-radius: 8px;
-        font-size: 11px;
-        white-space: nowrap;
-        z-index: 1000;
-        margin-bottom: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.3s;
-      }
-
-      .reservation-popup::after {
-        content: '';
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        border: 5px solid transparent;
-        border-top-color: #1f2937;
-      }
-
-      @media (min-width: 769px) {
-        .calendar-day.reserved:hover .reservation-popup { opacity: 1; }
-      }
-
-      .calendar-day.reserved.show-popup .reservation-popup { opacity: 1; }
-
-      @media (max-width: 768px) {
-        .calendar-grid { gap: 2px; }
-        .calendar-day { padding: 4px; min-height: 45px; max-height: 60px; }
-        .calendar-day-number { font-size: 12px; }
-        .calendar-day-header { font-size: 9px; padding: 6px 2px; }
-        .reservation-popup { font-size: 10px; padding: 6px 10px; }
-        .calendar-scroll-container { padding: 16px; }
-        .calendar-month-section { margin-bottom: 24px; }
-      }
-
-      @media (max-width: 400px) {
-        .calendar-day { min-height: 40px; max-height: 50px; padding: 2px; }
-        .calendar-day-number { font-size: 11px; }
-      }
-
-      /* Settings Button */
-      .settings-btn {
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(10px);
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        color: white;
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        cursor: pointer;
-        font-size: 24px;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-
-      .settings-btn:hover {
-        background: rgba(255, 255, 255, 0.25);
-        transform: rotate(90deg);
-        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
-      }
-
-      .top-controls-row {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        width: 100%;
-        transition: justify-content 0.3s ease;
-      }
-
-      /* Settings Modal */
-      .settings-modal {
-        display: none;
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(4px);
-        z-index: 10002;
-        padding: 20px;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .settings-modal.show { display: flex; }
-
-      .settings-content {
-        background: white;
-        border-radius: 20px;
-        padding: 0;
-        max-width: 480px;
-        width: calc(100% - 32px);
-        max-height: 85vh;
-        overflow-y: auto;
-        animation: slideUp 0.3s ease;
-        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
-      }
-
-      .settings-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 24px;
-        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-        color: white;
-        border-radius: 20px 20px 0 0;
-        position: sticky;
-        top: 0;
-        z-index: 10;
-      }
-
-      .settings-header h3 { font-size: 20px; font-weight: 700; margin: 0; }
-
-      .settings-body { padding: 24px; }
-
-      .settings-section {
-        margin-bottom: 28px;
-        padding-bottom: 24px;
-        border-bottom: 2px solid #e5e7eb;
-      }
-
-      .settings-section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-
-      .settings-section-title { font-size: 16px; font-weight: 700; color: #1f2937; margin-bottom: 16px; }
-
-      .settings-section .email-toggle-container {
-        background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-        padding: 16px;
-        border-radius: 12px;
-        border: 2px solid #e2e8f0;
-      }
-
-      .account-info {
-        background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-        padding: 16px;
-        border-radius: 12px;
-        border: 2px solid #e2e8f0;
-      }
-
-      .account-email {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        margin-bottom: 16px;
-        padding-bottom: 16px;
-        border-bottom: 1px solid #cbd5e0;
-      }
-
-      .account-label {
-        font-size: 12px;
-        font-weight: 700;
-        color: #14b8a6;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-
-      .account-email .user-email {
-        font-size: 14px;
-        font-weight: 600;
-        color: #1f2937;
-        word-break: break-word;
-        overflow-wrap: break-word;
-        line-height: 1.5;
-        max-width: 100%;
-        display: block;
-      }
-
-      .logout-btn-modal {
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-        color: white;
-        border: none;
-        padding: 14px 24px;
-        border-radius: 12px;
-        cursor: pointer;
-        font-weight: 700;
-        font-size: 15px;
-        transition: all 0.3s;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-      }
-
-      .logout-btn-modal:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
-      }
-
-      .logout-btn-modal:active { transform: translateY(0); }
-
-      @media (max-width: 767px) { .bottom-row { display: none; } }
-
-      @media (min-width: 768px) {
-        .settings-btn { display: none; }
-        .bottom-row { display: flex !important; }
-        .top-controls-row { justify-content: space-between; }
-      }
-
-      /* Filters */
-      .filters {
-        background: white;
-        padding: 28px;
-        border-radius: 20px;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-        margin-bottom: 24px;
-        border: 1px solid #e5e7eb;
-      }
-
-      .filter-section { margin-bottom: 28px; }
-      .filter-section:last-child { margin-bottom: 0; }
-
-      .filter-label {
-        font-size: 11px;
-        font-weight: 700;
-        color: #14b8a6;
-        margin-bottom: 14px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-
-      .filter-label::before { content: '🏠'; font-size: 16px; }
-      .filter-section:nth-child(2) .filter-label::before { content: '📅'; }
-      .filter-section:nth-child(3) .filter-label::before { content: '🔍'; }
-
-      .preset-btn {
-        padding: 12px 10px;
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        color: #495057;
-        border: 2px solid #dee2e6;
-        border-radius: 12px;
-        cursor: pointer;
-        font-weight: 700;
-        font-size: 12px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        position: relative;
-        letter-spacing: 0.2px;
-      }
-
-      .preset-btn:hover:not(.active) {
-        border-color: #14b8a6;
-        background: linear-gradient(135deg, #f0f2ff 0%, #e8ebff 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(102, 126, 234, 0.15);
-        color: #14b8a6;
-      }
-
-      .date-presets {
-        display: flex;
-        gap: 8px;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scroll-snap-type: x mandatory;
-        padding-bottom: 8px;
-      }
-
-      .preset-btn {
-        flex: 0 0 auto;
-        min-width: 120px;
-        scroll-snap-align: start;
-      }
-
-      .date-presets::-webkit-scrollbar { display: none; }
-      .date-presets { -ms-overflow-style: none; scrollbar-width: none; }
-
-      @media (min-width: 640px) {
-        .date-presets {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 10px;
-          overflow-x: visible;
-          scroll-snap-type: none;
-          padding-bottom: 0;
-        }
-        .preset-btn { min-width: auto; flex: initial; scroll-snap-align: none; padding: 12px 12px; font-size: 12px; }
-      }
-
-      @media (min-width: 768px) {
-        .filters { padding: 32px; }
-        .date-presets { gap: 10px; }
-        .preset-btn { padding: 14px 16px; font-size: 13px; }
-      }
-
-      .preset-btn.active {
-        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-        color: white;
-        border-color: transparent;
-        box-shadow: 0 6px 16px rgba(102, 126, 234, 0.35);
-        transform: translateY(-2px);
-      }
-
-      .preset-btn.active:hover { box-shadow: 0 8px 20px rgba(102, 126, 234, 0.45); }
-
-      .search-container { margin-top: 24px; }
-
-      .search-box {
-        position: relative;
-        display: flex;
-        align-items: center;
-        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-        border-radius: 16px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        padding: 16px 18px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 2px solid #e5e7eb;
-      }
-
-      .search-box:focus-within {
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
-        border: 2px solid #14b8a6;
-        background: white;
-        transform: translateY(-1px);
-      }
-
-      .search-icon { font-size: 20px; margin-right: 14px; color: #14b8a6; transition: transform 0.3s; }
-      .search-box:focus-within .search-icon { transform: scale(1.1); }
-
-      .search-input {
-        flex: 1;
-        border: none;
-        outline: none;
-        font-size: 15px;
-        color: #1f2937;
-        background: transparent;
-        font-weight: 500;
-      }
-
-      .search-input::placeholder { color: #9ca3af; font-weight: 400; }
-
-      .clear-search {
-        background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-        border: none;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 14px;
-        color: #6b7280;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s;
-        margin-left: 10px;
-        font-weight: bold;
-      }
-
-      .clear-search:hover {
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-        color: white;
-        transform: rotate(90deg) scale(1.1);
-      }
-
-      .search-results-info {
-        margin-top: 14px;
-        padding: 14px 18px;
-        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-        border-left: 4px solid #14b8a6;
-        border-radius: 12px;
-        font-size: 14px;
-        color: #1e40af;
-        font-weight: 700;
-        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
-        letter-spacing: 0.3px;
-      }
-
-      @media (min-width: 768px) {
-        .search-input { font-size: 16px; }
-        .search-box { padding: 18px 20px; }
-      }
-
-      .detail-modal {
-        display: none;
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(4px);
-        z-index: 1000;
-        padding: 10px;
-        box-sizing: border-box;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .detail-modal.show {
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
-        padding-top: 20px;
-        padding-bottom: 20px;
-      }
-
-      .detail-content {
-        background: white;
-        border-radius: 16px;
-        padding: 0;
-        width: 95%;
-        max-width: 420px;
-        max-height: 90vh;
-        overflow-y: auto;
-        position: relative;
-        animation: slideUp 0.3s ease;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        margin: 0;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      @media (max-width: 480px) {
-        .detail-content {
-          width: 100%;
-          max-width: 100%;
-          border-radius: 16px 16px 0 0;
-          max-height: 90vh;
-          margin: 0;
-          position: fixed;
-          bottom: 0; left: 0; right: 0; top: auto;
-          animation: slideUp 0.3s ease;
-        }
-        .detail-modal.show { align-items: flex-end; padding: 0; }
-      }
-
-      @keyframes slideUp {
-        from { opacity: 0; transform: translateY(50px) scale(0.95); }
-        to   { opacity: 1; transform: translateY(0) scale(1); }
-      }
-
-      @keyframes slideInRight {
-        from { opacity: 0; transform: translateX(30px); }
-        to   { opacity: 1; transform: translateX(0); }
-      }
-
-      @keyframes fadeOut {
-        from { opacity: 1; }
-        to   { opacity: 0; }
-      }
-
-      .detail-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px;
-        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-        color: white;
-        border-radius: 20px 20px 0 0;
-        position: sticky;
-        top: 0;
-        z-index: 10;
-      }
-
-      .header {
-        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-        color: white;
-        padding: 12px 32px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 100;
-      }
-
-      .admin-logo-link {
-        display: inline-block;
-        text-decoration: none;
-        margin-right: 12px;
-        vertical-align: middle;
-      }
-
-      .admin-logo {
-        max-width: 64px;
-        height: auto;
-        border-radius: 8px;
-        vertical-align: middle;
-      }
-
-      .detail-header h3 { font-size: 18px; font-weight: 700; margin: 0; }
-
-      .close-modal {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        width: 36px; height: 36px;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s;
-        color: white;
-        font-weight: bold;
-      }
-
-      .close-modal:hover { background: rgba(255, 255, 255, 0.3); transform: rotate(90deg); }
-
-      .detail-body { padding: 24px; }
-
-      .detail-row { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #e5e7eb; }
-      .detail-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-
-      .detail-label {
-        font-size: 10px; font-weight: 700; color: #9ca3af;
-        text-transform: uppercase; letter-spacing: 0.8px;
-        margin-bottom: 8px; margin-left: 32px;
-        display: flex; align-items: center; gap: 8px;
-      }
-
-      .detail-label::before { content: attr(data-icon); position: absolute; left: 24px; font-size: 16px; }
-
-      .detail-value {
-        font-size: 16px; color: #1f2937; font-weight: 600;
-        line-height: 1.5; word-wrap: break-word; margin-left: 32px;
-      }
-
-      .detail-value a { color: #14b8a6; text-decoration: none; transition: color 0.3s; }
-      .detail-value a:hover { color: #0d9488; text-decoration: underline; }
-
-      .detail-actions {
-        padding: 16px 20px;
-        background: #f9fafb;
-        border-radius: 0 0 20px 20px;
-        border-top: 1px solid #e5e7eb;
-      }
-
-      .detail-actions .delete-btn {
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-        color: white; border: none; padding: 14px 24px;
-        border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 15px;
-        transition: all 0.3s; width: 100%;
-        display: flex; align-items: center; justify-content: center;
-        gap: 10px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); line-height: 1;
-      }
-
-      .detail-actions .delete-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4); }
-      .detail-actions .delete-btn:active { transform: translateY(0); }
-      .delete-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4); }
-      .delete-btn:active { transform: translateY(0); }
-
-      .confirm-modal {
-        display: none; position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
-        z-index: 10000; padding: 20px;
-        align-items: center; justify-content: center;
-      }
-      .confirm-modal.show { display: flex; }
-
-      .confirm-content {
-        background: white; border-radius: 20px; padding: 0;
-        max-width: 400px; width: calc(100% - 32px);
-        overflow: hidden; animation: slideUp 0.3s ease;
-        box-shadow: 0 24px 48px rgba(0,0,0,0.3);
-      }
-
-      .confirm-header { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; padding: 24px; text-align: center; }
-      .confirm-icon { font-size: 48px; margin-bottom: 12px; }
-      .confirm-title { font-size: 20px; font-weight: 700; margin: 0; }
-      .confirm-body { padding: 24px; text-align: center; }
-      .confirm-message { font-size: 15px; color: #4b5563; line-height: 1.6; margin: 0; }
-      .confirm-actions { display: flex; gap: 12px; padding: 20px 24px; background: #f9fafb; border-top: 1px solid #e5e7eb; }
-      .confirm-btn { flex: 1; padding: 14px 20px; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.3s; }
-      .confirm-btn-cancel { background: #f3f4f6; color: #4b5563; }
-      .confirm-btn-cancel:hover { background: #e5e7eb; }
-      .confirm-btn-delete { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; box-shadow: 0 4px 12px rgba(239,68,68,0.3); }
-      .confirm-btn-delete:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(239,68,68,0.4); }
-      .confirm-btn-delete:active { transform: translateY(0); }
-
-      .info-card { background: #ffffff; border-radius: 12px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-      .info-card-header { background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); padding: 12px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e7eb; }
-      .info-icon { font-size: 18px; }
-      .info-title { font-size: 13px; font-weight: 700; color: #4b5563; text-transform: uppercase; letter-spacing: 0.5px; }
-      .info-card-content { padding: 16px; }
-      .info-card-content.compact { padding: 12px 16px; }
-      .info-line { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 14px; color: #374151; }
-      .info-line:last-child { margin-bottom: 0; }
-      .info-label { font-weight: 600; color: #6b7280; min-width: 60px; }
-      .info-value { font-weight: 600; color: #1f2937; }
-      .contact-link { color: #14b8a6; text-decoration: none; font-weight: 600; }
-      .contact-link:hover { text-decoration: underline; }
-
-      .stay-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #e5e7eb; }
-      .stay-item { text-align: center; }
-      .stay-label { font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-      .stay-value { font-size: 15px; font-weight: 700; color: #1f2937; margin-bottom: 2px; }
-      .stay-time { font-size: 13px; font-weight: 600; color: #14b8a6; }
-      .stay-divider { display: flex; align-items: center; justify-content: center; color: #14b8a6; font-size: 20px; font-weight: 700; }
-      .guest-count { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 12px; background: linear-gradient(135deg, #ebf8ff 0%, #e6fffa 100%); border-radius: 8px; }
-      .guest-icon { font-size: 16px; }
-      .guest-text { font-size: 14px; font-weight: 700; color: #1f2937; }
-      .guest-name { font-size: 16px; font-weight: 700; color: #1f2937; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #e5e7eb; }
-
-      .companion-item { padding: 12px 0; border-bottom: 1px solid #f3f4f6; }
-      .companion-item:last-child { border-bottom: none; padding-bottom: 0; }
-      .companion-number { font-size: 12px; font-weight: 700; color: #14b8a6; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-      .companion-info { padding-left: 12px; }
-      .info-name { font-size: 15px; font-weight: 700; color: #1f2937; margin-bottom: 6px; }
-
-      .detail-value .cabin-badge { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 12px; font-size: 14px; font-weight: 700; }
-      .detail-icon { font-size: 16px; margin-right: 4px; }
-
-      /* Header title & controls */
-      .header-title { text-align: center; margin-bottom: 16px; }
-      .header-title h1 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
-      .header-title p { font-size: 13px; opacity: 0.9; font-weight: 300; }
-
-      .header-controls { display: flex; flex-direction: column; gap: 12px; }
-
-      .user-row { display: flex; justify-content: flex-end; align-items: center; gap: 12px; flex: 0 0 auto; min-width: 0; }
-
-      .user-email {
-        font-size: 13px; opacity: 0.9; font-weight: 500;
-        overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 120px;
-      }
-
-      @media (min-width: 640px) { .user-email { max-width: none; } }
-
-      .logout-btn {
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-        backdrop-filter: blur(10px);
-        border: 2px solid rgba(255,255,255,0.3);
-        color: white; padding: 8px 16px; border-radius: 10px;
-        cursor: pointer; font-weight: 600; transition: all 0.3s;
-        font-size: 20px; white-space: nowrap; flex-shrink: 0;
-        box-shadow: 0 4px 12px rgba(239,68,68,0.3);
-      }
-
-      .logout-btn:hover {
-        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-        border-color: #ef4444;
-        box-shadow: 0 6px 16px rgba(239,68,68,0.4);
-        transform: translateY(-2px);
-      }
-
-      .email-toggle-container {
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 12px 16px;
-        background: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
-        border-radius: 12px; border: 2px solid rgba(255,255,255,0.2); flex: 1;
-      }
-
-      .toggle-left { display: flex; align-items: center; gap: 8px; }
-      .toggle-right { display: flex; align-items: center; gap: 12px; }
-      .email-toggle-label { font-size: 13px; font-weight: 600; color: white; display: flex; align-items: center; gap: 6px; }
-      .toggle-controls { display: flex; align-items: center; gap: 8px; flex: 1; justify-content: flex-end; }
-
-      .toggle-switch {
-        position: relative; width: 50px; height: 26px;
-        background: rgba(255,255,255,0.3); border-radius: 13px;
-        cursor: pointer; transition: all 0.3s;
-        border: 2px solid rgba(255,255,255,0.4); flex-shrink: 0;
-      }
-
-      .toggle-switch.active { background: #48bb78; border-color: #48bb78; }
-
-      .toggle-slider {
-        position: absolute; top: 2px; left: 2px;
-        width: 18px; height: 18px; background: white;
-        border-radius: 50%; transition: all 0.3s;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      }
-
-      .toggle-switch.active .toggle-slider { transform: translateX(24px); }
-      .toggle-status { font-size: 11px; font-weight: 700; color: white; min-width: 30px; text-align: center; }
-
-      .nav-dropdown-container {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        transition: all 0.3s ease;
-      }
-      .nav-dropdown-label { font-size: 13px; font-weight: 600; color: white; white-space: nowrap; }
-
-      .nav-dropdown {
-        flex: 1; padding: 12px 16px;
-        background: rgba(255,255,255,0.95); color: #14b8a6;
-        border: 2px solid rgba(255,255,255,0.3); border-radius: 12px;
-        font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s;
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-        background-repeat: no-repeat; background-position: right 16px center; padding-right: 45px;
-      }
-
-      .nav-dropdown:hover { background: white; border-color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-      .nav-dropdown:focus { outline: none; border-color: white; box-shadow: 0 0 0 3px rgba(255,255,255,0.3); }
-
-      @media (min-width: 768px) {
-        .header { padding: 12px 32px; }
-        .header-title { text-align: left; margin-bottom: 20px; }
-        .header-title h1 { font-size: 28px; margin-bottom: 6px; }
-        .header-title p { font-size: 16px; }
-        .header-controls { flex-direction: row; align-items: center; justify-content: space-between; }
-        .nav-dropdown-container { flex: 0 0 auto; max-width: 300px; }
-        .bottom-row { display: flex; align-items: center; gap: 12px; flex-wrap: nowrap; }
-        .email-toggle-container { flex: 0 0 auto; }
-        .user-row { flex: 0 0 auto; }
-        .user-email { font-size: 14px; }
-        .logout-btn { padding: 10px 20px; font-size: 24px; }
-      }
-
-      thead { background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); }
-
-      th {
-        padding: 14px 10px; text-align: left; font-weight: 700;
-        color: #2d3748; font-size: 11px; text-transform: uppercase;
-        letter-spacing: 0.5px; white-space: nowrap;
-      }
-
-      td { padding: 14px 10px; border-top: 1px solid #e2e8f0; color: #4a5568; font-size: 13px; }
-      tbody tr { transition: background 0.2s; cursor: default; }
-      tbody tr.clickable { cursor: pointer; }
-      tbody tr.clickable:active { background: #edf2f7; }
-      tbody tr:hover { background: #f7fafc; }
-
-      .cabin-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap; }
-      .cabin-1 { background: #e6f2ff; color: #0066cc; }
-      .cabin-2 { background: #e6ffe6; color: #00cc00; }
-      .cabin-3 { background: #ffe6f2; color: #cc0066; }
-
-      .loading, .no-data { text-align: center; padding: 60px 20px; color: #718096; font-size: 15px; }
-
-      #loginScreen { display: block; }
-      #dashboardScreen { display: none; }
-
-      .tap-icon { margin-left: 8px; font-size: 16px; opacity: 0.6; animation: tap-pulse 1.5s infinite; }
-      @keyframes tap-pulse { 0%,100%{opacity:0.6;transform:scale(1);}50%{opacity:1;transform:scale(1.2);} }
-
-      .tap-indicator { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); border-radius: 50%; color: white; font-size: 14px; margin-left: 8px; animation: tap-bounce 2s infinite; box-shadow: 0 2px 8px rgba(102,126,234,0.3); }
-      @keyframes tap-bounce { 0%,100%{transform:scale(1);}50%{transform:scale(1.15);} }
-
-      tbody tr.clickable { cursor: pointer; position: relative; }
-      .tap-col { width: 50px; text-align: center; padding: 14px 8px !important; }
-      .tap-cell { display: flex; align-items: center; justify-content: center; }
-      .view-details-icon { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); border-radius: 10px; color: white; font-size: 18px; animation: pulse 2s infinite; box-shadow: 0 2px 8px rgba(102,126,234,0.3); }
-      @keyframes pulse { 0%,100%{box-shadow:0 2px 8px rgba(102,126,234,0.3);transform:scale(1);}50%{box-shadow:0 4px 12px rgba(102,126,234,0.5);transform:scale(1.05);} }
-
-      @media (min-width: 640px) and (max-width: 767px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
-
-      .date-cell { display: flex; flex-direction: column; gap: 2px; }
-      .date-main { font-weight: 600; color: #1f2937; font-size: 11px; }
-      .date-time { font-size: 11px; color: #1f2937; font-weight: 600; }
-      .name-cell { display: flex; flex-direction: column; gap: 4px; }
-      .name-main { font-weight: 600; color: #1f2937; font-size: 14px; }
-      .name-sub { font-size: 12px; color: #6b7280; font-weight: 500; }
-      .guest-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; padding: 4px 10px; background: linear-gradient(135deg, #ebf8ff 0%, #e6fffa 100%); color: #14b8a6; border-radius: 8px; font-weight: 700; font-size: 13px; border: 1px solid #cbd5e0; }
-
-      .view-btn { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: none; background: none; color: #14b8a6; cursor: pointer; padding: 0; margin: 0; box-shadow: none; border-radius: 50%; transition: all 0.2s ease; }
-
-      @media (min-width: 768px) {
-        .view-btn { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); color: white; box-shadow: 0 2px 6px rgba(102,126,234,0.3); }
-        .view-btn:hover { transform: translateX(2px); box-shadow: 0 4px 12px rgba(102,126,234,0.4); color: white; }
-      }
-
-      @media (max-width: 767px) { .view-btn:hover { color: #0d9488; background: none; box-shadow: none; } }
-      .view-btn:active { transform: scale(0.95); }
-
-      @media (max-width: 767px) { .delete-btn { width: 40px; height: 40px; padding: 0; border-radius: 10px; font-size: 18px; display: flex; align-items: center; justify-content: center; } }
-
-      tbody tr { transition: all 0.2s ease; cursor: default; border-left: 3px solid transparent; }
-      tbody tr.clickable { cursor: pointer; }
-      tbody tr:hover { background: #f7fafc; border-left-color: #14b8a6; }
-      tbody tr.clickable:active { background: #edf2f7; }
-
-      .tap-indicator, .tap-icon, .tap-col, .tap-cell, .view-details-icon { display: none !important; }
+        padding-top: 100px; /* overridden by JS */
+      }
+
+      /* ── STATS ── */
+      .stats-grid { display:grid; grid-template-columns:1fr; gap:16px; margin-bottom:24px; }
+      .total-card { grid-column:1/-1; }
+      .cabins-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; grid-column:1/-1; }
+      .stat-card { background:white; padding:20px; border-radius:16px; box-shadow:0 2px 8px rgba(0,0,0,0.08); text-align:center; transition:transform 0.3s,box-shadow 0.3s; }
+      .stat-card.total { padding:28px 20px; }
+      .stat-card.cabin { padding:18px 10px; }
+      .stat-card:hover { transform:translateY(-4px); box-shadow:0 8px 20px rgba(0,0,0,0.12); }
+      .stat-card h3 { color:#718096; font-size:13px; font-weight:600; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px; }
+      .stat-card.total h3 { font-size:15px; margin-bottom:12px; }
+      .stat-card.cabin h3 { font-size:11px; margin-bottom:6px; }
+      .stat-card .number { font-size:36px; font-weight:700; background:linear-gradient(135deg,#14b8a6,#0d9488); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+      .stat-card.total .number { font-size:48px; }
+      .stat-card.cabin .number { font-size:26px; }
+      .stat-card.cabin-1 .number { background:linear-gradient(135deg,#0066cc,#0052a3); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+      .stat-card.cabin-2 .number { background:linear-gradient(135deg,#00cc00,#00a300); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+      .stat-card.cabin-3 .number { background:linear-gradient(135deg,#cc0066,#a30052); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+
+      .stay-badge { background:linear-gradient(135deg,#9f7aea,#6b46c1); color:white; font-size:12px; padding:2px 8px; border-radius:12px; margin-left:6px; font-weight:600; display:inline-block; vertical-align:middle; }
+      .mobile-only { display:none; }
+      @media (max-width:768px) {
+        .desktop-only { display:none; }
+        .mobile-only { display:inline-block; }
+        .stay-badge.mobile-only { font-size:10px; padding:1px 4px; margin-right:4px; }
+        .name-main { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+      }
+
+      .calendar-view-btn { margin-top:12px; padding:10px 16px; background:linear-gradient(135deg,#14b8a6,#0d9488); color:white; border:none; border-radius:10px; cursor:pointer; font-weight:600; font-size:13px; transition:all 0.3s; width:100%; }
+      .calendar-view-btn:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(20,184,166,0.3); }
+
+      /* ── FILTERS ── */
+      .filters { background:white; padding:28px; border-radius:20px; box-shadow:0 4px 16px rgba(0,0,0,0.06); margin-bottom:24px; border:1px solid #e5e7eb; }
+      .filter-section { margin-bottom:28px; }
+      .filter-section:last-child { margin-bottom:0; }
+      .filter-label { font-size:11px; font-weight:700; color:#14b8a6; margin-bottom:14px; display:flex; align-items:center; gap:8px; text-transform:uppercase; letter-spacing:1px; }
+      .filter-label::before { content:'🏠'; font-size:16px; }
+      .filter-section:nth-child(2) .filter-label::before { content:'📅'; }
+      .filter-section:nth-child(3) .filter-label::before { content:'🔍'; }
+      select { width:100%; padding:12px 16px; border:2px solid #e2e8f0; border-radius:10px; font-size:14px; background:#fafafa; transition:all 0.3s; }
+      select:focus { outline:none; border-color:#14b8a6; background:white; box-shadow:0 0 0 3px rgba(20,184,166,0.1); }
+      .date-presets { display:flex; gap:8px; overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:8px; scrollbar-width:none; }
+      .date-presets::-webkit-scrollbar { display:none; }
+      .preset-btn { flex:0 0 auto; min-width:110px; padding:12px 10px; background:linear-gradient(135deg,#f8f9fa,#e9ecef); color:#495057; border:2px solid #dee2e6; border-radius:12px; cursor:pointer; font-weight:700; font-size:12px; transition:all 0.3s; white-space:nowrap; }
+      .preset-btn:hover:not(.active) { border-color:#14b8a6; color:#14b8a6; transform:translateY(-2px); }
+      .preset-btn.active { background:linear-gradient(135deg,#14b8a6,#0d9488); color:white; border-color:transparent; box-shadow:0 6px 16px rgba(20,184,166,0.35); transform:translateY(-2px); }
+      @media (min-width:640px) { .date-presets { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; overflow-x:visible; padding-bottom:0; } .preset-btn { min-width:auto; flex:initial; } }
+      @media (min-width:768px) { .filters { padding:32px; } .preset-btn { padding:14px 16px; font-size:13px; } }
+      .custom-dates { display:none; grid-template-columns:1fr 1fr; gap:32px; margin-top:20px; padding:24px; background:linear-gradient(135deg,#f7fafc,#edf2f7); border-radius:16px; border:2px solid #e2e8f0; }
+      .custom-dates.show { display:grid; }
+      .date-input-group { display:flex; flex-direction:column; gap:8px; }
+      .date-input-group label { font-size:11px; color:#14b8a6; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+      input[type="date"] { width:100%; padding:8px 10px; border:2px solid #cbd5e0; border-radius:8px; font-size:12px; font-weight:500; background:white; color:#1f2937; transition:all 0.3s; box-sizing:border-box; }
+      input[type="date"]:focus { outline:none; border-color:#14b8a6; box-shadow:0 0 0 3px rgba(20,184,166,0.1); }
+      .search-container { margin-top:24px; }
+      .search-box { position:relative; display:flex; align-items:center; background:linear-gradient(135deg,#f8f9fa,#fff); border-radius:16px; box-shadow:0 2px 8px rgba(0,0,0,0.06); padding:16px 18px; transition:all 0.3s; border:2px solid #e5e7eb; }
+      .search-box:focus-within { box-shadow:0 6px 20px rgba(20,184,166,0.2); border-color:#14b8a6; background:white; transform:translateY(-1px); }
+      .search-icon { font-size:20px; margin-right:14px; color:#14b8a6; }
+      .search-input { flex:1; border:none; outline:none; font-size:15px; color:#1f2937; background:transparent; font-weight:500; }
+      .search-input::placeholder { color:#9ca3af; font-weight:400; }
+      .clear-search { background:linear-gradient(135deg,#f3f4f6,#e5e7eb); border:none; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:14px; color:#6b7280; display:flex; align-items:center; justify-content:center; transition:all 0.3s; margin-left:10px; font-weight:bold; }
+      .clear-search:hover { background:linear-gradient(135deg,#ef4444,#dc2626); color:white; transform:rotate(90deg) scale(1.1); }
+      .search-results-info { margin-top:14px; padding:14px 18px; background:linear-gradient(135deg,#f0f9ff,#e0f2fe); border-left:4px solid #14b8a6; border-radius:12px; font-size:14px; color:#1e40af; font-weight:700; }
+
+      /* ── EXPORT ── */
+      .export-btn { width:100%; padding:14px 24px; background:linear-gradient(135deg,#48bb78,#38a169); color:white; border:none; border-radius:12px; cursor:pointer; font-weight:600; margin-bottom:20px; font-size:15px; transition:all 0.3s; display:flex; align-items:center; justify-content:center; gap:8px; }
+      .export-btn:hover { transform:translateY(-2px); box-shadow:0 8px 16px rgba(72,187,120,0.3); }
+
+      /* ── TABLE ── */
+      .table-container { background:white; border-radius:16px; box-shadow:0 2px 8px rgba(0,0,0,0.08); overflow:hidden; }
+      .table-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+      table { width:100%; border-collapse:collapse; }
+      table.mobile-view th:not(.mobile-col), table.mobile-view td:not(.mobile-col) { display:none; }
+      thead { background:linear-gradient(135deg,#f7fafc,#edf2f7); }
+      th { padding:14px 10px; text-align:left; font-weight:700; color:#2d3748; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; white-space:nowrap; }
+      td { padding:14px 10px; border-top:1px solid #e2e8f0; color:#4a5568; font-size:13px; }
+      tbody tr { transition:all 0.2s ease; cursor:default; border-left:3px solid transparent; }
+      tbody tr.clickable { cursor:pointer; }
+      tbody tr:hover { background:#f7fafc; border-left-color:#14b8a6; }
+      tbody tr.clickable:active { background:#edf2f7; }
+      .cabin-badge { display:inline-block; padding:6px 12px; border-radius:20px; font-size:12px; font-weight:700; white-space:nowrap; }
+      .cabin-1 { background:#e6f2ff; color:#0066cc; }
+      .cabin-2 { background:#e6ffe6; color:#00cc00; }
+      .cabin-3 { background:#ffe6f2; color:#cc0066; }
+      .date-cell { display:flex; flex-direction:column; gap:2px; }
+      .date-main { font-weight:600; color:#1f2937; font-size:11px; }
+      .date-time { font-size:11px; color:#1f2937; font-weight:600; }
+      .name-cell { display:flex; flex-direction:column; gap:4px; }
+      .name-main { font-weight:600; color:#1f2937; font-size:14px; }
+      .name-sub { font-size:12px; color:#6b7280; font-weight:500; }
+      .guest-badge { display:inline-flex; align-items:center; justify-content:center; min-width:32px; padding:4px 10px; background:linear-gradient(135deg,#ebf8ff,#e6fffa); color:#14b8a6; border-radius:8px; font-weight:700; font-size:13px; border:1px solid #cbd5e0; }
+      .view-btn { display:flex; align-items:center; justify-content:center; width:36px; height:36px; border:none; background:none; color:#14b8a6; cursor:pointer; padding:0; border-radius:50%; transition:all 0.2s ease; }
+      @media (min-width:768px) { .view-btn { background:linear-gradient(135deg,#14b8a6,#0d9488); color:white; box-shadow:0 2px 6px rgba(20,184,166,0.3); } .view-btn:hover { transform:translateX(2px); } }
+      .view-btn:active { transform:scale(0.95); }
+      .delete-btn { background:linear-gradient(135deg,#f56565,#c53030); color:white; border:none; padding:8px 16px; border-radius:8px; cursor:pointer; font-weight:600; font-size:13px; transition:all 0.3s; }
+      .delete-btn:hover { transform:translateY(-2px); box-shadow:0 8px 16px rgba(245,101,101,0.3); }
+      .delete-btn:active { transform:translateY(0); }
+      @media (max-width:767px) { .delete-btn { width:40px; height:40px; padding:0; border-radius:10px; font-size:18px; display:flex; align-items:center; justify-content:center; } }
+      .loading, .no-data { text-align:center; padding:60px 20px; color:#718096; font-size:15px; }
+
+      /* ── MODALS ── */
+      @keyframes slideUp { from { opacity:0; transform:translateY(50px) scale(0.95); } to { opacity:1; transform:translateY(0) scale(1); } }
+      @keyframes fadeOut { from { opacity:1; } to { opacity:0; } }
+
+      .detail-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:1000; padding:10px; box-sizing:border-box; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+      .detail-modal.show { display:flex; align-items:flex-start; justify-content:center; padding-top:20px; padding-bottom:20px; }
+      .detail-content { background:white; border-radius:16px; width:95%; max-width:420px; max-height:90vh; overflow-y:auto; position:relative; animation:slideUp 0.3s ease; box-shadow:0 10px 25px rgba(0,0,0,0.15); -webkit-overflow-scrolling:touch; }
+      @media (max-width:480px) { .detail-content { width:100%; max-width:100%; border-radius:16px 16px 0 0; position:fixed; bottom:0; left:0; right:0; top:auto; } .detail-modal.show { align-items:flex-end; padding:0; } }
+      .detail-header { display:flex; justify-content:space-between; align-items:center; padding:20px; background:linear-gradient(135deg,#14b8a6,#0d9488); color:white; border-radius:20px 20px 0 0; position:sticky; top:0; z-index:10; }
+      .detail-header h3 { font-size:18px; font-weight:700; margin:0; }
+      .close-modal { background:rgba(255,255,255,0.2); border:2px solid rgba(255,255,255,0.3); width:36px; height:36px; border-radius:50%; cursor:pointer; font-size:20px; display:flex; align-items:center; justify-content:center; transition:all 0.3s; color:white; font-weight:bold; }
+      .close-modal:hover { background:rgba(255,255,255,0.3); transform:rotate(90deg); }
+      .detail-body { padding:24px; }
+      .detail-actions { padding:16px 20px; background:#f9fafb; border-radius:0 0 20px 20px; border-top:1px solid #e5e7eb; }
+      .detail-actions .delete-btn { background:linear-gradient(135deg,#ef4444,#dc2626); color:white; border:none; padding:14px 24px; border-radius:12px; cursor:pointer; font-weight:700; font-size:15px; transition:all 0.3s; width:100%; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:0 4px 12px rgba(239,68,68,0.3); }
+      .detail-actions .delete-btn:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(239,68,68,0.4); }
+
+      .confirm-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:10000; padding:20px; align-items:center; justify-content:center; }
+      .confirm-modal.show { display:flex; }
+      .confirm-content { background:white; border-radius:20px; max-width:400px; width:calc(100% - 32px); overflow:hidden; animation:slideUp 0.3s ease; box-shadow:0 24px 48px rgba(0,0,0,0.3); }
+      .confirm-header { background:linear-gradient(135deg,#ef4444,#dc2626); color:white; padding:24px; text-align:center; }
+      .confirm-icon { font-size:48px; margin-bottom:12px; }
+      .confirm-title { font-size:20px; font-weight:700; margin:0; }
+      .confirm-body { padding:24px; text-align:center; }
+      .confirm-message { font-size:15px; color:#4b5563; line-height:1.6; margin:0; }
+      .confirm-actions { display:flex; gap:12px; padding:20px 24px; background:#f9fafb; border-top:1px solid #e5e7eb; }
+      .confirm-btn { flex:1; padding:14px 20px; border:none; border-radius:12px; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.3s; }
+      .confirm-btn-cancel { background:#f3f4f6; color:#4b5563; }
+      .confirm-btn-cancel:hover { background:#e5e7eb; }
+      .confirm-btn-delete { background:linear-gradient(135deg,#ef4444,#dc2626); color:white; box-shadow:0 4px 12px rgba(239,68,68,0.3); }
+      .confirm-btn-delete:hover { transform:translateY(-2px); }
+
+      .calendar-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:10001; padding:20px; }
+      .calendar-modal.show { display:flex; align-items:center; justify-content:center; }
+      .calendar-content { background:white; border-radius:20px; max-width:900px; width:calc(100% - 32px); max-height:90vh; display:flex; flex-direction:column; animation:slideUp 0.3s ease; box-shadow:0 24px 48px rgba(0,0,0,0.3); overflow:hidden; box-sizing:border-box; }
+      .calendar-header { display:flex; justify-content:space-between; align-items:center; padding:24px; background:linear-gradient(135deg,#14b8a6,#0d9488); color:white; flex-shrink:0; }
+      .calendar-header h3 { font-size:20px; font-weight:700; margin:0; }
+      .calendar-body { flex:1; overflow:hidden; display:flex; flex-direction:column; }
+      .calendar-scroll-container { flex:1; overflow-y:auto; overflow-x:hidden; padding:24px; -webkit-overflow-scrolling:touch; width:100%; box-sizing:border-box; }
+      .calendar-month-section { margin-bottom:32px; width:100%; box-sizing:border-box; }
+      .calendar-month-section:last-child { margin-bottom:0; }
+      .calendar-month-title { font-size:18px; font-weight:700; color:#1f2937; margin-bottom:16px; padding-bottom:8px; border-bottom:2px solid #e5e7eb; }
+      .calendar-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-top:12px; width:100%; box-sizing:border-box; }
+      .calendar-day-header { text-align:center; font-weight:700; font-size:11px; color:#14b8a6; padding:12px 8px; text-transform:uppercase; display:flex; align-items:center; justify-content:center; }
+      .calendar-day { position:relative; aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; transition:all 0.2s; padding:8px; background:white; min-height:50px; max-height:70px; box-sizing:border-box; }
+      .calendar-day.other-month { visibility:hidden; pointer-events:none; }
+      .calendar-day.today .calendar-day-number { font-weight:700; color:#14b8a6; }
+      .calendar-day.past { opacity:0.4; }
+      .calendar-day.past .calendar-day-number { color:#9ca3af; }
+      .calendar-day-number { font-size:14px; font-weight:600; color:#1f2937; position:relative; z-index:2; }
+      .calendar-day.reserved .calendar-day-number { color:white; font-weight:700; }
+      .calendar-day.reservation-start-1,.calendar-day.reservation-end-1,.calendar-day.reservation-single-1{background:#3b82f6;border-radius:8px;}
+      .calendar-day.reservation-start-2,.calendar-day.reservation-end-2,.calendar-day.reservation-single-2{background:#10b981;border-radius:8px;}
+      .calendar-day.reservation-start-3,.calendar-day.reservation-end-3,.calendar-day.reservation-single-3{background:#f59e0b;border-radius:8px;}
+      .calendar-day.reservation-start-4,.calendar-day.reservation-end-4,.calendar-day.reservation-single-4{background:#ec4899;border-radius:8px;}
+      .calendar-day.reservation-start-5,.calendar-day.reservation-end-5,.calendar-day.reservation-single-5{background:#8b5cf6;border-radius:8px;}
+      .calendar-day.reservation-start-6,.calendar-day.reservation-end-6,.calendar-day.reservation-single-6{background:#ef4444;border-radius:8px;}
+      .calendar-day.reservation-start-7,.calendar-day.reservation-end-7,.calendar-day.reservation-single-7{background:#14b8a6;border-radius:8px;}
+      .calendar-day.reservation-start-8,.calendar-day.reservation-end-8,.calendar-day.reservation-single-8{background:#f97316;border-radius:8px;}
+      .calendar-day.reservation-start-9,.calendar-day.reservation-end-9,.calendar-day.reservation-single-9{background:#06b6d4;border-radius:8px;}
+      .calendar-day.reservation-start-10,.calendar-day.reservation-end-10,.calendar-day.reservation-single-10{background:#84cc16;border-radius:8px;}
+      .calendar-day.reservation-start-11,.calendar-day.reservation-end-11,.calendar-day.reservation-single-11{background:#d946ef;border-radius:8px;}
+      .calendar-day.reservation-start-12,.calendar-day.reservation-end-12,.calendar-day.reservation-single-12{background:#0ea5e9;border-radius:8px;}
+      .calendar-day.reservation-middle-1{background:rgba(59,130,246,0.25);} .calendar-day.reservation-middle-1 .calendar-day-number{color:#1e40af;font-weight:600;}
+      .calendar-day.reservation-middle-2{background:rgba(16,185,129,0.25);} .calendar-day.reservation-middle-2 .calendar-day-number{color:#065f46;font-weight:600;}
+      .calendar-day.reservation-middle-3{background:rgba(245,158,11,0.25);} .calendar-day.reservation-middle-3 .calendar-day-number{color:#92400e;font-weight:600;}
+      .calendar-day.reservation-middle-4{background:rgba(236,72,153,0.25);} .calendar-day.reservation-middle-4 .calendar-day-number{color:#9f1239;font-weight:600;}
+      .calendar-day.reservation-middle-5{background:rgba(139,92,246,0.25);} .calendar-day.reservation-middle-5 .calendar-day-number{color:#5b21b6;font-weight:600;}
+      .calendar-day.reservation-middle-6{background:rgba(239,68,68,0.25);} .calendar-day.reservation-middle-6 .calendar-day-number{color:#991b1b;font-weight:600;}
+      .calendar-day.reservation-middle-7{background:rgba(20,184,166,0.25);} .calendar-day.reservation-middle-7 .calendar-day-number{color:#0f766e;font-weight:600;}
+      .calendar-day.reservation-middle-8{background:rgba(249,115,22,0.25);} .calendar-day.reservation-middle-8 .calendar-day-number{color:#9a3412;font-weight:600;}
+      .calendar-day.reservation-middle-9{background:rgba(6,182,212,0.25);} .calendar-day.reservation-middle-9 .calendar-day-number{color:#0e7490;font-weight:600;}
+      .calendar-day.reservation-middle-10{background:rgba(132,204,22,0.25);} .calendar-day.reservation-middle-10 .calendar-day-number{color:#4d7c0f;font-weight:600;}
+      .calendar-day.reservation-middle-11{background:rgba(217,70,239,0.25);} .calendar-day.reservation-middle-11 .calendar-day-number{color:#a21caf;font-weight:600;}
+      .calendar-day.reservation-middle-12{background:rgba(14,165,233,0.25);} .calendar-day.reservation-middle-12 .calendar-day-number{color:#075985;font-weight:600;}
+      .reservation-popup { position:absolute; bottom:100%; left:50%; transform:translateX(-50%); background:#1f2937; color:white; padding:8px 12px; border-radius:8px; font-size:11px; white-space:nowrap; z-index:1000; margin-bottom:8px; box-shadow:0 4px 12px rgba(0,0,0,0.3); pointer-events:none; opacity:0; transition:opacity 0.3s; }
+      .reservation-popup::after { content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:5px solid transparent; border-top-color:#1f2937; }
+      @media (min-width:769px) { .calendar-day.reserved:hover .reservation-popup { opacity:1; } }
+      .calendar-day.reserved.show-popup .reservation-popup { opacity:1; }
+      @media (max-width:768px) { .calendar-grid{gap:2px;} .calendar-day{padding:4px;min-height:45px;max-height:60px;} .calendar-day-number{font-size:12px;} .calendar-day-header{font-size:9px;padding:6px 2px;} .calendar-scroll-container{padding:16px;} .calendar-month-section{margin-bottom:24px;} }
+      @media (max-width:400px) { .calendar-day{min-height:40px;max-height:50px;padding:2px;} .calendar-day-number{font-size:11px;} }
+
+      .settings-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:10002; padding:20px; align-items:center; justify-content:center; }
+      .settings-modal.show { display:flex; }
+      .settings-content { background:white; border-radius:20px; max-width:480px; width:calc(100% - 32px); max-height:85vh; overflow-y:auto; animation:slideUp 0.3s ease; box-shadow:0 24px 48px rgba(0,0,0,0.3); }
+      .settings-header { display:flex; justify-content:space-between; align-items:center; padding:24px; background:linear-gradient(135deg,#14b8a6,#0d9488); color:white; border-radius:20px 20px 0 0; position:sticky; top:0; z-index:10; }
+      .settings-header h3 { font-size:20px; font-weight:700; margin:0; }
+      .settings-body { padding:24px; }
+      .settings-section { margin-bottom:28px; padding-bottom:24px; border-bottom:2px solid #e5e7eb; }
+      .settings-section:last-child { margin-bottom:0; padding-bottom:0; border-bottom:none; }
+      .settings-section-title { font-size:16px; font-weight:700; color:#1f2937; margin-bottom:16px; }
+      .settings-section .email-toggle-container { background:linear-gradient(135deg,#f7fafc,#edf2f7); padding:16px; border-radius:12px; border:2px solid #e2e8f0; }
+      .account-info { background:linear-gradient(135deg,#f7fafc,#edf2f7); padding:16px; border-radius:12px; border:2px solid #e2e8f0; }
+      .account-email { display:flex; flex-direction:column; gap:8px; margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid #cbd5e0; }
+      .account-label { font-size:12px; font-weight:700; color:#14b8a6; text-transform:uppercase; letter-spacing:0.5px; }
+      .account-email .user-email { font-size:14px; font-weight:600; color:#1f2937; word-break:break-word; }
+      .logout-btn-modal { background:linear-gradient(135deg,#ef4444,#dc2626); color:white; border:none; padding:14px 24px; border-radius:12px; cursor:pointer; font-weight:700; font-size:15px; transition:all 0.3s; width:100%; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 12px rgba(239,68,68,0.3); }
+      .logout-btn-modal:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(239,68,68,0.4); }
+
+      .info-card { background:#ffffff; border-radius:12px; margin-bottom:12px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+      .info-card-header { background:linear-gradient(135deg,#f7fafc,#edf2f7); padding:12px 16px; display:flex; align-items:center; gap:8px; border-bottom:1px solid #e5e7eb; }
+      .info-icon { font-size:18px; }
+      .info-title { font-size:13px; font-weight:700; color:#4b5563; text-transform:uppercase; letter-spacing:0.5px; }
+      .info-card-content { padding:16px; }
+      .info-card-content.compact { padding:12px 16px; }
+      .info-line { display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size:14px; color:#374151; }
+      .info-line:last-child { margin-bottom:0; }
+      .info-label { font-weight:600; color:#6b7280; min-width:60px; }
+      .info-value { font-weight:600; color:#1f2937; }
+      .contact-link { color:#14b8a6; text-decoration:none; font-weight:600; }
+      .contact-link:hover { text-decoration:underline; }
+      .stay-row { display:grid; grid-template-columns:1fr auto 1fr; gap:12px; margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid #e5e7eb; }
+      .stay-item { text-align:center; }
+      .stay-label { font-size:11px; font-weight:700; color:#9ca3af; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
+      .stay-value { font-size:15px; font-weight:700; color:#1f2937; margin-bottom:2px; }
+      .stay-time { font-size:13px; font-weight:600; color:#14b8a6; }
+      .stay-divider { display:flex; align-items:center; justify-content:center; color:#14b8a6; font-size:20px; font-weight:700; }
+      .guest-count { display:flex; align-items:center; justify-content:center; gap:6px; padding:8px 12px; background:linear-gradient(135deg,#ebf8ff,#e6fffa); border-radius:8px; }
+      .guest-icon { font-size:16px; }
+      .guest-text { font-size:14px; font-weight:700; color:#1f2937; }
+      .guest-name { font-size:16px; font-weight:700; color:#1f2937; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid #e5e7eb; }
+      .companion-item { padding:12px 0; border-bottom:1px solid #f3f4f6; }
+      .companion-item:last-child { border-bottom:none; padding-bottom:0; }
+      .companion-number { font-size:12px; font-weight:700; color:#14b8a6; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; }
+      .companion-info { padding-left:12px; }
+      .info-name { font-size:15px; font-weight:700; color:#1f2937; margin-bottom:6px; }
+
+      #loginScreen { display:block; }
+      #dashboardScreen { display:none; }
+      .tap-indicator,.tap-icon,.tap-col,.tap-cell,.view-details-icon { display:none !important; }
     </style>
   </head>
   <body>
-   
-    <!-- Login Screen -->
+
+    <!-- LOGIN -->
     <div id="loginScreen" class="login-container">
       <div class="login-box">
         <div class="login-logo">🏡</div>
@@ -1511,54 +461,52 @@
       </div>
     </div>
 
-    <!-- Dashboard Screen -->
+    <!-- DASHBOARD -->
     <div id="dashboardScreen">
+
       <div class="header" id="adminHeader">
-        <div class="header-content">
-          <div class="header-logo">
-            <a href="/" class="admin-logo-link">
-              <img src="https://i.imgur.com/L8KoquC.jpg" alt="Aptos Najos" class="admin-logo">
-            </a>
-          </div>
-          
+
+        <!-- Row 1: logo · title · controls -->
+        <div class="header-inner">
+          <a href="/" class="admin-logo-link">
+            <img src="https://i.imgur.com/L8KoquC.jpg" alt="Aptos Najos" class="admin-logo">
+          </a>
+
           <div class="header-title">
             <h1>Panel de Administración</h1>
-            <p>Apart Hotel Najos - Registros de Huéspedes</p>
+            <div class="header-subtitle">Apart Hotel Najos — Registros de Huéspedes</div>
           </div>
 
           <div class="header-controls">
-            <div class="top-controls-row">
-              <button id="settingsBtn" class="settings-btn" onclick="openSettingsModal()">⚙️</button>
-              <div class="nav-dropdown-container">
-                <label class="nav-dropdown-label">Vista:</label>
-                <select id="viewSelector" class="nav-dropdown" onchange="switchViewFromDropdown()">
-                  <option value="active">📋 Registros Activos</option>
-                  <option value="archive">📦 Archivo</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="bottom-row">
-              <div class="email-toggle-container">
-                <div class="toggle-left">
-                  <span class="email-toggle-label">Correo</span>
-                  <div id="emailToggle" class="toggle-switch active" onclick="toggleEmailNotifications()">
-                    <div class="toggle-slider"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="user-row">
-                <span class="user-email" id="userEmail"></span>
-                <button id="logoutBtn" class="logout-btn">⎋</button>
-              </div>
+            <button id="settingsBtn" class="settings-btn" onclick="openSettingsModal()">⚙️</button>
+            <div class="nav-dropdown-container">
+              <label class="nav-dropdown-label">Vista:</label>
+              <select id="viewSelector" class="nav-dropdown" onchange="switchViewFromDropdown()">
+                <option value="active">📋 Activos</option>
+                <option value="archive">📦 Archivo</option>
+              </select>
             </div>
           </div>
         </div>
-      </div>
 
+        <!-- Row 2 (desktop only): email toggle + user — collapses on scroll -->
+        <div class="desktop-bottom-row">
+          <div class="email-toggle-container">
+            <span class="email-toggle-label">📧 Correo</span>
+            <div id="emailToggle" class="toggle-switch active" onclick="toggleEmailNotifications()">
+              <div class="toggle-slider"></div>
+            </div>
+          </div>
+          <div class="user-row">
+            <span class="user-email" id="userEmail"></span>
+            <button id="logoutBtn" class="logout-btn">⎋</button>
+          </div>
+        </div>
 
-      <div class="container">
-        
+      </div><!-- /.header -->
+
+      <div class="container" id="mainContainer">
+
         <div class="stats-grid">
           <div class="stat-card total total-card">
             <h3>Total Registros</h3>
@@ -1593,7 +541,6 @@
               <option value="Apto Najos-4">Apto 4</option>
             </select>
           </div>
-
           <div class="filter-section">
             <label class="filter-label">Filtrar por Fecha</label>
             <div class="date-presets">
@@ -1602,7 +549,6 @@
               <button class="preset-btn" onclick="setDatePreset('year')">Este Año</button>
               <button class="preset-btn" onclick="toggleCustomDates()">Personalizado</button>
             </div>
-
             <div id="customDates" class="custom-dates">
               <div class="date-input-group">
                 <label>Desde</label>
@@ -1613,21 +559,19 @@
                 <input type="date" id="fechaHasta" onchange="handleDateChange('hasta')" />
               </div>
             </div>
-
             <div class="search-container">
               <div class="search-box">
                 <span class="search-icon">🔍</span>
                 <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nombre, apellido, ciudad, cédula..." oninput="performSearch()"/>
-                <button class="clear-search" id="clearSearchBtn" onclick="clearSearch()" style="display: none;">✕</button>
+                <button class="clear-search" id="clearSearchBtn" onclick="clearSearch()" style="display:none;">✕</button>
               </div>
-              <div id="searchResultsInfo" class="search-results-info" style="display: none;"></div>
+              <div id="searchResultsInfo" class="search-results-info" style="display:none;"></div>
             </div>
           </div>
         </div>
 
         <button class="export-btn" onclick="exportToExcel()">
-          <span>📥</span>
-          <span>Exportar a Excel</span>
+          <span>📥</span><span>Exportar a Excel</span>
         </button>
 
         <div class="table-container">
@@ -1640,11 +584,7 @@
                   <th class="mobile-col">Fecha</th>
                   <th class="mobile-col">Apto</th>
                   <th class="mobile-col">Nombre</th>
-                  <th>Celular</th>
-                  <th>Ciudad</th>
-                  <th>Entrada</th>
-                  <th>Salida</th>
-                  <th>Huéspedes</th>
+                  <th>Celular</th><th>Ciudad</th><th>Entrada</th><th>Salida</th><th>Huéspedes</th>
                   <th class="mobile-col">Ver</th>
                   <th>Acciones</th>
                 </tr>
@@ -1652,10 +592,10 @@
               <tbody id="tableBody"></tbody>
             </table>
           </div>
-          <div id="noData" class="no-data" style="display: none">No hay registros disponibles con los filtros seleccionados</div>
+          <div id="noData" class="no-data" style="display:none">No hay registros disponibles con los filtros seleccionados</div>
         </div>
       </div>
-    </div>
+    </div><!-- /#dashboardScreen -->
 
     <!-- Detail Modal -->
     <div id="detailModal" class="detail-modal">
@@ -1668,16 +608,11 @@
       </div>
     </div>
 
-    <!-- Confirmation Modal -->
+    <!-- Confirm Modal -->
     <div id="confirmModal" class="confirm-modal">
       <div class="confirm-content">
-        <div class="confirm-header">
-          <div class="confirm-icon">⚠️</div>
-          <h3 class="confirm-title">Confirmar Eliminación</h3>
-        </div>
-        <div class="confirm-body">
-          <p class="confirm-message">¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.</p>
-        </div>
+        <div class="confirm-header"><div class="confirm-icon">⚠️</div><h3 class="confirm-title">Confirmar Eliminación</h3></div>
+        <div class="confirm-body"><p class="confirm-message">¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.</p></div>
         <div class="confirm-actions">
           <button class="confirm-btn confirm-btn-cancel" onclick="closeConfirmModal()">Cancelar</button>
           <button class="confirm-btn confirm-btn-delete" id="confirmDeleteBtn">Eliminar</button>
@@ -1709,12 +644,19 @@
           <div class="settings-section">
             <div class="settings-section-title">📧 Notificaciones por Correo</div>
             <div class="email-toggle-container">
-              <div class="toggle-left">
-                <span class="email-toggle-label">Correo</span>
-                <div id="emailToggleModal" class="toggle-switch active" onclick="toggleEmailNotifications()">
-                  <div class="toggle-slider"></div>
-                </div>
+              <span class="email-toggle-label">Correo</span>
+              <div id="emailToggleModal" class="toggle-switch active" onclick="toggleEmailNotifications()">
+                <div class="toggle-slider"></div>
               </div>
+            </div>
+          </div>
+          <div class="settings-section">
+            <div class="settings-section-title">📋 Vista</div>
+            <div class="settings-section .email-toggle-container">
+              <select id="viewSelectorModal" class="nav-dropdown" style="width:100%;padding:10px 14px;background:white;color:#14b8a6;border:2px solid #e2e8f0;border-radius:10px;" onchange="switchViewFromModal()">
+                <option value="active">📋 Registros Activos</option>
+                <option value="archive">📦 Archivo</option>
+              </select>
             </div>
           </div>
           <div class="settings-section">
@@ -1731,12 +673,10 @@
       </div>
     </div>
 
-    </div> <!-- dashboardScreen closing tag -->
-
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-      import { getFirestore, collection, query, orderBy, getDocs, deleteDoc, doc, setDoc, serverTimestamp, addDoc, where, getDoc, updateDoc, or, getCountFromServer } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+      import { getFirestore, collection, query, getDocs, deleteDoc, doc, setDoc, serverTimestamp, addDoc, where, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyBGno4JfubhTO-deCJtP9ozXD_pdPrhmh8",
@@ -1753,68 +693,38 @@
       const db = getFirestore(app);
       const provider = new GoogleAuthProvider();
 
-      let allRegistrations = [];
-      let allArchived = [];
-      let currentView = 'active';
+      let allRegistrations = [], allArchived = [], currentView = 'active', isDataLoading = false;
+      window.db = db; window.doc = doc; window.deleteDoc = deleteDoc;
 
-      window.db = db;
-      window.doc = doc;
-      window.deleteDoc = deleteDoc;
+      /* ══════════════════════
+         HEADER SHRINK — same
+         logic as index.html:
+         just toggle .scrolled
+         CSS does the rest
+         ══════════════════════ */
+      function adjustPadding() {
+        const h = document.getElementById('adminHeader');
+        const c = document.getElementById('mainContainer');
+        if (h && c) c.style.paddingTop = (h.getBoundingClientRect().height + 16) + 'px';
+      }
 
-      // ── MOBILE HEADER: shrink on scroll-down, restore on scroll-up ──
       const adminHeader = document.getElementById('adminHeader');
-      let lastScrollY = window.scrollY;
-
       window.addEventListener('scroll', () => {
-        if (window.innerWidth > 768) return;
-
-        const currentY = window.scrollY;
-        const delta = currentY - lastScrollY;
-
-        // Ignore tiny jitters under 12px
-        if (Math.abs(delta) < 12) return;
-
-        if (delta > 0 && currentY > 60) {
-          adminHeader.classList.add('scrolled');
-        } else if (delta < 0) {
-          adminHeader.classList.remove('scrolled');
-        }
-
-        lastScrollY = currentY;
+        adminHeader.classList.toggle('scrolled', window.scrollY > 50);
+        adjustPadding();
       }, { passive: true });
 
-      window.syncAvailabilityCalendar = async function() {
-        if (!confirm("This will sync all existing registrations to the availability calendar. Continue?")) return;
-        try {
-          const q = query(collection(db, "registrations"));
-          const snapshot = await getDocs(q);
-          let synced = 0, errors = 0;
-          for (const docSnap of snapshot.docs) {
-            const reg = docSnap.data();
-            try {
-              const checkQ = query(collection(db, "cabin_availability"), where("registrationId", "==", docSnap.id));
-              const existing = await getDocs(checkQ);
-              if (existing.empty) {
-                await addDoc(collection(db, "cabin_availability"), { cabana: reg.cabana, fechaInicio: reg.fechaEntrada, fechaFin: reg.fechaSalida, registrationId: docSnap.id, createdAt: serverTimestamp() });
-                synced++;
-              }
-            } catch (err) { errors++; }
-          }
-          alert(`✅ Sync complete!\n\nSynced: ${synced} records\nErrors: ${errors}\nTotal: ${snapshot.docs.length}`);
-        } catch (error) { alert("❌ Error during sync. Check console for details."); }
-      };
+      window.addEventListener('load', adjustPadding);
+      window.addEventListener('resize', adjustPadding);
 
-      onAuthStateChanged(auth, (user) => {
+      /* ── AUTH ── */
+      onAuthStateChanged(auth, user => {
         if (user) {
-          const authorizedEmails = ["orhanimre@gmail.com", "hugofda79@gmail.com", "rosahiguita4@gmail.com"];
-          if (!authorizedEmails.includes(user.email)) {
-            console.log("TEMP: Allowing access for debugging");
-          }
           document.getElementById("loginScreen").style.display = "none";
           document.getElementById("dashboardScreen").style.display = "block";
           document.getElementById("userEmail").textContent = user.email;
-          loadEmailSettings();
-          loadData();
+          loadEmailSettings(); loadData();
+          setTimeout(adjustPadding, 100);
         } else {
           document.getElementById("loginScreen").style.display = "flex";
           document.getElementById("dashboardScreen").style.display = "none";
@@ -1822,509 +732,305 @@
       });
 
       document.getElementById("loginBtn").addEventListener("click", async () => {
-        const loginBtn = document.getElementById("loginBtn");
-        const originalText = loginBtn.innerHTML;
-        try {
-          loginBtn.disabled = true;
-          loginBtn.innerHTML = 'Iniciando sesión...';
-          try {
-            await signInWithPopup(auth, provider);
-          } catch (popupError) {
-            if (popupError.code === 'auth/popup-blocked' || popupError.code === 'auth/popup-closed-by-user') {
-              await signInWithRedirect(auth, provider);
-            } else { throw popupError; }
-          }
-        } catch (error) {
-          let errorMessage = "Error al iniciar sesión. Por favor intenta nuevamente.";
-          if (error.code === 'auth/popup-closed-by-user') errorMessage = "La ventana de inicio de sesión se cerró antes de completar el proceso.";
-          alert(errorMessage);
-        } finally {
-          loginBtn.disabled = false;
-          loginBtn.innerHTML = originalText;
-        }
+        const btn = document.getElementById("loginBtn"); const orig = btn.innerHTML;
+        try { btn.disabled=true; btn.innerHTML='Iniciando sesión...'; await signInWithPopup(auth, provider); }
+        catch(e) { alert("Error al iniciar sesión. Por favor intenta nuevamente."); }
+        finally { btn.disabled=false; btn.innerHTML=orig; }
       });
+      document.getElementById("logoutBtn").addEventListener("click", async () => { try { await signOut(auth); } catch(e){} });
 
-      document.getElementById("logoutBtn").addEventListener("click", async () => {
-        try { await signOut(auth); } catch (error) { console.error("Error signing out:", error); }
-      });
-
+      /* ── EMAIL SETTINGS ── */
       async function loadEmailSettings() {
         try {
-          const settingsRef = doc(db, "settings", "email_notifications");
-          const settingsDoc = await getDoc(settingsRef);
-          if (settingsDoc.exists()) {
-            updateToggleUI(settingsDoc.data().enabled);
-          } else {
-            await setDoc(settingsRef, { enabled: true });
-            updateToggleUI(true);
-          }
-        } catch (error) { updateToggleUI(true); }
+          const ref = doc(db,"settings","email_notifications");
+          const snap = await getDoc(ref);
+          updateToggleUI(snap.exists() ? snap.data().enabled : true);
+          if (!snap.exists()) await setDoc(ref, { enabled:true });
+        } catch(e) { updateToggleUI(true); }
       }
-
-      window.openSettingsModal = function() {
-        const modal = document.getElementById('settingsModal');
-        const mainToggle = document.getElementById('emailToggle');
-        const modalToggle = document.getElementById('emailToggleModal');
-        if (mainToggle.classList.contains('active')) modalToggle.classList.add('active');
-        else modalToggle.classList.remove('active');
-        document.getElementById('userEmailModal').textContent = document.getElementById('userEmail').textContent;
-        modal.classList.add('show');
-        document.body.style.overflow = 'hidden';
-      };
-
-      window.closeSettingsModal = function() {
-        document.getElementById('settingsModal').classList.remove('show');
-        document.body.style.overflow = '';
-      };
-
-      document.addEventListener('click', function(e) {
-        const modal = document.getElementById('settingsModal');
-        if (e.target === modal) closeSettingsModal();
-      });
-
-      document.getElementById('logoutBtnModal').addEventListener('click', async () => {
-        try { await signOut(auth); closeSettingsModal(); } catch (error) { console.error("Error signing out:", error); }
-      });
-
       window.toggleEmailNotifications = async function() {
+        const t = document.getElementById('emailToggle');
+        const newState = !t.classList.contains('active');
         try {
-          const toggle = document.getElementById('emailToggle');
-          const newState = !toggle.classList.contains('active');
-          const settingsRef = doc(db, "settings", "email_notifications");
-          await setDoc(settingsRef, { enabled: newState, updatedAt: serverTimestamp(), updatedBy: auth.currentUser?.email || 'unknown' });
+          await setDoc(doc(db,"settings","email_notifications"), { enabled:newState, updatedAt:serverTimestamp(), updatedBy:auth.currentUser?.email||'unknown' });
           updateToggleUI(newState);
           showToast(newState ? '✅ Notificaciones activadas' : '🔕 Notificaciones desactivadas');
-        } catch (error) { showToast('❌ Error al actualizar configuración'); }
+        } catch(e) { showToast('❌ Error al actualizar'); }
       };
-
       function updateToggleUI(enabled) {
-        const toggle = document.getElementById('emailToggle');
-        const modalToggle = document.getElementById('emailToggleModal');
-        if (enabled) { toggle.classList.add('active'); if (modalToggle) modalToggle.classList.add('active'); }
-        else { toggle.classList.remove('active'); if (modalToggle) modalToggle.classList.remove('active'); }
+        ['emailToggle','emailToggleModal'].forEach(id => { const el=document.getElementById(id); if(el) el.classList.toggle('active',enabled); });
       }
 
+      /* ── SETTINGS MODAL ── */
+      window.openSettingsModal = function() {
+        document.getElementById('userEmailModal').textContent = document.getElementById('userEmail').textContent;
+        const mt = document.getElementById('emailToggle');
+        document.getElementById('emailToggleModal').classList.toggle('active', mt.classList.contains('active'));
+        const sel2 = document.getElementById('viewSelectorModal'); if(sel2) sel2.value = currentView;
+        document.getElementById('settingsModal').classList.add('show');
+        document.body.style.overflow='hidden';
+      };
+      window.closeSettingsModal = function() { document.getElementById('settingsModal').classList.remove('show'); document.body.style.overflow=''; };
+      document.addEventListener('click', e => { if(e.target===document.getElementById('settingsModal')) closeSettingsModal(); });
+      document.getElementById('logoutBtnModal').addEventListener('click', async () => { try { await signOut(auth); closeSettingsModal(); } catch(e){} });
+      window.switchViewFromModal = function() { const s=document.getElementById('viewSelectorModal'); if(s){ switchView(s.value); closeSettingsModal(); } };
+
+      /* ── DATA ── */
       async function loadData() {
+        allRegistrations=[]; allArchived=[];
+        const loading=document.getElementById("loading"); const tb=document.getElementById("tableBody");
+        loading.style.display="block"; if(tb) tb.innerHTML="";
         try {
-          allRegistrations = [];
-          allArchived = [];
-          const loading = document.getElementById("loading");
-          loading.style.display = "block";
-          const tableBody = document.getElementById("tableBody");
-          if (tableBody) tableBody.innerHTML = "";
-          const q = query(collection(db, "registrations"));
-          const querySnapshot = await getDocs(q);
-          querySnapshot.forEach((doc) => { allRegistrations.push({ id: doc.id, ...doc.data() }); });
-          allRegistrations.sort((a, b) => { const dateA = a.fechaEntrada ? new Date(a.fechaEntrada).getTime() : 0; const dateB = b.fechaEntrada ? new Date(b.fechaEntrada).getTime() : 0; return dateA - dateB; });
+          (await getDocs(query(collection(db,"registrations")))).forEach(d => allRegistrations.push({id:d.id,...d.data()}));
+          allRegistrations.sort((a,b)=>(new Date(a.fechaEntrada||0))-(new Date(b.fechaEntrada||0)));
           try {
-            const archiveQ = query(collection(db, "archived_registrations"));
-            const archiveSnapshot = await getDocs(archiveQ);
-            archiveSnapshot.forEach((doc) => { allArchived.push({ id: doc.id, ...doc.data() }); });
-            allArchived.sort((a, b) => { const dateA = a.fechaEntrada ? new Date(a.fechaEntrada).getTime() : 0; const dateB = b.fechaEntrada ? new Date(b.fechaEntrada).getTime() : 0; return dateA - dateB; });
-          } catch (archiveError) { allArchived = []; }
-          updateStats();
-          displayData(currentView === 'active' ? allRegistrations : allArchived);
-        } catch (error) {
-          const loading = document.getElementById("loading");
-          if (loading) loading.innerHTML = "Error al cargar los datos";
-        } finally {
-          isDataLoading = false;
-          const loading = document.getElementById("loading");
-          if (loading) loading.style.display = "none";
-        }
+            (await getDocs(query(collection(db,"archived_registrations")))).forEach(d => allArchived.push({id:d.id,...d.data()}));
+            allArchived.sort((a,b)=>(new Date(a.fechaEntrada||0))-(new Date(b.fechaEntrada||0)));
+          } catch(e) { allArchived=[]; }
+          updateStats(); displayData(currentView==='active'?allRegistrations:allArchived);
+        } catch(e) { loading.innerHTML="Error al cargar los datos"; }
+        finally { isDataLoading=false; loading.style.display="none"; }
       }
-
-      let isDataLoading = false;
 
       window.switchView = function(view) {
-        if (isDataLoading || currentView === view) return;
-        isDataLoading = true;
-        currentView = view;
-        const dropdown = document.getElementById('viewSelector');
-        if (dropdown) dropdown.value = view;
-        const tableBody = document.getElementById("tableBody");
-        const loading = document.getElementById("loading");
-        tableBody.innerHTML = '';
-        loading.style.display = "block";
-        setTimeout(() => { loadData(); }, 50);
+        if(isDataLoading||currentView===view) return;
+        isDataLoading=true; currentView=view;
+        const dd=document.getElementById('viewSelector'); if(dd) dd.value=view;
+        document.getElementById("tableBody").innerHTML='';
+        document.getElementById("loading").style.display="block";
+        setTimeout(()=>loadData(),50);
       };
-
-      window.switchViewFromDropdown = function() {
-        const dropdown = document.getElementById('viewSelector');
-        if (dropdown) switchView(dropdown.value);
-      };
+      window.switchViewFromDropdown = function() { const dd=document.getElementById('viewSelector'); if(dd) switchView(dd.value); };
 
       function updateStats() {
-        const dataSource = currentView === 'active' ? allRegistrations : allArchived;
-        document.getElementById("totalRegistros").textContent = dataSource.length;
-        document.getElementById("totalApto2").textContent = dataSource.filter((r) => r.cabana === "Apto Najos-2").length;
-        document.getElementById("totalApto3").textContent = dataSource.filter((r) => r.cabana === "Apto Najos-3").length;
-        document.getElementById("totalApto4").textContent = dataSource.filter((r) => r.cabana === "Apto Najos-4").length;
+        const src=currentView==='active'?allRegistrations:allArchived;
+        document.getElementById("totalRegistros").textContent=src.length;
+        ['2','3','4'].forEach(n => document.getElementById(`totalApto${n}`).textContent=src.filter(r=>r.cabana===`Apto Najos-${n}`).length);
       }
 
       async function displayData(data) {
-        const tableBody = document.getElementById("tableBody");
-        const table = document.getElementById("dataTable");
-        const noData = document.getElementById("noData");
-        const loading = document.getElementById("loading");
-        const isMobile = window.innerWidth < 768;
-        tableBody.innerHTML = '';
-        loading.style.display = "block";
-        noData.style.display = "none";
-        table.style.display = "table";
-        if (!data || data.length === 0) { table.style.display = "none"; noData.style.display = "block"; loading.style.display = "none"; return; }
-        const chunkSize = 20;
-        const chunks = [];
-        for (let i = 0; i < data.length; i += chunkSize) { chunks.push(data.slice(i, i + chunkSize)); }
-        for (const [chunkIndex, chunk] of chunks.entries()) {
-          const rows = await Promise.all(chunk.map(async (reg, index) => {
-            const globalIndex = (chunkIndex * chunkSize) + index;
-            const row = document.createElement("tr");
+        const tb=document.getElementById("tableBody"); const table=document.getElementById("dataTable");
+        const noData=document.getElementById("noData"); const loading=document.getElementById("loading");
+        const isMobile=window.innerWidth<768;
+        tb.innerHTML=''; loading.style.display="block"; noData.style.display="none"; table.style.display="table";
+        if(!data||data.length===0){ table.style.display="none"; noData.style.display="block"; loading.style.display="none"; return; }
+        const cs=20;
+        for(let ci=0;ci<Math.ceil(data.length/cs);ci++){
+          const chunk=data.slice(ci*cs,(ci+1)*cs);
+          const rows=await Promise.all(chunk.map(async(reg,idx)=>{
+            const gi=ci*cs+idx; const row=document.createElement("tr");
             try {
-              const stayCount = await getGuestReservationCount(reg.celular || '', reg.numeroId || '', reg.timestamp, reg.tipoId || '');
-              const loyaltyBadge = stayCount > 1 ? `<span class="stay-badge">#${stayCount}</span>` : '';
-              if (isMobile) {
-                row.classList.add("clickable");
-                row.onclick = (e) => { if (!e.target.closest(".delete-btn") && !e.target.closest(".view-btn")) { showDetailModal(reg); } };
-              }
-              const timestamp = reg.timestamp ? new Date(reg.timestamp.seconds * 1000) : new Date();
-              const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
-              const formatDate = (dateStr) => { if (!dateStr) return "N/A"; const [year, month, day] = dateStr.split("-"); return `${day}.${month}.${year}`; };
-              row.innerHTML = `
-                <td class="mobile-col">${globalIndex + 1}</td>
-                <td class="mobile-col"><div class="date-cell"><div class="date-main">${formatDate(reg.fechaEntrada || '')}</div><div class="date-time">${formatDate(reg.fechaSalida || '')}</div></div></td>
-                <td class="mobile-col"><span class="cabin-badge cabin-${cabanaNum}">Apto ${cabanaNum}</span></td>
-                <td class="mobile-col"><div class="name-cell"><div class="name-main">${loyaltyBadge}${reg.nombre || ''} ${reg.apellido || ''}</div><div class="name-sub">📱 ${reg.celular || 'N/A'}</div></div></td>
-                <td>${reg.celular || 'N/A'}</td>
-                <td>${reg.ciudad || 'N/A'}</td>
-                <td>${formatDate(reg.fechaEntrada || '')}</td>
-                <td>${formatDate(reg.fechaSalida || '')}</td>
-                <td><span class="guest-badge">${(reg.totalHuespedes || 0) + 1}</span></td>
-                <td class="mobile-col">
-                  <button class="view-btn" onclick="event.stopPropagation(); showDetailModal(${JSON.stringify(reg).replace(/"/g, '&quot;')})" title="Ver detalles">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                  </button>
-                </td>
-                <td><button class="delete-btn" onclick="event.stopPropagation(); deleteRegistration('${reg.id}', event)">🗑️</button></td>
+              const sc=await getGuestReservationCount(reg.celular||'',reg.numeroId||'',reg.timestamp,reg.tipoId||'');
+              const lb=sc>1?`<span class="stay-badge">#${sc}</span>`:'';
+              if(isMobile){ row.classList.add("clickable"); row.onclick=e=>{ if(!e.target.closest(".delete-btn")&&!e.target.closest(".view-btn")) showDetailModal(reg); }; }
+              const cn=reg.cabana?reg.cabana.slice(-1):"?";
+              const fd=s=>{ if(!s) return "N/A"; const[y,m,d]=s.split("-"); return `${d}.${m}.${y}`; };
+              row.innerHTML=`
+                <td class="mobile-col">${gi+1}</td>
+                <td class="mobile-col"><div class="date-cell"><div class="date-main">${fd(reg.fechaEntrada||'')}</div><div class="date-time">${fd(reg.fechaSalida||'')}</div></div></td>
+                <td class="mobile-col"><span class="cabin-badge cabin-${cn}">Apto ${cn}</span></td>
+                <td class="mobile-col"><div class="name-cell"><div class="name-main">${lb}${reg.nombre||''} ${reg.apellido||''}</div><div class="name-sub">📱 ${reg.celular||'N/A'}</div></div></td>
+                <td>${reg.celular||'N/A'}</td><td>${reg.ciudad||'N/A'}</td>
+                <td>${fd(reg.fechaEntrada||'')}</td><td>${fd(reg.fechaSalida||'')}</td>
+                <td><span class="guest-badge">${(reg.totalHuespedes||0)+1}</span></td>
+                <td class="mobile-col"><button class="view-btn" onclick="event.stopPropagation();showDetailModal(${JSON.stringify(reg).replace(/"/g,'&quot;')})" title="Ver detalles"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+                <td><button class="delete-btn" onclick="event.stopPropagation();deleteRegistration('${reg.id}',event)">🗑️</button></td>
               `;
               return row;
-            } catch (error) { return null; }
+            } catch(e){ return null; }
           }));
-          const validRows = rows.filter(row => row !== null);
-          tableBody.append(...validRows);
-          await new Promise(resolve => setTimeout(resolve, 10));
+          tb.append(...rows.filter(Boolean));
+          await new Promise(r=>setTimeout(r,10));
         }
-        loading.style.display = "none";
+        loading.style.display="none";
       }
 
-      function setDateRange(preset) {
-        const today = new Date(); today.setHours(0,0,0,0);
-        let startDate, endDate;
-        document.querySelectorAll(".preset-btn").forEach(btn => btn.classList.remove("active"));
-        switch (preset) {
-          case "week":
-            const monday = new Date(today); const dayOfWeek = today.getDay(); const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; monday.setDate(today.getDate() + daysToMonday);
-            const sunday = new Date(monday); sunday.setDate(monday.getDate() + 6);
-            startDate = monday.toISOString().split("T")[0]; endDate = sunday.toISOString().split("T")[0];
-            document.querySelectorAll(".preset-btn")[0]?.classList.add("active"); break;
-          case "month":
-            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1); const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-            startDate = firstDayOfMonth.toISOString().split("T")[0]; endDate = lastDayOfMonth.toISOString().split("T")[0];
-            document.querySelectorAll(".preset-btn")[1]?.classList.add("active"); break;
-          case "year":
-            startDate = new Date(today.getFullYear(), 0, 1).toISOString().split("T")[0]; endDate = new Date(today.getFullYear(), 11, 31).toISOString().split("T")[0];
-            document.querySelectorAll(".preset-btn")[2]?.classList.add("active"); break;
-          default:
-            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1); const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-            startDate = firstDay.toISOString().split("T")[0]; endDate = lastDay.toISOString().split("T")[0];
-        }
-        if (startDate && endDate) {
-          const fechaDesde = document.getElementById("fechaDesde"); const fechaHasta = document.getElementById("fechaHasta");
-          if (fechaDesde) fechaDesde.value = startDate; if (fechaHasta) fechaHasta.value = endDate;
-          if (typeof filterTable === 'function') filterTable();
-          applyFilters();
-        }
-      };
-
-      window.toggleCustomDates = function () {
-        const customDates = document.getElementById("customDates");
-        const isShowing = customDates.classList.contains("show");
-        document.querySelectorAll(".preset-btn").forEach((btn) => btn.classList.remove("active"));
-        if (!isShowing) {
-          customDates.classList.add("show");
-          document.querySelectorAll(".preset-btn")[3].classList.add("active");
-          const today = new Date(); const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-          const todayStr = today.toISOString().split("T")[0]; const firstDayStr = firstDayOfMonth.toISOString().split("T")[0];
-          document.getElementById("fechaDesde").value = firstDayStr; document.getElementById("fechaHasta").value = todayStr;
-          const desdeDate = new Date(firstDayStr); desdeDate.setDate(desdeDate.getDate() + 1);
-          document.getElementById("fechaHasta").setAttribute("min", desdeDate.toISOString().split("T")[0]);
-          applyFilters();
-        } else {
-          customDates.classList.remove("show");
-          document.getElementById("fechaDesde").value = ""; document.getElementById("fechaHasta").value = "";
-          applyFilters();
-        }
-      };
-
-      function showToast(message) {
-        const toast = document.createElement("div");
-        toast.textContent = message;
-        toast.style.cssText = `position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#f56565 0%,#e53e3e 100%);color:white;padding:16px 24px;border-radius:12px;box-shadow:0 4px 12px rgba(245,101,101,0.4);z-index:9999;font-weight:600;font-size:14px;animation:slideInRight 0.3s ease;max-width:300px;`;
-        document.body.appendChild(toast);
-        setTimeout(() => { toast.style.animation = "fadeOut 0.3s ease"; setTimeout(() => toast.remove(), 300); }, 3000);
+      async function getGuestReservationCount(phone,guestId,currentTs,tipoId){
+        try {
+          if(!guestId||!tipoId) return 1;
+          const get=async col=>{ const s=await getDocs(query(collection(db,col),where("tipoId","==",tipoId),where("numeroId","==",guestId))); return s.docs.map(d=>({id:d.id,...d.data()})); };
+          let all=[...await get("registrations"),...await get("archived_registrations")];
+          const seen=new Set(); all=all.filter(r=>{ if(seen.has(r.id)) return false; seen.add(r.id); return true; });
+          all.sort((a,b)=>(a.timestamp?.seconds||0)-(b.timestamp?.seconds||0));
+          if(!currentTs) return all.length||1;
+          const i=all.findIndex(r=>r.timestamp?.seconds===currentTs.seconds&&r.timestamp?.nanoseconds===currentTs.nanoseconds);
+          return i>=0?i+1:all.length+1;
+        } catch(e){ return 1; }
       }
 
-      window.handleDateChange = function(field) {
-        const fechaDesde = document.getElementById("fechaDesde").value;
-        const fechaHasta = document.getElementById("fechaHasta").value;
-        if (field === 'desde' && fechaDesde) {
-          const desdeDate = new Date(fechaDesde); desdeDate.setDate(desdeDate.getDate() + 1);
-          document.getElementById("fechaHasta").setAttribute("min", desdeDate.toISOString().split("T")[0]);
-        }
-        if (fechaDesde && fechaHasta) applyFilters();
-        else if (field === 'hasta' && !fechaDesde && fechaHasta) { showToast("⚠️ Por favor selecciona primero la fecha 'Desde'"); document.getElementById("fechaHasta").value = ""; }
+      /* ── FILTERS ── */
+      let searchTerm='';
+      window.performSearch=function(){ const i=document.getElementById('searchInput'); const c=document.getElementById('clearSearchBtn'); searchTerm=i.value.toLowerCase().trim(); c.style.display=searchTerm?'flex':'none'; applyFiltersAndSearch(); };
+      window.clearSearch=function(){ document.getElementById('searchInput').value=''; document.getElementById('clearSearchBtn').style.display='none'; searchTerm=''; applyFiltersAndSearch(); };
+      window.applyFilters=function(){ applyFiltersAndSearch(); };
+      window.applyFiltersAndSearch=function(){
+        const cab=document.getElementById("cabanaFilter").value;
+        const desde=document.getElementById("fechaDesde").value; const hasta=document.getElementById("fechaHasta").value;
+        let data=currentView==='active'?allRegistrations:allArchived;
+        if(cab) data=data.filter(r=>r.cabana===cab);
+        if(desde&&hasta) data=data.filter(r=>r.fechaEntrada&&r.fechaSalida&&r.fechaEntrada<=hasta&&r.fechaSalida>=desde);
+        if(searchTerm){ data=data.filter(r=>{ const fs=[r.nombre,r.apellido,r.ciudad,r.numeroId,r.tipoId,r.celular].map(x=>(x||'').toLowerCase()); let cm=false; for(let i=0;i<=5;i++) if((r[`acomp${i}Nombre`]||'').toLowerCase().includes(searchTerm)||(r[`acomp${i}Apellido`]||'').toLowerCase().includes(searchTerm)||(r[`acomp${i}NumId`]||'').toLowerCase().includes(searchTerm)){cm=true;break;} return fs.some(f=>f.includes(searchTerm))||cm; }); }
+        displayData(data);
+        const info=document.getElementById('searchResultsInfo');
+        if(searchTerm){ info.textContent=`🔍 ${data.length} resultado${data.length!==1?'s':''} encontrado${data.length!==1?'s':''} para "${document.getElementById('searchInput').value}"`; info.style.display='block'; }
+        else info.style.display='none';
       };
 
-      window.deleteRegistration = function (registrationId, event) {
-        if (event) event.stopPropagation();
-        const modal = document.getElementById("confirmModal");
-        modal.classList.add("show");
-        document.body.style.overflow = "hidden";
-        const deleteBtn = document.getElementById("confirmDeleteBtn");
-        const newDeleteBtn = deleteBtn.cloneNode(true);
-        deleteBtn.replaceWith(newDeleteBtn);
-        document.getElementById("confirmDeleteBtn").onclick = async function() {
-          document.getElementById("confirmModal").classList.remove("show");
-          document.body.style.overflow = "";
+      window.setDatePreset=function(preset){
+        const today=new Date(); today.setHours(0,0,0,0); let s,e;
+        document.querySelectorAll(".preset-btn").forEach(b=>b.classList.remove("active"));
+        if(preset==='week'){ const d=today.getDay(); const m=new Date(today); m.setDate(today.getDate()+(d===0?-6:1-d)); const su=new Date(m); su.setDate(m.getDate()+6); s=m.toISOString().split("T")[0]; e=su.toISOString().split("T")[0]; document.querySelectorAll(".preset-btn")[0]?.classList.add("active"); }
+        else if(preset==='month'){ s=new Date(today.getFullYear(),today.getMonth(),1).toISOString().split("T")[0]; e=new Date(today.getFullYear(),today.getMonth()+1,0).toISOString().split("T")[0]; document.querySelectorAll(".preset-btn")[1]?.classList.add("active"); }
+        else if(preset==='year'){ s=new Date(today.getFullYear(),0,1).toISOString().split("T")[0]; e=new Date(today.getFullYear(),11,31).toISOString().split("T")[0]; document.querySelectorAll(".preset-btn")[2]?.classList.add("active"); }
+        if(s&&e){ document.getElementById("fechaDesde").value=s; document.getElementById("fechaHasta").value=e; applyFilters(); }
+      };
+
+      window.toggleCustomDates=function(){
+        const cd=document.getElementById("customDates"); const showing=cd.classList.contains("show");
+        document.querySelectorAll(".preset-btn").forEach(b=>b.classList.remove("active"));
+        if(!showing){ cd.classList.add("show"); document.querySelectorAll(".preset-btn")[3].classList.add("active"); const t=new Date(); const f=new Date(t.getFullYear(),t.getMonth(),1); document.getElementById("fechaDesde").value=f.toISOString().split("T")[0]; document.getElementById("fechaHasta").value=t.toISOString().split("T")[0]; applyFilters(); }
+        else{ cd.classList.remove("show"); document.getElementById("fechaDesde").value=""; document.getElementById("fechaHasta").value=""; applyFilters(); }
+      };
+
+      window.handleDateChange=function(field){
+        const desde=document.getElementById("fechaDesde").value; const hasta=document.getElementById("fechaHasta").value;
+        if(field==='desde'&&desde){ const d=new Date(desde); d.setDate(d.getDate()+1); document.getElementById("fechaHasta").setAttribute("min",d.toISOString().split("T")[0]); }
+        if(desde&&hasta) applyFilters();
+        else if(field==='hasta'&&!desde&&hasta){ showToast("⚠️ Selecciona primero la fecha 'Desde'"); document.getElementById("fechaHasta").value=""; }
+      };
+
+      /* ── DELETE ── */
+      window.deleteRegistration=function(id,event){
+        if(event) event.stopPropagation();
+        const modal=document.getElementById("confirmModal"); modal.classList.add("show"); document.body.style.overflow="hidden";
+        const btn=document.getElementById("confirmDeleteBtn"); const nb=btn.cloneNode(true); btn.replaceWith(nb);
+        document.getElementById("confirmDeleteBtn").onclick=async function(){
+          document.getElementById("confirmModal").classList.remove("show"); document.body.style.overflow="";
           try {
-            if (currentView === 'active') {
-              const registration = allRegistrations.find(r => r.id === registrationId);
-              if (registration) {
-                await setDoc(doc(db, "archived_registrations", registrationId), { ...registration, archivedAt: serverTimestamp(), archivedBy: auth.currentUser?.email || 'unknown' });
-                await deleteDoc(doc(db, "registrations", registrationId));
-                const availQ = query(collection(db, "cabin_availability"), where("registrationId", "==", registrationId));
-                const availSnapshot = await getDocs(availQ);
-                availSnapshot.forEach(async (docSnap) => { await deleteDoc(doc(db, "cabin_availability", docSnap.id)); });
-                allRegistrations = allRegistrations.filter(r => r.id !== registrationId);
-                allArchived.unshift({ ...registration, id: registrationId, archivedAt: { seconds: Date.now() / 1000 } });
+            if(currentView==='active'){
+              const reg=allRegistrations.find(r=>r.id===id);
+              if(reg){
+                await setDoc(doc(db,"archived_registrations",id),{...reg,archivedAt:serverTimestamp(),archivedBy:auth.currentUser?.email||'unknown'});
+                await deleteDoc(doc(db,"registrations",id));
+                const avQ=query(collection(db,"cabin_availability"),where("registrationId","==",id));
+                (await getDocs(avQ)).forEach(async s=>await deleteDoc(doc(db,"cabin_availability",s.id)));
+                allRegistrations=allRegistrations.filter(r=>r.id!==id);
+                allArchived.unshift({...reg,id,archivedAt:{seconds:Date.now()/1000}});
               }
             } else {
-              const registration = allArchived.find(r => r.id === registrationId);
-              if (registration) { await deleteDoc(doc(db, "archived_registrations", registrationId)); allArchived = allArchived.filter(r => r.id !== registrationId); }
+              await deleteDoc(doc(db,"archived_registrations",id));
+              allArchived=allArchived.filter(r=>r.id!==id);
             }
-            updateStats();
-            displayData(currentView === 'active' ? allRegistrations : allArchived);
-            const detailModal = document.getElementById("detailModal");
-            if (detailModal.classList.contains("show")) { detailModal.classList.remove("show"); document.body.style.overflow = ""; }
-          } catch (error) { alert(currentView === 'active' ? "Error al archivar el registro." : "Error al eliminar el registro."); }
+            updateStats(); displayData(currentView==='active'?allRegistrations:allArchived);
+            const dm=document.getElementById("detailModal"); if(dm.classList.contains("show")){ dm.classList.remove("show"); document.body.style.overflow=""; }
+          } catch(e){ alert("Error al eliminar el registro."); }
         };
       };
+      window.closeConfirmModal=function(){ document.getElementById("confirmModal").classList.remove("show"); document.body.style.overflow=""; };
 
-      window.closeConfirmModal = function() { document.getElementById("confirmModal").classList.remove("show"); document.body.style.overflow = ""; };
-      window.applyFilters = function () { applyFiltersAndSearch(); };
-      window.clearFilters = function () {
-        document.getElementById("cabanaFilter").value = ""; document.getElementById("fechaDesde").value = ""; document.getElementById("fechaHasta").value = "";
-        document.getElementById("customDates").classList.remove("show"); document.querySelectorAll(".preset-btn").forEach((btn) => btn.classList.remove("active"));
-        clearSearch(); displayData(currentView === 'active' ? allRegistrations : allArchived);
-      };
-
-      function formatIdType(idType) { const idTypes = { cc: "CC", ce: "CE", ti: "TI", pasaporte: "PP" }; return idTypes[idType] || idType || "N/A"; }
-
-      window.showDetailModal = function (reg) {
-        const modal = document.getElementById("detailModal");
-        const detailBody = document.getElementById("detailBody");
-        const timestamp = reg.timestamp ? new Date(reg.timestamp.seconds * 1000) : new Date();
-        const cabanaNum = reg.cabana ? reg.cabana.slice(-1) : "?";
-        const formatDateTime = (date) => { const day = String(date.getDate()).padStart(2,"0"); const month = String(date.getMonth()+1).padStart(2,"0"); const year = date.getFullYear(); const hours = String(date.getHours()).padStart(2,"0"); const minutes = String(date.getMinutes()).padStart(2,"0"); return `${day}.${month}.${year} ${hours}:${minutes}`; };
-        const formatDate = (dateStr) => { if (!dateStr) return "N/A"; const [year, month, day] = dateStr.split("-"); return `${day}.${month}.${year}`; };
-        const hasCompanionData = (num) => reg[`acomp${num}Nombre`] || reg[`acomp${num}Apellido`] || reg[`acomp${num}TipoId`] || reg[`acomp${num}NumId`];
-        let companionsHTML = "";
-        for (let i = 0; i <= 2; i++) {
-          if (hasCompanionData(i)) {
-            companionsHTML += `<div class="companion-item"><div class="companion-number">👤 Acompañante ${i + 1}</div><div class="companion-info"><div class="info-name">${reg[`acomp${i}Nombre`] || ""} ${reg[`acomp${i}Apellido`] || ""}</div><div class="info-line">🆔 ${formatIdType(reg[`acomp${i}TipoId`])} - ${reg[`acomp${i}NumId`] || "N/A"}</div></div></div>`;
-          }
-        }
-        detailBody.innerHTML = `
+      /* ── DETAIL MODAL ── */
+      window.showDetailModal=function(reg){
+        const modal=document.getElementById("detailModal"); const body=document.getElementById("detailBody");
+        const ts=reg.timestamp?new Date(reg.timestamp.seconds*1000):new Date();
+        const cn=reg.cabana?reg.cabana.slice(-1):"?";
+        const fdt=d=>{ const p=n=>String(n).padStart(2,"0"); return `${p(d.getDate())}.${p(d.getMonth()+1)}.${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`; };
+        const fd=s=>{ if(!s) return "N/A"; const[y,m,d]=s.split("-"); return `${d}.${m}.${y}`; };
+        const fid=t=>({cc:"CC",ce:"CE",ti:"TI",pasaporte:"PP"}[t]||t||"N/A");
+        const hc=n=>reg[`acomp${n}Nombre`]||reg[`acomp${n}Apellido`]||reg[`acomp${n}TipoId`]||reg[`acomp${n}NumId`];
+        let ch=""; for(let i=0;i<=2;i++) if(hc(i)) ch+=`<div class="companion-item"><div class="companion-number">👤 Acompañante ${i+1}</div><div class="companion-info"><div class="info-name">${reg[`acomp${i}Nombre`]||""} ${reg[`acomp${i}Apellido`]||""}</div><div class="info-line">🆔 ${fid(reg[`acomp${i}TipoId`])} - ${reg[`acomp${i}NumId`]||"N/A"}</div></div></div>`;
+        body.innerHTML=`
           <div class="detail-body">
-            <div class="info-card"><div class="info-card-header"><span class="info-icon">📅</span><span class="info-title">Información de Registro</span></div><div class="info-card-content"><div class="info-line"><span class="info-label">Fecha:</span><span class="info-value">${formatDateTime(timestamp)}</span></div><div class="info-line"><span class="info-label">Apto:</span><span class="cabin-badge cabin-${cabanaNum}">Apto ${cabanaNum}</span></div></div></div>
-            <div class="info-card"><div class="info-card-header"><span class="info-icon">🏖️</span><span class="info-title">Estadía</span></div><div class="info-card-content compact"><div class="stay-row"><div class="stay-item"><div class="stay-label">Entrada</div><div class="stay-value">${formatDate(reg.fechaEntrada)}</div><div class="stay-time">${reg.horaEntrada || "-"}</div></div><div class="stay-divider">→</div><div class="stay-item"><div class="stay-label">Salida</div><div class="stay-value">${formatDate(reg.fechaSalida)}</div><div class="stay-time">${reg.horaSalida || "-"}</div></div></div><div class="guest-count"><span class="guest-icon">👥</span><span class="guest-text">${(reg.totalHuespedes || 0) + 1} ${(reg.totalHuespedes || 0) + 1 === 1 ? "persona" : "personas"}</span></div></div></div>
-            <div class="info-card"><div class="info-card-header"><span class="info-icon">👤</span><span class="info-title">Huésped Principal</span></div><div class="info-card-content"><div class="guest-name">${reg.nombre} ${reg.apellido}</div><div class="info-line">📱 <a href="tel:${reg.celular}" class="contact-link">${reg.celular || "N/A"}</a></div><div class="info-line">🆔 ${formatIdType(reg.tipoId)} - ${reg.numeroId || "N/A"}</div><div class="info-line">📍 ${reg.ciudad || "N/A"}</div></div></div>
-            ${companionsHTML ? `<div class="info-card"><div class="info-card-header"><span class="info-icon">👥</span><span class="info-title">Acompañantes</span></div><div class="info-card-content">${companionsHTML}</div></div>` : ""}
+            <div class="info-card"><div class="info-card-header"><span class="info-icon">📅</span><span class="info-title">Información de Registro</span></div><div class="info-card-content"><div class="info-line"><span class="info-label">Fecha:</span><span class="info-value">${fdt(ts)}</span></div><div class="info-line"><span class="info-label">Apto:</span><span class="cabin-badge cabin-${cn}">Apto ${cn}</span></div></div></div>
+            <div class="info-card"><div class="info-card-header"><span class="info-icon">🏖️</span><span class="info-title">Estadía</span></div><div class="info-card-content compact"><div class="stay-row"><div class="stay-item"><div class="stay-label">Entrada</div><div class="stay-value">${fd(reg.fechaEntrada)}</div><div class="stay-time">${reg.horaEntrada||"-"}</div></div><div class="stay-divider">→</div><div class="stay-item"><div class="stay-label">Salida</div><div class="stay-value">${fd(reg.fechaSalida)}</div><div class="stay-time">${reg.horaSalida||"-"}</div></div></div><div class="guest-count"><span class="guest-icon">👥</span><span class="guest-text">${(reg.totalHuespedes||0)+1} persona${(reg.totalHuespedes||0)+1===1?'':'s'}</span></div></div></div>
+            <div class="info-card"><div class="info-card-header"><span class="info-icon">👤</span><span class="info-title">Huésped Principal</span></div><div class="info-card-content"><div class="guest-name">${reg.nombre} ${reg.apellido}</div><div class="info-line">📱 <a href="tel:${reg.celular}" class="contact-link">${reg.celular||"N/A"}</a></div><div class="info-line">🆔 ${fid(reg.tipoId)} - ${reg.numeroId||"N/A"}</div><div class="info-line">📍 ${reg.ciudad||"N/A"}</div></div></div>
+            ${ch?`<div class="info-card"><div class="info-card-header"><span class="info-icon">👥</span><span class="info-title">Acompañantes</span></div><div class="info-card-content">${ch}</div></div>`:""}
           </div>
-          <div class="detail-actions"><button class="delete-btn" onclick="event.stopPropagation(); deleteRegistration('${reg.id}', event)">🗑️ Eliminar Registro</button></div>
+          <div class="detail-actions"><button class="delete-btn" onclick="event.stopPropagation();deleteRegistration('${reg.id}',event)">🗑️ Eliminar Registro</button></div>
         `;
-        modal.classList.add("show");
-        document.body.style.overflow = "hidden";
+        modal.classList.add("show"); document.body.style.overflow="hidden";
+      };
+      window.closeDetailModal=function(){ document.getElementById("detailModal").classList.remove("show"); document.body.style.overflow=""; };
+      document.getElementById("detailModal").addEventListener("click",e=>{ if(e.target===document.getElementById("detailModal")) closeDetailModal(); });
+
+      /* ── EXPORT ── */
+      window.exportToExcel=function(){
+        const src=currentView==='active'?allRegistrations:allArchived;
+        const cab=document.getElementById("cabanaFilter").value;
+        const data=cab?src.filter(r=>r.cabana===cab):src;
+        const fts=ts=>{ if(!ts) return ""; const d=new Date(ts.seconds*1000); const p=n=>String(n).padStart(2,"0"); return `${p(d.getDate())}.${p(d.getMonth()+1)}.${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`; };
+        const fd2=(dt,tm)=>{ if(!dt) return ""; const[y,m,d]=dt.split("-"); return tm&&tm!=="-"?`${d}.${m}.${y} ${tm}`:`${d}.${m}.${y}`; };
+        const fid2=(t,n)=>{ const tp=(t||'').toUpperCase(); const nm=n||''; return(tp||nm)?`${tp} ${nm}`.trim():''; };
+        const fn=(a,b)=>`${(a||'').trim()} ${(b||'').trim()}`.trim();
+        const headers=["Fecha Registro","Apto","Nombre Completo","Celular","ID","Ciudad","Total Huéspedes","Entrada","Salida","Acomp 1","Acomp 1 ID","Acomp 2","Acomp 2 ID","Acomp 3","Acomp 3 ID","Comentario","Acepta Datos"];
+        let tsv=headers.join("\t")+"\n";
+        data.forEach(r=>{ tsv+=[fts(r.timestamp),r.cabana||'',fn(r.nombre,r.apellido),r.celular||'',fid2(r.tipoId,r.numeroId),r.ciudad||'',(r.totalHuespedes||0)+1,fd2(r.fechaEntrada,r.horaEntrada),fd2(r.fechaSalida,r.horaSalida),fn(r.acomp0Nombre,r.acomp0Apellido),fid2(r.acomp0TipoId,r.acomp0NumId),fn(r.acomp1Nombre,r.acomp1Apellido),fid2(r.acomp1TipoId,r.acomp1NumId),fn(r.acomp2Nombre,r.acomp2Apellido),fid2(r.acomp2TipoId,r.acomp2NumId),(r.comentario||'').replace(/\t/g,' '),r.consent?'Sí':'No'].join("\t")+"\n"; });
+        const blob=new Blob([tsv],{type:"text/tab-separated-values;charset=utf-8;"});
+        const a=document.createElement("a"); const url=URL.createObjectURL(blob);
+        a.href=url; a.download=`registros_${new Date().toISOString().split("T")[0]}.tsv`;
+        a.style.visibility="hidden"; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
       };
 
-      async function getGuestReservationCount(guestPhone, guestId, currentTimestamp, guestTipoId) {
-        try {
-          if (!guestId || !guestTipoId) return 1;
-          const getMatchingReservations = async (collectionName) => {
-            const q = query(collection(db, collectionName), where("tipoId", "==", guestTipoId), where("numeroId", "==", guestId));
-            const snapshot = await getDocs(q);
-            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-          };
-          const [activeReservations, archivedReservations] = await Promise.all([getMatchingReservations("registrations"), getMatchingReservations("archived_registrations")]);
-          let allReservations = [...activeReservations, ...archivedReservations];
-          const seen = new Set();
-          allReservations = allReservations.filter(res => { const key = res.id || `${res.timestamp?.seconds}_${res.timestamp?.nanoseconds}`; if (seen.has(key)) return false; seen.add(key); return true; });
-          allReservations.sort((a, b) => (a.timestamp?.seconds || 0) - (b.timestamp?.seconds || 0));
-          if (!currentTimestamp) return allReservations.length > 0 ? allReservations.length : 1;
-          const currentReservation = allReservations.find(res => res.timestamp?.seconds === currentTimestamp.seconds && res.timestamp?.nanoseconds === currentTimestamp.nanoseconds);
-          if (!currentReservation) return allReservations.length + 1;
-          return allReservations.findIndex(res => res.timestamp?.seconds === currentTimestamp.seconds && res.timestamp?.nanoseconds === currentTimestamp.nanoseconds) + 1;
-        } catch (error) { return 1; }
-      }
+      /* ── TOAST ── */
+      function showToast(msg){ const t=document.createElement("div"); t.textContent=msg; t.style.cssText="position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#14b8a6,#0d9488);color:white;padding:16px 24px;border-radius:12px;box-shadow:0 4px 12px rgba(20,184,166,0.4);z-index:9999;font-weight:600;font-size:14px;max-width:300px;"; document.body.appendChild(t); setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity 0.3s'; setTimeout(()=>t.remove(),300); },3000); }
 
-      let searchTerm = '';
-
-      window.performSearch = function() {
-        const input = document.getElementById('searchInput');
-        const clearBtn = document.getElementById('clearSearchBtn');
-        searchTerm = input.value.toLowerCase().trim();
-        clearBtn.style.display = searchTerm ? 'flex' : 'none';
-        applyFiltersAndSearch();
-      };
-
-      window.clearSearch = function() {
-        document.getElementById('searchInput').value = '';
-        document.getElementById('clearSearchBtn').style.display = 'none';
-        searchTerm = '';
-        applyFiltersAndSearch();
-      };
-
-      window.applyFiltersAndSearch = function() {
-        const cabanaFilter = document.getElementById("cabanaFilter").value;
-        const fechaDesde = document.getElementById("fechaDesde").value;
-        const fechaHasta = document.getElementById("fechaHasta").value;
-        let filtered = currentView === 'active' ? allRegistrations : allArchived;
-        if (cabanaFilter) filtered = filtered.filter((r) => r.cabana === cabanaFilter);
-        if (fechaDesde && fechaHasta) filtered = filtered.filter((r) => { if (!r.fechaEntrada || !r.fechaSalida) return false; return r.fechaEntrada <= fechaHasta && r.fechaSalida >= fechaDesde; });
-        if (searchTerm) {
-          filtered = filtered.filter((r) => {
-            const nombre = (r.nombre || '').toLowerCase(); const apellido = (r.apellido || '').toLowerCase(); const ciudad = (r.ciudad || '').toLowerCase(); const numeroId = (r.numeroId || '').toLowerCase(); const tipoId = (r.tipoId || '').toLowerCase(); const celular = (r.celular || '').toLowerCase();
-            let companionMatch = false;
-            for (let i = 0; i <= 5; i++) { if ((r[`acomp${i}Nombre`] || '').toLowerCase().includes(searchTerm) || (r[`acomp${i}Apellido`] || '').toLowerCase().includes(searchTerm) || (r[`acomp${i}NumId`] || '').toLowerCase().includes(searchTerm)) { companionMatch = true; break; } }
-            return nombre.includes(searchTerm) || apellido.includes(searchTerm) || ciudad.includes(searchTerm) || numeroId.includes(searchTerm) || tipoId.includes(searchTerm) || celular.includes(searchTerm) || companionMatch;
-          });
-        }
-        displayData(filtered);
-        showSearchResults(filtered.length);
-      };
-
-      function showSearchResults(count) {
-        const resultsInfo = document.getElementById('searchResultsInfo');
-        if (searchTerm) { resultsInfo.textContent = `🔍 ${count} resultado${count !== 1 ? 's' : ''} encontrado${count !== 1 ? 's' : ''} para "${document.getElementById('searchInput').value}"`; resultsInfo.style.display = 'block'; }
-        else { if (resultsInfo) resultsInfo.style.display = 'none'; }
-      }
-
-      window.closeDetailModal = function () { document.getElementById("detailModal").classList.remove("show"); document.body.style.overflow = ""; };
-
-      document.getElementById("detailModal").addEventListener("click", function (e) { if (e.target === this) closeDetailModal(); });
-
-      window.exportToExcel = function () {
-        const headers = ["Fecha Registro","Apto","Nombre Completo","Celular","ID","Ciudad","Total Huéspedes","Entrada","Salida","Acomp 1","Acomp 1 ID","Acomp 2","Acomp 2 ID","Acomp 3","Acomp 3 ID","Acomp 4","Acomp 4 ID","Acomp 5","Acomp 5 ID","Acomp 6","Acomp 6 ID","Comentario","Acepta Datos"];
-        const cabanaFilter = document.getElementById("cabanaFilter").value;
-        const sourceData = currentView === 'active' ? allRegistrations : allArchived;
-        const dataToExport = cabanaFilter ? sourceData.filter((r) => r.cabana === cabanaFilter) : sourceData;
-        const formatTimestamp = (timestamp) => { if (!timestamp) return ""; const date = new Date(timestamp.seconds * 1000); const day = String(date.getDate()).padStart(2,"0"); const month = String(date.getMonth()+1).padStart(2,"0"); const year = date.getFullYear(); const hours = String(date.getHours()).padStart(2,"0"); const minutes = String(date.getMinutes()).padStart(2,"0"); const seconds = String(date.getSeconds()).padStart(2,"0"); return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`; };
-        const formatDateTime = (date, time) => { if (!date) return ""; const [year, month, day] = date.split("-"); const formattedDate = `${day}.${month}.${year}`; return time && time !== "-" ? `${formattedDate} ${time}` : formattedDate; };
-        const formatID = (idType, idNumber) => { const type = idType ? idType.toUpperCase() : ""; const number = idNumber || ""; if (!type && !number) return ""; return `${type} ${number}`.trim(); };
-        const getFullName = (firstName, lastName) => `${(firstName || "").trim()} ${(lastName || "").trim()}`.trim();
-        let tsv = headers.join("\t") + "\n";
-        dataToExport.forEach((reg) => {
-          const row = [formatTimestamp(reg.timestamp),reg.cabana||"",getFullName(reg.nombre,reg.apellido),reg.celular||"",formatID(reg.tipoId,reg.numeroId),reg.ciudad||"",(reg.totalHuespedes||0)+1,formatDateTime(reg.fechaEntrada,reg.horaEntrada),formatDateTime(reg.fechaSalida,reg.horaSalida),getFullName(reg.acomp0Nombre,reg.acomp0Apellido),formatID(reg.acomp0TipoId,reg.acomp0NumId),getFullName(reg.acomp1Nombre,reg.acomp1Apellido),formatID(reg.acomp1TipoId,reg.acomp1NumId),getFullName(reg.acomp2Nombre,reg.acomp2Apellido),formatID(reg.acomp2TipoId,reg.acomp2NumId),getFullName(reg.acomp3Nombre,reg.acomp3Apellido),formatID(reg.acomp3TipoId,reg.acomp3NumId),getFullName(reg.acomp4Nombre,reg.acomp4Apellido),formatID(reg.acomp4TipoId,reg.acomp4NumId),getFullName(reg.acomp5Nombre,reg.acomp5Apellido),formatID(reg.acomp5TipoId,reg.acomp5NumId),(reg.comentario||"").replace(/\t/g," "),reg.consent?"Sí":"No"];
-          tsv += row.join("\t") + "\n";
-        });
-        const blob = new Blob([tsv], { type: "text/tab-separated-values;charset=utf-8;" });
-        const link = document.createElement("a"); const url = URL.createObjectURL(blob);
-        link.setAttribute("href", url); link.setAttribute("download", `registros_cabanas_${new Date().toISOString().split("T")[0]}.tsv`);
-        link.style.visibility = "hidden"; document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(url);
-      };
-
-      let currentCalendarCabin = '';
-
-      window.openCalendarModal = function(cabinName) {
-        currentCalendarCabin = cabinName;
-        const modal = document.getElementById('calendarModal');
-        document.getElementById('calendarTitle').textContent = `Calendario - Apto ${cabinName.slice(-1)}`;
-        renderScrollableCalendar();
-        modal.classList.add('show');
-        document.body.style.overflow = 'hidden';
-      };
-
-      window.closeCalendarModal = function() { document.getElementById('calendarModal').classList.remove('show'); document.body.style.overflow = ''; };
-
-      function renderScrollableCalendar() {
-        const container = document.getElementById('calendarScrollContainer');
-        container.innerHTML = '';
-        const today = new Date(); const currentYear = today.getFullYear(); const currentMonth = today.getMonth();
-        for (let monthOffset = currentMonth - 6; monthOffset <= currentMonth + 12; monthOffset++) { renderMonth(new Date(currentYear, monthOffset, 1), container); }
-        setTimeout(() => { const el = container.querySelector('.calendar-month-section[data-current="true"]'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
-      }
-
-      function renderMonth(date, container) {
-        const year = date.getFullYear(); const month = date.getMonth();
-        const today = new Date(); today.setHours(0,0,0,0);
-        const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-        const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
-        const monthSection = document.createElement('div'); monthSection.className = 'calendar-month-section';
-        if (isCurrentMonth) monthSection.setAttribute('data-current', 'true');
-        const monthTitle = document.createElement('h4'); monthTitle.className = 'calendar-month-title'; monthTitle.textContent = `${monthNames[month]} ${year}`; monthSection.appendChild(monthTitle);
-        const grid = document.createElement('div'); grid.className = 'calendar-grid';
-        ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].forEach(day => { const header = document.createElement('div'); header.className = 'calendar-day-header'; header.textContent = day; grid.appendChild(header); });
-        const firstDay = new Date(year, month, 1).getDay(); const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const reservations = currentView === 'active' ? allRegistrations : allArchived;
-        const cabinReservations = reservations.filter(r => r.cabana === currentCalendarCabin);
-        const guestColorMap = new Map();
-        const colorHexMap = {1:'#3b82f6',2:'#10b981',3:'#f59e0b',4:'#ec4899',5:'#8b5cf6',6:'#ef4444',7:'#14b8a6',8:'#f97316',9:'#06b6d4',10:'#84cc16',11:'#d946ef',12:'#0ea5e9'};
-        let colorIndex = 1;
-        cabinReservations.forEach(reservation => { const guestKey = `${reservation.nombre}-${reservation.apellido}-${reservation.fechaEntrada}`; if (!guestColorMap.has(guestKey)) { guestColorMap.set(guestKey, colorIndex); colorIndex = (colorIndex % 12) + 1; } });
-        const firstDayAdjusted = firstDay === 0 ? 6 : firstDay - 1;
-        for (let i = 0; i < firstDayAdjusted; i++) { const emptyDay = document.createElement('div'); emptyDay.className = 'calendar-day other-month'; emptyDay.style.visibility = 'hidden'; grid.appendChild(emptyDay); }
-        for (let i = 1; i <= daysInMonth; i++) {
-          const day = document.createElement('div'); day.className = 'calendar-day';
-          const currentDate = new Date(year, month, i); currentDate.setHours(0,0,0,0);
-          if (currentDate < today) day.classList.add('past');
-          const checkDate = new Date(year, month, i);
-          const reservationsForDay = cabinReservations.filter(r => { if (!r.fechaEntrada || !r.fechaSalida) return false; const entryDate = new Date(r.fechaEntrada + 'T00:00:00'); const exitDate = new Date(r.fechaSalida + 'T00:00:00'); return checkDate >= entryDate && checkDate <= exitDate; }).sort((a, b) => { const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`; const aIsCheckout = a.fechaSalida === dateStr; const bIsCheckout = b.fechaSalida === dateStr; if (aIsCheckout && !bIsCheckout) return -1; if (!aIsCheckout && bIsCheckout) return 1; return 0; });
-          let dayContent = `<span class="calendar-day-number">${i}</span>`;
-          if (reservationsForDay.length > 0) {
+      /* ── CALENDAR ── */
+      let currentCalendarCabin='';
+      window.openCalendarModal=function(cabin){ currentCalendarCabin=cabin; document.getElementById('calendarTitle').textContent=`Calendario — Apto ${cabin.slice(-1)}`; renderScrollableCalendar(); document.getElementById('calendarModal').classList.add('show'); document.body.style.overflow='hidden'; };
+      window.closeCalendarModal=function(){ document.getElementById('calendarModal').classList.remove('show'); document.body.style.overflow=''; };
+      function renderScrollableCalendar(){ const c=document.getElementById('calendarScrollContainer'); c.innerHTML=''; const today=new Date(); const cy=today.getFullYear(); const cm=today.getMonth(); for(let off=cm-6;off<=cm+12;off++) renderMonth(new Date(cy,off,1),c); setTimeout(()=>{ const el=c.querySelector('.calendar-month-section[data-current="true"]'); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); },100); }
+      function renderMonth(date,container){
+        const year=date.getFullYear(); const month=date.getMonth();
+        const today=new Date(); today.setHours(0,0,0,0);
+        const names=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+        const isCurrent=today.getFullYear()===year&&today.getMonth()===month;
+        const sec=document.createElement('div'); sec.className='calendar-month-section'; if(isCurrent) sec.setAttribute('data-current','true');
+        const title=document.createElement('h4'); title.className='calendar-month-title'; title.textContent=`${names[month]} ${year}`; sec.appendChild(title);
+        const grid=document.createElement('div'); grid.className='calendar-grid';
+        ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].forEach(d=>{ const h=document.createElement('div'); h.className='calendar-day-header'; h.textContent=d; grid.appendChild(h); });
+        const firstDay=new Date(year,month,1).getDay(); const dim=new Date(year,month+1,0).getDate();
+        const reservations=(currentView==='active'?allRegistrations:allArchived).filter(r=>r.cabana===currentCalendarCabin);
+        const cmap=new Map(); const hmap={1:'#3b82f6',2:'#10b981',3:'#f59e0b',4:'#ec4899',5:'#8b5cf6',6:'#ef4444',7:'#14b8a6',8:'#f97316',9:'#06b6d4',10:'#84cc16',11:'#d946ef',12:'#0ea5e9'};
+        let ci=1; reservations.forEach(r=>{ const k=`${r.nombre}-${r.apellido}-${r.fechaEntrada}`; if(!cmap.has(k)){ cmap.set(k,ci); ci=(ci%12)+1; } });
+        const fa=firstDay===0?6:firstDay-1;
+        for(let i=0;i<fa;i++){ const e=document.createElement('div'); e.className='calendar-day other-month'; e.style.visibility='hidden'; grid.appendChild(e); }
+        for(let i=1;i<=dim;i++){
+          const day=document.createElement('div'); day.className='calendar-day';
+          const cur=new Date(year,month,i); cur.setHours(0,0,0,0);
+          if(cur<today) day.classList.add('past');
+          const check=new Date(year,month,i);
+          const rfd=reservations.filter(r=>{ if(!r.fechaEntrada||!r.fechaSalida) return false; return check>=new Date(r.fechaEntrada+'T00:00:00')&&check<=new Date(r.fechaSalida+'T00:00:00'); });
+          let content=`<span class="calendar-day-number">${i}</span>`;
+          if(rfd.length>0){
             day.classList.add('reserved');
-            const formatPopupDate = (dateStr) => { if (!dateStr) return "N/A"; const [y,m,d] = dateStr.split("-"); return `${d}.${m}.${y}`; };
-            if (reservationsForDay.length === 1) {
-              const r = reservationsForDay[0]; const guestKey = `${r.nombre}-${r.apellido}-${r.fechaEntrada}`; const colorIdx = guestColorMap.get(guestKey);
-              const entryDate = new Date(r.fechaEntrada + 'T00:00:00'); const exitDate = new Date(r.fechaSalida + 'T00:00:00');
-              const isStart = checkDate.getTime() === entryDate.getTime(); const isEnd = checkDate.getTime() === exitDate.getTime(); const isSingle = isStart && isEnd;
-              if (isSingle) day.classList.add(`reservation-single-${colorIdx}`);
-              else if (isStart) day.classList.add(`reservation-start-${colorIdx}`);
-              else if (isEnd) day.classList.add(`reservation-end-${colorIdx}`);
-              else day.classList.add(`reservation-middle-${colorIdx}`);
-              dayContent += `<div class="reservation-popup">${r.nombre} ${r.apellido}<br><small>${formatPopupDate(r.fechaEntrada)}</small><br><small>${formatPopupDate(r.fechaSalida)}</small></div>`;
+            const fp=s=>{ if(!s) return "N/A"; const[y,m,d]=s.split("-"); return `${d}.${m}.${y}`; };
+            if(rfd.length===1){
+              const r=rfd[0]; const k=`${r.nombre}-${r.apellido}-${r.fechaEntrada}`; const idx=cmap.get(k);
+              const en=new Date(r.fechaEntrada+'T00:00:00'); const ex=new Date(r.fechaSalida+'T00:00:00');
+              const isS=check.getTime()===en.getTime(); const isE=check.getTime()===ex.getTime();
+              if(isS&&isE) day.classList.add(`reservation-single-${idx}`);
+              else if(isS) day.classList.add(`reservation-start-${idx}`);
+              else if(isE) day.classList.add(`reservation-end-${idx}`);
+              else day.classList.add(`reservation-middle-${idx}`);
+              content+=`<div class="reservation-popup">${r.nombre} ${r.apellido}<br><small>${fp(r.fechaEntrada)}</small><br><small>${fp(r.fechaSalida)}</small></div>`;
             } else {
-              const colors = reservationsForDay.map(r => { const guestKey = `${r.nombre}-${r.apellido}-${r.fechaEntrada}`; const idx = guestColorMap.get(guestKey); return colorHexMap[idx] || '#3b82f6'; }).slice(0, 3);
-              if (colors.length === 2) day.style.background = `linear-gradient(90deg, ${colors[0]} 0%, ${colors[0]} 50%, ${colors[1]} 50%, ${colors[1]} 100%)`;
-              else if (colors.length === 3) day.style.background = `linear-gradient(90deg, ${colors[0]} 0%, ${colors[0]} 33.33%, ${colors[1]} 33.33%, ${colors[1]} 66.66%, ${colors[2]} 66.66%, ${colors[2]} 100%)`;
-              else if (colors.length === 1) day.style.background = colors[0];
-              day.style.borderRadius = '8px';
-              let popupHtml = '<div class="reservation-popup">';
-              reservationsForDay.forEach((r, idx) => { popupHtml += `${r.nombre} ${r.apellido}<br><small>${formatPopupDate(r.fechaEntrada)}</small><br><small>${formatPopupDate(r.fechaSalida)}</small>${idx < reservationsForDay.length - 1 ? '<br><br>' : ''}`; });
-              popupHtml += '</div>'; dayContent += popupHtml;
+              const colors=rfd.slice(0,3).map(r=>hmap[cmap.get(`${r.nombre}-${r.apellido}-${r.fechaEntrada}`)]||'#3b82f6');
+              if(colors.length===2) day.style.background=`linear-gradient(90deg,${colors[0]} 50%,${colors[1]} 50%)`;
+              else if(colors.length>=3) day.style.background=`linear-gradient(90deg,${colors[0]} 33.33%,${colors[1]} 33.33%,${colors[1]} 66.66%,${colors[2]} 66.66%)`;
+              else day.style.background=colors[0];
+              day.style.borderRadius='8px';
+              let ph='<div class="reservation-popup">'; rfd.forEach((r,i)=>{ ph+=`${r.nombre} ${r.apellido}<br><small>${fp(r.fechaEntrada)}</small><br><small>${fp(r.fechaSalida)}</small>${i<rfd.length-1?'<br><br>':''}`; }); ph+='</div>'; content+=ph;
             }
-            day.addEventListener('click', function(e) { e.stopPropagation(); document.querySelectorAll('.calendar-day.show-popup').forEach(d => { if (d !== this) d.classList.remove('show-popup'); }); this.classList.toggle('show-popup'); });
+            day.addEventListener('click',function(e){ e.stopPropagation(); document.querySelectorAll('.calendar-day.show-popup').forEach(d=>{ if(d!==this) d.classList.remove('show-popup'); }); this.classList.toggle('show-popup'); });
           }
-          day.innerHTML = dayContent;
-          if (currentDate.getTime() === today.getTime()) day.classList.add('today');
+          day.innerHTML=content;
+          if(cur.getTime()===today.getTime()) day.classList.add('today');
           grid.appendChild(day);
         }
-        const totalCells = grid.children.length - 7; const remainingCells = 42 - totalCells;
-        for (let i = 1; i <= remainingCells; i++) { const day = document.createElement('div'); day.className = 'calendar-day other-month'; day.innerHTML = `<span class="calendar-day-number">${i}</span>`; grid.appendChild(day); }
-        monthSection.appendChild(grid); container.appendChild(monthSection);
+        const rem=42-(grid.children.length-7); for(let i=1;i<=rem;i++){ const d=document.createElement('div'); d.className='calendar-day other-month'; d.innerHTML=`<span class="calendar-day-number">${i}</span>`; grid.appendChild(d); }
+        sec.appendChild(grid); container.appendChild(sec);
       }
-
-      document.addEventListener('click', function(e) { if (!e.target.closest('.calendar-day.reserved')) { document.querySelectorAll('.calendar-day.show-popup').forEach(d => { d.classList.remove('show-popup'); }); } });
-      document.addEventListener('click', function(e) { const modal = document.getElementById('calendarModal'); if (e.target === modal) closeCalendarModal(); });
+      document.addEventListener('click',e=>{ if(!e.target.closest('.calendar-day.reserved')) document.querySelectorAll('.calendar-day.show-popup').forEach(d=>d.classList.remove('show-popup')); });
+      document.addEventListener('click',e=>{ if(e.target===document.getElementById('calendarModal')) closeCalendarModal(); });
     </script>
   </body>
 </html>
