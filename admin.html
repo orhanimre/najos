@@ -714,13 +714,9 @@
         spacerRafId = requestAnimationFrame(tick);
       }
 
-      // Larger threshold on mobile to avoid false triggers from browser toolbar movement
-      function getShrinkThreshold() {
-        return window.innerWidth < 769 ? 80 : 50;
-      }
-
       window.addEventListener('scroll', () => {
-        const shrink = window.scrollY > getShrinkThreshold();
+        if (window.innerWidth < 769) return; // mobile: no shrink, no shake
+        const shrink = window.scrollY > 50;
         if (shrink === isShrunk) return;
         isShrunk = shrink;
         adminHeader.classList.toggle('scrolled', shrink);
@@ -728,10 +724,16 @@
       }, { passive: true });
 
       window.addEventListener('resize', () => {
-        const shrink = window.scrollY > getShrinkThreshold();
-        if (shrink === isShrunk) return;
-        isShrunk = shrink;
-        adminHeader.classList.toggle('scrolled', shrink);
+        if (window.innerWidth < 769) {
+          adminHeader.classList.remove('scrolled');
+          isShrunk = false;
+        } else {
+          const shrink = window.scrollY > 50;
+          if (shrink !== isShrunk) {
+            isShrunk = shrink;
+            adminHeader.classList.toggle('scrolled', shrink);
+          }
+        }
         updateHeaderSpacer();
       });
 
