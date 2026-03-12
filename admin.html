@@ -716,7 +716,10 @@
 
       window.addEventListener('scroll', () => {
         if (window.innerWidth < 769) return; // mobile: no shrink, no shake
-        const shrink = window.scrollY > 50;
+        // Clamp scrollY to valid range — prevents overscroll bounce at top/bottom
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const clampedY = Math.max(0, Math.min(window.scrollY, maxScroll));
+        const shrink = clampedY > 50;
         if (shrink === isShrunk) return;
         isShrunk = shrink;
         adminHeader.classList.toggle('scrolled', shrink);
