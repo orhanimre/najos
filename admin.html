@@ -201,24 +201,29 @@
         padding-top: 20px; /* spacer div handles the header offset */
       }
 
-      /* Spacer that mirrors header height exactly via CSS — no JS during scroll */
+      /* Spacer is always full height — content shifts via transform, not layout */
       #header-spacer {
-        /* Mobile expanded: 10+10 padding + 54 inner + 6 margin + 52 controls-row = 132 */
-        height: 132px;
-        transition: height 0.3s ease;
-      }
-      body.header-scrolled #header-spacer {
-        /* Mobile scrolled: 4+4 padding + 32 inner = 40 */
-        height: 40px;
+        height: 132px; /* Mobile expanded height — never changes */
+        flex-shrink: 0;
       }
       @media (min-width: 769px) {
-        #header-spacer {
-          /* Desktop expanded: 10+10 padding + 54 inner + 6 margin + 48 bottom-row = 128 */
-          height: 128px;
-        }
-        body.header-scrolled #header-spacer {
-          /* Desktop scrolled: 4+4 padding + 32 inner = 40 */
-          height: 40px;
+        #header-spacer { height: 128px; } /* Desktop expanded height */
+      }
+
+      /* Content slides up when header shrinks, down when it expands */
+      /* transform is GPU-accelerated — zero reflow, zero shake */
+      #main-content-wrap {
+        transition: transform 0.3s ease;
+        will-change: transform;
+      }
+      body.header-scrolled #main-content-wrap {
+        /* Mobile: spacer(132) - scrolled-header(40) = 92px up */
+        transform: translateY(-92px);
+      }
+      @media (min-width: 769px) {
+        body.header-scrolled #main-content-wrap {
+          /* Desktop: spacer(128) - scrolled-header(40) = 88px up */
+          transform: translateY(-88px);
         }
       }
       }
@@ -531,6 +536,7 @@
 
       <div class="container" id="mainContainer">
         <div id="header-spacer"></div>
+        <div id="main-content-wrap">
 
         <div class="stats-grid">
           <div class="stat-card total total-card">
@@ -619,7 +625,8 @@
           </div>
           <div id="noData" class="no-data" style="display:none">No hay registros disponibles con los filtros seleccionados</div>
         </div>
-      </div>
+        </div><!-- /#main-content-wrap -->
+      </div><!-- /#mainContainer -->
     </div><!-- /#dashboardScreen -->
 
     <!-- Detail Modal -->
