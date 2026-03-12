@@ -24,12 +24,9 @@
 
       /* ══════════════════════════════════════════
          HEADER — fixed, shrinks on scroll
-         Same technique as index.html:
-           • min-height on .header-inner collapses
-           • logo shrinks via max-width
-           • subtitle hides via max-height + opacity
-           • right controls hide via max-width + opacity (mobile only)
-           • desktop bottom row hides via max-height + opacity
+         Layout:
+           Mobile  → Row1: logo+title | Row2: settings+vista (collapses on scroll)
+           Desktop → Row1: logo+title+vista | Row2: toggle+user (collapses on scroll)
          ══════════════════════════════════════════ */
       .header {
         background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
@@ -46,17 +43,17 @@
         box-shadow: 0 2px 8px rgba(0,0,0,0.15);
       }
 
-      /* Row 1: logo + title + controls */
+      /* ── Row 1: logo + title (+ vista on desktop) ── */
       .header-inner {
         max-width: 1400px;
         margin: 0 auto;
         display: flex;
         align-items: center;
         gap: 12px;
-        min-height: 58px;
+        min-height: 54px;
         transition: min-height 0.3s ease;
       }
-      .header.scrolled .header-inner { min-height: 34px; }
+      .header.scrolled .header-inner { min-height: 32px; }
 
       /* Logo */
       .admin-logo-link { display:inline-block; text-decoration:none; flex-shrink:0; }
@@ -72,59 +69,17 @@
         font-size: 19px; font-weight:700; line-height:1.2;
         transition: font-size 0.3s ease;
       }
-      .header.scrolled .header-title h1 { font-size: 13px; }
+      .header.scrolled .header-title h1 { font-size: 14px; }
 
       .header-subtitle {
         font-size: 12px; font-weight:300; opacity:0.9;
-        max-height: 24px; overflow:hidden;
+        max-height: 22px; overflow:hidden;
         transition: max-height 0.3s ease, opacity 0.25s ease;
       }
       .header.scrolled .header-subtitle { max-height:0; opacity:0; }
 
-      /* Right controls wrapper */
-      .header-controls {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex-shrink: 0;
-        overflow: hidden;
-        transition: max-width 0.3s ease, opacity 0.25s ease;
-      }
-
-      /* On mobile: hide controls when scrolled */
-      @media (max-width: 768px) {
-        .header-controls {
-          max-width: 280px;
-          transition: max-width 0.3s ease, opacity 0.25s ease;
-        }
-        .header.scrolled .header-controls {
-          max-width: 0;
-          opacity: 0;
-          pointer-events: none;
-        }
-      }
-
-      /* Settings button — mobile only */
-      .settings-btn {
-        background: rgba(255,255,255,0.15);
-        border: 2px solid rgba(255,255,255,0.3);
-        color: white;
-        width: 40px; height: 40px;
-        border-radius: 10px;
-        cursor: pointer; font-size: 20px;
-        display: none; /* shown only on mobile via media query */
-        align-items: center; justify-content: center;
-        flex-shrink: 0;
-        transition: all 0.3s ease;
-      }
-      .settings-btn:hover { background:rgba(255,255,255,0.25); transform:rotate(90deg); }
-
-      @media (max-width: 768px) {
-        .settings-btn { display:flex; }
-      }
-
-      /* Vista dropdown */
-      .nav-dropdown-container { display:flex; align-items:center; gap:6px; }
+      /* Vista dropdown (shown in row 1 on desktop, row 2 on mobile) */
+      .nav-dropdown-container { display:flex; align-items:center; gap:6px; flex-shrink:0; }
       .nav-dropdown-label { font-size:12px; font-weight:600; color:white; white-space:nowrap; }
       .nav-dropdown {
         padding: 7px 32px 7px 12px;
@@ -137,34 +92,71 @@
       }
       .nav-dropdown:focus { outline:none; }
 
-      /* Row 2 (desktop): email toggle + user — collapses on scroll */
+      /* Settings button */
+      .settings-btn {
+        background: rgba(255,255,255,0.15);
+        border: 2px solid rgba(255,255,255,0.3);
+        color: white;
+        width: 40px; height: 40px;
+        border-radius: 10px;
+        cursor: pointer; font-size: 20px;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+      }
+      .settings-btn:hover { background:rgba(255,255,255,0.25); transform:rotate(90deg); }
+
+      /* ── Row 2 MOBILE: settings + vista — collapses on scroll ── */
+      .mobile-controls-row {
+        display: flex; /* mobile only */
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        max-width: 1400px;
+        margin: 6px auto 0;
+        max-height: 52px;
+        overflow: hidden;
+        transition: max-height 0.3s ease, opacity 0.25s ease, margin-top 0.3s ease;
+      }
+      .header.scrolled .mobile-controls-row {
+        max-height: 0;
+        opacity: 0;
+        margin-top: 0;
+        pointer-events: none;
+      }
+
+      /* ── Row 2 DESKTOP: email toggle + user — collapses on scroll ── */
       .desktop-bottom-row {
-        display: none; /* shown on desktop via media query */
+        display: none;
         align-items: center;
         gap: 12px;
         max-width: 1400px;
-        margin: 0 auto;
+        margin: 6px auto 0;
         max-height: 48px;
         overflow: hidden;
-        padding-top: 6px;
-        transition: max-height 0.3s ease, opacity 0.25s ease, padding-top 0.3s ease;
+        transition: max-height 0.3s ease, opacity 0.25s ease, margin-top 0.3s ease;
       }
       .header.scrolled .desktop-bottom-row {
         max-height: 0;
         opacity: 0;
-        padding-top: 0;
+        margin-top: 0;
         pointer-events: none;
       }
 
+      /* Mobile: show mobile row, hide desktop row and inline vista */
+      @media (max-width: 768px) {
+        .mobile-controls-row { display: flex; }
+        .desktop-bottom-row { display: none !important; }
+        /* Hide vista from row 1 on mobile — it lives in row 2 */
+        .header-inner .nav-dropdown-container { display: none; }
+      }
+
+      /* Desktop: hide mobile row, show desktop row and inline vista */
       @media (min-width: 769px) {
-        .desktop-bottom-row { display:flex; }
-        .settings-btn { display:none !important; }
-        /* On desktop, controls never hide */
-        .header.scrolled .header-controls {
-          max-width: unset !important;
-          opacity: 1 !important;
-          pointer-events: auto !important;
-        }
+        .mobile-controls-row { display: none !important; }
+        .desktop-bottom-row { display: flex; }
+        .settings-btn { display: none !important; }
+        .header-inner .nav-dropdown-container { display: flex; }
       }
 
       .email-toggle-container {
@@ -466,7 +458,7 @@
 
       <div class="header" id="adminHeader">
 
-        <!-- Row 1: logo · title · controls -->
+        <!-- Row 1: logo · title · (vista on desktop) -->
         <div class="header-inner">
           <a href="/" class="admin-logo-link">
             <img src="https://i.imgur.com/L8KoquC.jpg" alt="Aptos Najos" class="admin-logo">
@@ -477,19 +469,29 @@
             <div class="header-subtitle">Apart Hotel Najos — Registros de Huéspedes</div>
           </div>
 
-          <div class="header-controls">
-            <button id="settingsBtn" class="settings-btn" onclick="openSettingsModal()">⚙️</button>
-            <div class="nav-dropdown-container">
-              <label class="nav-dropdown-label">Vista:</label>
-              <select id="viewSelector" class="nav-dropdown" onchange="switchViewFromDropdown()">
-                <option value="active">📋 Activos</option>
-                <option value="archive">📦 Archivo</option>
-              </select>
-            </div>
+          <!-- Vista visible in row 1 on desktop only (hidden on mobile via CSS) -->
+          <div class="nav-dropdown-container">
+            <label class="nav-dropdown-label">Vista:</label>
+            <select id="viewSelector" class="nav-dropdown" onchange="switchViewFromDropdown()">
+              <option value="active">📋 Activos</option>
+              <option value="archive">📦 Archivo</option>
+            </select>
           </div>
         </div>
 
-        <!-- Row 2 (desktop only): email toggle + user — collapses on scroll -->
+        <!-- Row 2 MOBILE: ⚙️ settings + Vista dropdown — collapses on scroll -->
+        <div class="mobile-controls-row">
+          <button id="settingsBtn" class="settings-btn" onclick="openSettingsModal()">⚙️</button>
+          <div class="nav-dropdown-container">
+            <label class="nav-dropdown-label">Vista:</label>
+            <select id="viewSelectorMobile" class="nav-dropdown" onchange="switchViewFromDropdownMobile()">
+              <option value="active">📋 Activos</option>
+              <option value="archive">📦 Archivo</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 2 DESKTOP: email toggle + user — collapses on scroll -->
         <div class="desktop-bottom-row">
           <div class="email-toggle-container">
             <span class="email-toggle-label">📧 Correo</span>
@@ -795,12 +797,14 @@
       window.switchView = function(view) {
         if(isDataLoading||currentView===view) return;
         isDataLoading=true; currentView=view;
-        const dd=document.getElementById('viewSelector'); if(dd) dd.value=view;
+        // sync both dropdowns
+        ['viewSelector','viewSelectorMobile','viewSelectorModal'].forEach(id => { const el=document.getElementById(id); if(el) el.value=view; });
         document.getElementById("tableBody").innerHTML='';
         document.getElementById("loading").style.display="block";
         setTimeout(()=>loadData(),50);
       };
       window.switchViewFromDropdown = function() { const dd=document.getElementById('viewSelector'); if(dd) switchView(dd.value); };
+      window.switchViewFromDropdownMobile = function() { const dd=document.getElementById('viewSelectorMobile'); if(dd) switchView(dd.value); };
 
       function updateStats() {
         const src=currentView==='active'?allRegistrations:allArchived;
