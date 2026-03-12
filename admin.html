@@ -719,27 +719,32 @@
       }
 
       let rafId = null;
+      let isTransitioning = false;
+
       function trackHeaderHeight() {
+        if (!isTransitioning) return;
         const h = adminHeader.getBoundingClientRect().height;
         document.getElementById('mainContainer').style.paddingTop = (h + 16) + 'px';
         rafId = requestAnimationFrame(trackHeaderHeight);
       }
       function stopTracking() {
+        isTransitioning = false;
         if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+        // Set final resting padding once transition is done
+        adjustPadding();
       }
 
       window.addEventListener('scroll', () => {
         const shouldShrink = window.scrollY > 50;
         const isScrolled = adminHeader.classList.contains('scrolled');
         if (shouldShrink && !isScrolled) {
-          adminHeader.classList.add('scrolled');
           stopTracking();
+          adminHeader.classList.add('scrolled');
         } else if (!shouldShrink && isScrolled) {
           adminHeader.classList.remove('scrolled');
-          // Track header height every frame while it transitions back to full size
-          stopTracking();
+          isTransitioning = true;
+          if (rafId) cancelAnimationFrame(rafId);
           rafId = requestAnimationFrame(trackHeaderHeight);
-          // Stop after transition completes (300ms CSS + small buffer)
           setTimeout(stopTracking, 350);
         }
       }, { passive: true });
