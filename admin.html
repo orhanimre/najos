@@ -704,16 +704,23 @@
          just toggle .scrolled
          CSS does the rest
          ══════════════════════ */
+      const adminHeader = document.getElementById('adminHeader');
+
+      // Padding is set from the FULL (unscrolled) header height only.
+      // It must never be called inside the scroll handler — that causes
+      // a reflow loop: header shrinks → content shifts → scrollY changes → repeat.
       function adjustPadding() {
-        const h = document.getElementById('adminHeader');
-        const c = document.getElementById('mainContainer');
-        if (h && c) c.style.paddingTop = (h.getBoundingClientRect().height + 16) + 'px';
+        // Temporarily measure full height (remove scrolled if present)
+        const wasScrolled = adminHeader.classList.contains('scrolled');
+        if (wasScrolled) adminHeader.classList.remove('scrolled');
+        const fullHeight = adminHeader.getBoundingClientRect().height;
+        if (wasScrolled) adminHeader.classList.add('scrolled');
+        document.getElementById('mainContainer').style.paddingTop = (fullHeight + 16) + 'px';
       }
 
-      const adminHeader = document.getElementById('adminHeader');
       window.addEventListener('scroll', () => {
         adminHeader.classList.toggle('scrolled', window.scrollY > 50);
-        adjustPadding();
+        // ← NO adjustPadding() here
       }, { passive: true });
 
       window.addEventListener('load', adjustPadding);
@@ -726,7 +733,6 @@
           document.getElementById("dashboardScreen").style.display = "block";
           document.getElementById("userEmail").textContent = user.email;
           loadEmailSettings(); loadData();
-          setTimeout(adjustPadding, 100);
         } else {
           document.getElementById("loginScreen").style.display = "flex";
           document.getElementById("dashboardScreen").style.display = "none";
