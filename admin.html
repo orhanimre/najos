@@ -86,14 +86,17 @@
 
       /* ── HEADER ── */
       .header {
-        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-        color: white;
-        padding: 12px 32px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  color: white;
+  padding: 12px 32px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  will-change: transform;
+}
 
       .header-content {
         max-width: 1400px;
@@ -169,10 +172,11 @@
 
       /* Container */
       .container {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 20px;
-      }
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-top: 90px;
+}
 
       /* Stats Grid */
       .stats-grid {
@@ -1744,7 +1748,7 @@ tbody tr.clickable:active { background: #edf2f7; }
         const delta = currentY - lastScrollY;
 
         // Ignore tiny jitters under 6px
-        if (Math.abs(delta) < 6) return;
+        if (Math.abs(delta) < 12) return;
 
         if (delta > 0 && currentY > 60) {
           adminHeader.classList.add('scrolled');
