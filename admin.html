@@ -22,12 +22,6 @@
       .google-btn { background:white; border:2px solid #e2e8f0; padding:16px 28px; border-radius:12px; cursor:pointer; font-size:16px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:12px; width:100%; transition:all 0.3s; }
       .google-btn:hover { border-color:#14b8a6; transform:translateY(-2px); box-shadow:0 8px 16px rgba(0,0,0,0.15); }
 
-      /* ══════════════════════════════════════════
-         HEADER — fixed, shrinks on scroll
-         Layout:
-           Mobile  → Row1: logo+title | Row2: settings+vista (collapses on scroll)
-           Desktop → Row1: logo+title+vista | Row2: toggle+user (collapses on scroll)
-         ══════════════════════════════════════════ */
       .header {
         background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
         color: white;
@@ -43,7 +37,6 @@
         box-shadow: 0 2px 8px rgba(0,0,0,0.15);
       }
 
-      /* ── Row 1: logo + title (+ vista on desktop) ── */
       .header-inner {
         max-width: 1400px;
         margin: 0 auto;
@@ -55,7 +48,6 @@
       }
       .header.scrolled .header-inner { min-height: 32px; }
 
-      /* Logo */
       .admin-logo-link { display:inline-block; text-decoration:none; flex-shrink:0; }
       .admin-logo {
         max-width: 52px; height:auto; border-radius:8px; display:block;
@@ -63,7 +55,6 @@
       }
       .header.scrolled .admin-logo { max-width: 30px; }
 
-      /* Title */
       .header-title { flex:1; text-align:center; overflow:hidden; }
       .header-title h1 {
         font-size: 19px; font-weight:700; line-height:1.2;
@@ -78,7 +69,6 @@
       }
       .header.scrolled .header-subtitle { max-height:0; opacity:0; }
 
-      /* Vista dropdown (shown in row 1 on desktop, row 2 on mobile) */
       .nav-dropdown-container { display:flex; align-items:center; gap:6px; flex-shrink:0; }
       .nav-dropdown-label { font-size:12px; font-weight:600; color:white; white-space:nowrap; }
       .nav-dropdown {
@@ -92,7 +82,6 @@
       }
       .nav-dropdown:focus { outline:none; }
 
-      /* Settings button */
       .settings-btn {
         background: rgba(255,255,255,0.15);
         border: 2px solid rgba(255,255,255,0.3);
@@ -106,9 +95,8 @@
       }
       .settings-btn:hover { background:rgba(255,255,255,0.25); transform:rotate(90deg); }
 
-      /* ── Row 2 MOBILE: settings + vista — collapses on scroll ── */
       .mobile-controls-row {
-        display: flex; /* mobile only */
+        display: flex;
         align-items: center;
         justify-content: center;
         gap: 10px;
@@ -125,7 +113,6 @@
         pointer-events: none;
       }
 
-      /* ── Row 2 DESKTOP: email toggle + user — collapses on scroll ── */
       .desktop-bottom-row {
         display: none;
         align-items: center;
@@ -143,15 +130,12 @@
         pointer-events: none;
       }
 
-      /* Mobile: show mobile row, hide desktop row and inline vista */
       @media (max-width: 768px) {
         .mobile-controls-row { display: flex; }
         .desktop-bottom-row { display: none !important; }
-        /* Hide vista from row 1 on mobile — it lives in row 2 */
         .header-inner .nav-dropdown-container { display: none; }
       }
 
-      /* Desktop: hide mobile row, show desktop row and inline vista */
       @media (min-width: 769px) {
         .mobile-controls-row { display: none !important; }
         .desktop-bottom-row { display: flex; }
@@ -198,34 +182,11 @@
         max-width: 1400px;
         margin: 0 auto;
         padding: 20px;
-        padding-top: 20px; /* spacer div handles the header offset */
       }
 
-      /* Spacer is always full height — content shifts via transform, not layout */
+      /* Spacer height is set dynamically by JS — syncs perfectly with real header height */
       #header-spacer {
-        height: 132px; /* Mobile expanded height — never changes */
-        flex-shrink: 0;
-      }
-      @media (min-width: 769px) {
-        #header-spacer { height: 128px; } /* Desktop expanded height */
-      }
-
-      /* Content slides up when header shrinks, down when it expands */
-      /* transform is GPU-accelerated — zero reflow, zero shake */
-      #main-content-wrap {
-        transition: transform 0.3s ease;
-        will-change: transform;
-      }
-      body.header-scrolled #main-content-wrap {
-        /* Mobile: spacer(132) - scrolled-header(40) = 92px up */
-        transform: translateY(-92px);
-      }
-      @media (min-width: 769px) {
-        body.header-scrolled #main-content-wrap {
-          /* Desktop: spacer(128) - scrolled-header(40) = 88px up */
-          transform: translateY(-88px);
-        }
-      }
+        transition: height 0.3s ease;
       }
 
       /* ── STATS ── */
@@ -536,7 +497,6 @@
 
       <div class="container" id="mainContainer">
         <div id="header-spacer"></div>
-        <div id="main-content-wrap">
 
         <div class="stats-grid">
           <div class="stat-card total total-card">
@@ -625,7 +585,6 @@
           </div>
           <div id="noData" class="no-data" style="display:none">No hay registros disponibles con los filtros seleccionados</div>
         </div>
-        </div><!-- /#main-content-wrap -->
       </div><!-- /#mainContainer -->
     </div><!-- /#dashboardScreen -->
 
@@ -728,26 +687,33 @@
       let allRegistrations = [], allArchived = [], currentView = 'active', isDataLoading = false;
       window.db = db; window.doc = doc; window.deleteDoc = deleteDoc;
 
-      /* ══════════════════════
-         HEADER SHRINK — same
-         logic as index.html:
-         just toggle .scrolled
-         CSS does the rest
-         ══════════════════════ */
+      /* ══════════════════════════════════════════
+         HEADER SHRINK — no transforms, no shake.
+         The spacer height is measured from the
+         real header on every scroll/resize event
+         so content always stays in perfect sync.
+         ══════════════════════════════════════════ */
       const adminHeader = document.getElementById('adminHeader');
+      const headerSpacer = document.getElementById('header-spacer');
+
+      function updateHeaderSpacer() {
+        headerSpacer.style.height = adminHeader.offsetHeight + 'px';
+      }
 
       window.addEventListener('scroll', () => {
         const shrink = window.scrollY > 50;
         adminHeader.classList.toggle('scrolled', shrink);
-        document.body.classList.toggle('header-scrolled', shrink);
+        updateHeaderSpacer();
       }, { passive: true });
 
       window.addEventListener('resize', () => {
-        // Re-check state on resize in case breakpoint changed
         const shrink = window.scrollY > 50;
         adminHeader.classList.toggle('scrolled', shrink);
-        document.body.classList.toggle('header-scrolled', shrink);
+        updateHeaderSpacer();
       });
+
+      // Set correct height before any scrolling happens
+      updateHeaderSpacer();
 
       /* ── AUTH ── */
       onAuthStateChanged(auth, user => {
@@ -755,6 +721,8 @@
           document.getElementById("loginScreen").style.display = "none";
           document.getElementById("dashboardScreen").style.display = "block";
           document.getElementById("userEmail").textContent = user.email;
+          // Re-measure spacer after dashboard becomes visible
+          requestAnimationFrame(updateHeaderSpacer);
           loadEmailSettings(); loadData();
         } else {
           document.getElementById("loginScreen").style.display = "flex";
@@ -826,7 +794,6 @@
       window.switchView = function(view) {
         if(isDataLoading||currentView===view) return;
         isDataLoading=true; currentView=view;
-        // sync both dropdowns
         ['viewSelector','viewSelectorMobile','viewSelectorModal'].forEach(id => { const el=document.getElementById(id); if(el) el.value=view; });
         document.getElementById("tableBody").innerHTML='';
         document.getElementById("loading").style.display="block";
