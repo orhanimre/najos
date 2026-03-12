@@ -93,13 +93,10 @@
         position: sticky;
         top: 0;
         z-index: 100;
-        transition: padding 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      /* Scrolled state — applied on mobile via JS */
-      .header.scrolled {
-        padding: 6px 32px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        /* GPU-accelerated slide — no layout shift, no feedback loop */
+        transform: translateY(0);
+        transition: transform 0.3s ease;
+        will-change: transform;
       }
 
       .header-content {
@@ -110,18 +107,14 @@
         gap: 16px;
       }
 
-      /* Logo */
       .header-logo {
         flex-shrink: 0;
         margin-top: 4px;
-        transition: margin-top 0.3s ease;
       }
-      .header.scrolled .header-logo { margin-top: 0; }
 
       .header-title {
         flex: 1;
         text-align: center;
-        transition: all 0.3s ease;
       }
 
       /* Mobile responsive styles */
@@ -131,71 +124,23 @@
           align-items: center;
           gap: 8px;
         }
-        
+
         .header-logo {
           margin-top: 0;
           align-self: flex-start;
         }
-        
+
         .header-title {
           text-align: center;
         }
-        
+
         .admin-logo {
           max-width: 50px;
-          transition: max-width 0.3s ease;
         }
 
-        .header.scrolled .admin-logo {
-          max-width: 36px;
-        }
-
-        /* Hide subtitle on scroll */
-        .header-title p {
-          transition: opacity 0.3s ease, max-height 0.3s ease;
-          max-height: 30px;
-          overflow: hidden;
-        }
-        .header.scrolled .header-title p {
-          opacity: 0;
-          max-height: 0;
-        }
-
-        /* Shrink title on scroll */
-        .header-title h1 {
-          transition: font-size 0.3s ease;
-        }
-        .header.scrolled .header-title h1 {
-          font-size: 15px !important;
-          margin-bottom: 0 !important;
-        }
-
-        /* Shrink controls gap */
-        .header-controls {
-          transition: gap 0.3s ease;
-        }
-        .header.scrolled .header-controls {
-          gap: 6px;
-        }
-
-        /* Shrink settings button */
-        .settings-btn {
-          transition: width 0.3s ease, height 0.3s ease, font-size 0.3s ease;
-        }
-        .header.scrolled .settings-btn {
-          width: 36px;
-          height: 36px;
-          font-size: 18px;
-        }
-
-        /* Shrink dropdown */
-        .nav-dropdown {
-          transition: padding 0.3s ease, font-size 0.3s ease;
-        }
-        .header.scrolled .nav-dropdown {
-          padding: 8px 12px;
-          font-size: 12px;
-          padding-right: 32px;
+        /* Slide header off-screen when scrolling down — no layout shift */
+        .header.scrolled {
+          transform: translateY(-100%);
         }
       }
 
@@ -1765,26 +1710,39 @@ tbody tr.clickable:active { background: #edf2f7; }
       window.doc = doc;
       window.deleteDoc = deleteDoc;
 
-      // ── MOBILE SCROLL-DIRECTION HEADER SHRINK ──
+      // ── MOBILE HEADER: slide out on scroll-down, slide in on scroll-up ──
       const adminHeader = document.getElementById('adminHeader');
       let lastScrollY = window.scrollY;
+      let ticking = false;
 
       window.addEventListener('scroll', () => {
-        const isMobile = window.innerWidth <= 768;
-        const currentY = window.scrollY;
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            const isMobile = window.innerWidth <= 768;
+            const currentY = window.scrollY;
+            const delta = currentY - lastScrollY;
 
-        if (isMobile) {
-          if (currentY > lastScrollY && currentY > 60) {
-            adminHeader.classList.add('scrolled');
-          } else if (currentY < lastScrollY) {
-            adminHeader.classList.remove('scrolled');
-          }
-        } else {
-          // Desktop: no shrink behaviour needed
-          adminHeader.classList.remove('scrolled');
+            if (isMobile) {
+              // Only act when scroll movement is intentional (>4px)
+              if (Math.abs(delta) > 4) {
+                if (delta > 0 && currentY > 80) {
+                  // Scrolling DOWN past 80px → hide header
+                  adminHeader.classList.add('scrolled');
+                } else if (delta < 0) {
+                  // Scrolling UP → show header
+                  adminHeader.classList.remove('scrolled');
+                }
+                lastScrollY = currentY;
+              }
+            } else {
+              adminHeader.classList.remove('scrolled');
+              lastScrollY = currentY;
+            }
+
+            ticking = false;
+          });
+          ticking = true;
         }
-
-        lastScrollY = currentY;
       });
 
       window.syncAvailabilityCalendar = async function() {
