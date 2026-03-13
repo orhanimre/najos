@@ -301,7 +301,13 @@
       .delete-btn { background:linear-gradient(135deg,#f56565,#c53030); color:white; border:none; padding:8px 16px; border-radius:8px; cursor:pointer; font-weight:600; font-size:13px; transition:all 0.3s; }
       .delete-btn:hover { transform:translateY(-2px); box-shadow:0 8px 16px rgba(245,101,101,0.3); }
       .delete-btn:active { transform:translateY(0); }
-      @media (max-width:767px) { .delete-btn { width:40px; height:40px; padding:0; border-radius:10px; font-size:18px; display:flex; align-items:center; justify-content:center; } }
+      .edit-btn { background:linear-gradient(135deg,#3b82f6,#1d4ed8); color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:600; font-size:13px; transition:all 0.3s; margin-right:6px; }
+      .edit-btn:hover { transform:translateY(-2px); box-shadow:0 8px 16px rgba(59,130,246,0.3); }
+      .edit-btn:active { transform:translateY(0); }
+      @media (max-width:767px) { 
+        .delete-btn { width:40px; height:40px; padding:0; border-radius:10px; font-size:18px; display:flex; align-items:center; justify-content:center; }
+        .edit-btn { width:40px; height:40px; padding:0; border-radius:10px; font-size:16px; display:flex; align-items:center; justify-content:center; margin-right:4px; }
+      }
       .loading, .no-data { text-align:center; padding:60px 20px; color:#718096; font-size:15px; }
 
       /* ── MODALS ── */
@@ -320,6 +326,50 @@
       .detail-actions { padding:16px 20px; background:#f9fafb; border-radius:0 0 20px 20px; border-top:1px solid #e5e7eb; }
       .detail-actions .delete-btn { background:linear-gradient(135deg,#ef4444,#dc2626); color:white; border:none; padding:14px 24px; border-radius:12px; cursor:pointer; font-weight:700; font-size:15px; transition:all 0.3s; width:100%; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:0 4px 12px rgba(239,68,68,0.3); }
       .detail-actions .delete-btn:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(239,68,68,0.4); }
+
+      /* Edit Modal Styles */
+      .edit-body { padding:24px; max-height:60vh; overflow-y:auto; }
+      .edit-section { margin-bottom:24px; }
+      .edit-section:last-child { margin-bottom:0; }
+      .edit-section-title { font-size:14px; font-weight:700; color:#1f2937; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+      .edit-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+      .edit-group { display:flex; flex-direction:column; gap:6px; }
+      .edit-group.full-width { grid-column:1/-1; }
+      .edit-group label { font-size:12px; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.5px; }
+      .edit-input { 
+        padding:12px 16px; 
+        border:2px solid #e5e7eb; 
+        border-radius:10px; 
+        font-size:14px; 
+        background:#fafafa; 
+        transition:all 0.3s; 
+        font-family:inherit;
+      }
+      .edit-input:focus { 
+        outline:none; 
+        border-color:#3b82f6; 
+        background:white; 
+        box-shadow:0 0 0 3px rgba(59,130,246,0.1); 
+      }
+      .confirm-btn { 
+        flex:1; 
+        padding:14px 20px; 
+        border:none; 
+        border-radius:12px; 
+        font-size:15px; 
+        font-weight:700; 
+        cursor:pointer; 
+        transition:all 0.3s; 
+      }
+      .confirm-btn-cancel { background:#f3f4f6; color:#4b5563; }
+      .confirm-btn-cancel:hover { background:#e5e7eb; }
+      .confirm-btn-delete { background:linear-gradient(135deg,#3b82f6,#1d4ed8); color:white; box-shadow:0 4px 12px rgba(59,130,246,0.3); }
+      .confirm-btn-delete:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(59,130,246,0.4); }
+
+      @media (max-width:767px) {
+        .edit-row { grid-template-columns:1fr; gap:12px; }
+        .edit-body { padding:20px; }
+      }
 
       .confirm-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:10000; padding:20px; align-items:center; justify-content:center; }
       .confirm-modal.show { display:flex; }
@@ -615,6 +665,107 @@
       </div>
     </div>
 
+    <!-- Edit Modal -->
+    <div id="editModal" class="detail-modal">
+      <div class="detail-content">
+        <div class="detail-header">
+          <h3>✏️ Editar Registro</h3>
+          <button class="close-modal" onclick="closeEditModal()">✕</button>
+        </div>
+        <div class="edit-body">
+          <form id="editForm">
+            <div class="edit-section">
+              <div class="edit-section-title">📅 Información de Estadía</div>
+              <div class="edit-row">
+                <div class="edit-group">
+                  <label>Apto</label>
+                  <select id="editCabana" class="edit-input">
+                    <option value="Apto Najos-2">Apto 2</option>
+                    <option value="Apto Najos-3">Apto 3</option>
+                    <option value="Apto Najos-4">Apto 4</option>
+                  </select>
+                </div>
+                <div class="edit-group">
+                  <label>Total Huéspedes</label>
+                  <input type="number" id="editTotalHuespedes" class="edit-input" min="0" max="6" />
+                </div>
+              </div>
+              <div class="edit-row">
+                <div class="edit-group">
+                  <label>Fecha Entrada</label>
+                  <input type="date" id="editFechaEntrada" class="edit-input" />
+                </div>
+                <div class="edit-group">
+                  <label>Hora Entrada</label>
+                  <input type="time" id="editHoraEntrada" class="edit-input" />
+                </div>
+              </div>
+              <div class="edit-row">
+                <div class="edit-group">
+                  <label>Fecha Salida</label>
+                  <input type="date" id="editFechaSalida" class="edit-input" />
+                </div>
+                <div class="edit-group">
+                  <label>Hora Salida</label>
+                  <input type="time" id="editHoraSalida" class="edit-input" />
+                </div>
+              </div>
+            </div>
+
+            <div class="edit-section">
+              <div class="edit-section-title">👤 Huésped Principal</div>
+              <div class="edit-row">
+                <div class="edit-group">
+                  <label>Nombre</label>
+                  <input type="text" id="editNombre" class="edit-input" />
+                </div>
+                <div class="edit-group">
+                  <label>Apellido</label>
+                  <input type="text" id="editApellido" class="edit-input" />
+                </div>
+              </div>
+              <div class="edit-row">
+                <div class="edit-group">
+                  <label>Celular</label>
+                  <input type="tel" id="editCelular" class="edit-input" />
+                </div>
+                <div class="edit-group">
+                  <label>Tipo ID</label>
+                  <select id="editTipoId" class="edit-input">
+                    <option value="cc">CC</option>
+                    <option value="ce">CE</option>
+                    <option value="ti">TI</option>
+                    <option value="pasaporte">Pasaporte</option>
+                  </select>
+                </div>
+              </div>
+              <div class="edit-row">
+                <div class="edit-group">
+                  <label>Número ID</label>
+                  <input type="text" id="editNumeroId" class="edit-input" />
+                </div>
+                <div class="edit-group">
+                  <label>Ciudad</label>
+                  <input type="text" id="editCiudad" class="edit-input" />
+                </div>
+              </div>
+            </div>
+
+            <div class="edit-section">
+              <div class="edit-section-title">📝 Comentarios</div>
+              <div class="edit-group full-width">
+                <textarea id="editComentario" class="edit-input" rows="3" placeholder="Comentarios adicionales..."></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="detail-actions">
+          <button class="confirm-btn confirm-btn-cancel" onclick="closeEditModal()">Cancelar</button>
+          <button class="confirm-btn confirm-btn-delete" id="saveEditBtn" onclick="saveEdit()">💾 Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Confirm Modal -->
     <div id="confirmModal" class="confirm-modal">
       <div class="confirm-content">
@@ -899,8 +1050,13 @@
                 <td>${reg.celular||'N/A'}</td><td>${reg.ciudad||'N/A'}</td>
                 <td>${fd(reg.fechaEntrada||'')}</td><td>${fd(reg.fechaSalida||'')}</td>
                 <td><span class="guest-badge">${(reg.totalHuespedes||0)+1}</span></td>
-                <td class="mobile-col"><button class="view-btn" onclick="event.stopPropagation();showDetailModal(${JSON.stringify(reg).replace(/"/g,'&quot;')})" title="Ver detalles"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
-                <td><button class="delete-btn" onclick="event.stopPropagation();deleteRegistration('${reg.id}',event)">🗑️</button></td>
+                <td class="mobile-col">
+                  <button class="view-btn" onclick="event.stopPropagation();showDetailModal(${JSON.stringify(reg).replace(/"/g,'&quot;')})" title="Ver detalles"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button class="edit-btn" onclick="event.stopPropagation();showEditModal(${JSON.stringify(reg).replace(/"/g,'&quot;')})" title="Editar registro">✏️</button>
+                </td>
+                <td>
+                  <button class="delete-btn" onclick="event.stopPropagation();deleteRegistration('${reg.id}',event)">🗑️</button>
+                </td>
               `;
               return row;
             } catch(e){ return null; }
@@ -1017,6 +1173,142 @@
       };
       window.closeDetailModal=function(){ document.getElementById("detailModal").classList.remove("show"); document.body.style.overflow=""; };
       document.getElementById("detailModal").addEventListener("click",e=>{ if(e.target===document.getElementById("detailModal")) closeDetailModal(); });
+
+      /* ── EDIT MODAL ── */
+      let currentEditId = null;
+      
+      window.showEditModal=function(reg){
+        currentEditId = reg.id;
+        const modal=document.getElementById("editModal");
+        
+        // Pre-fill form fields
+        document.getElementById("editCabana").value = reg.cabana || "";
+        document.getElementById("editTotalHuespedes").value = reg.totalHuespedes || 0;
+        document.getElementById("editFechaEntrada").value = reg.fechaEntrada || "";
+        document.getElementById("editFechaSalida").value = reg.fechaSalida || "";
+        document.getElementById("editHoraEntrada").value = reg.horaEntrada || "";
+        document.getElementById("editHoraSalida").value = reg.horaSalida || "";
+        document.getElementById("editNombre").value = reg.nombre || "";
+        document.getElementById("editApellido").value = reg.apellido || "";
+        document.getElementById("editCelular").value = reg.celular || "";
+        document.getElementById("editTipoId").value = reg.tipoId || "";
+        document.getElementById("editNumeroId").value = reg.numeroId || "";
+        document.getElementById("editCiudad").value = reg.ciudad || "";
+        document.getElementById("editComentario").value = reg.comentario || "";
+        
+        modal.classList.add("show"); document.body.style.overflow="hidden";
+      };
+      
+      window.closeEditModal=function(){ 
+        document.getElementById("editModal").classList.remove("show"); 
+        document.body.style.overflow=""; 
+        currentEditId = null;
+      };
+      
+      window.saveEdit=async function(){
+        if(!currentEditId) return;
+        
+        // Get form values
+        const updatedData = {
+          cabana: document.getElementById("editCabana").value,
+          totalHuespedes: parseInt(document.getElementById("editTotalHuespedes").value) || 0,
+          fechaEntrada: document.getElementById("editFechaEntrada").value,
+          fechaSalida: document.getElementById("editFechaSalida").value,
+          horaEntrada: document.getElementById("editHoraEntrada").value,
+          horaSalida: document.getElementById("editHoraSalida").value,
+          nombre: document.getElementById("editNombre").value,
+          apellido: document.getElementById("editApellido").value,
+          celular: document.getElementById("editCelular").value,
+          tipoId: document.getElementById("editTipoId").value,
+          numeroId: document.getElementById("editNumeroId").value,
+          ciudad: document.getElementById("editCiudad").value,
+          comentario: document.getElementById("editComentario").value,
+          lastModified: serverTimestamp(),
+          modifiedBy: auth.currentUser?.email || 'unknown'
+        };
+        
+        try {
+          // Validate dates
+          if(!updatedData.fechaEntrada || !updatedData.fechaSalida) {
+            showToast("⚠️ Las fechas de entrada y salida son obligatorias");
+            return;
+          }
+          
+          if(new Date(updatedData.fechaEntrada) > new Date(updatedData.fechaSalida)) {
+            showToast("⚠️ La fecha de entrada no puede ser posterior a la de salida");
+            return;
+          }
+          
+          // Check for date conflicts (excluding current registration)
+          const conflictQuery = query(
+            collection(db, "registrations"),
+            where("cabana", "==", updatedData.cabana)
+          );
+          const conflictSnapshot = await getDocs(conflictQuery);
+          
+          const hasConflict = conflictSnapshot.docs.some(doc => {
+            if(doc.id === currentEditId) return false; // Skip current registration
+            
+            const existing = doc.data();
+            const newStart = new Date(updatedData.fechaEntrada);
+            const newEnd = new Date(updatedData.fechaSalida);
+            const existingStart = new Date(existing.fechaEntrada);
+            const existingEnd = new Date(existing.fechaSalida);
+            
+            // Check if dates overlap
+            return (newStart <= existingEnd && newEnd >= existingStart);
+          });
+          
+          if(hasConflict) {
+            showToast("⚠️ Hay una reserva existente para este apto en las fechas seleccionadas");
+            return;
+          }
+          
+          // Update the registration
+          await updateDoc(doc(db, "registrations", currentEditId), updatedData);
+          
+          // Update local data
+          const regIndex = allRegistrations.findIndex(r => r.id === currentEditId);
+          if(regIndex !== -1) {
+            allRegistrations[regIndex] = { ...allRegistrations[regIndex], ...updatedData };
+          }
+          
+          // Update availability calendar if dates or cabin changed
+          const originalReg = allRegistrations[regIndex];
+          if(originalReg.fechaEntrada !== updatedData.fechaEntrada || 
+             originalReg.fechaSalida !== updatedData.fechaSalida ||
+             originalReg.cabana !== updatedData.cabana) {
+            // Update availability calendar
+            const availQ = query(collection(db, "cabin_availability"), where("registrationId", "==", currentEditId));
+            const availSnapshot = await getDocs(availQ);
+            
+            // Delete old availability
+            availSnapshot.forEach(async (docSnap) => {
+              await deleteDoc(doc(db, "cabin_availability", docSnap.id));
+            });
+            
+            // Create new availability
+            await addDoc(collection(db, "cabin_availability"), {
+              cabana: updatedData.cabana,
+              fechaInicio: updatedData.fechaEntrada,
+              fechaFin: updatedData.fechaSalida,
+              registrationId: currentEditId,
+              createdAt: serverTimestamp()
+            });
+          }
+          
+          updateStats();
+          displayData(currentView === 'active' ? allRegistrations : allArchived);
+          closeEditModal();
+          showToast("✅ Registro actualizado exitosamente");
+          
+        } catch(error) {
+          console.error("Error updating registration:", error);
+          showToast("❌ Error al actualizar el registro");
+        }
+      };
+      
+      document.getElementById("editModal").addEventListener("click",e=>{ if(e.target===document.getElementById("editModal")) closeEditModal(); });
 
       /* ── EXPORT ── */
       window.exportToExcel=function(){
