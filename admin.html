@@ -86,6 +86,18 @@
       .nav-dropdown:focus { outline:none; }
       .nav-dropdown option { background: white; color: #14b8a6; font-weight: 600; }
 
+      /* Custom vista toggle buttons */
+      .vista-toggle { display:flex; border-radius:9px; overflow:hidden; border:2px solid rgba(255,255,255,0.4); }
+      .vista-btn {
+        padding: 7px 12px; font-size:13px; font-weight:600; cursor:pointer;
+        border:none; background:rgba(255,255,255,0.15); color:white;
+        transition: background 0.2s, color 0.2s;
+        white-space:nowrap;
+      }
+      .vista-btn:not(.active):hover { background:rgba(255,255,255,0.25); }
+      .vista-btn[data-view="active"].active  { background:#ffffff; color:#14b8a6; }
+      .vista-btn[data-view="archive"].active { background:#48bb78; color:#ffffff; }
+
       .settings-btn {
         background: rgba(255,255,255,0.15);
         border: 2px solid rgba(255,255,255,0.3);
@@ -464,10 +476,10 @@
           <!-- Vista visible in row 1 on desktop only (hidden on mobile via CSS) -->
           <div class="nav-dropdown-container">
             <label class="nav-dropdown-label">Vista:</label>
-            <select id="viewSelector" class="nav-dropdown" onchange="switchViewFromDropdown()">
-              <option value="active">📋 Activos</option>
-              <option value="archive">📦 Archivo</option>
-            </select>
+            <div class="vista-toggle" id="vistaToggleDesktop">
+              <button class="vista-btn active" data-view="active" onclick="switchView('active')">📋 Activos</button>
+              <button class="vista-btn" data-view="archive" onclick="switchView('archive')">📦 Archivo</button>
+            </div>
           </div>
         </div>
 
@@ -476,10 +488,10 @@
           <button id="settingsBtn" class="settings-btn" onclick="openSettingsModal()">⚙️</button>
           <div class="nav-dropdown-container">
             <label class="nav-dropdown-label">Vista:</label>
-            <select id="viewSelectorMobile" class="nav-dropdown" onchange="switchViewFromDropdownMobile()">
-              <option value="active">📋 Activos</option>
-              <option value="archive">📦 Archivo</option>
-            </select>
+            <div class="vista-toggle" id="vistaToggleMobile">
+              <button class="vista-btn active" data-view="active" onclick="switchView('active')">📋 Activos</button>
+              <button class="vista-btn" data-view="archive" onclick="switchView('archive')">📦 Archivo</button>
+            </div>
           </div>
         </div>
 
@@ -824,16 +836,23 @@
         finally { isDataLoading=false; loading.style.display="none"; }
       }
 
+      function syncVistaBtns(view) {
+        ['vistaToggleDesktop','vistaToggleMobile'].forEach(id => {
+          const el = document.getElementById(id); if(!el) return;
+          el.querySelectorAll('.vista-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
+        });
+        // also sync modal select
+        const modal = document.getElementById('viewSelectorModal'); if(modal) modal.value = view;
+      }
+
       window.switchView = function(view) {
         if(isDataLoading||currentView===view) return;
         isDataLoading=true; currentView=view;
-        ['viewSelector','viewSelectorMobile','viewSelectorModal'].forEach(id => { const el=document.getElementById(id); if(el) el.value=view; });
+        syncVistaBtns(view);
         document.getElementById("tableBody").innerHTML='';
         document.getElementById("loading").style.display="block";
         setTimeout(()=>loadData(),50);
       };
-      window.switchViewFromDropdown = function() { const dd=document.getElementById('viewSelector'); if(dd) switchView(dd.value); };
-      window.switchViewFromDropdownMobile = function() { const dd=document.getElementById('viewSelectorMobile'); if(dd) switchView(dd.value); };
 
       function updateStats() {
         const src=currentView==='active'?allRegistrations:allArchived;
