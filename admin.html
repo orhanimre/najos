@@ -301,9 +301,9 @@
       .delete-btn { background:linear-gradient(135deg,#f56565,#c53030); color:white; border:none; padding:8px 16px; border-radius:8px; cursor:pointer; font-weight:600; font-size:13px; transition:all 0.3s; }
       .delete-btn:hover { transform:translateY(-2px); box-shadow:0 8px 16px rgba(245,101,101,0.3); }
       .delete-btn:active { transform:translateY(0); }
-      .edit-btn { background:linear-gradient(135deg,#3b82f6,#1d4ed8); color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:600; font-size:13px; transition:all 0.3s; margin-right:6px; }
-      .edit-btn:hover { transform:translateY(-2px); box-shadow:0 8px 16px rgba(59,130,246,0.3); }
-      .edit-btn:active { transform:translateY(0); }
+      .edit-btn { display:flex; align-items:center; justify-content:center; width:36px; height:36px; border:none; background:none; color:#3b82f6; cursor:pointer; padding:0; border-radius:50%; transition:all 0.2s ease; margin-right:6px; }
+      @media (min-width:768px) { .edit-btn { background:linear-gradient(135deg,#3b82f6,#1d4ed8); color:white; box-shadow:0 2px 6px rgba(59,130,246,0.3); } .edit-btn:hover { transform:translateX(2px); } }
+      .edit-btn:active { transform:scale(0.95); }
       @media (max-width:767px) { 
         .delete-btn { width:40px; height:40px; padding:0; border-radius:10px; font-size:18px; display:flex; align-items:center; justify-content:center; }
         .edit-btn { width:40px; height:40px; padding:0; border-radius:10px; font-size:16px; display:flex; align-items:center; justify-content:center; margin-right:4px; }
