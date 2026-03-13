@@ -476,10 +476,10 @@
           <!-- Vista visible in row 1 on desktop only (hidden on mobile via CSS) -->
           <div class="nav-dropdown-container">
             <label class="nav-dropdown-label">Vista:</label>
-            <div class="vista-toggle" id="vistaToggleDesktop">
-              <button class="vista-btn active" data-view="active" onclick="switchView('active')">📋 Activos</button>
-              <button class="vista-btn" data-view="archive" onclick="switchView('archive')">📦 Archivo</button>
-            </div>
+            <select id="viewSelector" class="nav-dropdown" onchange="switchViewFromDropdown()">
+              <option value="active">📋 Activos</option>
+              <option value="archive">📦 Archivo</option>
+            </select>
           </div>
         </div>
 
@@ -488,10 +488,10 @@
           <button id="settingsBtn" class="settings-btn" onclick="openSettingsModal()">⚙️</button>
           <div class="nav-dropdown-container">
             <label class="nav-dropdown-label">Vista:</label>
-            <div class="vista-toggle" id="vistaToggleMobile">
-              <button class="vista-btn active" data-view="active" onclick="switchView('active')">📋 Activos</button>
-              <button class="vista-btn" data-view="archive" onclick="switchView('archive')">📦 Archivo</button>
-            </div>
+            <select id="viewSelectorMobile" class="nav-dropdown" onchange="switchViewFromDropdownMobile()">
+              <option value="active">📋 Activos</option>
+              <option value="archive">📦 Archivo</option>
+            </select>
           </div>
         </div>
 
@@ -768,6 +768,7 @@
           document.getElementById("userEmail").textContent = user.email;
           // Re-measure spacer after dashboard becomes visible
           requestAnimationFrame(updateHeaderSpacer);
+          syncDropdowns(currentView);
           loadEmailSettings(); loadData();
         } else {
           document.getElementById("loginScreen").style.display = "flex";
@@ -836,23 +837,30 @@
         finally { isDataLoading=false; loading.style.display="none"; }
       }
 
-      function syncVistaBtns(view) {
-        ['vistaToggleDesktop','vistaToggleMobile'].forEach(id => {
+      const viewColors = {
+        active:  { bg: 'rgba(255,255,255,0.95)', color: '#14b8a6' },
+        archive: { bg: '#48bb78',                color: '#ffffff'  }
+      };
+
+      function syncDropdowns(view) {
+        ['viewSelector','viewSelectorMobile','viewSelectorModal'].forEach(id => {
           const el = document.getElementById(id); if(!el) return;
-          el.querySelectorAll('.vista-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
+          el.value = view;
+          el.style.background = viewColors[view].bg;
+          el.style.color = viewColors[view].color;
         });
-        // also sync modal select
-        const modal = document.getElementById('viewSelectorModal'); if(modal) modal.value = view;
       }
 
       window.switchView = function(view) {
         if(isDataLoading||currentView===view) return;
         isDataLoading=true; currentView=view;
-        syncVistaBtns(view);
+        syncDropdowns(view);
         document.getElementById("tableBody").innerHTML='';
         document.getElementById("loading").style.display="block";
         setTimeout(()=>loadData(),50);
       };
+      window.switchViewFromDropdown = function() { const dd=document.getElementById('viewSelector'); if(dd) switchView(dd.value); };
+      window.switchViewFromDropdownMobile = function() { const dd=document.getElementById('viewSelectorMobile'); if(dd) switchView(dd.value); };
 
       function updateStats() {
         const src=currentView==='active'?allRegistrations:allArchived;
