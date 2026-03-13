@@ -839,8 +839,10 @@
 
       const viewColors = {
         active:  { bg: 'rgba(255,255,255,0.95)', color: '#14b8a6' },
-        archive: { bg: '#48bb78',                color: '#ffffff'  }
+        archive: { bg: '#48bb78',                color: '#ffffff' }
       };
+
+      const arrowSVG = (color) => `url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='${color}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`;
 
       function syncDropdowns(view) {
         ['viewSelector','viewSelectorMobile','viewSelectorModal'].forEach(id => {
@@ -848,6 +850,7 @@
           el.value = view;
           el.style.backgroundColor = viewColors[view].bg;
           el.style.color = viewColors[view].color;
+          el.style.backgroundImage = view === 'archive' ? arrowSVG('%23ffffff') : arrowSVG('%2314b8a6');
         });
       }
 
