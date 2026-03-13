@@ -846,7 +846,7 @@
         ['viewSelector','viewSelectorMobile','viewSelectorModal'].forEach(id => {
           const el = document.getElementById(id); if(!el) return;
           el.value = view;
-          el.style.background = viewColors[view].bg;
+          el.style.backgroundColor = viewColors[view].bg;
           el.style.color = viewColors[view].color;
         });
       }
