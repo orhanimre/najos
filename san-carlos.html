@@ -153,6 +153,33 @@
         .cat-urbano .card-badge     { background: rgba(236,72,153,0.15); color: #BE185D; }
         .cat-aventura .card-badge   { background: rgba(220,38,38,0.15);  color: #B91C1C; }
 
+        /* ── QUICK NAVIGATION ── */
+        .quick-nav-section { margin-bottom: 52px; }
+        .quick-nav-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 3px solid var(--ocean); }
+        .quick-nav-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(20px, 3vw, 26px); font-weight: 700; color: var(--ocean-dark); }
+        .quick-nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .quick-nav-item {
+            display: flex; align-items: center; gap: 16px; padding: 20px; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 16px; text-decoration: none; color: inherit;
+            border: 2px solid transparent; transition: all 0.3s ease; position: relative; overflow: hidden;
+        }
+        .quick-nav-item::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s ease;
+        }
+        .quick-nav-item:hover::before { left: 100%; }
+        .quick-nav-item:hover {
+            transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,119,190,0.15);
+            border-color: var(--ocean); background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+        }
+        .quick-nav-icon { font-size: 28px; line-height: 1; flex-shrink: 0; }
+        .quick-nav-content { flex: 1; }
+        .quick-nav-title { font-size: 16px; font-weight: 600; color: #1F2937; margin-bottom: 4px; }
+        .quick-nav-count { font-size: 13px; color: #6B7280; font-weight: 500; }
+        .quick-nav-arrow { font-size: 20px; color: var(--ocean); font-weight: 700; transition: transform 0.3s ease; flex-shrink: 0; }
+        .quick-nav-item:hover .quick-nav-arrow { transform: translateX(4px); }
+
         /* ── MAP SECTION ── */
         .map-section { margin-bottom: 52px; }
         .map-section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 3px solid var(--ocean); }
@@ -249,8 +276,75 @@
                 </div>
             </div>
 
+            <!-- QUICK NAVIGATION -->
+            <div class="quick-nav-section">
+                <div class="quick-nav-header">
+                    <span class="category-icon">🧭</span>
+                    <h2>Navegación Rápida</h2>
+                    <span class="category-count">7 categorías</span>
+                </div>
+                <div class="quick-nav-grid">
+                    <a href="#charcos" class="quick-nav-item">
+                        <div class="quick-nav-icon">💧</div>
+                        <div class="quick-nav-content">
+                            <div class="quick-nav-title">Charcos</div>
+                            <div class="quick-nav-count">9 lugares</div>
+                        </div>
+                        <div class="quick-nav-arrow">→</div>
+                    </a>
+                    <a href="#cascadas" class="quick-nav-item">
+                        <div class="quick-nav-icon">🌊</div>
+                        <div class="quick-nav-content">
+                            <div class="quick-nav-title">Cascadas</div>
+                            <div class="quick-nav-count">4 lugares</div>
+                        </div>
+                        <div class="quick-nav-arrow">→</div>
+                    </a>
+                    <a href="#senderos" class="quick-nav-item">
+                        <div class="quick-nav-icon">🥾</div>
+                        <div class="quick-nav-content">
+                            <div class="quick-nav-title">Senderos</div>
+                            <div class="quick-nav-count">3 lugares</div>
+                        </div>
+                        <div class="quick-nav-arrow">→</div>
+                    </a>
+                    <a href="#reservas" class="quick-nav-item">
+                        <div class="quick-nav-icon">🌿</div>
+                        <div class="quick-nav-content">
+                            <div class="quick-nav-title">Reservas Naturales</div>
+                            <div class="quick-nav-count">1 lugar</div>
+                        </div>
+                        <div class="quick-nav-arrow">→</div>
+                    </a>
+                    <a href="#centros-recreativos" class="quick-nav-item">
+                        <div class="quick-nav-icon">🏊</div>
+                        <div class="quick-nav-content">
+                            <div class="quick-nav-title">Centros Recreativos</div>
+                            <div class="quick-nav-count">5 lugares</div>
+                        </div>
+                        <div class="quick-nav-arrow">→</div>
+                    </a>
+                    <a href="#tours-aventura" class="quick-nav-item">
+                        <div class="quick-nav-icon">🧗</div>
+                        <div class="quick-nav-content">
+                            <div class="quick-nav-title">Tours y Aventura</div>
+                            <div class="quick-nav-count">1 lugar</div>
+                        </div>
+                        <div class="quick-nav-arrow">→</div>
+                    </a>
+                    <a href="#urbano-cultural" class="quick-nav-item">
+                        <div class="quick-nav-icon">🏛️</div>
+                        <div class="quick-nav-content">
+                            <div class="quick-nav-title">Urbano y Cultural</div>
+                            <div class="quick-nav-count">1 lugar</div>
+                        </div>
+                        <div class="quick-nav-arrow">→</div>
+                    </a>
+                </div>
+            </div>
+
             <!-- CHARCOS: 9 lugares -->
-            <div class="category-section cat-charco">
+            <div id="charcos" class="category-section cat-charco">
                 <div class="category-header"><span class="category-icon">💧</span><h2>Charcos</h2><span class="category-count">9 lugares</span></div>
                 <div class="attractions-grid">
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/K6YGUKbh.jpg" alt="Charco Los Anillos" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco Los Anillos</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">Piscina natural espectacular ubicada cerca al centro del pueblo. Calificación perfecta por sus visitantes.</div><span class="card-badge">Charco</span></div></div>
@@ -266,7 +360,7 @@
             </div>
 
             <!-- CASCADAS: 4 lugares -->
-            <div class="category-section cat-cascada">
+            <div id="cascadas" class="category-section cat-cascada">
                 <div class="category-header"><span class="category-icon">🌊</span><h2>Cascadas</h2><span class="category-count">4 lugares</span></div>
                 <div class="attractions-grid">
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/FaB0wYoh.jpg" alt="Cascada La Chorrera" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Cascada La Chorrera — Mirador y Atractivo</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">El atractivo turístico principal: impresionante cascada a solo 30 minutos del casco urbano. Vista espectacular que mezcla aventura y naturaleza.</div><span class="card-badge">Cascada</span></div></div>
@@ -277,7 +371,7 @@
             </div>
 
             <!-- SENDEROS: 3 lugares -->
-            <div class="category-section cat-sendero">
+            <div id="senderos" class="category-section cat-sendero">
                 <div class="category-header"><span class="category-icon">🥾</span><h2>Senderos y Senderismo</h2><span class="category-count">3 lugares</span></div>
                 <div class="attractions-grid">
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/Ns4qOPqh.jpg" alt="Cima Piedra El Tabor" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Cima Piedra El Tabor</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">Caminata hasta la cima con una vista panorámica de 360° sobre San Carlos y sus alrededores. Ingreso: $5.000 por persona. Llevar agua, repelente y botas de senderismo.</div><span class="card-badge">Senderismo</span></div></div>
@@ -287,7 +381,7 @@
             </div>
 
             <!-- RESERVAS: 1 lugar -->
-            <div class="category-section cat-reserva">
+            <div id="reservas" class="category-section cat-reserva">
                 <div class="category-header"><span class="category-icon">🌿</span><h2>Reservas Naturales y Ecoturismo</h2><span class="category-count">1 lugar</span></div>
                 <div class="attractions-grid">
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/evm8v6fh.jpg" alt="Cielo Escondido — Paraíso Natural" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Cielo Escondido — Paraíso Natural</div><div class="card-rating">⭐ 4.9</div></div><div class="card-desc">Cañón oculto con piscinas de aguas turquesas y paredes rocosas de impresionante belleza. Visita guiada obligatoria. Abierto jue–lun 8 am–5 pm. A ~40 min del parque principal.</div><span class="card-badge">Ecoturismo</span></div></div>
@@ -295,7 +389,7 @@
             </div>
 
             <!-- CENTROS RECREATIVOS: 5 lugares -->
-            <div class="category-section cat-recreativo">
+            <div id="centros-recreativos" class="category-section cat-recreativo">
                 <div class="category-header"><span class="category-icon">🏊</span><h2>Centros Recreativos</h2><span class="category-count">5 lugares</span></div>
                 <div class="attractions-grid">
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/4qY7CzDh.jpg" alt="Centro Turístico La Planta" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Centro Turístico La Planta</div><div class="card-rating">⭐ 4.6</div></div><div class="card-desc">Camping junto al río con BBQ, voleibol, fútbol y acceso directo al Río San Carlos. Un ambiente relajado rodeado de naturaleza para toda la familia.</div><span class="card-badge">Centro Recreativo</span></div></div>
@@ -305,7 +399,7 @@
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/PJyC2qo.jpg" alt="Zona Camping Centro Recreativo" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Zona Camping Centro Recreativo</div><div class="card-rating">⭐ 4.6</div></div><div class="card-desc">Las familias vienen a disfrutar del charco, comer y beber. Un lugar ideal para pasar tiempo con la familia en plena naturaleza.</div><span class="card-badge">Centro Recreativo</span></div></div>
                 </div>
             </div>
-            <div class="category-section cat-aventura">
+            <div id="tours-aventura" class="category-section cat-aventura">
                 <div class="category-header"><span class="category-icon">🧗</span><h2>Tours y Aventura</h2><span class="category-count">1 lugar</span></div>
                 <div class="attractions-grid">
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/00VDd2Qh.jpg" alt="Eco Guías Colombia" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Eco Guías Colombia</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">La operadora de aventura mejor calificada de San Carlos (112 reseñas). Cañoning, rapel en cascadas, senderismo y tubing. Guías expertos, seguros y en precios accesibles. Ubicados junto al parque principal.</div><span class="card-badge">Tours & Aventura</span></div></div>
@@ -313,7 +407,7 @@
             </div>
 
             <!-- URBANO: 1 lugar -->
-            <div class="category-section cat-urbano">
+            <div id="urbano-cultural" class="category-section cat-urbano">
                 <div class="category-header"><span class="category-icon">🏛️</span><h2>Urbano y Cultural</h2><span class="category-count">1 lugar</span></div>
                 <div class="attractions-grid">
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/Xp0KOH5h.jpg" alt="Parque Principal San Carlos" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Parque Principal San Carlos</div><div class="card-rating">⭐ 4.7</div></div><div class="card-desc">Plaza central del municipio, colorida y animada. Punto de encuentro de la vida local y puerta de entrada a todas las aventuras.</div><span class="card-badge">Urbano</span></div></div>
