@@ -155,30 +155,21 @@
 
         /* ── QUICK NAVIGATION ── */
         .quick-nav-section { margin-bottom: 52px; }
-        .quick-nav-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 3px solid var(--ocean); }
+        .quick-nav-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 3px solid var(--ocean); }
         .quick-nav-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(20px, 3vw, 26px); font-weight: 700; color: var(--ocean-dark); }
-        .quick-nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
-        .quick-nav-item {
-            display: flex; align-items: center; gap: 16px; padding: 20px; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            border-radius: 16px; text-decoration: none; color: inherit;
-            border: 2px solid transparent; transition: all 0.3s ease; position: relative; overflow: hidden;
+        .quick-nav-list { display: flex; flex-wrap: wrap; gap: 12px; }
+        .quick-nav-link {
+            display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 25px; text-decoration: none; color: #374151;
+            border: 2px solid transparent; transition: all 0.3s ease;
+            font-size: 14px; font-weight: 500; white-space: nowrap;
         }
-        .quick-nav-item::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.6s ease;
-        }
-        .quick-nav-item:hover::before { left: 100%; }
-        .quick-nav-item:hover {
-            transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,119,190,0.15);
+        .quick-nav-link:hover {
+            transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,119,190,0.15);
             border-color: var(--ocean); background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            color: var(--ocean-dark);
         }
-        .quick-nav-icon { font-size: 28px; line-height: 1; flex-shrink: 0; }
-        .quick-nav-content { flex: 1; }
-        .quick-nav-title { font-size: 16px; font-weight: 600; color: #1F2937; margin-bottom: 4px; }
-        .quick-nav-count { font-size: 13px; color: #6B7280; font-weight: 500; }
-        .quick-nav-arrow { font-size: 20px; color: var(--ocean); font-weight: 700; transition: transform 0.3s ease; flex-shrink: 0; }
-        .quick-nav-item:hover .quick-nav-arrow { transform: translateX(4px); }
 
         /* ── MAP SECTION ── */
         .map-section { margin-bottom: 52px; }
@@ -283,63 +274,14 @@
                     <h2>Navegación Rápida</h2>
                     <span class="category-count">7 categorías</span>
                 </div>
-                <div class="quick-nav-grid">
-                    <a href="#charcos" class="quick-nav-item">
-                        <div class="quick-nav-icon">💧</div>
-                        <div class="quick-nav-content">
-                            <div class="quick-nav-title">Charcos</div>
-                            <div class="quick-nav-count">9 lugares</div>
-                        </div>
-                        <div class="quick-nav-arrow">→</div>
-                    </a>
-                    <a href="#cascadas" class="quick-nav-item">
-                        <div class="quick-nav-icon">🌊</div>
-                        <div class="quick-nav-content">
-                            <div class="quick-nav-title">Cascadas</div>
-                            <div class="quick-nav-count">4 lugares</div>
-                        </div>
-                        <div class="quick-nav-arrow">→</div>
-                    </a>
-                    <a href="#senderos" class="quick-nav-item">
-                        <div class="quick-nav-icon">🥾</div>
-                        <div class="quick-nav-content">
-                            <div class="quick-nav-title">Senderos</div>
-                            <div class="quick-nav-count">3 lugares</div>
-                        </div>
-                        <div class="quick-nav-arrow">→</div>
-                    </a>
-                    <a href="#reservas" class="quick-nav-item">
-                        <div class="quick-nav-icon">🌿</div>
-                        <div class="quick-nav-content">
-                            <div class="quick-nav-title">Reservas Naturales</div>
-                            <div class="quick-nav-count">1 lugar</div>
-                        </div>
-                        <div class="quick-nav-arrow">→</div>
-                    </a>
-                    <a href="#centros-recreativos" class="quick-nav-item">
-                        <div class="quick-nav-icon">🏊</div>
-                        <div class="quick-nav-content">
-                            <div class="quick-nav-title">Centros Recreativos</div>
-                            <div class="quick-nav-count">5 lugares</div>
-                        </div>
-                        <div class="quick-nav-arrow">→</div>
-                    </a>
-                    <a href="#tours-aventura" class="quick-nav-item">
-                        <div class="quick-nav-icon">🧗</div>
-                        <div class="quick-nav-content">
-                            <div class="quick-nav-title">Tours y Aventura</div>
-                            <div class="quick-nav-count">1 lugar</div>
-                        </div>
-                        <div class="quick-nav-arrow">→</div>
-                    </a>
-                    <a href="#urbano-cultural" class="quick-nav-item">
-                        <div class="quick-nav-icon">🏛️</div>
-                        <div class="quick-nav-content">
-                            <div class="quick-nav-title">Urbano y Cultural</div>
-                            <div class="quick-nav-count">1 lugar</div>
-                        </div>
-                        <div class="quick-nav-arrow">→</div>
-                    </a>
+                <div class="quick-nav-list">
+                    <a href="#charcos" class="quick-nav-link">💧 Charcos (9)</a>
+                    <a href="#cascadas" class="quick-nav-link">🌊 Cascadas (4)</a>
+                    <a href="#senderos" class="quick-nav-link">🥾 Senderos (3)</a>
+                    <a href="#reservas" class="quick-nav-link">🌿 Reservas Naturales (1)</a>
+                    <a href="#centros-recreativos" class="quick-nav-link">🏊 Centros Recreativos (5)</a>
+                    <a href="#tours-aventura" class="quick-nav-link">🧗 Tours y Aventura (1)</a>
+                    <a href="#urbano-cultural" class="quick-nav-link">🏛️ Urbano y Cultural (1)</a>
                 </div>
             </div>
 
