@@ -16,14 +16,13 @@
             --charco: #0EA5E9; --cascada: #6366F1; --sendero: #16A34A;
             --reserva: #0D9488; --recreativo: #F59E0B; --urbano: #EC4899; --aventura: #DC2626;
 
-            /* Pastel card backgrounds per category */
-            --card-bg-charco:     #E0F7FA;   /* soft aqua */
-            --card-bg-cascada:    #EDE7F6;   /* periwinkle lavender */
-            --card-bg-sendero:    #E8F5E9;   /* sage green */
-            --card-bg-reserva:    #E0F2F1;   /* mint teal */
-            --card-bg-recreativo: #FFF3E0;   /* warm peach */
-            --card-bg-aventura:   #FCE4EC;   /* coral rose */
-            --card-bg-urbano:     #FFFDE7;   /* soft golden yellow */
+            --card-bg-charco:     #E0F7FA;
+            --card-bg-cascada:    #EDE7F6;
+            --card-bg-sendero:    #E8F5E9;
+            --card-bg-reserva:    #E0F2F1;
+            --card-bg-recreativo: #FFF3E0;
+            --card-bg-aventura:   #FCE4EC;
+            --card-bg-urbano:     #FFFDE7;
         }
         body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-light) 100%); min-height: 100vh; color: #333; }
         .container { max-width: 1200px; margin: 0 auto; background: var(--white); min-height: 100vh; box-shadow: 0 20px 60px var(--shadow); }
@@ -99,7 +98,6 @@
         }
         .attraction-card:hover { transform: translateY(-5px); box-shadow: 0 12px 28px rgba(0,0,0,0.14); }
 
-        /* ── PASTEL CARD BACKGROUNDS PER CATEGORY ── */
         .cat-charco     .attraction-card { background: var(--card-bg-charco); }
         .cat-cascada    .attraction-card { background: var(--card-bg-cascada); }
         .cat-sendero    .attraction-card { background: var(--card-bg-sendero); }
@@ -157,17 +155,50 @@
         .quick-nav-section { margin-bottom: 52px; }
         .quick-nav-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 3px solid var(--ocean); }
         .quick-nav-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(20px, 3vw, 26px); font-weight: 700; color: var(--ocean-dark); }
-        .quick-nav-list { display: flex; flex-wrap: wrap; gap: 12px; }
+
+        /* ── FIX 1: plain list, no pills ── */
+        .quick-nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .quick-nav-list li {
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .quick-nav-list li:last-child {
+            border-bottom: none;
+        }
         .quick-nav-link {
-            display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            border-radius: 25px; text-decoration: none; color: #374151;
-            border: 2px solid transparent; transition: all 0.3s ease;
-            font-size: 14px; font-weight: 500; white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 4px;
+            text-decoration: none;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 0;
+            background: none;
+            border: none;
+            transition: color 0.2s ease, padding-left 0.2s ease;
+            cursor: pointer;
         }
         .quick-nav-link:hover {
-            transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,119,190,0.15);
-            border-color: var(--ocean); background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            color: var(--ocean-dark);
+            padding-left: 10px;
+        }
+        .quick-nav-link::before {
+            content: '›';
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--ocean-light);
+            transition: color 0.2s ease;
+            flex-shrink: 0;
+        }
+        .quick-nav-link:hover::before {
             color: var(--ocean-dark);
         }
 
@@ -274,15 +305,17 @@
                     <h2>Navegación Rápida</h2>
                     <span class="category-count">7 categorías</span>
                 </div>
-                <div class="quick-nav-list">
-                    <a href="#charcos" class="quick-nav-link">💧 Charcos (9)</a>
-                    <a href="#cascadas" class="quick-nav-link">🌊 Cascadas (4)</a>
-                    <a href="#senderos" class="quick-nav-link">🥾 Senderos (3)</a>
-                    <a href="#reservas" class="quick-nav-link">🌿 Reservas Naturales (1)</a>
-                    <a href="#centros-recreativos" class="quick-nav-link">🏊 Centros Recreativos (5)</a>
-                    <a href="#tours-aventura" class="quick-nav-link">🧗 Tours y Aventura (1)</a>
-                    <a href="#urbano-cultural" class="quick-nav-link">🏛️ Urbano y Cultural (1)</a>
-                </div>
+                <!-- FIX 1: <ul> list instead of flex pill links -->
+                <!-- FIX 2: onclick scrollTo() with header offset instead of href="#" -->
+                <ul class="quick-nav-list">
+                    <li><a class="quick-nav-link" onclick="scrollToSection('charcos')">💧 Charcos (9)</a></li>
+                    <li><a class="quick-nav-link" onclick="scrollToSection('cascadas')">🌊 Cascadas (4)</a></li>
+                    <li><a class="quick-nav-link" onclick="scrollToSection('senderos')">🥾 Senderos (3)</a></li>
+                    <li><a class="quick-nav-link" onclick="scrollToSection('reservas')">🌿 Reservas Naturales (1)</a></li>
+                    <li><a class="quick-nav-link" onclick="scrollToSection('centros-recreativos')">🏊 Centros Recreativos (5)</a></li>
+                    <li><a class="quick-nav-link" onclick="scrollToSection('tours-aventura')">🧗 Tours y Aventura (1)</a></li>
+                    <li><a class="quick-nav-link" onclick="scrollToSection('urbano-cultural')">🏛️ Urbano y Cultural (1)</a></li>
+                </ul>
             </div>
 
             <!-- CHARCOS: 9 lugares -->
@@ -293,7 +326,7 @@
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/g8Le3i4h.jpg" alt="Charco Redondo" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco Redondo</div><div class="card-rating">⭐ 4.9</div></div><div class="card-desc">Hermosa piscina natural accesible por una caminata de 20 a 40 minutos entre paisajes verdes.</div><span class="card-badge">Charco</span></div></div>
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/X9iE6hNh.jpg" alt="Charco El Chispero" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco El Chispero</div><div class="card-rating">⭐ 4.8</div></div><div class="card-desc">Piscina natural con cascada y trampolín de roca. Aguas de color esmeralda rodeadas de vegetación exuberante. A 20 min del pueblo en carro, más 7 min a pie.</div><span class="card-badge">Charco</span></div></div>
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/fnOhUCfh.jpg" alt="Charco Los Cajones" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco Los Cajones</div><div class="card-rating">⭐ 4.8</div></div><div class="card-desc">Piscinas naturales de aguas cristalinas ubicadas río arriba. Se llega vadeando el río, lo que lo convierte en una aventura en sí misma.</div><span class="card-badge">Charco</span></div></div>
-                    <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/KrH4euOh.jpg" alt="Charco Negro" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco Negro (Río Tinto)</div><div class="card-rating">⭐ 4.7</div></div><div class="card-desc">Charco único en la vereda Puerto Rico. Sus aguas toman un tono oscuro por los taninos de las hojas caídas, aunque permanecen cristalinas y refrescantes. También conocido como Río Tinto.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/KrH4euOh.jpg" alt="Charco Negro" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco Negro (Río Tinto)</div><div class="card-rating">⭐ 4.7</div></div><div class="card-desc">Charco único en la vereda Puerto Rico. Sus aguas toman un tono oscuro por los taninos de las hojas caídas, aunque permanecen cristalinas y refrescantes.</div><span class="card-badge">Charco</span></div></div>
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/1GSLd3Eh.jpg" alt="Charco San Antonio" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco San Antonio</div><div class="card-rating">⭐ 4.7</div></div><div class="card-desc">Piscina popular con alquiler de kayak y zona de camping. Perfecto para una aventura de un día completo.</div><span class="card-badge">Charco</span></div></div>
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/HRScZGJh.jpg" alt="Charco El Indio" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco El Indio</div><div class="card-rating">⭐ 4.6</div></div><div class="card-desc">Piscina natural de aguas cristalinas y temperatura agradable. Buenas vistas y ambiente tranquilo, perfecto para un baño relajante en la naturaleza.</div><span class="card-badge">Charco</span></div></div>
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/M6EwvJeh.jpg" alt="Charco El Marino" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco El Marino</div><div class="card-rating">⭐ 4.5</div></div><div class="card-desc">Aguas cristalinas y abundantes del Río San Carlos. Cuenta con cabañas y servicio de comida, ideal para pasar el día con comodidad.</div><span class="card-badge">Charco</span></div></div>
@@ -341,6 +374,8 @@
                     <div class="attraction-card"><div class="card-img"><img src="https://i.imgur.com/PJyC2qo.jpg" alt="Zona Camping Centro Recreativo" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Zona Camping Centro Recreativo</div><div class="card-rating">⭐ 4.6</div></div><div class="card-desc">Las familias vienen a disfrutar del charco, comer y beber. Un lugar ideal para pasar tiempo con la familia en plena naturaleza.</div><span class="card-badge">Centro Recreativo</span></div></div>
                 </div>
             </div>
+
+            <!-- TOURS Y AVENTURA: 1 lugar -->
             <div id="tours-aventura" class="category-section cat-aventura">
                 <div class="category-header"><span class="category-icon">🧗</span><h2>Tours y Aventura</h2><span class="category-count">1 lugar</span></div>
                 <div class="attractions-grid">
@@ -376,13 +411,11 @@
         // ── MAP INIT ──
         const map = L.map('attractionsMap', { zoomControl: true, scrollWheelZoom: false }).setView([6.1887, -74.9975], 12);
 
-
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
             maxZoom: 18
         }).addTo(map);
 
-        // Enable scroll zoom on click/focus
         map.on('click', () => map.scrollWheelZoom.enable());
         map.on('blur', () => map.scrollWheelZoom.disable());
 
@@ -532,6 +565,18 @@
             }
             adjustContentPadding();
         });
+
+        // ── FIX 2: scroll to section with live header offset ──
+        function scrollToSection(id) {
+            const target = document.getElementById(id);
+            if (!target) return;
+            const headerHeight = document.getElementById('siteHeader').getBoundingClientRect().height;
+            const targetTop = target.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+                top: targetTop - headerHeight - 16, // 16px breathing room
+                behavior: 'smooth'
+            });
+        }
     </script>
 </body>
 </html>
