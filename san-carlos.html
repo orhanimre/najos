@@ -68,7 +68,9 @@
         .nav-link.active { background: rgba(255,255,255,0.25); }
 
         /* ── CONTENT ── */
-        .content { padding: 170px 40px 60px; max-width: 900px; margin: 0 auto; }
+        /* Top spacing is handled by #header-spacer — never touch paddingTop on scroll */
+        .content { padding: 0 40px 60px; max-width: 900px; margin: 0 auto; }
+        #header-spacer { transition: none; } /* no CSS transition — JS RAF keeps it in sync */
         .hero-intro { text-align: center; margin-bottom: 48px; padding: 40px 32px; background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%); border-radius: 20px; border: 1px solid #bae6fd; }
         .hero-intro h2 { font-family: 'Playfair Display', serif; font-size: clamp(22px, 4vw, 30px); color: var(--ocean-dark); margin-bottom: 12px; }
         .hero-intro p { font-size: 15px; color: #4B5563; line-height: 1.75; max-width: 600px; margin: 0 auto; }
@@ -270,6 +272,7 @@
             </div>
         </div>
 
+        <div id="header-spacer"></div>
         <div class="content" id="mainContent">
             <div class="hero-intro">
                 <h2>🌿 Bienvenido al Paraíso de las Aguas</h2>
@@ -544,27 +547,39 @@
             if (e.key === 'Escape') closeModal();
         });
 
-        function adjustContentPadding() {
-            const header = document.getElementById('siteHeader');
-            const content = document.getElementById('mainContent');
-            if (header && content) {
-                const headerHeight = header.getBoundingClientRect().height;
-                content.style.paddingTop = (headerHeight + 32) + 'px';
-            }
-        }
-        window.addEventListener('load', adjustContentPadding);
-        window.addEventListener('resize', adjustContentPadding);
-
-        // ── SHRINK HEADER ON SCROLL ──
+        // ── HEADER SPACER — RAF-based, never runs on every scroll tick ──
         const siteHeader = document.getElementById('siteHeader');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 60) {
-                siteHeader.classList.add('scrolled');
-            } else {
-                siteHeader.classList.remove('scrolled');
+        const headerSpacer = document.getElementById('header-spacer');
+        let isShrunk = false;
+        let rafId = null;
+
+        function syncSpacer() {
+            headerSpacer.style.height = (siteHeader.offsetHeight + 32) + 'px';
+        }
+
+        function trackDuringTransition() {
+            if (rafId) cancelAnimationFrame(rafId);
+            const start = performance.now();
+            function tick(now) {
+                syncSpacer();
+                if (now - start < 350) rafId = requestAnimationFrame(tick);
+                else rafId = null;
             }
-            adjustContentPadding();
-        });
+            rafId = requestAnimationFrame(tick);
+        }
+
+        // Set spacer once on load/resize — NOT on every scroll
+        window.addEventListener('load', syncSpacer);
+        window.addEventListener('resize', syncSpacer);
+
+        // On scroll: only toggle class when threshold crosses, then run RAF for transition duration
+        window.addEventListener('scroll', () => {
+            const shrink = window.scrollY > 60;
+            if (shrink === isShrunk) return;
+            isShrunk = shrink;
+            siteHeader.classList.toggle('scrolled', shrink);
+            trackDuringTransition(); // tracks spacer only during the 300ms CSS transition
+        }, { passive: true });
 
         // ── FIX 2: scroll to section with live header offset ──
         function scrollToSection(id) {
