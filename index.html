@@ -10,6 +10,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+html, body { overscroll-behavior: none; }
         :root {
             --sand: #F4E8D8;
             --ocean: #0077BE;
@@ -225,7 +226,8 @@
         .nav-link:hover::before { width: calc(100% - 24px); }
 
         /* ── CONTENT ── */
-        .content { padding: 160px 40px 60px; position: relative; }
+        #header-spacer { transition: none; }
+        .content { padding: 0 40px 60px; position: relative; }
 
         .intro-section {
             text-align: center;
@@ -382,7 +384,7 @@
             .header-title h1 { font-size: clamp(18px, 5vw, 24px); }
             .header.scrolled .header-title h1 { font-size: 15px; }
             .header-subtitle { font-size: 11px; }
-            .content { padding: 220px 24px 40px; }
+            .content { padding: 0 24px 40px; }
             .intro-section { margin-bottom: 36px; }
             .cabanas-grid { grid-template-columns: 1fr; gap: 24px; }
             .cabana-image-wrapper { height: 200px; }
@@ -391,7 +393,7 @@
             .decoration { font-size: 40px; }
         }
 
-        @media (max-width: 480px) { .content { padding-top: 240px; } }
+        @media (max-width: 480px) { .content { padding-top: 0; } }
     </style>
 </head>
 <body>
@@ -422,6 +424,7 @@
             </div>
         </div>
 
+        <div id="header-spacer"></div>
         <div class="content" id="mainContent">
             <div class="intro-section">
                 <h2>¡Bienvenido!</h2>
@@ -498,27 +501,36 @@
     </div>
 
     <script>
-        function adjustContentPadding() {
-            const header = document.getElementById('siteHeader');
-            const content = document.getElementById('mainContent');
-            if (header && content) {
-                const h = header.getBoundingClientRect().height;
-                content.style.paddingTop = (h + 32) + 'px';
-            }
-        }
-        window.addEventListener('load', adjustContentPadding);
-        window.addEventListener('resize', adjustContentPadding);
-
-        // ── SHRINK HEADER ON SCROLL ──
         const siteHeader = document.getElementById('siteHeader');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 60) {
-                siteHeader.classList.add('scrolled');
-            } else {
-                siteHeader.classList.remove('scrolled');
-            }
-            adjustContentPadding();
-        });
+const headerSpacer = document.getElementById('header-spacer');
+let isShrunk = false;
+let rafId = null;
+
+function syncSpacer() {
+    headerSpacer.style.height = (siteHeader.offsetHeight + 32) + 'px';
+}
+
+function trackDuringTransition() {
+    if (rafId) cancelAnimationFrame(rafId);
+    const start = performance.now();
+    function tick(now) {
+        syncSpacer();
+        if (now - start < 350) rafId = requestAnimationFrame(tick);
+        else rafId = null;
+    }
+    rafId = requestAnimationFrame(tick);
+}
+
+window.addEventListener('load', syncSpacer);
+window.addEventListener('resize', syncSpacer);
+
+window.addEventListener('scroll', () => {
+    const shrink = window.scrollY > 60;
+    if (shrink === isShrunk) return;
+    isShrunk = shrink;
+    siteHeader.classList.toggle('scrolled', shrink);
+    trackDuringTransition();
+}, { passive: true });
 
         function selectCabana(number) {
             setTimeout(() => {
