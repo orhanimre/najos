@@ -24,7 +24,6 @@
         .header-left { flex-shrink: 0; }
         .header-right { flex-shrink: 0; }
 
-        /* ── LOGO + BADGE — float on wrapper ── */
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         .logo-link { display: inline-block; text-decoration: none; position: relative; animation: float 3s ease-in-out infinite; transition: opacity 0.3s ease; }
         .logo-link:hover { opacity: 0.9; }
@@ -58,7 +57,9 @@
         .nav-link.active { background: rgba(255,255,255,0.25); }
 
         /* ── CONTENT ── */
-        .content { padding: 170px 40px 40px; max-width: 900px; margin: 0 auto; }
+        /* Top spacing handled by #header-spacer — never adjust paddingTop on scroll */
+        #header-spacer { transition: none; }
+        .content { padding: 0 40px 40px; max-width: 900px; margin: 0 auto; }
         .hero-intro { text-align: center; margin-bottom: 48px; padding: 40px 32px; background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%); border-radius: 20px; border: 1px solid #bae6fd; }
         .hero-intro h2 { font-family: 'Playfair Display', serif; font-size: clamp(22px, 4vw, 30px); color: var(--ocean-dark); margin-bottom: 12px; }
         .hero-intro p { font-size: 15px; color: #4B5563; line-height: 1.75; max-width: 620px; margin: 0 auto; }
@@ -94,7 +95,7 @@
             .logo { max-width: 70px; }
             .nav-menu { gap: 6px; }
             .nav-link { font-size: 10px; padding: 6px 12px; letter-spacing: 0.5px; }
-            .content { padding: 190px 20px 40px; }
+            .content { padding: 0 20px 40px; }
             .hero-intro { padding: 28px 20px; }
             .cards-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
             .info-card-body { padding: 16px 16px 18px; }
@@ -128,6 +129,7 @@
             </div>
         </div>
 
+        <div id="header-spacer"></div>
         <div class="content" id="mainContent">
             <div class="hero-intro">
                 <h2>🏡 Un hogar en el corazón de San Carlos</h2>
@@ -177,27 +179,39 @@
     </div>
 
     <script>
-        function adjustContentPadding() {
-            const header = document.getElementById('siteHeader');
-            const content = document.getElementById('mainContent');
-            if (header && content) {
-                const headerHeight = header.getBoundingClientRect().height;
-                content.style.paddingTop = (headerHeight + 16) + 'px';
-            }
-        }
-        window.addEventListener('load', adjustContentPadding);
-        window.addEventListener('resize', adjustContentPadding);
-
-        // ── SHRINK HEADER ON SCROLL ──
+        // ── HEADER SPACER — RAF-based, never runs on every scroll tick ──
         const siteHeader = document.getElementById('siteHeader');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 60) {
-                siteHeader.classList.add('scrolled');
-            } else {
-                siteHeader.classList.remove('scrolled');
+        const headerSpacer = document.getElementById('header-spacer');
+        let isShrunk = false;
+        let rafId = null;
+
+        function syncSpacer() {
+            headerSpacer.style.height = (siteHeader.offsetHeight + 32) + 'px';
+        }
+
+        function trackDuringTransition() {
+            if (rafId) cancelAnimationFrame(rafId);
+            const start = performance.now();
+            function tick(now) {
+                syncSpacer();
+                if (now - start < 350) rafId = requestAnimationFrame(tick);
+                else rafId = null;
             }
-            adjustContentPadding();
-        });
+            rafId = requestAnimationFrame(tick);
+        }
+
+        // Set spacer once on load/resize — NOT on every scroll
+        window.addEventListener('load', syncSpacer);
+        window.addEventListener('resize', syncSpacer);
+
+        // On scroll: only toggle class when threshold crosses, then run RAF for transition duration
+        window.addEventListener('scroll', () => {
+            const shrink = window.scrollY > 60;
+            if (shrink === isShrunk) return;
+            isShrunk = shrink;
+            siteHeader.classList.toggle('scrolled', shrink);
+            trackDuringTransition();
+        }, { passive: true });
     </script>
 </body>
 </html>
