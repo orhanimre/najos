@@ -1065,13 +1065,13 @@
                 <td class="mobile-col">${gi+1}</td>
                 <td class="mobile-col"><div class="date-cell"><div class="date-main">${fd(reg.fechaEntrada||'')}</div><div class="date-time">${fd(reg.fechaSalida||'')}</div></div></td>
                 <td class="mobile-col"><span class="cabin-badge cabin-${cn}">Apto ${cn}</span></td>
-                <td class="mobile-col"><div class="name-cell"><div class="name-main">${lb}${reg.nombre||''} ${reg.apellido||''}</div><div class="name-sub">&#128241; ${reg.celular||'N/A'}</div></div></td>
+                <td class="mobile-col"><div class="name-cell"><div class="name-main">${lb}${reg.nombre||''} ${reg.apellido||''}</div><div class="name-sub">${reg.celular||'N/A'}</div></div></td>
                 <td>${reg.celular||'N/A'}</td><td>${reg.ciudad||'N/A'}</td>
                 <td>${fd(reg.fechaEntrada||'')}</td><td>${fd(reg.fechaSalida||'')}</td>
                 <td><span class="guest-badge">${(reg.totalHuespedes||0)+1}</span></td>
                 <td class="mobile-col">
                   <button class="view-btn" onclick="event.stopPropagation();showDetailModal(${regJson})" title="Ver detalles">
-                    &#128065; Ver
+                    Ver
                   </button>
                 </td>
               `;
