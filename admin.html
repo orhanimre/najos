@@ -293,27 +293,43 @@
 
       /* ── ACTION BUTTONS ── */
       /* Desktop only: single eye/view button in the table */
+      /* Desktop: pill with label */
       .view-btn {
-        display: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         border: none;
         cursor: pointer;
         font-weight: 600;
         transition: all 0.2s ease;
+        /* Mobile default */
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #e0fdf4, #ccfbf1);
+        color: #0d9488;
+        border: 2px solid #99f6e4;
+        border-radius: 10px;
+        font-size: 18px;
+        padding: 0;
       }
+      .view-btn:active { transform: scale(0.9); }
+      .view-btn .btn-label { display: none; }
       @media (min-width: 768px) {
         .view-btn {
-          display: inline-flex;
-          align-items: center;
           gap: 5px;
           padding: 7px 14px;
+          width: auto;
+          height: auto;
           background: linear-gradient(135deg, #14b8a6, #0d9488);
           color: white;
+          border: none;
           border-radius: 8px;
           font-size: 12px;
           box-shadow: 0 2px 6px rgba(20,184,166,0.3);
           white-space: nowrap;
         }
         .view-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(20,184,166,0.4); }
+        .view-btn .btn-label { display: inline; }
       }
 
       .loading, .no-data { text-align:center; padding:60px 20px; color:#718096; font-size:15px; }
@@ -1126,7 +1142,7 @@
             ${ch?`<div class="info-card"><div class="info-card-header"><span class="info-icon">👥</span><span class="info-title">Acompañantes</span></div><div class="info-card-content">${ch}</div></div>`:""}
           </div>
           <div class="detail-actions">
-            <button class="edit-modal-btn" onclick="const r=currentDetailReg;closeDetailModal();showEditModal(r);">✏️ Editar</button>
+            <button class="edit-modal-btn" onclick="openEditFromDetail()">✏️ Editar</button>
             <button class="delete-btn" onclick="event.stopPropagation();deleteRegistration('${reg.id}',event)">🗑️ Eliminar</button>
           </div>
         `;
@@ -1134,6 +1150,13 @@
         modal.classList.add("show"); document.body.style.overflow="hidden";
       };
       window.closeDetailModal=function(){ document.getElementById("detailModal").classList.remove("show"); document.body.style.overflow=""; currentDetailReg=null; };
+      window.openEditFromDetail=function(){
+        const reg=currentDetailReg;
+        if(!reg) return;
+        closeDetailModal();
+        // Small delay so modal close animation doesn't conflict
+        setTimeout(()=>showEditModal(reg), 50);
+      };
       document.getElementById("detailModal").addEventListener("click",e=>{ if(e.target===document.getElementById("detailModal")) closeDetailModal(); });
 
       /* ── EDIT MODAL ── */
