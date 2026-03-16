@@ -86,7 +86,6 @@
       .nav-dropdown:focus { outline:none; }
       .nav-dropdown option { background: white; color: #14b8a6; font-weight: 600; }
 
-      /* Custom vista toggle buttons */
       .vista-toggle { display:flex; border-radius:9px; overflow:hidden; border:2px solid rgba(255,255,255,0.4); }
       .vista-btn {
         padding: 7px 12px; font-size:13px; font-weight:600; cursor:pointer;
@@ -120,7 +119,6 @@
         margin: 6px auto 0;
         max-height: 52px;
         overflow: hidden;
-        /* no transition on mobile row — transitions cause reflow jank while scrolling */
       }
       .header.scrolled .mobile-controls-row {
         max-height: 0;
@@ -200,10 +198,7 @@
         padding: 20px;
       }
 
-      /* Spacer height is set dynamically by JS — no transition, stays in perfect sync */
-      #header-spacer {
-        transition: none;
-      }
+      #header-spacer { transition: none; }
 
       /* ── STATS ── */
       .stats-grid { display:grid; grid-template-columns:1fr; gap:16px; margin-bottom:24px; }
@@ -295,24 +290,121 @@
       .name-main { font-weight:600; color:#1f2937; font-size:14px; }
       .name-sub { font-size:12px; color:#6b7280; font-weight:500; }
       .guest-badge { display:inline-flex; align-items:center; justify-content:center; min-width:32px; padding:4px 10px; background:linear-gradient(135deg,#ebf8ff,#e6fffa); color:#14b8a6; border-radius:8px; font-weight:700; font-size:13px; border:1px solid #cbd5e0; }
-      .view-btn { display:flex; align-items:center; justify-content:center; width:36px; height:36px; border:none; background:none; color:#14b8a6; cursor:pointer; padding:0; border-radius:50%; transition:all 0.2s ease; flex-shrink:0; }
-      @media (min-width:768px) { .view-btn { background:linear-gradient(135deg,#14b8a6,#0d9488); color:white; box-shadow:0 2px 6px rgba(20,184,166,0.3); } .view-btn:hover { transform:translateX(2px); } }
-      .view-btn:active { transform:scale(0.95); }
-      .delete-btn { background:linear-gradient(135deg,#f56565,#c53030); color:white; border:none; padding:8px 16px; border-radius:8px; cursor:pointer; font-weight:600; font-size:13px; transition:all 0.3s; }
-      .delete-btn:hover { transform:translateY(-2px); box-shadow:0 8px 16px rgba(245,101,101,0.3); }
-      .delete-btn:active { transform:translateY(0); }
-      .edit-btn { display:flex; align-items:center; justify-content:center; width:36px; height:36px; border:none; background:none; color:#3b82f6; cursor:pointer; padding:0; border-radius:50%; transition:all 0.2s ease; margin-right:6px; flex-shrink:0; }
-      @media (min-width:768px) { .edit-btn { background:linear-gradient(135deg,#3b82f6,#1d4ed8); color:white; box-shadow:0 2px 6px rgba(59,130,246,0.3); } .edit-btn:hover { transform:translateX(2px); } }
-      .edit-btn:active { transform:scale(0.95); }
-      @media (max-width:767px) { 
-        .delete-btn { width:40px; height:40px; padding:0; border-radius:10px; font-size:18px; display:flex; align-items:center; justify-content:center; }
-        .edit-btn { width:40px; height:40px; padding:0; border-radius:10px; font-size:16px; display:flex; align-items:center; justify-content:center; margin-right:4px; }
+
+      /* ── ACTION BUTTONS ── */
+      .action-group {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex-wrap: nowrap;
       }
+
+      /* Shared base */
+      .view-btn, .edit-btn, .delete-btn {
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+        line-height: 1;
+      }
+
+      /* Desktop: compact pill buttons with icon + label */
+      @media (min-width: 768px) {
+        .action-group { gap: 5px; }
+
+        .view-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          padding: 7px 11px;
+          background: linear-gradient(135deg, #14b8a6, #0d9488);
+          color: white;
+          border-radius: 8px;
+          font-size: 11px;
+          box-shadow: 0 2px 6px rgba(20,184,166,0.3);
+          white-space: nowrap;
+        }
+        .view-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(20,184,166,0.4); }
+
+        .edit-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          padding: 7px 11px;
+          background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+          color: white;
+          border-radius: 8px;
+          font-size: 11px;
+          box-shadow: 0 2px 6px rgba(59,130,246,0.3);
+          white-space: nowrap;
+        }
+        .edit-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(59,130,246,0.4); }
+
+        .delete-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          padding: 7px 11px;
+          background: linear-gradient(135deg, #f56565, #c53030);
+          color: white;
+          border-radius: 8px;
+          font-size: 11px;
+          box-shadow: 0 2px 6px rgba(245,101,101,0.3);
+          white-space: nowrap;
+        }
+        .delete-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(245,101,101,0.4); }
+
+        .btn-label { display: inline; }
+        .btn-icon { font-size: 13px; }
+      }
+
+      /* Mobile: large square tap targets, soft colored backgrounds */
+      @media (max-width: 767px) {
+        .action-group { gap: 6px; }
+
+        .btn-label { display: none; }
+        .btn-icon { font-size: 20px; }
+
+        .view-btn {
+          width: 44px; height: 44px;
+          display: flex; align-items: center; justify-content: center;
+          background: linear-gradient(135deg, #e0fdf4, #ccfbf1);
+          color: #0d9488;
+          border: 2px solid #99f6e4;
+          border-radius: 12px;
+          padding: 0;
+        }
+        .view-btn:active { transform: scale(0.9); }
+
+        .edit-btn {
+          width: 44px; height: 44px;
+          display: flex; align-items: center; justify-content: center;
+          background: linear-gradient(135deg, #eff6ff, #dbeafe);
+          color: #1d4ed8;
+          border: 2px solid #bfdbfe;
+          border-radius: 12px;
+          padding: 0;
+        }
+        .edit-btn:active { transform: scale(0.9); }
+
+        .delete-btn {
+          width: 44px; height: 44px;
+          display: flex; align-items: center; justify-content: center;
+          background: linear-gradient(135deg, #fef2f2, #fee2e2);
+          color: #c53030;
+          border: 2px solid #fca5a5;
+          border-radius: 12px;
+          padding: 0;
+          font-size: 20px;
+        }
+        .delete-btn:active { transform: scale(0.9); }
+      }
+
       .loading, .no-data { text-align:center; padding:60px 20px; color:#718096; font-size:15px; }
 
       /* ── MODALS ── */
       @keyframes slideUp { from { opacity:0; transform:translateY(50px) scale(0.95); } to { opacity:1; transform:translateY(0) scale(1); } }
-      @keyframes fadeOut { from { opacity:1; } to { opacity:0; } }
 
       .detail-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:1000; padding:10px; box-sizing:border-box; overflow-y:auto; -webkit-overflow-scrolling:touch; }
       .detail-modal.show { display:flex; align-items:flex-start; justify-content:center; padding-top:20px; padding-bottom:20px; }
@@ -324,10 +416,10 @@
       .close-modal:hover { background:rgba(255,255,255,0.3); transform:rotate(90deg); }
       .detail-body { padding:24px; }
       .detail-actions { padding:16px 20px; background:#f9fafb; border-radius:0 0 20px 20px; border-top:1px solid #e5e7eb; }
-      .detail-actions .delete-btn { background:linear-gradient(135deg,#ef4444,#dc2626); color:white; border:none; padding:14px 24px; border-radius:12px; cursor:pointer; font-weight:700; font-size:15px; transition:all 0.3s; width:100%; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:0 4px 12px rgba(239,68,68,0.3); }
+      .detail-actions .delete-btn { background:linear-gradient(135deg,#ef4444,#dc2626); color:white; border:none; padding:14px 24px; border-radius:12px; cursor:pointer; font-weight:700; font-size:15px; transition:all 0.3s; width:100%; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:0 4px 12px rgba(239,68,68,0.3); height:auto; }
       .detail-actions .delete-btn:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(239,68,68,0.4); }
 
-      /* Edit Modal Styles */
+      /* Edit Modal */
       .edit-body { padding:24px; max-height:60vh; overflow-y:auto; }
       .edit-section { margin-bottom:24px; }
       .edit-section:last-child { margin-bottom:0; }
@@ -336,40 +428,14 @@
       .edit-group { display:flex; flex-direction:column; gap:6px; }
       .edit-group.full-width { grid-column:1/-1; }
       .edit-group label { font-size:12px; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.5px; }
-      .edit-input { 
-        padding:12px 16px; 
-        border:2px solid #e5e7eb; 
-        border-radius:10px; 
-        font-size:14px; 
-        background:#fafafa; 
-        transition:all 0.3s; 
-        font-family:inherit;
-      }
-      .edit-input:focus { 
-        outline:none; 
-        border-color:#3b82f6; 
-        background:white; 
-        box-shadow:0 0 0 3px rgba(59,130,246,0.1); 
-      }
-      .confirm-btn { 
-        flex:1; 
-        padding:14px 20px; 
-        border:none; 
-        border-radius:12px; 
-        font-size:15px; 
-        font-weight:700; 
-        cursor:pointer; 
-        transition:all 0.3s; 
-      }
+      .edit-input { padding:12px 16px; border:2px solid #e5e7eb; border-radius:10px; font-size:14px; background:#fafafa; transition:all 0.3s; font-family:inherit; }
+      .edit-input:focus { outline:none; border-color:#3b82f6; background:white; box-shadow:0 0 0 3px rgba(59,130,246,0.1); }
+      .confirm-btn { flex:1; padding:14px 20px; border:none; border-radius:12px; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.3s; }
       .confirm-btn-cancel { background:#f3f4f6; color:#4b5563; }
       .confirm-btn-cancel:hover { background:#e5e7eb; }
       .confirm-btn-delete { background:linear-gradient(135deg,#3b82f6,#1d4ed8); color:white; box-shadow:0 4px 12px rgba(59,130,246,0.3); }
       .confirm-btn-delete:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(59,130,246,0.4); }
-
-      @media (max-width:767px) {
-        .edit-row { grid-template-columns:1fr; gap:12px; }
-        .edit-body { padding:20px; }
-      }
+      @media (max-width:767px) { .edit-row { grid-template-columns:1fr; gap:12px; } .edit-body { padding:20px; } }
 
       .confirm-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:10000; padding:20px; align-items:center; justify-content:center; }
       .confirm-modal.show { display:flex; }
@@ -380,11 +446,6 @@
       .confirm-body { padding:24px; text-align:center; }
       .confirm-message { font-size:15px; color:#4b5563; line-height:1.6; margin:0; }
       .confirm-actions { display:flex; gap:12px; padding:20px 24px; background:#f9fafb; border-top:1px solid #e5e7eb; }
-      .confirm-btn { flex:1; padding:14px 20px; border:none; border-radius:12px; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.3s; }
-      .confirm-btn-cancel { background:#f3f4f6; color:#4b5563; }
-      .confirm-btn-cancel:hover { background:#e5e7eb; }
-      .confirm-btn-delete { background:linear-gradient(135deg,#ef4444,#dc2626); color:white; box-shadow:0 4px 12px rgba(239,68,68,0.3); }
-      .confirm-btn-delete:hover { transform:translateY(-2px); }
 
       .calendar-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:10001; padding:20px; }
       .calendar-modal.show { display:flex; align-items:center; justify-content:center; }
@@ -511,19 +572,14 @@
     <div id="dashboardScreen">
 
       <div class="header" id="adminHeader">
-
-        <!-- Row 1: logo · title · (vista on desktop) -->
         <div class="header-inner">
           <a href="/" class="admin-logo-link">
             <img src="https://i.imgur.com/L8KoquC.jpg" alt="Aptos Najos" class="admin-logo">
           </a>
-
           <div class="header-title">
             <h1>Panel de Administración</h1>
             <div class="header-subtitle">Apart Hotel Najos — Registros de Huéspedes</div>
           </div>
-
-          <!-- Vista visible in row 1 on desktop only (hidden on mobile via CSS) -->
           <div class="nav-dropdown-container">
             <label class="nav-dropdown-label">Vista:</label>
             <select id="viewSelector" class="nav-dropdown" onchange="switchViewFromDropdown()">
@@ -533,7 +589,6 @@
           </div>
         </div>
 
-        <!-- Row 2 MOBILE: ⚙️ settings + Vista dropdown — collapses on scroll -->
         <div class="mobile-controls-row">
           <button id="settingsBtn" class="settings-btn" onclick="openSettingsModal()">⚙️</button>
           <div class="nav-dropdown-container">
@@ -545,7 +600,6 @@
           </div>
         </div>
 
-        <!-- Row 2 DESKTOP: email toggle + user — collapses on scroll -->
         <div class="desktop-bottom-row">
           <div class="email-toggle-container">
             <span class="email-toggle-label">📧 Correo</span>
@@ -558,8 +612,7 @@
             <button id="logoutBtn" class="logout-btn">⎋</button>
           </div>
         </div>
-
-      </div><!-- /.header -->
+      </div>
 
       <div class="container" id="mainContainer">
         <div id="header-spacer"></div>
@@ -642,8 +695,7 @@
                   <th class="mobile-col">Apto</th>
                   <th class="mobile-col">Nombre</th>
                   <th>Celular</th><th>Ciudad</th><th>Entrada</th><th>Salida</th><th>Huéspedes</th>
-                  <th class="mobile-col">Ver</th>
-                  <th>Acciones</th>
+                  <th class="mobile-col">Acciones</th>
                 </tr>
               </thead>
               <tbody id="tableBody"></tbody>
@@ -651,8 +703,8 @@
           </div>
           <div id="noData" class="no-data" style="display:none">No hay registros disponibles con los filtros seleccionados</div>
         </div>
-      </div><!-- /#mainContainer -->
-    </div><!-- /#dashboardScreen -->
+      </div>
+    </div>
 
     <!-- Detail Modal -->
     <div id="detailModal" class="detail-modal">
@@ -711,7 +763,6 @@
                 </div>
               </div>
             </div>
-
             <div class="edit-section">
               <div class="edit-section-title">👤 Huésped Principal</div>
               <div class="edit-row">
@@ -750,7 +801,6 @@
                 </div>
               </div>
             </div>
-
             <div class="edit-section">
               <div class="edit-section-title">📝 Comentarios</div>
               <div class="edit-group full-width">
@@ -854,12 +904,6 @@
       let allRegistrations = [], allArchived = [], currentView = 'active', isDataLoading = false;
       window.db = db; window.doc = doc; window.deleteDoc = deleteDoc;
 
-      /* ══════════════════════════════════════════
-         HEADER SHRINK — no transforms, no shake.
-         The spacer height is measured from the
-         real header on every scroll/resize event
-         so content always stays in perfect sync.
-         ══════════════════════════════════════════ */
       const adminHeader = document.getElementById('adminHeader');
       const headerSpacer = document.getElementById('header-spacer');
 
@@ -869,11 +913,10 @@
 
       let isShrunk = false;
       let spacerRafId = null;
-
       const isDesktop = () => window.innerWidth >= 769;
 
       function trackHeaderDuringTransition() {
-        if (!isDesktop()) return; // never run RAF on mobile
+        if (!isDesktop()) return;
         if (spacerRafId) cancelAnimationFrame(spacerRafId);
         const start = performance.now();
         function tick(now) {
@@ -893,7 +936,6 @@
         trackHeaderDuringTransition();
       }, { passive: true });
 
-      // resize only fires on orientation change / window resize — safe on both
       window.addEventListener('resize', () => {
         if (!isDesktop()) {
           if (spacerRafId) { cancelAnimationFrame(spacerRafId); spacerRafId = null; }
@@ -917,10 +959,8 @@
           document.getElementById("loginScreen").style.display = "none";
           document.getElementById("dashboardScreen").style.display = "block";
           document.getElementById("userEmail").textContent = user.email;
-          // Re-measure spacer after dashboard becomes visible
           requestAnimationFrame(updateHeaderSpacer);
-          syncDropdowns(currentView);
-          loadEmailSettings(); loadData();
+          syncDropdowns(currentView); loadEmailSettings(); loadData();
         } else {
           document.getElementById("loginScreen").style.display = "flex";
           document.getElementById("dashboardScreen").style.display = "none";
@@ -1039,9 +1079,11 @@
             try {
               const sc=await getGuestReservationCount(reg.celular||'',reg.numeroId||'',reg.timestamp,reg.tipoId||'');
               const lb=sc>1?`<span class="stay-badge">#${sc}</span>`:'';
-              if(isMobile){ row.classList.add("clickable"); row.onclick=e=>{ if(!e.target.closest(".delete-btn")&&!e.target.closest(".view-btn")) showDetailModal(reg); }; }
+              if(isMobile){ row.classList.add("clickable"); row.onclick=e=>{ if(!e.target.closest(".action-group")) showDetailModal(reg); }; }
               const cn=reg.cabana?reg.cabana.slice(-1):"?";
               const fd=s=>{ if(!s) return "N/A"; const[y,m,d]=s.split("-"); return `${d}.${m}.${y}`; };
+              // Escape reg for inline onclick
+              const regJson=JSON.stringify(reg).replace(/"/g,'&quot;');
               row.innerHTML=`
                 <td class="mobile-col">${gi+1}</td>
                 <td class="mobile-col"><div class="date-cell"><div class="date-main">${fd(reg.fechaEntrada||'')}</div><div class="date-time">${fd(reg.fechaSalida||'')}</div></div></td>
@@ -1051,11 +1093,17 @@
                 <td>${fd(reg.fechaEntrada||'')}</td><td>${fd(reg.fechaSalida||'')}</td>
                 <td><span class="guest-badge">${(reg.totalHuespedes||0)+1}</span></td>
                 <td class="mobile-col">
-                  <button class="view-btn" onclick="event.stopPropagation();showDetailModal(${JSON.stringify(reg).replace(/"/g,'&quot;')})" title="Ver detalles"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                  <button class="edit-btn" onclick="event.stopPropagation();showEditModal(${JSON.stringify(reg).replace(/"/g,'&quot;')})" title="Editar registro">✏️</button>
-                </td>
-                <td>
-                  <button class="delete-btn" onclick="event.stopPropagation();deleteRegistration('${reg.id}',event)">🗑️</button>
+                  <div class="action-group">
+                    <button class="view-btn" onclick="event.stopPropagation();showDetailModal(${regJson})" title="Ver detalles">
+                      <span class="btn-icon">👁</span><span class="btn-label">Ver</span>
+                    </button>
+                    <button class="edit-btn" onclick="event.stopPropagation();showEditModal(${regJson})" title="Editar">
+                      <span class="btn-icon">✏️</span><span class="btn-label">Editar</span>
+                    </button>
+                    <button class="delete-btn" onclick="event.stopPropagation();deleteRegistration('${reg.id}',event)" title="Eliminar">
+                      <span class="btn-icon">🗑️</span><span class="btn-label">Eliminar</span>
+                    </button>
+                  </div>
                 </td>
               `;
               return row;
@@ -1176,12 +1224,9 @@
 
       /* ── EDIT MODAL ── */
       let currentEditId = null;
-      
+
       window.showEditModal=function(reg){
         currentEditId = reg.id;
-        const modal=document.getElementById("editModal");
-        
-        // Pre-fill form fields
         document.getElementById("editCabana").value = reg.cabana || "";
         document.getElementById("editTotalHuespedes").value = reg.totalHuespedes || 0;
         document.getElementById("editFechaEntrada").value = reg.fechaEntrada || "";
@@ -1195,20 +1240,18 @@
         document.getElementById("editNumeroId").value = reg.numeroId || "";
         document.getElementById("editCiudad").value = reg.ciudad || "";
         document.getElementById("editComentario").value = reg.comentario || "";
-        
-        modal.classList.add("show"); document.body.style.overflow="hidden";
+        document.getElementById("editModal").classList.add("show");
+        document.body.style.overflow="hidden";
       };
-      
-      window.closeEditModal=function(){ 
-        document.getElementById("editModal").classList.remove("show"); 
-        document.body.style.overflow=""; 
+
+      window.closeEditModal=function(){
+        document.getElementById("editModal").classList.remove("show");
+        document.body.style.overflow="";
         currentEditId = null;
       };
-      
+
       window.saveEdit=async function(){
         if(!currentEditId) return;
-        
-        // Get form values
         const updatedData = {
           cabana: document.getElementById("editCabana").value,
           totalHuespedes: parseInt(document.getElementById("editTotalHuespedes").value) || 0,
@@ -1226,88 +1269,29 @@
           lastModified: serverTimestamp(),
           modifiedBy: auth.currentUser?.email || 'unknown'
         };
-        
         try {
-          // Validate dates
-          if(!updatedData.fechaEntrada || !updatedData.fechaSalida) {
-            showToast("⚠️ Las fechas de entrada y salida son obligatorias");
-            return;
-          }
-          
-          if(new Date(updatedData.fechaEntrada) > new Date(updatedData.fechaSalida)) {
-            showToast("⚠️ La fecha de entrada no puede ser posterior a la de salida");
-            return;
-          }
-          
-          // Check for date conflicts (excluding current registration)
-          const conflictQuery = query(
-            collection(db, "registrations"),
-            where("cabana", "==", updatedData.cabana)
-          );
-          const conflictSnapshot = await getDocs(conflictQuery);
-          
-          const hasConflict = conflictSnapshot.docs.some(doc => {
-            if(doc.id === currentEditId) return false; // Skip current registration
-            
-            const existing = doc.data();
-            const newStart = new Date(updatedData.fechaEntrada);
-            const newEnd = new Date(updatedData.fechaSalida);
-            const existingStart = new Date(existing.fechaEntrada);
-            const existingEnd = new Date(existing.fechaSalida);
-            
-            // Check if dates overlap
-            return (newStart <= existingEnd && newEnd >= existingStart);
+          if(!updatedData.fechaEntrada || !updatedData.fechaSalida) { showToast("⚠️ Las fechas de entrada y salida son obligatorias"); return; }
+          if(new Date(updatedData.fechaEntrada) > new Date(updatedData.fechaSalida)) { showToast("⚠️ La fecha de entrada no puede ser posterior a la de salida"); return; }
+          const conflictSnapshot = await getDocs(query(collection(db,"registrations"),where("cabana","==",updatedData.cabana)));
+          const hasConflict = conflictSnapshot.docs.some(d => {
+            if(d.id === currentEditId) return false;
+            const ex = d.data();
+            return (new Date(updatedData.fechaEntrada) <= new Date(ex.fechaSalida) && new Date(updatedData.fechaSalida) >= new Date(ex.fechaEntrada));
           });
-          
-          if(hasConflict) {
-            showToast("⚠️ Hay una reserva existente para este apto en las fechas seleccionadas");
-            return;
-          }
-          
-          // Update the registration
-          await updateDoc(doc(db, "registrations", currentEditId), updatedData);
-          
-          // Update local data
+          if(hasConflict) { showToast("⚠️ Hay una reserva existente para este apto en las fechas seleccionadas"); return; }
+          await updateDoc(doc(db,"registrations",currentEditId), updatedData);
           const regIndex = allRegistrations.findIndex(r => r.id === currentEditId);
-          if(regIndex !== -1) {
-            allRegistrations[regIndex] = { ...allRegistrations[regIndex], ...updatedData };
-          }
-          
-          // Update availability calendar if dates or cabin changed
-          const originalReg = allRegistrations[regIndex];
-          if(originalReg.fechaEntrada !== updatedData.fechaEntrada || 
-             originalReg.fechaSalida !== updatedData.fechaSalida ||
-             originalReg.cabana !== updatedData.cabana) {
-            // Update availability calendar
-            const availQ = query(collection(db, "cabin_availability"), where("registrationId", "==", currentEditId));
-            const availSnapshot = await getDocs(availQ);
-            
-            // Delete old availability
-            availSnapshot.forEach(async (docSnap) => {
-              await deleteDoc(doc(db, "cabin_availability", docSnap.id));
-            });
-            
-            // Create new availability
-            await addDoc(collection(db, "cabin_availability"), {
-              cabana: updatedData.cabana,
-              fechaInicio: updatedData.fechaEntrada,
-              fechaFin: updatedData.fechaSalida,
-              registrationId: currentEditId,
-              createdAt: serverTimestamp()
-            });
-          }
-          
+          if(regIndex !== -1) allRegistrations[regIndex] = { ...allRegistrations[regIndex], ...updatedData };
           updateStats();
           displayData(currentView === 'active' ? allRegistrations : allArchived);
           closeEditModal();
           showToast("✅ Registro actualizado exitosamente");
-          
         } catch(error) {
           console.error("Error updating registration:", error);
           showToast("❌ Error al actualizar el registro");
         }
       };
-      
+
       document.getElementById("editModal").addEventListener("click",e=>{ if(e.target===document.getElementById("editModal")) closeEditModal(); });
 
       /* ── EXPORT ── */
