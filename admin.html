@@ -368,7 +368,7 @@
       .confirm-btn-cancel:hover { background:#e5e7eb; }
       .confirm-btn-delete { background:linear-gradient(135deg,#3b82f6,#1d4ed8); color:white; box-shadow:0 4px 12px rgba(59,130,246,0.3); }
       .confirm-btn-delete:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(59,130,246,0.4); }
-      @media (max-width:767px) { .edit-row { grid-template-columns:1fr; gap:12px; } .edit-body { padding:20px; } }
+      @media (max-width:767px) { .edit-body { padding:16px; } .edit-input { padding:10px 12px; font-size:13px; } }
 
       .confirm-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:10000; padding:20px; align-items:center; justify-content:center; }
       .confirm-modal.show { display:flex; }
@@ -744,7 +744,7 @@
         </div>
         <div class="detail-actions">
           <button class="confirm-btn confirm-btn-cancel" onclick="closeEditModal()">Cancelar</button>
-          <button class="confirm-btn confirm-btn-delete" id="saveEditBtn" onclick="saveEdit()">💾 Guardar Cambios</button>
+          <button class="confirm-btn confirm-btn-delete" id="saveEditBtn" onclick="saveEdit()">💾 Actualizar</button>
         </div>
       </div>
     </div>
