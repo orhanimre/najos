@@ -995,6 +995,7 @@
             const gi=ci*cs+idx; const row=document.createElement("tr");
             try {
               const sc=await getGuestReservationCount(reg.celular||'',reg.numeroId||'',reg.timestamp,reg.tipoId||'');
+              const lb=sc>1?`<span class="stay-badge">#${sc}</span>`:'';
               // Both mobile and desktop: clicking row opens detail modal
               row.classList.add("clickable");
               row.onclick=e=>{ if(!e.target.closest(".view-btn")) showDetailModal(reg); };
