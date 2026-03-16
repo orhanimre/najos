@@ -251,8 +251,8 @@
       .custom-dates.show { display:grid; }
       .date-input-group { display:flex; flex-direction:column; gap:8px; }
       .date-input-group label { font-size:11px; color:#14b8a6; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
-      .custom-dates input[type="date"] { width:100%; padding:8px 10px; border:2px solid #cbd5e0; border-radius:8px; font-size:12px; font-weight:500; background:white; color:#1f2937; transition:all 0.3s; box-sizing:border-box; }
-      .custom-dates input[type="date"]:focus { outline:none; border-color:#14b8a6; box-shadow:0 0 0 3px rgba(20,184,166,0.1); }
+      input[type="date"] { width:100%; padding:8px 10px; border:2px solid #cbd5e0; border-radius:8px; font-size:12px; font-weight:500; background:white; color:#1f2937; transition:all 0.3s; box-sizing:border-box; }
+      input[type="date"]:focus { outline:none; border-color:#14b8a6; box-shadow:0 0 0 3px rgba(20,184,166,0.1); }
       .search-container { margin-top:24px; }
       .search-box { position:relative; display:flex; align-items:center; background:linear-gradient(135deg,#f8f9fa,#fff); border-radius:16px; box-shadow:0 2px 8px rgba(0,0,0,0.06); padding:16px 18px; transition:all 0.3s; border:2px solid #e5e7eb; }
       .search-box:focus-within { box-shadow:0 6px 20px rgba(20,184,166,0.2); border-color:#14b8a6; background:white; transform:translateY(-1px); }
@@ -361,8 +361,8 @@
       .edit-group { display:flex; flex-direction:column; gap:6px; }
       .edit-group.full-width { grid-column:1/-1; }
       .edit-group label { font-size:12px; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.5px; }
-      .edit-input { display:block; padding:11px 12px; border:2px solid #e5e7eb; border-radius:10px; font-size:14px; background:#fafafa; transition:all 0.3s; font-family:inherit; box-sizing:border-box; width:100%; line-height:1.2; }
-      select.edit-input { appearance:none; -webkit-appearance:none; -moz-appearance:none; background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:36px; cursor:pointer; }
+      .edit-input { display:block; padding:11px 12px; border:2px solid #e5e7eb; border-radius:10px; font-size:14px; background:#fafafa; transition:all 0.3s; font-family:inherit; box-sizing:border-box; width:100%; line-height:1.2; appearance:none; -webkit-appearance:none; -moz-appearance:none; }
+      select.edit-input { background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:36px; cursor:pointer; }
       input[type="number"].edit-input { -moz-appearance:textfield; }
       input[type="number"].edit-input::-webkit-inner-spin-button, input[type="number"].edit-input::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
       input[type="date"].edit-input, input[type="time"].edit-input { padding:0 12px; height:46px; }
