@@ -292,113 +292,28 @@
       .guest-badge { display:inline-flex; align-items:center; justify-content:center; min-width:32px; padding:4px 10px; background:linear-gradient(135deg,#ebf8ff,#e6fffa); color:#14b8a6; border-radius:8px; font-weight:700; font-size:13px; border:1px solid #cbd5e0; }
 
       /* ── ACTION BUTTONS ── */
-      .action-group {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        flex-wrap: nowrap;
-      }
-
-      /* Shared base */
-      .view-btn, .edit-btn, .delete-btn {
+      /* Desktop only: single eye/view button in the table */
+      .view-btn {
+        display: none;
         border: none;
         cursor: pointer;
         font-weight: 600;
         transition: all 0.2s ease;
-        flex-shrink: 0;
-        line-height: 1;
       }
-
-      /* Desktop: compact pill buttons with icon + label */
       @media (min-width: 768px) {
-        .action-group { gap: 5px; }
-
         .view-btn {
           display: inline-flex;
           align-items: center;
-          gap: 4px;
-          padding: 7px 11px;
+          gap: 5px;
+          padding: 7px 14px;
           background: linear-gradient(135deg, #14b8a6, #0d9488);
           color: white;
           border-radius: 8px;
-          font-size: 11px;
+          font-size: 12px;
           box-shadow: 0 2px 6px rgba(20,184,166,0.3);
           white-space: nowrap;
         }
         .view-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(20,184,166,0.4); }
-
-        .edit-btn {
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          padding: 7px 11px;
-          background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-          color: white;
-          border-radius: 8px;
-          font-size: 11px;
-          box-shadow: 0 2px 6px rgba(59,130,246,0.3);
-          white-space: nowrap;
-        }
-        .edit-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(59,130,246,0.4); }
-
-        .delete-btn {
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          padding: 7px 11px;
-          background: linear-gradient(135deg, #f56565, #c53030);
-          color: white;
-          border-radius: 8px;
-          font-size: 11px;
-          box-shadow: 0 2px 6px rgba(245,101,101,0.3);
-          white-space: nowrap;
-        }
-        .delete-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(245,101,101,0.4); }
-
-        .btn-label { display: inline; }
-        .btn-icon { font-size: 13px; }
-      }
-
-      /* Mobile: large square tap targets, soft colored backgrounds */
-      @media (max-width: 767px) {
-        .action-group { gap: 6px; }
-
-        .btn-label { display: none; }
-        .btn-icon { font-size: 20px; }
-
-        .view-btn {
-          width: 44px; height: 44px;
-          display: flex; align-items: center; justify-content: center;
-          background: linear-gradient(135deg, #e0fdf4, #ccfbf1);
-          color: #0d9488;
-          border: 2px solid #99f6e4;
-          border-radius: 12px;
-          padding: 0;
-        }
-        .view-btn:active { transform: scale(0.9); }
-
-        .edit-btn {
-          width: 44px; height: 44px;
-          display: flex; align-items: center; justify-content: center;
-          background: linear-gradient(135deg, #eff6ff, #dbeafe);
-          color: #1d4ed8;
-          border: 2px solid #bfdbfe;
-          border-radius: 12px;
-          padding: 0;
-        }
-        .edit-btn:active { transform: scale(0.9); }
-
-        .delete-btn {
-          width: 44px; height: 44px;
-          display: flex; align-items: center; justify-content: center;
-          background: linear-gradient(135deg, #fef2f2, #fee2e2);
-          color: #c53030;
-          border: 2px solid #fca5a5;
-          border-radius: 12px;
-          padding: 0;
-          font-size: 20px;
-        }
-        .delete-btn:active { transform: scale(0.9); }
       }
 
       .loading, .no-data { text-align:center; padding:60px 20px; color:#718096; font-size:15px; }
@@ -415,8 +330,10 @@
       .close-modal { background:rgba(255,255,255,0.2); border:2px solid rgba(255,255,255,0.3); width:36px; height:36px; border-radius:50%; cursor:pointer; font-size:20px; display:flex; align-items:center; justify-content:center; transition:all 0.3s; color:white; font-weight:bold; }
       .close-modal:hover { background:rgba(255,255,255,0.3); transform:rotate(90deg); }
       .detail-body { padding:24px; }
-      .detail-actions { padding:16px 20px; background:#f9fafb; border-radius:0 0 20px 20px; border-top:1px solid #e5e7eb; }
-      .detail-actions .delete-btn { background:linear-gradient(135deg,#ef4444,#dc2626); color:white; border:none; padding:14px 24px; border-radius:12px; cursor:pointer; font-weight:700; font-size:15px; transition:all 0.3s; width:100%; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:0 4px 12px rgba(239,68,68,0.3); height:auto; }
+      .detail-actions { padding:16px 20px; background:#f9fafb; border-radius:0 0 20px 20px; border-top:1px solid #e5e7eb; display:flex; gap:10px; }
+      .detail-actions .edit-modal-btn { flex:1; background:linear-gradient(135deg,#3b82f6,#1d4ed8); color:white; border:none; padding:14px 16px; border-radius:12px; cursor:pointer; font-weight:700; font-size:15px; transition:all 0.3s; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 12px rgba(59,130,246,0.3); }
+      .detail-actions .edit-modal-btn:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(59,130,246,0.4); }
+      .detail-actions .delete-btn { flex:1; background:linear-gradient(135deg,#ef4444,#dc2626); color:white; border:none; padding:14px 16px; border-radius:12px; cursor:pointer; font-weight:700; font-size:15px; transition:all 0.3s; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 12px rgba(239,68,68,0.3); height:auto; width:auto; }
       .detail-actions .delete-btn:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(239,68,68,0.4); }
 
       /* Edit Modal */
@@ -1078,32 +995,24 @@
             const gi=ci*cs+idx; const row=document.createElement("tr");
             try {
               const sc=await getGuestReservationCount(reg.celular||'',reg.numeroId||'',reg.timestamp,reg.tipoId||'');
-              const lb=sc>1?`<span class="stay-badge">#${sc}</span>`:'';
-              if(isMobile){ row.classList.add("clickable"); row.onclick=e=>{ if(!e.target.closest(".action-group")) showDetailModal(reg); }; }
+              // Both mobile and desktop: clicking row opens detail modal
+              row.classList.add("clickable");
+              row.onclick=e=>{ if(!e.target.closest(".view-btn")) showDetailModal(reg); };
               const cn=reg.cabana?reg.cabana.slice(-1):"?";
               const fd=s=>{ if(!s) return "N/A"; const[y,m,d]=s.split("-"); return `${d}.${m}.${y}`; };
-              // Escape reg for inline onclick
               const regJson=JSON.stringify(reg).replace(/"/g,'&quot;');
               row.innerHTML=`
                 <td class="mobile-col">${gi+1}</td>
                 <td class="mobile-col"><div class="date-cell"><div class="date-main">${fd(reg.fechaEntrada||'')}</div><div class="date-time">${fd(reg.fechaSalida||'')}</div></div></td>
                 <td class="mobile-col"><span class="cabin-badge cabin-${cn}">Apto ${cn}</span></td>
-                <td class="mobile-col"><div class="name-cell"><div class="name-main">${lb}${reg.nombre||''} ${reg.apellido||''}</div><div class="name-sub">📱 ${reg.celular||'N/A'}</div></div></td>
+                <td class="mobile-col"><div class="name-cell"><div class="name-main">${lb}${reg.nombre||''} ${reg.apellido||''}</div><div class="name-sub">&#128241; ${reg.celular||'N/A'}</div></div></td>
                 <td>${reg.celular||'N/A'}</td><td>${reg.ciudad||'N/A'}</td>
                 <td>${fd(reg.fechaEntrada||'')}</td><td>${fd(reg.fechaSalida||'')}</td>
                 <td><span class="guest-badge">${(reg.totalHuespedes||0)+1}</span></td>
                 <td class="mobile-col">
-                  <div class="action-group">
-                    <button class="view-btn" onclick="event.stopPropagation();showDetailModal(${regJson})" title="Ver detalles">
-                      <span class="btn-icon">👁</span><span class="btn-label">Ver</span>
-                    </button>
-                    <button class="edit-btn" onclick="event.stopPropagation();showEditModal(${regJson})" title="Editar">
-                      <span class="btn-icon">✏️</span><span class="btn-label">Editar</span>
-                    </button>
-                    <button class="delete-btn" onclick="event.stopPropagation();deleteRegistration('${reg.id}',event)" title="Eliminar">
-                      <span class="btn-icon">🗑️</span><span class="btn-label">Eliminar</span>
-                    </button>
-                  </div>
+                  <button class="view-btn" onclick="event.stopPropagation();showDetailModal(${regJson})" title="Ver detalles">
+                    &#128065; Ver
+                  </button>
                 </td>
               `;
               return row;
@@ -1215,15 +1124,20 @@
             <div class="info-card"><div class="info-card-header"><span class="info-icon">👤</span><span class="info-title">Huésped Principal</span></div><div class="info-card-content"><div class="guest-name">${reg.nombre} ${reg.apellido}</div><div class="info-line">📱 <a href="tel:${reg.celular}" class="contact-link">${reg.celular||"N/A"}</a></div><div class="info-line">🆔 ${fid(reg.tipoId)} - ${reg.numeroId||"N/A"}</div><div class="info-line">📍 ${reg.ciudad||"N/A"}</div></div></div>
             ${ch?`<div class="info-card"><div class="info-card-header"><span class="info-icon">👥</span><span class="info-title">Acompañantes</span></div><div class="info-card-content">${ch}</div></div>`:""}
           </div>
-          <div class="detail-actions"><button class="delete-btn" onclick="event.stopPropagation();deleteRegistration('${reg.id}',event)">🗑️ Eliminar Registro</button></div>
+          <div class="detail-actions">
+            <button class="edit-modal-btn" onclick="const r=currentDetailReg;closeDetailModal();showEditModal(r);">✏️ Editar</button>
+            <button class="delete-btn" onclick="event.stopPropagation();deleteRegistration('${reg.id}',event)">🗑️ Eliminar</button>
+          </div>
         `;
+        currentDetailReg = reg;
         modal.classList.add("show"); document.body.style.overflow="hidden";
       };
-      window.closeDetailModal=function(){ document.getElementById("detailModal").classList.remove("show"); document.body.style.overflow=""; };
+      window.closeDetailModal=function(){ document.getElementById("detailModal").classList.remove("show"); document.body.style.overflow=""; currentDetailReg=null; };
       document.getElementById("detailModal").addEventListener("click",e=>{ if(e.target===document.getElementById("detailModal")) closeDetailModal(); });
 
       /* ── EDIT MODAL ── */
       let currentEditId = null;
+      let currentDetailReg = null;
 
       window.showEditModal=function(reg){
         currentEditId = reg.id;
