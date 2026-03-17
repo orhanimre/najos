@@ -6,15 +6,8 @@
     <title>Admin Dashboard - Aptos Najos</title>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-
-      html, body {
-        overscroll-behavior: none;
-      }
-      body {
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        background: #f8fafc;
-        min-height: 100vh;
-      }
+      html, body { overscroll-behavior: none; }
+      body { font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; min-height: 100vh; }
 
       /* ── LOGIN ── */
       .login-container { display:flex; align-items:center; justify-content:center; min-height:100vh; background:linear-gradient(135deg,#14b8a6,#0d9488); padding:20px; }
@@ -25,180 +18,46 @@
       .google-btn { background:white; border:2px solid #e2e8f0; padding:16px 28px; border-radius:12px; cursor:pointer; font-size:16px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:12px; width:100%; transition:all 0.3s; }
       .google-btn:hover { border-color:#14b8a6; transform:translateY(-2px); box-shadow:0 8px 16px rgba(0,0,0,0.15); }
 
-      .header {
-        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-        color: white;
-        position: fixed;
-        top: 0; left: 0; right: 0;
-        z-index: 100;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        padding: 10px 24px;
-        transition: padding 0.3s ease, box-shadow 0.3s ease;
-      }
-      .header.scrolled {
-        padding: 4px 24px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      }
-
-      .header-inner {
-        max-width: 1400px;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        min-height: 54px;
-        transition: min-height 0.3s ease;
-      }
-      .header.scrolled .header-inner { min-height: 32px; }
-
+      .header { background:linear-gradient(135deg,#14b8a6 0%,#0d9488 100%); color:white; position:fixed; top:0; left:0; right:0; z-index:100; box-shadow:0 4px 12px rgba(0,0,0,0.1); padding:10px 24px; transition:padding 0.3s ease,box-shadow 0.3s ease; }
+      .header.scrolled { padding:4px 24px; box-shadow:0 2px 8px rgba(0,0,0,0.15); }
+      .header-inner { max-width:1400px; margin:0 auto; display:flex; align-items:center; gap:12px; min-height:54px; transition:min-height 0.3s ease; }
+      .header.scrolled .header-inner { min-height:32px; }
       .admin-logo-link { display:inline-block; text-decoration:none; flex-shrink:0; }
-      .admin-logo {
-        max-width: 52px; height:auto; border-radius:8px; display:block;
-        transition: max-width 0.3s ease;
-      }
-      .header.scrolled .admin-logo { max-width: 30px; }
-
+      .admin-logo { max-width:52px; height:auto; border-radius:8px; display:block; transition:max-width 0.3s ease; }
+      .header.scrolled .admin-logo { max-width:30px; }
       .header-title { flex:1; text-align:center; overflow:hidden; }
-      .header-title h1 {
-        font-size: 19px; font-weight:700; line-height:1.2;
-        transition: font-size 0.3s ease;
-      }
-      .header.scrolled .header-title h1 { font-size: 14px; }
-
-      .header-subtitle {
-        font-size: 12px; font-weight:300; opacity:0.9;
-        max-height: 22px; overflow:hidden;
-        transition: max-height 0.3s ease, opacity 0.25s ease;
-      }
+      .header-title h1 { font-size:19px; font-weight:700; line-height:1.2; transition:font-size 0.3s ease; }
+      .header.scrolled .header-title h1 { font-size:14px; }
+      .header-subtitle { font-size:12px; font-weight:300; opacity:0.9; max-height:22px; overflow:hidden; transition:max-height 0.3s ease,opacity 0.25s ease; }
       .header.scrolled .header-subtitle { max-height:0; opacity:0; }
-
       .nav-dropdown-container { display:flex; align-items:center; gap:6px; flex-shrink:0; }
       .nav-dropdown-label { font-size:12px; font-weight:600; color:white; white-space:nowrap; }
-      .nav-dropdown {
-        padding: 7px 32px 7px 12px;
-        background: rgba(255,255,255,0.95); color:#14b8a6;
-        border: 2px solid rgba(255,255,255,0.3); border-radius:9px;
-        font-size: 13px; font-weight:600; cursor:pointer;
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2314b8a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-        background-repeat: no-repeat; background-position: right 10px center;
-      }
+      .nav-dropdown { padding:7px 32px 7px 12px; background:rgba(255,255,255,0.95); color:#14b8a6; border:2px solid rgba(255,255,255,0.3); border-radius:9px; font-size:13px; font-weight:600; cursor:pointer; appearance:none; background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2314b8a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; }
       .nav-dropdown:focus { outline:none; }
-      .nav-dropdown option { background: white; color: #14b8a6; font-weight: 600; }
-
-      .vista-toggle { display:flex; border-radius:9px; overflow:hidden; border:2px solid rgba(255,255,255,0.4); }
-      .vista-btn {
-        padding: 7px 12px; font-size:13px; font-weight:600; cursor:pointer;
-        border:none; background:rgba(255,255,255,0.15); color:white;
-        transition: background 0.2s, color 0.2s;
-        white-space:nowrap;
-      }
-      .vista-btn:not(.active):hover { background:rgba(255,255,255,0.25); }
-      .vista-btn[data-view="active"].active  { background:#ffffff; color:#14b8a6; }
-      .vista-btn[data-view="archive"].active { background:#48bb78; color:#ffffff; }
-
-      .settings-btn {
-        background: rgba(255,255,255,0.15);
-        border: 2px solid rgba(255,255,255,0.3);
-        color: white;
-        width: 40px; height: 40px;
-        border-radius: 10px;
-        cursor: pointer; font-size: 20px;
-        display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0;
-        transition: all 0.3s ease;
-      }
+      .nav-dropdown option { background:white; color:#14b8a6; font-weight:600; }
+      .settings-btn { background:rgba(255,255,255,0.15); border:2px solid rgba(255,255,255,0.3); color:white; width:40px; height:40px; border-radius:10px; cursor:pointer; font-size:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.3s ease; }
       .settings-btn:hover { background:rgba(255,255,255,0.25); transform:rotate(90deg); }
+      .mobile-controls-row { display:flex; align-items:center; justify-content:center; gap:10px; max-width:1400px; margin:6px auto 0; max-height:52px; overflow:hidden; }
+      .header.scrolled .mobile-controls-row { max-height:0; opacity:0; margin-top:0; pointer-events:none; }
+      .desktop-bottom-row { display:none; align-items:center; gap:12px; max-width:1400px; margin:6px auto 0; max-height:48px; overflow:hidden; transition:max-height 0.3s ease,opacity 0.25s ease,margin-top 0.3s ease; }
+      .header.scrolled .desktop-bottom-row { max-height:0; opacity:0; margin-top:0; pointer-events:none; }
 
-      .mobile-controls-row {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        max-width: 1400px;
-        margin: 6px auto 0;
-        max-height: 52px;
-        overflow: hidden;
-      }
-      .header.scrolled .mobile-controls-row {
-        max-height: 0;
-        opacity: 0;
-        margin-top: 0;
-        pointer-events: none;
-      }
+      @media (max-width:768px) { .mobile-controls-row { display:flex; } .desktop-bottom-row { display:none !important; } .header-inner .nav-dropdown-container { display:none; } }
+      @media (min-width:769px) { .mobile-controls-row { display:none !important; } .desktop-bottom-row { display:flex; } .settings-btn { display:none !important; } .header-inner .nav-dropdown-container { display:flex; } }
 
-      .desktop-bottom-row {
-        display: none;
-        align-items: center;
-        gap: 12px;
-        max-width: 1400px;
-        margin: 6px auto 0;
-        max-height: 48px;
-        overflow: hidden;
-        transition: max-height 0.3s ease, opacity 0.25s ease, margin-top 0.3s ease;
-      }
-      .header.scrolled .desktop-bottom-row {
-        max-height: 0;
-        opacity: 0;
-        margin-top: 0;
-        pointer-events: none;
-      }
-
-      @media (max-width: 768px) {
-        .mobile-controls-row { display: flex; }
-        .desktop-bottom-row { display: none !important; }
-        .header-inner .nav-dropdown-container { display: none; }
-      }
-
-      @media (min-width: 769px) {
-        .mobile-controls-row { display: none !important; }
-        .desktop-bottom-row { display: flex; }
-        .settings-btn { display: none !important; }
-        .header-inner .nav-dropdown-container { display: flex; }
-      }
-
-      .email-toggle-container {
-        display:flex; align-items:center; gap:8px;
-        padding: 7px 14px;
-        background: rgba(255,255,255,0.15);
-        border-radius: 10px; border: 2px solid rgba(255,255,255,0.2);
-      }
+      .email-toggle-container { display:flex; align-items:center; gap:8px; padding:7px 14px; background:rgba(255,255,255,0.15); border-radius:10px; border:2px solid rgba(255,255,255,0.2); }
       .email-toggle-label { font-size:13px; font-weight:600; color:white; }
-      .toggle-switch {
-        position:relative; width:44px; height:24px;
-        background:rgba(255,255,255,0.3); border-radius:12px;
-        cursor:pointer; border:2px solid rgba(255,255,255,0.4);
-        transition:all 0.3s; flex-shrink:0;
-      }
+      .toggle-switch { position:relative; width:44px; height:24px; background:rgba(255,255,255,0.3); border-radius:12px; cursor:pointer; border:2px solid rgba(255,255,255,0.4); transition:all 0.3s; flex-shrink:0; }
       .toggle-switch.active { background:#48bb78; border-color:#48bb78; }
-      .toggle-slider {
-        position:absolute; top:2px; left:2px;
-        width:16px; height:16px; background:white;
-        border-radius:50%; transition:all 0.3s;
-        box-shadow:0 2px 4px rgba(0,0,0,0.2);
-      }
+      .toggle-slider { position:absolute; top:2px; left:2px; width:16px; height:16px; background:white; border-radius:50%; transition:all 0.3s; box-shadow:0 2px 4px rgba(0,0,0,0.2); }
       .toggle-switch.active .toggle-slider { transform:translateX(20px); }
-
       .user-row { display:flex; align-items:center; gap:8px; margin-left:auto; }
       .user-email { font-size:12px; opacity:0.9; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:180px; }
-      .logout-btn {
-        background:linear-gradient(135deg,#ef4444,#dc2626);
-        border:2px solid rgba(255,255,255,0.3);
-        color:white; padding:6px 14px; border-radius:8px;
-        cursor:pointer; font-weight:600; font-size:18px;
-        box-shadow:0 3px 8px rgba(239,68,68,0.3);
-        transition:all 0.3s; white-space:nowrap; flex-shrink:0;
-      }
+      .logout-btn { background:linear-gradient(135deg,#ef4444,#dc2626); border:2px solid rgba(255,255,255,0.3); color:white; padding:6px 14px; border-radius:8px; cursor:pointer; font-weight:600; font-size:18px; box-shadow:0 3px 8px rgba(239,68,68,0.3); transition:all 0.3s; white-space:nowrap; flex-shrink:0; }
       .logout-btn:hover { transform:translateY(-1px); box-shadow:0 5px 12px rgba(239,68,68,0.4); }
 
-      /* ── CONTAINER ── */
-      .container {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 20px;
-      }
-
-      #header-spacer { transition: none; }
+      .container { max-width:1400px; margin:0 auto; padding:20px; }
+      #header-spacer { transition:none; }
 
       /* ── STATS ── */
       .stats-grid { display:grid; grid-template-columns:1fr; gap:16px; margin-bottom:24px; }
@@ -217,16 +76,9 @@
       .stat-card.cabin-1 .number { background:linear-gradient(135deg,#0066cc,#0052a3); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
       .stat-card.cabin-2 .number { background:linear-gradient(135deg,#00cc00,#00a300); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
       .stat-card.cabin-3 .number { background:linear-gradient(135deg,#cc0066,#a30052); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
-
       .stay-badge { background:linear-gradient(135deg,#9f7aea,#6b46c1); color:white; font-size:12px; padding:2px 8px; border-radius:12px; margin-left:6px; font-weight:600; display:inline-block; vertical-align:middle; }
       .mobile-only { display:none; }
-      @media (max-width:768px) {
-        .desktop-only { display:none; }
-        .mobile-only { display:inline-block; }
-        .stay-badge.mobile-only { font-size:10px; padding:1px 4px; margin-right:4px; }
-        .name-main { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-      }
-
+      @media (max-width:768px) { .desktop-only { display:none; } .mobile-only { display:inline-block; } .stay-badge.mobile-only { font-size:10px; padding:1px 4px; margin-right:4px; } .name-main { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } }
       .calendar-view-btn { margin-top:12px; padding:10px 16px; background:linear-gradient(135deg,#14b8a6,#0d9488); color:white; border:none; border-radius:10px; cursor:pointer; font-weight:600; font-size:13px; transition:all 0.3s; width:100%; }
       .calendar-view-btn:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(20,184,166,0.3); }
 
@@ -291,46 +143,10 @@
       .name-sub { font-size:12px; color:#6b7280; font-weight:500; }
       .guest-badge { display:inline-flex; align-items:center; justify-content:center; min-width:32px; padding:4px 10px; background:linear-gradient(135deg,#ebf8ff,#e6fffa); color:#14b8a6; border-radius:8px; font-weight:700; font-size:13px; border:1px solid #cbd5e0; }
 
-      /* ── ACTION BUTTONS ── */
-      /* Desktop only: single eye/view button in the table */
-      /* Desktop: pill with label */
-      .view-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border: none;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.2s ease;
-        /* Mobile default */
-        width: 40px;
-        height: 40px;
-        background: linear-gradient(135deg, #e0fdf4, #ccfbf1);
-        color: #0d9488;
-        border: 2px solid #99f6e4;
-        border-radius: 10px;
-        font-size: 18px;
-        padding: 0;
-      }
-      .view-btn:active { transform: scale(0.9); }
-      .view-btn .btn-label { display: none; }
-      @media (min-width: 768px) {
-        .view-btn {
-          gap: 5px;
-          padding: 7px 14px;
-          width: auto;
-          height: auto;
-          background: linear-gradient(135deg, #14b8a6, #0d9488);
-          color: white;
-          border: none;
-          border-radius: 8px;
-          font-size: 12px;
-          box-shadow: 0 2px 6px rgba(20,184,166,0.3);
-          white-space: nowrap;
-        }
-        .view-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(20,184,166,0.4); }
-        .view-btn .btn-label { display: inline; }
-      }
+      .view-btn { display:inline-flex; align-items:center; justify-content:center; border:none; cursor:pointer; font-weight:600; transition:all 0.2s ease; width:40px; height:40px; background:linear-gradient(135deg,#e0fdf4,#ccfbf1); color:#0d9488; border:2px solid #99f6e4; border-radius:10px; font-size:18px; padding:0; }
+      .view-btn:active { transform:scale(0.9); }
+      .view-btn .btn-label { display:none; }
+      @media (min-width:768px) { .view-btn { gap:5px; padding:7px 14px; width:auto; height:auto; background:linear-gradient(135deg,#14b8a6,#0d9488); color:white; border:none; border-radius:8px; font-size:12px; box-shadow:0 2px 6px rgba(20,184,166,0.3); white-space:nowrap; } .view-btn:hover { transform:translateY(-1px); box-shadow:0 4px 10px rgba(20,184,166,0.4); } .view-btn .btn-label { display:inline; } }
 
       .loading, .no-data { text-align:center; padding:60px 20px; color:#718096; font-size:15px; }
 
@@ -352,7 +168,7 @@
       .detail-actions .delete-btn { flex:1; background:linear-gradient(135deg,#ef4444,#dc2626); color:white; border:none; padding:14px 16px; border-radius:12px; cursor:pointer; font-weight:700; font-size:15px; transition:all 0.3s; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 12px rgba(239,68,68,0.3); height:auto; width:auto; }
       .detail-actions .delete-btn:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(239,68,68,0.4); }
 
-      /* Edit Modal */
+      /* ── EDIT MODAL ── */
       .edit-body { padding:24px; max-height:60vh; overflow-y:auto; }
       .edit-section { margin-bottom:24px; }
       .edit-section:last-child { margin-bottom:0; }
@@ -365,53 +181,25 @@
       select.edit-input { background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:36px; cursor:pointer; }
       input[type="number"].edit-input { -moz-appearance:textfield; }
       input[type="number"].edit-input::-webkit-inner-spin-button, input[type="number"].edit-input::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
-      input[type="date"].edit-input, input[type="time"].edit-input { 
-        padding:0 12px; 
-        height:46px; 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      input[type="date"].edit-input {
-        background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' stroke='%236b7280' stroke-width='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6' stroke='%236b7280' stroke-width='2'/%3E%3Cline x1='8' y1='2' x2='8' y2='6' stroke='%236b7280' stroke-width='2'/%3E%3Cline x1='3' y1='10' x2='21' y2='10' stroke='%236b7280' stroke-width='2'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 12px center;
-        padding-right: 44px;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-      }
-      input[type="time"].edit-input {
-        background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%236b7280' stroke-width='2'/%3E%3Cpolyline points='12,6 12,12 16,14' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 12px center;
-        padding-right: 44px;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-      }
-      /* Hide native calendar/time picker icons */
-      input[type="date"]::-webkit-calendar-picker-indicator,
-      input[type="time"]::-webkit-calendar-picker-indicator {
-        display: none;
-        -webkit-appearance: none;
-        appearance: none;
-      }
-      input[type="date"]::-webkit-inner-spin-button,
-      input[type="time"]::-webkit-inner-spin-button,
-      input[type="date"]::-webkit-outer-spin-button,
-      input[type="time"]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-      }
+      input[type="date"].edit-input, input[type="time"].edit-input { padding:0 12px; height:46px; display:flex; align-items:center; justify-content:center; }
+      input[type="date"].edit-input { background-image:url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' stroke='%236b7280' stroke-width='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6' stroke='%236b7280' stroke-width='2'/%3E%3Cline x1='8' y1='2' x2='8' y2='6' stroke='%236b7280' stroke-width='2'/%3E%3Cline x1='3' y1='10' x2='21' y2='10' stroke='%236b7280' stroke-width='2'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:44px; -webkit-appearance:none; -moz-appearance:none; appearance:none; }
+      input[type="time"].edit-input { background-image:url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%236b7280' stroke-width='2'/%3E%3Cpolyline points='12,6 12,12 16,14' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:44px; -webkit-appearance:none; -moz-appearance:none; appearance:none; }
+      input[type="date"]::-webkit-calendar-picker-indicator, input[type="time"]::-webkit-calendar-picker-indicator { display:none; -webkit-appearance:none; appearance:none; }
+      input[type="date"]::-webkit-inner-spin-button, input[type="time"]::-webkit-inner-spin-button, input[type="date"]::-webkit-outer-spin-button, input[type="time"]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
       textarea.edit-input { height:auto; line-height:1.5; padding:10px 12px; }
       .edit-input:focus { outline:none; border-color:#3b82f6; background:white; box-shadow:0 0 0 3px rgba(59,130,246,0.1); }
+
+      /* Companion sections */
+      .edit-companion-section { margin-bottom:20px; padding:16px; background:linear-gradient(135deg,#f0fdfa 0%,#e6fffa 100%); border-radius:12px; border:1px solid #99f6e4; }
+      .edit-companion-section:last-child { margin-bottom:0; }
+      .edit-companion-title { font-size:13px; font-weight:700; color:#0d9488; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.5px; }
+
       .confirm-btn { flex:1; padding:14px 20px; border:none; border-radius:12px; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.3s; }
       .confirm-btn-cancel { background:linear-gradient(135deg,#ef4444,#dc2626); color:white; box-shadow:0 4px 12px rgba(239,68,68,0.3); }
       .confirm-btn-cancel:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(239,68,68,0.4); }
       .confirm-btn-delete { background:linear-gradient(135deg,#10b981,#059669); color:white; box-shadow:0 4px 12px rgba(16,185,129,0.3); }
       .confirm-btn-delete:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(16,185,129,0.4); }
-      @media (max-width:767px) { .edit-body { padding:14px; } .edit-row { gap:10px; } .edit-input { font-size:13px; padding:9px 10px; } select.edit-input { padding:9px 32px 9px 10px; } input[type="date"].edit-input, input[type="time"].edit-input { padding:0 10px; height:44px; font-size:13px; background-position: right 10px center; padding-right: 40px; } }
+      @media (max-width:767px) { .edit-body { padding:14px; } .edit-row { gap:10px; } .edit-input { font-size:13px; padding:9px 10px; } select.edit-input { padding:9px 32px 9px 10px; } input[type="date"].edit-input, input[type="time"].edit-input { padding:0 10px; height:44px; font-size:13px; background-position:right 10px center; padding-right:40px; } }
 
       .confirm-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:10000; padding:20px; align-items:center; justify-content:center; }
       .confirm-modal.show { display:flex; }
@@ -423,6 +211,7 @@
       .confirm-message { font-size:15px; color:#4b5563; line-height:1.6; margin:0; }
       .confirm-actions { display:flex; gap:12px; padding:20px 24px; background:#f9fafb; border-top:1px solid #e5e7eb; }
 
+      /* Calendar Modal */
       .calendar-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:10001; padding:20px; }
       .calendar-modal.show { display:flex; align-items:center; justify-content:center; }
       .calendar-content { background:white; border-radius:20px; max-width:900px; width:calc(100% - 32px); max-height:90vh; display:flex; flex-direction:column; animation:slideUp 0.3s ease; box-shadow:0 24px 48px rgba(0,0,0,0.3); overflow:hidden; box-sizing:border-box; }
@@ -473,6 +262,7 @@
       @media (max-width:768px) { .calendar-grid{gap:2px;} .calendar-day{padding:4px;min-height:45px;max-height:60px;} .calendar-day-number{font-size:12px;} .calendar-day-header{font-size:9px;padding:6px 2px;} .calendar-scroll-container{padding:16px;} .calendar-month-section{margin-bottom:24px;} }
       @media (max-width:400px) { .calendar-day{min-height:40px;max-height:50px;padding:2px;} .calendar-day-number{font-size:11px;} }
 
+      /* Settings Modal */
       .settings-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:10002; padding:20px; align-items:center; justify-content:center; }
       .settings-modal.show { display:flex; }
       .settings-content { background:white; border-radius:20px; max-width:480px; width:calc(100% - 32px); max-height:85vh; overflow-y:auto; animation:slideUp 0.3s ease; box-shadow:0 24px 48px rgba(0,0,0,0.3); }
@@ -490,6 +280,7 @@
       .logout-btn-modal { background:linear-gradient(135deg,#ef4444,#dc2626); color:white; border:none; padding:14px 24px; border-radius:12px; cursor:pointer; font-weight:700; font-size:15px; transition:all 0.3s; width:100%; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 12px rgba(239,68,68,0.3); }
       .logout-btn-modal:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(239,68,68,0.4); }
 
+      /* Info Cards */
       .info-card { background:#ffffff; border-radius:12px; margin-bottom:12px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
       .info-card-header { background:linear-gradient(135deg,#f7fafc,#edf2f7); padding:12px 16px; display:flex; align-items:center; gap:8px; border-bottom:1px solid #e5e7eb; }
       .info-icon { font-size:18px; }
@@ -546,7 +337,6 @@
 
     <!-- DASHBOARD -->
     <div id="dashboardScreen">
-
       <div class="header" id="adminHeader">
         <div class="header-inner">
           <a href="/" class="admin-logo-link">
@@ -564,7 +354,6 @@
             </select>
           </div>
         </div>
-
         <div class="mobile-controls-row">
           <button id="settingsBtn" class="settings-btn" onclick="openSettingsModal()">⚙️</button>
           <div class="nav-dropdown-container">
@@ -575,7 +364,6 @@
             </select>
           </div>
         </div>
-
         <div class="desktop-bottom-row">
           <div class="email-toggle-container">
             <span class="email-toggle-label">📧 Correo</span>
@@ -739,6 +527,7 @@
                 </div>
               </div>
             </div>
+
             <div class="edit-section">
               <div class="edit-section-title">👤 Huésped Principal</div>
               <div class="edit-row">
@@ -777,6 +566,101 @@
                 </div>
               </div>
             </div>
+
+            <div class="edit-section">
+              <div class="edit-section-title">👥 Acompañantes</div>
+              <!-- Companion 0 -->
+              <div class="edit-companion-section">
+                <div class="edit-companion-title">👤 Acompañante 1</div>
+                <div class="edit-row">
+                  <div class="edit-group">
+                    <label>Nombre</label>
+                    <input type="text" id="editAcomp0Nombre" class="edit-input" />
+                  </div>
+                  <div class="edit-group">
+                    <label>Apellido</label>
+                    <input type="text" id="editAcomp0Apellido" class="edit-input" />
+                  </div>
+                </div>
+                <div class="edit-row">
+                  <div class="edit-group">
+                    <label>Tipo ID</label>
+                    <select id="editAcomp0TipoId" class="edit-input">
+                      <option value="">Seleccione</option>
+                      <option value="cc">CC</option>
+                      <option value="ce">CE</option>
+                      <option value="ti">TI</option>
+                      <option value="pasaporte">Pasaporte</option>
+                    </select>
+                  </div>
+                  <div class="edit-group">
+                    <label>Número ID</label>
+                    <input type="text" id="editAcomp0NumId" class="edit-input" />
+                  </div>
+                </div>
+              </div>
+              <!-- Companion 1 -->
+              <div class="edit-companion-section">
+                <div class="edit-companion-title">👤 Acompañante 2</div>
+                <div class="edit-row">
+                  <div class="edit-group">
+                    <label>Nombre</label>
+                    <input type="text" id="editAcomp1Nombre" class="edit-input" />
+                  </div>
+                  <div class="edit-group">
+                    <label>Apellido</label>
+                    <input type="text" id="editAcomp1Apellido" class="edit-input" />
+                  </div>
+                </div>
+                <div class="edit-row">
+                  <div class="edit-group">
+                    <label>Tipo ID</label>
+                    <select id="editAcomp1TipoId" class="edit-input">
+                      <option value="">Seleccione</option>
+                      <option value="cc">CC</option>
+                      <option value="ce">CE</option>
+                      <option value="ti">TI</option>
+                      <option value="pasaporte">Pasaporte</option>
+                    </select>
+                  </div>
+                  <div class="edit-group">
+                    <label>Número ID</label>
+                    <input type="text" id="editAcomp1NumId" class="edit-input" />
+                  </div>
+                </div>
+              </div>
+              <!-- Companion 2 -->
+              <div class="edit-companion-section">
+                <div class="edit-companion-title">👤 Acompañante 3</div>
+                <div class="edit-row">
+                  <div class="edit-group">
+                    <label>Nombre</label>
+                    <input type="text" id="editAcomp2Nombre" class="edit-input" />
+                  </div>
+                  <div class="edit-group">
+                    <label>Apellido</label>
+                    <input type="text" id="editAcomp2Apellido" class="edit-input" />
+                  </div>
+                </div>
+                <div class="edit-row">
+                  <div class="edit-group">
+                    <label>Tipo ID</label>
+                    <select id="editAcomp2TipoId" class="edit-input">
+                      <option value="">Seleccione</option>
+                      <option value="cc">CC</option>
+                      <option value="ce">CE</option>
+                      <option value="ti">TI</option>
+                      <option value="pasaporte">Pasaporte</option>
+                    </select>
+                  </div>
+                  <div class="edit-group">
+                    <label>Número ID</label>
+                    <input type="text" id="editAcomp2NumId" class="edit-input" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="edit-section">
               <div class="edit-section-title">📝 Comentarios</div>
               <div class="edit-group full-width">
@@ -836,12 +720,10 @@
           </div>
           <div class="settings-section">
             <div class="settings-section-title">📋 Vista</div>
-            <div class="settings-section .email-toggle-container">
-              <select id="viewSelectorModal" class="nav-dropdown" style="width:100%;padding:10px 14px;background:white;color:#14b8a6;border:2px solid #e2e8f0;border-radius:10px;" onchange="switchViewFromModal()">
-                <option value="active">📋 Registros Activos</option>
-                <option value="archive">📦 Archivo</option>
-              </select>
-            </div>
+            <select id="viewSelectorModal" class="nav-dropdown" style="width:100%;padding:10px 14px;background:white;color:#14b8a6;border:2px solid #e2e8f0;border-radius:10px;" onchange="switchViewFromModal()">
+              <option value="active">📋 Registros Activos</option>
+              <option value="archive">📦 Archivo</option>
+            </select>
           </div>
           <div class="settings-section">
             <div class="settings-section-title">👤 Cuenta</div>
@@ -878,28 +760,22 @@
       const provider = new GoogleAuthProvider();
 
       let allRegistrations = [], allArchived = [], currentView = 'active', isDataLoading = false;
+      let currentDetailReg = null, currentEditId = null;
       window.db = db; window.doc = doc; window.deleteDoc = deleteDoc;
 
       const adminHeader = document.getElementById('adminHeader');
       const headerSpacer = document.getElementById('header-spacer');
 
-      function updateHeaderSpacer() {
-        headerSpacer.style.height = adminHeader.offsetHeight + 'px';
-      }
+      function updateHeaderSpacer() { headerSpacer.style.height = adminHeader.offsetHeight + 'px'; }
 
-      let isShrunk = false;
-      let spacerRafId = null;
+      let isShrunk = false, spacerRafId = null;
       const isDesktop = () => window.innerWidth >= 769;
 
       function trackHeaderDuringTransition() {
         if (!isDesktop()) return;
         if (spacerRafId) cancelAnimationFrame(spacerRafId);
         const start = performance.now();
-        function tick(now) {
-          updateHeaderSpacer();
-          if (now - start < 350) spacerRafId = requestAnimationFrame(tick);
-          else spacerRafId = null;
-        }
+        function tick(now) { updateHeaderSpacer(); if (now - start < 350) spacerRafId = requestAnimationFrame(tick); else spacerRafId = null; }
         spacerRafId = requestAnimationFrame(tick);
       }
 
@@ -913,20 +789,10 @@
       }, { passive: true });
 
       window.addEventListener('resize', () => {
-        if (!isDesktop()) {
-          if (spacerRafId) { cancelAnimationFrame(spacerRafId); spacerRafId = null; }
-          adminHeader.classList.remove('scrolled');
-          isShrunk = false;
-        } else {
-          const shrink = window.scrollY > 50;
-          if (shrink !== isShrunk) {
-            isShrunk = shrink;
-            adminHeader.classList.toggle('scrolled', shrink);
-          }
-        }
+        if (!isDesktop()) { if (spacerRafId) { cancelAnimationFrame(spacerRafId); spacerRafId = null; } adminHeader.classList.remove('scrolled'); isShrunk = false; }
+        else { const shrink = window.scrollY > 50; if (shrink !== isShrunk) { isShrunk = shrink; adminHeader.classList.toggle('scrolled', shrink); } }
         updateHeaderSpacer();
       });
-
       updateHeaderSpacer();
 
       /* ── AUTH ── */
@@ -1004,11 +870,7 @@
         finally { isDataLoading=false; loading.style.display="none"; }
       }
 
-      const viewColors = {
-        active:  { bg: 'rgba(255,255,255,0.95)', color: '#14b8a6' },
-        archive: { bg: '#48bb78',                color: '#ffffff' }
-      };
-
+      const viewColors = { active:{bg:'rgba(255,255,255,0.95)',color:'#14b8a6'}, archive:{bg:'#48bb78',color:'#ffffff'} };
       const ARROW_TEAL  = "url(\"data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2314b8a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")";
       const ARROW_WHITE = "url(\"data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")";
 
@@ -1044,7 +906,6 @@
       async function displayData(data) {
         const tb=document.getElementById("tableBody"); const table=document.getElementById("dataTable");
         const noData=document.getElementById("noData"); const loading=document.getElementById("loading");
-        const isMobile=window.innerWidth<768;
         tb.innerHTML=''; loading.style.display="block"; noData.style.display="none"; table.style.display="table";
         if(!data||data.length===0){ table.style.display="none"; noData.style.display="block"; loading.style.display="none"; return; }
         const cs=20;
@@ -1055,7 +916,6 @@
             try {
               const sc=await getGuestReservationCount(reg.celular||'',reg.numeroId||'',reg.timestamp,reg.tipoId||'');
               const lb=sc>1?`<span class="stay-badge">#${sc}</span>`:'';
-              // Both mobile and desktop: clicking row opens detail modal
               row.classList.add("clickable");
               row.onclick=e=>{ if(!e.target.closest(".view-btn")) showDetailModal(reg); };
               const cn=reg.cabana?reg.cabana.slice(-1):"?";
@@ -1171,6 +1031,7 @@
       window.showDetailModal=function(reg){
         const modal=document.getElementById("detailModal"); const body=document.getElementById("detailBody");
         const ts=reg.timestamp?new Date(reg.timestamp.seconds*1000):new Date();
+        currentDetailReg = reg;
         const cn=reg.cabana?reg.cabana.slice(-1):"?";
         const fdt=d=>{ const p=n=>String(n).padStart(2,"0"); return `${p(d.getDate())}.${p(d.getMonth()+1)}.${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`; };
         const fd=s=>{ if(!s) return "N/A"; const[y,m,d]=s.split("-"); return `${d}.${m}.${y}`; };
@@ -1189,38 +1050,47 @@
             <button class="delete-btn" onclick="event.stopPropagation();deleteRegistration('${reg.id}',event)">🗑️ Eliminar</button>
           </div>
         `;
-        currentDetailReg = reg;
         modal.classList.add("show"); document.body.style.overflow="hidden";
       };
+
       window.closeDetailModal=function(){ document.getElementById("detailModal").classList.remove("show"); document.body.style.overflow=""; currentDetailReg=null; };
-      window.openEditFromDetail=function(){
-        const reg=currentDetailReg;
-        if(!reg) return;
-        closeDetailModal();
-        // Small delay so modal close animation doesn't conflict
-        setTimeout(()=>showEditModal(reg), 50);
-      };
       document.getElementById("detailModal").addEventListener("click",e=>{ if(e.target===document.getElementById("detailModal")) closeDetailModal(); });
 
       /* ── EDIT MODAL ── */
-      let currentEditId = null;
-      let currentDetailReg = null;
+      window.openEditFromDetail=function(){
+        const reg=currentDetailReg;
+        if(!reg) return;
+        document.getElementById("detailModal").classList.remove("show");
+        document.body.style.overflow="";
+        setTimeout(()=>showEditModal(reg), 50);
+      };
 
       window.showEditModal=function(reg){
         currentEditId = reg.id;
-        document.getElementById("editCabana").value = reg.cabana || "";
+        document.getElementById("editCabana").value         = reg.cabana || "";
         document.getElementById("editTotalHuespedes").value = reg.totalHuespedes || 0;
-        document.getElementById("editFechaEntrada").value = reg.fechaEntrada || "";
-        document.getElementById("editFechaSalida").value = reg.fechaSalida || "";
-        document.getElementById("editHoraEntrada").value = reg.horaEntrada || "";
-        document.getElementById("editHoraSalida").value = reg.horaSalida || "";
-        document.getElementById("editNombre").value = reg.nombre || "";
-        document.getElementById("editApellido").value = reg.apellido || "";
-        document.getElementById("editCelular").value = reg.celular || "";
-        document.getElementById("editTipoId").value = reg.tipoId || "";
-        document.getElementById("editNumeroId").value = reg.numeroId || "";
-        document.getElementById("editCiudad").value = reg.ciudad || "";
-        document.getElementById("editComentario").value = reg.comentario || "";
+        document.getElementById("editFechaEntrada").value   = reg.fechaEntrada || "";
+        document.getElementById("editFechaSalida").value    = reg.fechaSalida || "";
+        document.getElementById("editHoraEntrada").value    = reg.horaEntrada || "";
+        document.getElementById("editHoraSalida").value     = reg.horaSalida || "";
+        document.getElementById("editNombre").value         = reg.nombre || "";
+        document.getElementById("editApellido").value       = reg.apellido || "";
+        document.getElementById("editCelular").value        = reg.celular || "";
+        document.getElementById("editTipoId").value         = reg.tipoId || "";
+        document.getElementById("editNumeroId").value       = reg.numeroId || "";
+        document.getElementById("editCiudad").value         = reg.ciudad || "";
+        document.getElementById("editComentario").value     = reg.comentario || "";
+        // Populate companion fields
+        for (let i = 0; i <= 2; i++) {
+          const n  = document.getElementById(`editAcomp${i}Nombre`);
+          const a  = document.getElementById(`editAcomp${i}Apellido`);
+          const t  = document.getElementById(`editAcomp${i}TipoId`);
+          const id = document.getElementById(`editAcomp${i}NumId`);
+          if (n)  n.value  = reg[`acomp${i}Nombre`]   || "";
+          if (a)  a.value  = reg[`acomp${i}Apellido`] || "";
+          if (t)  t.value  = reg[`acomp${i}TipoId`]  || "";
+          if (id) id.value = reg[`acomp${i}NumId`]    || "";
+        }
         document.getElementById("editModal").classList.add("show");
         document.body.style.overflow="hidden";
       };
@@ -1234,22 +1104,29 @@
       window.saveEdit=async function(){
         if(!currentEditId) return;
         const updatedData = {
-          cabana: document.getElementById("editCabana").value,
+          cabana:         document.getElementById("editCabana").value,
           totalHuespedes: parseInt(document.getElementById("editTotalHuespedes").value) || 0,
-          fechaEntrada: document.getElementById("editFechaEntrada").value,
-          fechaSalida: document.getElementById("editFechaSalida").value,
-          horaEntrada: document.getElementById("editHoraEntrada").value,
-          horaSalida: document.getElementById("editHoraSalida").value,
-          nombre: document.getElementById("editNombre").value,
-          apellido: document.getElementById("editApellido").value,
-          celular: document.getElementById("editCelular").value,
-          tipoId: document.getElementById("editTipoId").value,
-          numeroId: document.getElementById("editNumeroId").value,
-          ciudad: document.getElementById("editCiudad").value,
-          comentario: document.getElementById("editComentario").value,
-          lastModified: serverTimestamp(),
-          modifiedBy: auth.currentUser?.email || 'unknown'
+          fechaEntrada:   document.getElementById("editFechaEntrada").value,
+          fechaSalida:    document.getElementById("editFechaSalida").value,
+          horaEntrada:    document.getElementById("editHoraEntrada").value,
+          horaSalida:     document.getElementById("editHoraSalida").value,
+          nombre:         document.getElementById("editNombre").value,
+          apellido:       document.getElementById("editApellido").value,
+          celular:        document.getElementById("editCelular").value,
+          tipoId:         document.getElementById("editTipoId").value,
+          numeroId:       document.getElementById("editNumeroId").value,
+          ciudad:         document.getElementById("editCiudad").value,
+          comentario:     document.getElementById("editComentario").value,
+          lastModified:   serverTimestamp(),
+          modifiedBy:     auth.currentUser?.email || 'unknown'
         };
+        // Companion data
+        for (let i = 0; i <= 2; i++) {
+          updatedData[`acomp${i}Nombre`]   = document.getElementById(`editAcomp${i}Nombre`)?.value   || "";
+          updatedData[`acomp${i}Apellido`] = document.getElementById(`editAcomp${i}Apellido`)?.value || "";
+          updatedData[`acomp${i}TipoId`]  = document.getElementById(`editAcomp${i}TipoId`)?.value   || "";
+          updatedData[`acomp${i}NumId`]   = document.getElementById(`editAcomp${i}NumId`)?.value    || "";
+        }
         try {
           if(!updatedData.fechaEntrada || !updatedData.fechaSalida) { showToast("⚠️ Las fechas de entrada y salida son obligatorias"); return; }
           if(new Date(updatedData.fechaEntrada) > new Date(updatedData.fechaSalida)) { showToast("⚠️ La fecha de entrada no puede ser posterior a la de salida"); return; }
@@ -1300,7 +1177,9 @@
       let currentCalendarCabin='';
       window.openCalendarModal=function(cabin){ currentCalendarCabin=cabin; document.getElementById('calendarTitle').textContent=`Calendario — Apto ${cabin.slice(-1)}`; renderScrollableCalendar(); document.getElementById('calendarModal').classList.add('show'); document.body.style.overflow='hidden'; };
       window.closeCalendarModal=function(){ document.getElementById('calendarModal').classList.remove('show'); document.body.style.overflow=''; };
+
       function renderScrollableCalendar(){ const c=document.getElementById('calendarScrollContainer'); c.innerHTML=''; const today=new Date(); const cy=today.getFullYear(); const cm=today.getMonth(); for(let off=cm-6;off<=cm+12;off++) renderMonth(new Date(cy,off,1),c); setTimeout(()=>{ const el=c.querySelector('.calendar-month-section[data-current="true"]'); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); },100); }
+
       function renderMonth(date,container){
         const year=date.getFullYear(); const month=date.getMonth();
         const today=new Date(); today.setHours(0,0,0,0);
@@ -1352,6 +1231,7 @@
         const rem=42-(grid.children.length-7); for(let i=1;i<=rem;i++){ const d=document.createElement('div'); d.className='calendar-day other-month'; d.innerHTML=`<span class="calendar-day-number">${i}</span>`; grid.appendChild(d); }
         sec.appendChild(grid); container.appendChild(sec);
       }
+
       document.addEventListener('click',e=>{ if(!e.target.closest('.calendar-day.reserved')) document.querySelectorAll('.calendar-day.show-popup').forEach(d=>d.classList.remove('show-popup')); });
       document.addEventListener('click',e=>{ if(e.target===document.getElementById('calendarModal')) closeCalendarModal(); });
     </script>
