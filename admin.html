@@ -760,6 +760,7 @@
 
       let allRegistrations = [], allArchived = [], currentView = 'active', isDataLoading = false;
       let currentDetailReg = null, currentEditId = null;
+      let renderGeneration = 0;
       window.db = db; window.doc = doc; window.deleteDoc = deleteDoc;
 
       const adminHeader = document.getElementById('adminHeader');
@@ -902,46 +903,71 @@
         ['2','3','4'].forEach(n => document.getElementById(`totalApto${n}`).textContent=src.filter(r=>r.cabana===`Apto Najos-${n}`).length);
       }
 
-      async function displayData(data) {
-        const tb=document.getElementById("tableBody"); const table=document.getElementById("dataTable");
-        const noData=document.getElementById("noData"); const loading=document.getElementById("loading");
-        tb.innerHTML=''; loading.style.display="block"; noData.style.display="none"; table.style.display="table";
-        if(!data||data.length===0){ table.style.display="none"; noData.style.display="block"; loading.style.display="none"; return; }
-        const cs=20;
-        for(let ci=0;ci<Math.ceil(data.length/cs);ci++){
-          const chunk=data.slice(ci*cs,(ci+1)*cs);
-          const rows=await Promise.all(chunk.map(async(reg,idx)=>{
-            const gi=ci*cs+idx; const row=document.createElement("tr");
-            try {
-              const sc=await getGuestReservationCount(reg.celular||'',reg.numeroId||'',reg.timestamp,reg.tipoId||'');
-              const lb=sc>1?`<span class="stay-badge">#${sc}</span>`:'';
-              row.classList.add("clickable");
-              row.onclick=e=>{ if(!e.target.closest(".view-btn")) showDetailModal(reg); };
-              const cn=reg.cabana?reg.cabana.slice(-1):"?";
-              const fd=s=>{ if(!s) return "N/A"; const[y,m,d]=s.split("-"); return `${d}.${m}.${y}`; };
-              const regJson=JSON.stringify(reg).replace(/"/g,'&quot;');
-              row.innerHTML=`
-                <td class="mobile-col">${gi+1}</td>
-                <td class="mobile-col"><div class="date-cell"><div class="date-main">${fd(reg.fechaEntrada||'')}</div><div class="date-time">${fd(reg.fechaSalida||'')}</div></div></td>
-                <td class="mobile-col"><span class="cabin-badge cabin-${cn}">Apto ${cn}</span></td>
-                <td class="mobile-col"><div class="name-cell"><div class="name-main">${lb}${reg.nombre||''} ${reg.apellido||''}</div><div class="name-sub">${reg.celular||'N/A'}</div></div></td>
-                <td>${reg.celular||'N/A'}</td><td>${reg.ciudad||'N/A'}</td>
-                <td>${fd(reg.fechaEntrada||'')}</td><td>${fd(reg.fechaSalida||'')}</td>
-                <td><span class="guest-badge">${(reg.totalHuespedes||0)+1}</span></td>
-                <td class="mobile-col">
-                  <button class="view-btn" onclick="event.stopPropagation();showDetailModal(${regJson})" title="Ver detalles">
-                    &#128065;
-                  </button>
-                </td>
-              `;
-              return row;
-            } catch(e){ return null; }
-          }));
-          tb.append(...rows.filter(Boolean));
-          await new Promise(r=>setTimeout(r,10));
-        }
-        loading.style.display="none";
-      }
+      aasync function displayData(data) {
+  const generation = ++renderGeneration;
+  const tb = document.getElementById("tableBody");
+  const table = document.getElementById("dataTable");
+  const noData = document.getElementById("noData");
+  const loading = document.getElementById("loading");
+
+  // Clear immediately and synchronously before any async work
+  tb.innerHTML = '';
+  loading.style.display = "block";
+  noData.style.display = "none";
+  table.style.display = "table";
+
+  if (!data || data.length === 0) {
+    table.style.display = "none";
+    noData.style.display = "block";
+    loading.style.display = "none";
+    return;
+  }
+
+  const cs = 20;
+  for (let ci = 0; ci < Math.ceil(data.length / cs); ci++) {
+    // If a newer render was triggered, abort this one
+    if (generation !== renderGeneration) return;
+
+    const chunk = data.slice(ci * cs, (ci + 1) * cs);
+    const rows = await Promise.all(chunk.map(async (reg, idx) => {
+      const gi = ci * cs + idx;
+      const row = document.createElement("tr");
+      try {
+        const sc = await getGuestReservationCount(reg.celular || '', reg.numeroId || '', reg.timestamp, reg.tipoId || '');
+        const lb = sc > 1 ? `<span class="stay-badge">#${sc}</span>` : '';
+        row.classList.add("clickable");
+        row.onclick = e => { if (!e.target.closest(".view-btn")) showDetailModal(reg); };
+        const cn = reg.cabana ? reg.cabana.slice(-1) : "?";
+        const fd = s => { if (!s) return "N/A"; const [y, m, d] = s.split("-"); return `${d}.${m}.${y}`; };
+        const regJson = JSON.stringify(reg).replace(/"/g, '&quot;');
+        row.innerHTML = `
+          <td class="mobile-col">${gi + 1}</td>
+          <td class="mobile-col"><div class="date-cell"><div class="date-main">${fd(reg.fechaEntrada || '')}</div><div class="date-time">${fd(reg.fechaSalida || '')}</div></div></td>
+          <td class="mobile-col"><span class="cabin-badge cabin-${cn}">Apto ${cn}</span></td>
+          <td class="mobile-col"><div class="name-cell"><div class="name-main">${lb}${reg.nombre || ''} ${reg.apellido || ''}</div><div class="name-sub">${reg.celular || 'N/A'}</div></div></td>
+          <td>${reg.celular || 'N/A'}</td><td>${reg.ciudad || 'N/A'}</td>
+          <td>${fd(reg.fechaEntrada || '')}</td><td>${fd(reg.fechaSalida || '')}</td>
+          <td><span class="guest-badge">${(reg.totalHuespedes || 0) + 1}</span></td>
+          <td class="mobile-col">
+            <button class="view-btn" onclick="event.stopPropagation();showDetailModal(${regJson})" title="Ver detalles">
+              &#128065;
+            </button>
+          </td>
+        `;
+        return row;
+      } catch (e) { return null; }
+    }));
+
+    // Check again after the async work completes
+    if (generation !== renderGeneration) return;
+
+    tb.append(...rows.filter(Boolean));
+    await new Promise(r => setTimeout(r, 10));
+  }
+
+  if (generation !== renderGeneration) return;
+  loading.style.display = "none";
+}
 
       async function getGuestReservationCount(phone,guestId,currentTs,tipoId){
         try {
