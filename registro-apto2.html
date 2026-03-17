@@ -1607,36 +1607,36 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
 
       async function loadBookedDates() {
     try {
-        const querySnapshot = await getDocs(collection(db, "registrations"));
+        const querySnapshot = await getDocs(collection(db, "cabin_availability"));
         bookedDates = [];
         window.checkoutDates = []; window.checkinDates = []; window.middleDates = []; window.sharedDates = [];
         const checkInDates = []; const checkOutDates = [];
         querySnapshot.forEach(doc => {
             const d = doc.data();
             if (d.cabana === "Apto Najos-2") {
-                if (d.fechaEntrada) checkInDates.push(d.fechaEntrada);
-                if (d.fechaSalida)  checkOutDates.push(d.fechaSalida);
+                if (d.fechaInicio) checkInDates.push(d.fechaInicio);
+                if (d.fechaFin)    checkOutDates.push(d.fechaFin);
             }
         });
         querySnapshot.forEach(doc => {
             const d = doc.data();
-            if (d.cabana === "Apto Najos-2" && d.fechaEntrada && d.fechaSalida) {
-                const start = new Date(d.fechaEntrada + "T00:00:00"); const end = new Date(d.fechaSalida + "T00:00:00");
-                const isCheckInShared  = checkOutDates.includes(d.fechaEntrada);
-                const isCheckOutShared = checkInDates.includes(d.fechaSalida);
-                if (isCheckInShared) { if (!window.sharedDates.includes(d.fechaEntrada)) window.sharedDates.push(d.fechaEntrada); }
-                else { if (!window.checkinDates.includes(d.fechaEntrada)) window.checkinDates.push(d.fechaEntrada); }
+            if (d.cabana === "Apto Najos-2" && d.fechaInicio && d.fechaFin) {
+                const start = new Date(d.fechaInicio + "T00:00:00"); const end = new Date(d.fechaFin + "T00:00:00");
+                const isCheckInShared  = checkOutDates.includes(d.fechaInicio);
+                const isCheckOutShared = checkInDates.includes(d.fechaFin);
+                if (isCheckInShared) { if (!window.sharedDates.includes(d.fechaInicio)) window.sharedDates.push(d.fechaInicio); }
+                else { if (!window.checkinDates.includes(d.fechaInicio)) window.checkinDates.push(d.fechaInicio); }
                 for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
                     const s = toDateStr(dt);
-                    if (s !== d.fechaEntrada && s !== d.fechaSalida && !window.middleDates.includes(s)) window.middleDates.push(s);
+                    if (s !== d.fechaInicio && s !== d.fechaFin && !window.middleDates.includes(s)) window.middleDates.push(s);
                 }
-                if (isCheckOutShared) { if (!window.sharedDates.includes(d.fechaSalida)) window.sharedDates.push(d.fechaSalida); }
-                else { if (!window.checkoutDates.includes(d.fechaSalida)) window.checkoutDates.push(d.fechaSalida); }
+                if (isCheckOutShared) { if (!window.sharedDates.includes(d.fechaFin)) window.sharedDates.push(d.fechaFin); }
+                else { if (!window.checkoutDates.includes(d.fechaFin)) window.checkoutDates.push(d.fechaFin); }
                 for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
                     const s = toDateStr(dt);
                     if (!bookedDates.includes(s)) bookedDates.push(s);
                 }
-                if (isCheckOutShared && !bookedDates.includes(d.fechaSalida)) bookedDates.push(d.fechaSalida);
+                if (isCheckOutShared && !bookedDates.includes(d.fechaFin)) bookedDates.push(d.fechaFin);
             }
         });
     } catch (err) { console.error("Error loading booked dates:", err); }
