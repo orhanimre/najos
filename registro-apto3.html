@@ -1577,25 +1577,18 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           const checkInDates = []; const checkOutDates = [];
           querySnapshot.forEach(doc => {
             const d = doc.data();
-            if (d.cabana === "Apto Najos-3") {
-              if (d.fechaInicio) checkInDates.push(d.fechaInicio);
-              if (d.fechaFin)    checkOutDates.push(d.fechaFin);
-            }
+            if (d.fechaInicio) checkInDates.push(d.fechaInicio);
+            if (d.fechaFin)    checkOutDates.push(d.fechaFin);
           });
           querySnapshot.forEach(doc => {
             const d = doc.data();
-            if (d.cabana === "Apto Najos-3" && d.fechaInicio && d.fechaFin) {
+            if (d.fechaInicio && d.fechaFin) {
               const start = new Date(d.fechaInicio + "T00:00:00"); const end = new Date(d.fechaFin + "T00:00:00");
               const isCheckInShared  = checkOutDates.includes(d.fechaInicio);
               const isCheckOutShared = checkInDates.includes(d.fechaFin);
               if (isCheckInShared) { if (!window.sharedDates.includes(d.fechaInicio)) window.sharedDates.push(d.fechaInicio); }
               else { if (!window.checkinDates.includes(d.fechaInicio)) window.checkinDates.push(d.fechaInicio); }
-              for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
-    const s = toDateStr(dt);
-    if (s !== d.fechaInicio && s !== d.fechaFin && !window.middleDates.includes(s)) window.middleDates.push(s);
-}
-              if (isCheckOutShared) { if (!window.sharedDates.includes(d.fechaFin)) window.sharedDates.push(d.fechaFin); }
-              else { if (!window.checkoutDates.includes(d.fechaFin)) window.checkoutDates.push(d.fechaFin); }
+              if (isCheckOutShared && !bookedDates.includes(d.fechaFin)) bookedDates.push(d.fechaFin);
               for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
     const s = toDateStr(dt);
     if (!bookedDates.includes(s)) bookedDates.push(s);
