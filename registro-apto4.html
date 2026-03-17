@@ -1566,7 +1566,8 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
 
       async function loadBookedDates() {
         try {
-          const querySnapshot = await getDocs(collection(db, "cabin_availability"));
+          // Only load dates for this specific apartment (Apto 4)
+          const querySnapshot = await getDocs(query(collection(db, "cabin_availability"), where("cabana", "==", "Apto Najos-4")));
           bookedDates = [];
           window.checkoutDates = []; window.checkinDates = []; window.middleDates = []; window.sharedDates = [];
           const checkInDates = []; const checkOutDates = [];
