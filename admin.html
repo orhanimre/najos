@@ -1068,7 +1068,7 @@
       window.showEditModal=function(reg){
         currentEditId = reg.id;
         document.getElementById("editCabana").value         = reg.cabana || "";
-        document.getElementById("editTotalHuespedes").value = reg.totalHuespedes || 0;
+        document.getElementById("editTotalHuespedes").value = (reg.totalHuespedes || 0) + 1;
         document.getElementById("editFechaEntrada").value   = reg.fechaEntrada || "";
         document.getElementById("editFechaSalida").value    = reg.fechaSalida || "";
         document.getElementById("editHoraEntrada").value    = reg.horaEntrada || "";
