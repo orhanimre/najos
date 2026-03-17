@@ -903,7 +903,7 @@
         ['2','3','4'].forEach(n => document.getElementById(`totalApto${n}`).textContent=src.filter(r=>r.cabana===`Apto Najos-${n}`).length);
       }
 
-      aasync function displayData(data) {
+      async function displayData(data) {
   const generation = ++renderGeneration;
   const tb = document.getElementById("tableBody");
   const table = document.getElementById("dataTable");
