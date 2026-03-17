@@ -1138,6 +1138,17 @@
           });
           if(hasConflict) { showToast("⚠️ Hay una reserva existente para este apto en las fechas seleccionadas"); return; }
           await updateDoc(doc(db,"registrations",currentEditId), updatedData);
+          try {
+    const avQ    = query(collection(db,"cabin_availability"), where("registrationId","==",currentEditId));
+    const avSnap = await getDocs(avQ);
+    await Promise.all(avSnap.docs.map(avDoc =>
+        updateDoc(doc(db,"cabin_availability",avDoc.id), {
+            cabana:      updatedData.cabana,
+            fechaInicio: updatedData.fechaEntrada,
+            fechaFin:    updatedData.fechaSalida,
+        })
+    ));
+} catch(e) { console.error("Error updating cabin_availability:", e); }
           const regIndex = allRegistrations.findIndex(r => r.id === currentEditId);
           if(regIndex !== -1) allRegistrations[regIndex] = { ...allRegistrations[regIndex], ...updatedData };
           updateStats();

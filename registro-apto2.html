@@ -1266,9 +1266,9 @@ html, body { overscroll-behavior: none; }
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import {
-        getFirestore, collection, addDoc, serverTimestamp, getDocs, doc,
-      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
+    getFirestore, collection, addDoc, serverTimestamp, getDocs,
+    doc, getDoc, onSnapshot,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
       const firebaseConfig = {
         apiKey: "AIzaSyBGno4JfubhTO-deCJtP9ozXD_pdPrhmh8",
         authDomain: "aptos-najos.firebaseapp.com",
@@ -1280,9 +1280,13 @@ html, body { overscroll-behavior: none; }
       };
 
       const app = initializeApp(firebaseConfig);
-      const db  = getFirestore(app);
+const db  = getFirestore(app);
 
-      let currentStep = 1;
+function toDateStr(d) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+let currentStep = 1;
       let companions = [];
       let companionFilledStatus = {};
       const maxCompanions = 3;
@@ -1291,6 +1295,44 @@ html, body { overscroll-behavior: none; }
       let selectingCheckIn = true;
       let bookedDates = [];
       let bookedDatesLoaded = false;
+
+      window.loadExistingReservation = async function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const reservationId = urlParams.get('id');
+    if (!reservationId) return;
+    try {
+        const docRef = doc(db, "registrations", reservationId);
+        onSnapshot(docRef, async (docSnap) => {
+            if (!docSnap.exists()) return;
+            updateReservationDisplay(docSnap.data());
+            await loadBookedDates();
+            bookedDatesLoaded = true;
+            renderCalendar();
+        });
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) updateReservationDisplay(docSnap.data());
+    } catch (error) {
+        console.error("Error loading reservation:", error);
+        showToast("❌ Error al cargar la reserva");
+    }
+};
+
+window.updateReservationDisplay = function(reservation) {
+    if (!reservation.fechaEntrada || !reservation.fechaSalida) return;
+    selectedCheckIn  = reservation.fechaEntrada;
+    selectedCheckOut = reservation.fechaSalida;
+    selectingCheckIn = true;
+    const hi = document.getElementById('horaEntrada');
+    const hs = document.getElementById('horaSalida');
+    if (reservation.horaEntrada && hi) hi.value = reservation.horaEntrada;
+    if (reservation.horaSalida  && hs) hs.value = reservation.horaSalida;
+    updateDateDisplay();
+    renderCalendar();
+    setTimeout(() => renderCalendar(), 100);
+    showToast("✅ Reserva actualizada desde admin");
+};
+
+document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
 
       function showToast(message) {
         const toast = document.createElement("div");
@@ -1579,21 +1621,21 @@ html, body { overscroll-behavior: none; }
           querySnapshot.forEach(doc => {
             const d = doc.data();
             if (d.cabana === "Apto Najos-2" && d.fechaInicio && d.fechaFin) {
-              const start = new Date(d.fechaInicio); const end = new Date(d.fechaFin);
+              const start = new Date(d.fechaInicio + "T00:00:00"); const end = new Date(d.fechaFin + "T00:00:00");
               const isCheckInShared  = checkOutDates.includes(d.fechaInicio);
               const isCheckOutShared = checkInDates.includes(d.fechaFin);
               if (isCheckInShared) { if (!window.sharedDates.includes(d.fechaInicio)) window.sharedDates.push(d.fechaInicio); }
               else { if (!window.checkinDates.includes(d.fechaInicio)) window.checkinDates.push(d.fechaInicio); }
               for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
-                const s = dt.toISOString().split("T")[0];
-                if (s !== d.fechaInicio && s !== d.fechaFin && !window.middleDates.includes(s)) window.middleDates.push(s);
-              }
+    const s = toDateStr(dt);
+    if (s !== d.fechaInicio && s !== d.fechaFin && !window.middleDates.includes(s)) window.middleDates.push(s);
+}
               if (isCheckOutShared) { if (!window.sharedDates.includes(d.fechaFin)) window.sharedDates.push(d.fechaFin); }
               else { if (!window.checkoutDates.includes(d.fechaFin)) window.checkoutDates.push(d.fechaFin); }
               for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
-                const s = dt.toISOString().split("T")[0];
-                if (!bookedDates.includes(s)) bookedDates.push(s);
-              }
+    const s = toDateStr(dt);
+    if (!bookedDates.includes(s)) bookedDates.push(s);
+}
               if (isCheckOutShared && !bookedDates.includes(d.fechaFin)) bookedDates.push(d.fechaFin);
             }
           });
@@ -1706,7 +1748,7 @@ html, body { overscroll-behavior: none; }
         for (let day = 1; day <= daysInMonth; day++) {
           const cell = document.createElement("div"); cell.className = "calendar-day";
           const cellDate = new Date(date.getFullYear(), date.getMonth(), day);
-          const dateStr  = cellDate.toISOString().split("T")[0];
+          const dateStr  = toDateStr(cellDate);
           if (cellDate < today) cell.classList.add("past");
           if (cellDate.toDateString() === today.toDateString()) cell.classList.add("today");
           let isClickable = false;
@@ -1743,9 +1785,11 @@ html, body { overscroll-behavior: none; }
         } else {
           if (dateStr <= selectedCheckIn) { showToast("⚠️ La fecha de check-out debe ser después del check-in"); return; }
           let hasConflict = false;
-          for (let d = new Date(selectedCheckIn); d < new Date(dateStr); d.setDate(d.getDate() + 1)) {
-            if (bookedDates.includes(d.toISOString().split("T")[0])) { hasConflict = true; break; }
-          }
+const dayAfter = new Date(selectedCheckIn + "T00:00:00");
+dayAfter.setDate(dayAfter.getDate() + 1);
+for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate() + 1)) {
+    if (bookedDates.includes(toDateStr(d))) { hasConflict = true; break; }
+}
           if (hasConflict) { showToast("⚠️ Hay fechas reservadas en este rango. Por favor selecciona otras fechas."); return; }
           selectedCheckOut = dateStr; selectingCheckIn = true;
           updateDateDisplay(); renderCalendar();
