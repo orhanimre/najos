@@ -1567,9 +1567,19 @@ function checkPushStatus() {
     pushToggle.style.opacity = '0.4';
     return;
   }
-  const granted = Notification.permission === 'granted';
-  pushToggle.classList.toggle('on', granted);
-  pushStatus.textContent = granted ? 'Activadas ✓' : 'Toca para activar';
+  const permission = Notification.permission;
+  if (permission === 'granted') {
+    pushToggle.classList.add('on');
+    pushStatus.textContent = 'Activadas ✓';
+  } else if (permission === 'denied') {
+    pushToggle.classList.remove('on');
+    pushStatus.textContent = 'Bloqueadas';
+    pushToggle.style.opacity = '0.4';
+  } else {
+    // Default state - not yet requested
+    pushToggle.classList.remove('on');
+    pushStatus.textContent = 'Toca para activar';
+  }
 }
 
 window.togglePush = async function() {
@@ -1578,12 +1588,14 @@ window.togglePush = async function() {
     return; 
   }
   
-  if (Notification.permission === 'denied') { 
+  const permission = Notification.permission;
+  
+  if (permission === 'denied') { 
     showToast('⚠️ Notificaciones bloqueadas. Ve a Ajustes > Safari > Notificaciones'); 
     return; 
   }
   
-  if (Notification.permission === 'granted') {
+  if (permission === 'granted') {
     // Already granted, just toggle the UI state
     const currentState = document.getElementById('pushToggle').classList.contains('on');
     if (currentState) {
@@ -1601,7 +1613,7 @@ window.togglePush = async function() {
       }), 1000);
     }
   } else {
-    // Request permission
+    // Permission is 'default' - request permission
     await requestNotifPermission();
   }
 };
