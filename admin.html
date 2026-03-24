@@ -703,7 +703,7 @@
               <div class="settings-row-label">Notificaciones push</div>
               <div class="settings-row-sub" id="pushStatus">Toca para activar</div>
             </div>
-            <div class="toggle" id="pushToggle" onclick="requestNotifPermission()"></div>
+            <div class="toggle" id="pushToggle" onclick="togglePush()"></div>
           </div>
         </div>
       </div>
@@ -1571,6 +1571,40 @@ function checkPushStatus() {
   pushToggle.classList.toggle('on', granted);
   pushStatus.textContent = granted ? 'Activadas ✓' : 'Toca para activar';
 }
+
+window.togglePush = async function() {
+  if (!('Notification' in window)) { 
+    showToast('⚠️ Notificaciones no soportadas en este dispositivo'); 
+    return; 
+  }
+  
+  if (Notification.permission === 'denied') { 
+    showToast('⚠️ Notificaciones bloqueadas. Ve a Ajustes > Safari > Notificaciones'); 
+    return; 
+  }
+  
+  if (Notification.permission === 'granted') {
+    // Already granted, just toggle the UI state
+    const currentState = document.getElementById('pushToggle').classList.contains('on');
+    if (currentState) {
+      document.getElementById('pushToggle').classList.remove('on');
+      document.getElementById('pushStatus').textContent = 'Desactivadas';
+      showToast('🔕 Notificaciones desactivadas');
+    } else {
+      document.getElementById('pushToggle').classList.add('on');
+      document.getElementById('pushStatus').textContent = 'Activadas ✓';
+      showToast('✅ Notificaciones activadas');
+      // Send test notification
+      setTimeout(() => new Notification('Apart Hotel Najos Admin', { 
+        body: '🎉 Recibirás alertas de nuevos registros', 
+        icon: '/favicon.ico' 
+      }), 1000);
+    }
+  } else {
+    // Request permission
+    await requestNotifPermission();
+  }
+};
 
 window.requestNotifPermission = async function() {
   if (!('Notification' in window)) { showToast('⚠️ Abre esta app en Safari para notificaciones'); return; }
