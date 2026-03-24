@@ -181,24 +181,18 @@
       select.edit-input { background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:36px; cursor:pointer; }
       input[type="number"].edit-input { -moz-appearance:textfield; }
       input[type="number"].edit-input::-webkit-inner-spin-button, input[type="number"].edit-input::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
-      input[type="date"].edit-input, input[type="time"].edit-input { padding:0 12px; height:46px; line-height: 46px; vertical-align: middle; }
-      input[type="date"].edit-input { padding:0 12px; height:46px; line-height: 46px; vertical-align: middle; }
-      input[type="time"].edit-input { padding:0 12px; height:46px; line-height: 46px; vertical-align: middle; }
-      /* Allow native calendar/time pickers for editing */
+      input[type="date"].edit-input, input[type="time"].edit-input { padding:0 12px; height:46px; line-height:46px; vertical-align:middle; }
       textarea.edit-input { height:auto; line-height:1.5; padding:10px 12px; }
       .edit-input:focus { outline:none; border-color:#3b82f6; background:white; box-shadow:0 0 0 3px rgba(59,130,246,0.1); }
-
-      /* Companion sections */
       .edit-companion-section { margin-bottom:20px; padding:16px; background:linear-gradient(135deg,#f0fdfa 0%,#e6fffa 100%); border-radius:12px; border:1px solid #99f6e4; }
       .edit-companion-section:last-child { margin-bottom:0; }
       .edit-companion-title { font-size:13px; font-weight:700; color:#0d9488; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.5px; }
-
       .confirm-btn { flex:1; padding:14px 20px; border:none; border-radius:12px; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.3s; }
       .confirm-btn-cancel { background:linear-gradient(135deg,#ef4444,#dc2626); color:white; box-shadow:0 4px 12px rgba(239,68,68,0.3); }
       .confirm-btn-cancel:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(239,68,68,0.4); }
       .confirm-btn-delete { background:linear-gradient(135deg,#10b981,#059669); color:white; box-shadow:0 4px 12px rgba(16,185,129,0.3); }
       .confirm-btn-delete:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(16,185,129,0.4); }
-      @media (max-width:767px) { .edit-body { padding:14px; } .edit-row { gap:10px; } .edit-input { font-size:13px; padding:9px 10px; } select.edit-input { padding:9px 32px 9px 10px; } input[type="date"].edit-input, input[type="time"].edit-input { padding:0 10px; height:44px; font-size:13px; background-position:right 10px center; padding-right:40px; } }
+      @media (max-width:767px) { .edit-body { padding:14px; } .edit-row { gap:10px; } .edit-input { font-size:13px; padding:9px 10px; } select.edit-input { padding:9px 32px 9px 10px; } input[type="date"].edit-input, input[type="time"].edit-input { padding:0 10px; height:44px; font-size:13px; } }
 
       .confirm-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:10000; padding:20px; align-items:center; justify-content:center; }
       .confirm-modal.show { display:flex; }
@@ -210,7 +204,7 @@
       .confirm-message { font-size:15px; color:#4b5563; line-height:1.6; margin:0; }
       .confirm-actions { display:flex; gap:12px; padding:20px 24px; background:#f9fafb; border-top:1px solid #e5e7eb; }
 
-      /* Calendar Modal */
+      /* ── CALENDAR MODAL ── */
       .calendar-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:10001; padding:20px; }
       .calendar-modal.show { display:flex; align-items:center; justify-content:center; }
       .calendar-content { background:white; border-radius:20px; max-width:900px; width:calc(100% - 32px); max-height:90vh; display:flex; flex-direction:column; animation:slideUp 0.3s ease; box-shadow:0 24px 48px rgba(0,0,0,0.3); overflow:hidden; box-sizing:border-box; }
@@ -261,7 +255,7 @@
       @media (max-width:768px) { .calendar-grid{gap:2px;} .calendar-day{padding:4px;min-height:45px;max-height:60px;} .calendar-day-number{font-size:12px;} .calendar-day-header{font-size:9px;padding:6px 2px;} .calendar-scroll-container{padding:16px;} .calendar-month-section{margin-bottom:24px;} }
       @media (max-width:400px) { .calendar-day{min-height:40px;max-height:50px;padding:2px;} .calendar-day-number{font-size:11px;} }
 
-      /* Settings Modal */
+      /* ── SETTINGS MODAL ── */
       .settings-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:10002; padding:20px; align-items:center; justify-content:center; }
       .settings-modal.show { display:flex; }
       .settings-content { background:white; border-radius:20px; max-width:480px; width:calc(100% - 32px); max-height:85vh; overflow-y:auto; animation:slideUp 0.3s ease; box-shadow:0 24px 48px rgba(0,0,0,0.3); }
@@ -279,7 +273,7 @@
       .logout-btn-modal { background:linear-gradient(135deg,#ef4444,#dc2626); color:white; border:none; padding:14px 24px; border-radius:12px; cursor:pointer; font-weight:700; font-size:15px; transition:all 0.3s; width:100%; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 12px rgba(239,68,68,0.3); }
       .logout-btn-modal:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(239,68,68,0.4); }
 
-      /* Info Cards */
+      /* ── INFO CARDS ── */
       .info-card { background:#ffffff; border-radius:12px; margin-bottom:12px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
       .info-card-header { background:linear-gradient(135deg,#f7fafc,#edf2f7); padding:12px 16px; display:flex; align-items:center; gap:8px; border-bottom:1px solid #e5e7eb; }
       .info-icon { font-size:18px; }
@@ -526,7 +520,6 @@
                 </div>
               </div>
             </div>
-
             <div class="edit-section">
               <div class="edit-section-title">👤 Huésped Principal</div>
               <div class="edit-row">
@@ -565,101 +558,54 @@
                 </div>
               </div>
             </div>
-
             <div class="edit-section">
               <div class="edit-section-title">👥 Acompañantes</div>
-              <!-- Companion 0 -->
               <div class="edit-companion-section">
                 <div class="edit-companion-title">👤 Acompañante 1</div>
                 <div class="edit-row">
-                  <div class="edit-group">
-                    <label>Nombre</label>
-                    <input type="text" id="editAcomp0Nombre" class="edit-input" />
-                  </div>
-                  <div class="edit-group">
-                    <label>Apellido</label>
-                    <input type="text" id="editAcomp0Apellido" class="edit-input" />
-                  </div>
+                  <div class="edit-group"><label>Nombre</label><input type="text" id="editAcomp0Nombre" class="edit-input" /></div>
+                  <div class="edit-group"><label>Apellido</label><input type="text" id="editAcomp0Apellido" class="edit-input" /></div>
                 </div>
                 <div class="edit-row">
-                  <div class="edit-group">
-                    <label>Tipo ID</label>
+                  <div class="edit-group"><label>Tipo ID</label>
                     <select id="editAcomp0TipoId" class="edit-input">
-                      <option value="">Seleccione</option>
-                      <option value="cc">CC</option>
-                      <option value="ce">CE</option>
-                      <option value="ti">TI</option>
-                      <option value="pasaporte">Pasaporte</option>
+                      <option value="">Seleccione</option><option value="cc">CC</option><option value="ce">CE</option><option value="ti">TI</option><option value="pasaporte">Pasaporte</option>
                     </select>
                   </div>
-                  <div class="edit-group">
-                    <label>Número ID</label>
-                    <input type="text" id="editAcomp0NumId" class="edit-input" />
-                  </div>
+                  <div class="edit-group"><label>Número ID</label><input type="text" id="editAcomp0NumId" class="edit-input" /></div>
                 </div>
               </div>
-              <!-- Companion 1 -->
               <div class="edit-companion-section">
                 <div class="edit-companion-title">👤 Acompañante 2</div>
                 <div class="edit-row">
-                  <div class="edit-group">
-                    <label>Nombre</label>
-                    <input type="text" id="editAcomp1Nombre" class="edit-input" />
-                  </div>
-                  <div class="edit-group">
-                    <label>Apellido</label>
-                    <input type="text" id="editAcomp1Apellido" class="edit-input" />
-                  </div>
+                  <div class="edit-group"><label>Nombre</label><input type="text" id="editAcomp1Nombre" class="edit-input" /></div>
+                  <div class="edit-group"><label>Apellido</label><input type="text" id="editAcomp1Apellido" class="edit-input" /></div>
                 </div>
                 <div class="edit-row">
-                  <div class="edit-group">
-                    <label>Tipo ID</label>
+                  <div class="edit-group"><label>Tipo ID</label>
                     <select id="editAcomp1TipoId" class="edit-input">
-                      <option value="">Seleccione</option>
-                      <option value="cc">CC</option>
-                      <option value="ce">CE</option>
-                      <option value="ti">TI</option>
-                      <option value="pasaporte">Pasaporte</option>
+                      <option value="">Seleccione</option><option value="cc">CC</option><option value="ce">CE</option><option value="ti">TI</option><option value="pasaporte">Pasaporte</option>
                     </select>
                   </div>
-                  <div class="edit-group">
-                    <label>Número ID</label>
-                    <input type="text" id="editAcomp1NumId" class="edit-input" />
-                  </div>
+                  <div class="edit-group"><label>Número ID</label><input type="text" id="editAcomp1NumId" class="edit-input" /></div>
                 </div>
               </div>
-              <!-- Companion 2 -->
               <div class="edit-companion-section">
                 <div class="edit-companion-title">👤 Acompañante 3</div>
                 <div class="edit-row">
-                  <div class="edit-group">
-                    <label>Nombre</label>
-                    <input type="text" id="editAcomp2Nombre" class="edit-input" />
-                  </div>
-                  <div class="edit-group">
-                    <label>Apellido</label>
-                    <input type="text" id="editAcomp2Apellido" class="edit-input" />
-                  </div>
+                  <div class="edit-group"><label>Nombre</label><input type="text" id="editAcomp2Nombre" class="edit-input" /></div>
+                  <div class="edit-group"><label>Apellido</label><input type="text" id="editAcomp2Apellido" class="edit-input" /></div>
                 </div>
                 <div class="edit-row">
-                  <div class="edit-group">
-                    <label>Tipo ID</label>
+                  <div class="edit-group"><label>Tipo ID</label>
                     <select id="editAcomp2TipoId" class="edit-input">
-                      <option value="">Seleccione</option>
-                      <option value="cc">CC</option>
-                      <option value="ce">CE</option>
-                      <option value="ti">TI</option>
-                      <option value="pasaporte">Pasaporte</option>
+                      <option value="">Seleccione</option><option value="cc">CC</option><option value="ce">CE</option><option value="ti">TI</option><option value="pasaporte">Pasaporte</option>
                     </select>
                   </div>
-                  <div class="edit-group">
-                    <label>Número ID</label>
-                    <input type="text" id="editAcomp2NumId" class="edit-input" />
-                  </div>
+                  <div class="edit-group"><label>Número ID</label><input type="text" id="editAcomp2NumId" class="edit-input" /></div>
                 </div>
               </div>
             </div>
-
             <div class="edit-section">
               <div class="edit-section-title">📝 Comentarios</div>
               <div class="edit-group full-width">
@@ -718,13 +664,6 @@
             </div>
           </div>
           <div class="settings-section">
-            <div class="settings-section-title">📋 Vista</div>
-            <select id="viewSelectorModal" class="nav-dropdown" style="width:100%;padding:10px 14px;background:white;color:#14b8a6;border:2px solid #e2e8f0;border-radius:10px;" onchange="switchViewFromModal()">
-              <option value="active">📋 Registros Activos</option>
-              <option value="archive">📦 Archivo</option>
-            </select>
-          </div>
-          <div class="settings-section">
             <div class="settings-section-title">👤 Cuenta</div>
             <div class="account-info">
               <div class="account-email">
@@ -743,6 +682,7 @@
       import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
       import { getFirestore, collection, query, getDocs, deleteDoc, doc, setDoc, serverTimestamp, addDoc, where, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+      // ── NAJOS FIREBASE CONFIG ──
       const firebaseConfig = {
         apiKey: "AIzaSyBGno4JfubhTO-deCJtP9ozXD_pdPrhmh8",
         authDomain: "aptos-najos.firebaseapp.com",
@@ -752,6 +692,9 @@
         appId: "1:773909398953:web:157467cae451bf125ff0b8",
         measurementId: "G-JXZHNXDMLH",
       };
+
+      // ── NAJOS ALLOWED ACCOUNTS ──
+      const ALLOWED_EMAILS = ["orhanimre@gmail.com", "najos.admin@gmail.com"];
 
       const app = initializeApp(firebaseConfig);
       const auth = getAuth(app);
@@ -798,6 +741,11 @@
       /* ── AUTH ── */
       onAuthStateChanged(auth, user => {
         if (user) {
+          if (!ALLOWED_EMAILS.includes(user.email)) {
+            alert("Sin permisos de acceso.");
+            signOut(auth);
+            return;
+          }
           document.getElementById("loginScreen").style.display = "none";
           document.getElementById("dashboardScreen").style.display = "block";
           document.getElementById("userEmail").textContent = user.email;
@@ -844,14 +792,12 @@
         document.getElementById('userEmailModal').textContent = document.getElementById('userEmail').textContent;
         const mt = document.getElementById('emailToggle');
         document.getElementById('emailToggleModal').classList.toggle('active', mt.classList.contains('active'));
-        const sel2 = document.getElementById('viewSelectorModal'); if(sel2) sel2.value = currentView;
         document.getElementById('settingsModal').classList.add('show');
         document.body.style.overflow='hidden';
       };
       window.closeSettingsModal = function() { document.getElementById('settingsModal').classList.remove('show'); document.body.style.overflow=''; };
       document.addEventListener('click', e => { if(e.target===document.getElementById('settingsModal')) closeSettingsModal(); });
       document.getElementById('logoutBtnModal').addEventListener('click', async () => { try { await signOut(auth); closeSettingsModal(); } catch(e){} });
-      window.switchViewFromModal = function() { const s=document.getElementById('viewSelectorModal'); if(s){ switchView(s.value); closeSettingsModal(); } };
 
       /* ── DATA ── */
       async function loadData() {
@@ -875,7 +821,7 @@
       const ARROW_WHITE = "url(\"data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")";
 
       function syncDropdowns(view) {
-        ['viewSelector','viewSelectorMobile','viewSelectorModal'].forEach(id => {
+        ['viewSelector','viewSelectorMobile'].forEach(id => {
           const el = document.getElementById(id); if(!el) return;
           el.value = view;
           el.style.backgroundColor = viewColors[view].bg;
@@ -904,70 +850,58 @@
       }
 
       async function displayData(data) {
-  const generation = ++renderGeneration;
-  const tb = document.getElementById("tableBody");
-  const table = document.getElementById("dataTable");
-  const noData = document.getElementById("noData");
-  const loading = document.getElementById("loading");
-
-  // Clear immediately and synchronously before any async work
-  tb.innerHTML = '';
-  loading.style.display = "block";
-  noData.style.display = "none";
-  table.style.display = "table";
-
-  if (!data || data.length === 0) {
-    table.style.display = "none";
-    noData.style.display = "block";
-    loading.style.display = "none";
-    return;
-  }
-
-  const cs = 20;
-  for (let ci = 0; ci < Math.ceil(data.length / cs); ci++) {
-    // If a newer render was triggered, abort this one
-    if (generation !== renderGeneration) return;
-
-    const chunk = data.slice(ci * cs, (ci + 1) * cs);
-    const rows = await Promise.all(chunk.map(async (reg, idx) => {
-      const gi = ci * cs + idx;
-      const row = document.createElement("tr");
-      try {
-        const sc = await getGuestReservationCount(reg.celular || '', reg.numeroId || '', reg.timestamp, reg.tipoId || '');
-        const lb = sc > 1 ? `<span class="stay-badge">#${sc}</span>` : '';
-        row.classList.add("clickable");
-        row.onclick = e => { if (!e.target.closest(".view-btn")) showDetailModal(reg); };
-        const cn = reg.cabana ? reg.cabana.slice(-1) : "?";
-        const fd = s => { if (!s) return "N/A"; const [y, m, d] = s.split("-"); return `${d}.${m}.${y}`; };
-        const regJson = JSON.stringify(reg).replace(/"/g, '&quot;');
-        row.innerHTML = `
-          <td class="mobile-col">${gi + 1}</td>
-          <td class="mobile-col"><div class="date-cell"><div class="date-main">${fd(reg.fechaEntrada || '')}</div><div class="date-time">${fd(reg.fechaSalida || '')}</div></div></td>
-          <td class="mobile-col"><span class="cabin-badge cabin-${cn}">Apto ${cn}</span></td>
-          <td class="mobile-col"><div class="name-cell"><div class="name-main">${lb}${reg.nombre || ''} ${reg.apellido || ''}</div><div class="name-sub">${reg.celular || 'N/A'}</div></div></td>
-          <td>${reg.celular || 'N/A'}</td><td>${reg.ciudad || 'N/A'}</td>
-          <td>${fd(reg.fechaEntrada || '')}</td><td>${fd(reg.fechaSalida || '')}</td>
-          <td><span class="guest-badge">${(reg.totalHuespedes || 0) + 1}</span></td>
-          <td class="mobile-col">
-            <button class="view-btn" onclick="event.stopPropagation();showDetailModal(${regJson})" title="Ver detalles">
-              &#128065;
-            </button>
-          </td>
-        `;
-        return row;
-      } catch (e) { return null; }
-    }));
-
-    // Check again after the async work completes
-    if (generation !== renderGeneration) return;
-
-    tb.append(...rows.filter(Boolean));
-    await new Promise(r => setTimeout(r, 10));
-  }
-
-  if (generation !== renderGeneration) return;
-  loading.style.display = "none";
-}
+        const generation = ++renderGeneration;
+        const tb = document.getElementById("tableBody");
+        const table = document.getElementById("dataTable");
+        const noData = document.getElementById("noData");
+        const loading = document.getElementById("loading");
+        tb.innerHTML = '';
+        loading.style.display = "block";
+        noData.style.display = "none";
+        table.style.display = "table";
+        if (!data || data.length === 0) {
+          table.style.display = "none";
+          noData.style.display = "block";
+          loading.style.display = "none";
+          return;
+        }
+        const cs = 20;
+        for (let ci = 0; ci < Math.ceil(data.length / cs); ci++) {
+          if (generation !== renderGeneration) return;
+          const chunk = data.slice(ci * cs, (ci + 1) * cs);
+          const rows = await Promise.all(chunk.map(async (reg, idx) => {
+            const gi = ci * cs + idx;
+            const row = document.createElement("tr");
+            try {
+              const sc = await getGuestReservationCount(reg.celular || '', reg.numeroId || '', reg.timestamp, reg.tipoId || '');
+              const lb = sc > 1 ? `<span class="stay-badge">#${sc}</span>` : '';
+              row.classList.add("clickable");
+              row.onclick = e => { if (!e.target.closest(".view-btn")) showDetailModal(reg); };
+              const cn = reg.cabana ? reg.cabana.slice(-1) : "?";
+              const fd = s => { if (!s) return "N/A"; const [y, m, d] = s.split("-"); return `${d}.${m}.${y}`; };
+              const regJson = JSON.stringify(reg).replace(/"/g, '&quot;');
+              row.innerHTML = `
+                <td class="mobile-col">${gi + 1}</td>
+                <td class="mobile-col"><div class="date-cell"><div class="date-main">${fd(reg.fechaEntrada || '')}</div><div class="date-time">${fd(reg.fechaSalida || '')}</div></div></td>
+                <td class="mobile-col"><span class="cabin-badge cabin-${cn}">Apto ${cn}</span></td>
+                <td class="mobile-col"><div class="name-cell"><div class="name-main">${lb}${reg.nombre || ''} ${reg.apellido || ''}</div><div class="name-sub">${reg.celular || 'N/A'}</div></div></td>
+                <td>${reg.celular || 'N/A'}</td><td>${reg.ciudad || 'N/A'}</td>
+                <td>${fd(reg.fechaEntrada || '')}</td><td>${fd(reg.fechaSalida || '')}</td>
+                <td><span class="guest-badge">${(reg.totalHuespedes || 0) + 1}</span></td>
+                <td class="mobile-col">
+                  <button class="view-btn" onclick="event.stopPropagation();showDetailModal(${regJson})" title="Ver detalles">&#128065;</button>
+                </td>
+              `;
+              return row;
+            } catch (e) { return null; }
+          }));
+          if (generation !== renderGeneration) return;
+          tb.append(...rows.filter(Boolean));
+          await new Promise(r => setTimeout(r, 10));
+        }
+        if (generation !== renderGeneration) return;
+        loading.style.display = "none";
+      }
 
       async function getGuestReservationCount(phone,guestId,currentTs,tipoId){
         try {
@@ -1105,7 +1039,6 @@
         document.getElementById("editNumeroId").value       = reg.numeroId || "";
         document.getElementById("editCiudad").value         = reg.ciudad || "";
         document.getElementById("editComentario").value     = reg.comentario || "";
-        // Populate companion fields
         for (let i = 0; i <= 2; i++) {
           const n  = document.getElementById(`editAcomp${i}Nombre`);
           const a  = document.getElementById(`editAcomp${i}Apellido`);
@@ -1145,7 +1078,6 @@
           lastModified:   serverTimestamp(),
           modifiedBy:     auth.currentUser?.email || 'unknown'
         };
-        // Companion data
         for (let i = 0; i <= 2; i++) {
           updatedData[`acomp${i}Nombre`]   = document.getElementById(`editAcomp${i}Nombre`)?.value   || "";
           updatedData[`acomp${i}Apellido`] = document.getElementById(`editAcomp${i}Apellido`)?.value || "";
@@ -1164,16 +1096,16 @@
           if(hasConflict) { showToast("⚠️ Hay una reserva existente para este apto en las fechas seleccionadas"); return; }
           await updateDoc(doc(db,"registrations",currentEditId), updatedData);
           try {
-    const avQ    = query(collection(db,"cabin_availability"), where("registrationId","==",currentEditId));
-    const avSnap = await getDocs(avQ);
-    await Promise.all(avSnap.docs.map(avDoc =>
-        updateDoc(doc(db,"cabin_availability",avDoc.id), {
-            cabana:      updatedData.cabana,
-            fechaInicio: updatedData.fechaEntrada,
-            fechaFin:    updatedData.fechaSalida,
-        })
-    ));
-} catch(e) { console.error("Error updating cabin_availability:", e); }
+            const avQ    = query(collection(db,"cabin_availability"), where("registrationId","==",currentEditId));
+            const avSnap = await getDocs(avQ);
+            await Promise.all(avSnap.docs.map(avDoc =>
+              updateDoc(doc(db,"cabin_availability",avDoc.id), {
+                cabana:      updatedData.cabana,
+                fechaInicio: updatedData.fechaEntrada,
+                fechaFin:    updatedData.fechaSalida,
+              })
+            ));
+          } catch(e) { console.error("Error updating cabin_availability:", e); }
           const regIndex = allRegistrations.findIndex(r => r.id === currentEditId);
           if(regIndex !== -1) allRegistrations[regIndex] = { ...allRegistrations[regIndex], ...updatedData };
           updateStats();
@@ -1202,7 +1134,7 @@
         data.forEach(r=>{ tsv+=[fts(r.timestamp),r.cabana||'',fn(r.nombre,r.apellido),r.celular||'',fid2(r.tipoId,r.numeroId),r.ciudad||'',(r.totalHuespedes||0)+1,fd2(r.fechaEntrada,r.horaEntrada),fd2(r.fechaSalida,r.horaSalida),fn(r.acomp0Nombre,r.acomp0Apellido),fid2(r.acomp0TipoId,r.acomp0NumId),fn(r.acomp1Nombre,r.acomp1Apellido),fid2(r.acomp1TipoId,r.acomp1NumId),fn(r.acomp2Nombre,r.acomp2Apellido),fid2(r.acomp2TipoId,r.acomp2NumId),(r.comentario||'').replace(/\t/g,' '),r.consent?'Sí':'No'].join("\t")+"\n"; });
         const blob=new Blob([tsv],{type:"text/tab-separated-values;charset=utf-8;"});
         const a=document.createElement("a"); const url=URL.createObjectURL(blob);
-        a.href=url; a.download=`registros_${new Date().toISOString().split("T")[0]}.tsv`;
+        a.href=url; a.download=`registros_najos_${new Date().toISOString().split("T")[0]}.tsv`;
         a.style.visibility="hidden"; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
       };
 
@@ -1211,10 +1143,26 @@
 
       /* ── CALENDAR ── */
       let currentCalendarCabin='';
-      window.openCalendarModal=function(cabin){ currentCalendarCabin=cabin; document.getElementById('calendarTitle').textContent=`Calendario — Apto ${cabin.slice(-1)}`; renderScrollableCalendar(); document.getElementById('calendarModal').classList.add('show'); document.body.style.overflow='hidden'; };
+      window.openCalendarModal=function(cabin){
+        currentCalendarCabin=cabin;
+        document.getElementById('calendarTitle').textContent=`Calendario — Apto ${cabin.slice(-1)}`;
+        renderScrollableCalendar();
+        document.getElementById('calendarModal').classList.add('show');
+        document.body.style.overflow='hidden';
+      };
       window.closeCalendarModal=function(){ document.getElementById('calendarModal').classList.remove('show'); document.body.style.overflow=''; };
 
-      function renderScrollableCalendar(){ const c=document.getElementById('calendarScrollContainer'); c.innerHTML=''; const today=new Date(); const cy=today.getFullYear(); const cm=today.getMonth(); for(let off=cm-6;off<=cm+12;off++) renderMonth(new Date(cy,off,1),c); setTimeout(()=>{ const el=c.querySelector('.calendar-month-section[data-current="true"]'); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); },100); }
+      // ── IMPROVED: uses requestAnimationFrame + instant scroll for reliable today positioning ──
+      function renderScrollableCalendar(){
+        const c=document.getElementById('calendarScrollContainer');
+        c.innerHTML='';
+        const today=new Date(); const cy=today.getFullYear(); const cm=today.getMonth();
+        for(let off=cm-6;off<=cm+12;off++) renderMonth(new Date(cy,off,1),c);
+        requestAnimationFrame(()=>{
+          const el=c.querySelector('.calendar-month-section[data-current="true"]');
+          if(el) el.scrollIntoView({behavior:'instant',block:'start'});
+        });
+      }
 
       function renderMonth(date,container){
         const year=date.getFullYear(); const month=date.getMonth();
