@@ -1562,21 +1562,24 @@ window.toggleEmail = async function() {
 function checkPushStatus() {
   const pushToggle = document.getElementById('pushToggle');
   const pushStatus = document.getElementById('pushStatus');
+  
   if (!('Notification' in window)) {
-    pushStatus.textContent = 'Solo disponible en Safari (instalado en pantalla de inicio)';
+    pushStatus.textContent = 'No disponible en este navegador';
     pushToggle.style.opacity = '0.4';
-    pushToggle.style.pointerEvents = 'none';
     return;
   }
+  
+  // Reset styles first
+  pushToggle.style.opacity = '';
+  pushToggle.style.pointerEvents = '';
+  
   const permission = Notification.permission;
   if (permission === 'granted') {
     pushToggle.classList.add('on');
     pushStatus.textContent = 'Activadas ✓';
   } else if (permission === 'denied') {
     pushToggle.classList.remove('on');
-    pushStatus.textContent = 'Bloqueadas — activa desde Ajustes del navegador';
-    pushToggle.style.opacity = '0.4';
-    pushToggle.style.pointerEvents = 'none';
+    pushStatus.textContent = 'Bloqueadas — toca para ver cómo activar';
   } else {
     pushToggle.classList.remove('on');
     pushStatus.textContent = 'Toca para activar';
@@ -1585,19 +1588,56 @@ function checkPushStatus() {
 
 window.togglePush = async function() {
   if (!('Notification' in window)) {
-    showToast('⚠️ Solo disponible en Safari instalado en pantalla de inicio');
+    showToast('⚠️ No disponible en este navegador');
     return;
   }
+  
   const permission = Notification.permission;
+  
   if (permission === 'denied') {
-    showToast('⚠️ Bloqueadas. Activa en Ajustes > navegador > Notificaciones');
+    // Detect browser and give exact instructions
+    const isChrome = /Chrome/.test(navigator.userAgent) && !/Edg/.test(navigator.userAgent);
+    const isFirefox = /Firefox/.test(navigator.userAgent);
+    const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+    const isAndroid = /Android/.test(navigator.userAgent);
+    const isIOS = /iPhone|iPad/.test(navigator.userAgent);
+    
+    let instructions = '';
+    if (isChrome && isAndroid) {
+      instructions = '🔒 Chrome Android: toca el candado (🔒) en la barra de dirección → Permisos → Notificaciones → Permitir';
+    } else if (isChrome && !isAndroid) {
+      instructions = '🔒 Chrome: toca el 🔒 en la barra de dirección → Notificaciones → Permitir';
+    } else if (isSafari && isIOS) {
+      instructions = '🔒 Safari iOS: Ajustes → Safari → Notificaciones → busca este sitio → Permitir';
+    } else if (isSafari) {
+      instructions = '🔒 Safari: Preferencias → Sitios web → Notificaciones → Permitir';
+    } else if (isFirefox) {
+      instructions = '🔒 Firefox: toca el 🔒 en la barra de dirección → Notificaciones → Permitir';
+    } else {
+      instructions = '🔒 Toca el ícono de candado o info en la barra de dirección → Notificaciones → Permitir';
+    }
+    
+    // Show a more helpful modal-style toast
+    const t = document.getElementById('toast');
+    t.textContent = instructions;
+    t.style.whiteSpace = 'normal';
+    t.style.maxWidth = '320px';
+    t.style.textAlign = 'center';
+    t.classList.add('show');
+    setTimeout(() => { 
+      t.classList.remove('show'); 
+      t.style.whiteSpace = '';
+      t.style.maxWidth = '';
+    }, 6000);
     return;
   }
+  
   if (permission === 'default') {
     await requestNotifPermission();
     return;
   }
-  // permission === 'granted': toggle the saved preference
+  
+  // permission === 'granted': toggle saved preference
   const isOn = document.getElementById('pushToggle').classList.contains('on');
   document.getElementById('pushToggle').classList.toggle('on', !isOn);
   document.getElementById('pushStatus').textContent = !isOn ? 'Activadas ✓' : 'Desactivadas';
