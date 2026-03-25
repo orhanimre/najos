@@ -1593,46 +1593,27 @@ window.togglePush = async function() {
   }
 
   const permission = Notification.permission;
+  console.log('Current permission:', permission); // DEBUG — check console
 
   if (permission === 'denied') {
-    // For Safari/iOS - provide proper instructions
-    if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
-      showToast('🔕 Bloqueadas. Ve a Ajustes > Safari > Notificaciones > Permitir', 5000);
-    } else {
-      showToast('� Bloqueadas. Ve a Configuración del sitio > Notificaciones > Permitir', 5000);
-    }
+    showToast('🔒 Toca el 🔒 en la barra de dirección → Notificaciones → Permitir', 6000);
     return;
   }
 
   if (permission === 'default') {
-    try {
-      const perm = await Notification.requestPermission();
-      checkPushStatus();
-      if (perm === 'granted') {
-        showToast('✅ Notificaciones activadas');
-        setTimeout(() => new Notification('Apart Hotel Najos Admin', {
-          body: '🎉 Recibirás alertas de nuevos registros',
-          icon: '/favicon.ico'
-        }), 800);
-      } else {
-        showToast('⚠️ Permiso denegado');
-      }
-    } catch(e) {
-      showToast('⚠️ Error al solicitar permiso');
+    const result = await Notification.requestPermission();
+    console.log('Result:', result); // DEBUG
+    checkPushStatus();
+    if (result === 'granted') {
+      showToast('✅ Notificaciones activadas');
+      new Notification('Apart Hotel Najos', { body: '🎉 Todo listo' });
     }
     return;
   }
 
-  // granted — toggle preference
-  const isOn = document.getElementById('pushToggle').classList.contains('on');
-  document.getElementById('pushToggle').classList.toggle('on', !isOn);
-  document.getElementById('pushStatus').textContent = !isOn ? 'Activadas ✓' : 'Desactivadas';
-  showToast(!isOn ? '✅ Notificaciones activadas' : '🔕 Notificaciones desactivadas');
-  if (!isOn) {
-    setTimeout(() => new Notification('Apart Hotel Najos Admin', {
-      body: '🎉 Recibirás alertas de nuevos registros',
-      icon: '/favicon.ico'
-    }), 800);
+  if (permission === 'granted') {
+    new Notification('Apart Hotel Najos', { body: '✅ Notificaciones funcionando' });
+    showToast('✅ Notificaciones funcionando');
   }
 };
 
