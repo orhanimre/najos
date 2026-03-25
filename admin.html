@@ -666,9 +666,9 @@
     <div style="padding:12px 16px 0;">
       <!-- Replace the existing cal-cabin-tabs div with: -->
 <div class="cal-cabin-tabs">
-  <div class="cal-cabin-tab c1 active" id="calTab1" onclick="setCalCabin(1)">Cabaña 1<br><span id="calCount1" style="font-size:11px;font-weight:700;opacity:0.8;">0</span></div>
-<div class="cal-cabin-tab c2" id="calTab2" onclick="setCalCabin(2)">Cabaña 2<br><span id="calCount2" style="font-size:11px;font-weight:700;opacity:0.8;">0</span></div>
-<div class="cal-cabin-tab c3" id="calTab3" onclick="setCalCabin(3)">Cabaña 3<br><span id="calCount3" style="font-size:11px;font-weight:700;opacity:0.8;">0</span></div>
+  <div class="cal-cabin-tab c1 active" id="calTab1" onclick="setCalCabin(2)">Apto 2<br><span id="calCount1" style="font-size:11px;font-weight:700;opacity:0.8;">0</span></div>
+<div class="cal-cabin-tab c2" id="calTab2" onclick="setCalCabin(3)">Apto 3<br><span id="calCount2" style="font-size:11px;font-weight:700;opacity:0.8;">0</span></div>
+<div class="cal-cabin-tab c3" id="calTab3" onclick="setCalCabin(4)">Apto 4<br><span id="calCount3" style="font-size:11px;font-weight:700;opacity:0.8;">0</span></div>
 </div>
     </div>
     <div class="calendar-wrap" id="calendarWrap"></div>
@@ -870,7 +870,7 @@ let aptoFilter = '';
 let dateFilter = 'all';
 let searchTerm = '';
 let showArchive = false;
-let currentCalCabin = 1;
+let currentCalCabin = 2;
 let emailEnabled = true;
 let unsubscribeSnapshot = null;
 
@@ -1312,7 +1312,7 @@ window.showCalTooltip = function(e, entries) {
       <div class="cal-tooltip-dot" style="background:${entry.color}"></div>
       <div class="cal-tooltip-info">
         <div class="cal-tooltip-name">${entry.nombre} ${entry.apellido}</div>
-        <div class="cal-tooltip-sub">${entry.label} · Cabaña ${entry.cabin} · 👥 ${entry.guests}</div>
+        <div class="cal-tooltip-sub">${entry.label} · Apto ${entry.cabin?.slice(-1) || '?'} · 👥 ${entry.guests}</div>
       </div>
       <div class="cal-tooltip-chevron">›</div>
     </div>
@@ -1364,7 +1364,9 @@ document.addEventListener('click', () => { if (tooltipOpen) closeCalTooltip(); }
 /* ── CALENDAR ── */
 window.setCalCabin = function(n) {
   currentCalCabin = n;
-  document.querySelectorAll('.cal-cabin-tab').forEach((t, i) => t.classList.toggle('active', i === n-1));
+  // Map cabin numbers to tab indices: 2->0, 3->1, 4->2
+  const tabIndex = n === 2 ? 0 : n === 3 ? 1 : 2;
+  document.querySelectorAll('.cal-cabin-tab').forEach((t, i) => t.classList.toggle('active', i === tabIndex));
   renderCalendar();
   scrollCalendarToToday();
 };
@@ -1392,7 +1394,7 @@ function renderCalendar() {
 
   // Only this cabin's reservations, sorted by entry date for stable color assignment
   const todayStr = new Date().toISOString().split('T')[0];
-const regs = allRegs.filter(r => r.cabana === cabinName && r.fechaSalida >= todayStr).map(normalize);
+const regs = allRegs.filter(r => r.apto === cabinName && r.fechaSalida >= todayStr).map(normalize);
   regs.sort((a, b) => (a.fechaEntrada || '') < (b.fechaEntrada || '') ? -1 : 1);
 
   const PALETTE = [
