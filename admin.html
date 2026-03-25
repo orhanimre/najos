@@ -1591,53 +1591,37 @@ window.togglePush = async function() {
     showToast('⚠️ No disponible en este navegador');
     return;
   }
-  
+
   const permission = Notification.permission;
-  
+
   if (permission === 'denied') {
-    // Detect browser and give exact instructions
-    const isChrome = /Chrome/.test(navigator.userAgent) && !/Edg/.test(navigator.userAgent);
-    const isFirefox = /Firefox/.test(navigator.userAgent);
-    const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
-    const isAndroid = /Android/.test(navigator.userAgent);
-    const isIOS = /iPhone|iPad/.test(navigator.userAgent);
-    
-    let instructions = '';
-    if (isChrome && isAndroid) {
-      instructions = '🔒 Chrome Android: toca el candado (🔒) en la barra de dirección → Permisos → Notificaciones → Permitir';
-    } else if (isChrome && !isAndroid) {
-      instructions = '🔒 Chrome: toca el 🔒 en la barra de dirección → Notificaciones → Permitir';
-    } else if (isSafari && isIOS) {
-      instructions = '🔒 Safari iOS: Ajustes → Safari → Notificaciones → busca este sitio → Permitir';
-    } else if (isSafari) {
-      instructions = '🔒 Safari: Preferencias → Sitios web → Notificaciones → Permitir';
-    } else if (isFirefox) {
-      instructions = '🔒 Firefox: toca el 🔒 en la barra de dirección → Notificaciones → Permitir';
-    } else {
-      instructions = '🔒 Toca el ícono de candado o info en la barra de dirección → Notificaciones → Permitir';
-    }
-    
-    // Show a more helpful modal-style toast
-    const t = document.getElementById('toast');
-    t.textContent = instructions;
-    t.style.whiteSpace = 'normal';
-    t.style.maxWidth = '320px';
-    t.style.textAlign = 'center';
-    t.classList.add('show');
-    setTimeout(() => { 
-      t.classList.remove('show'); 
-      t.style.whiteSpace = '';
-      t.style.maxWidth = '';
-    }, 6000);
+    // This opens the browser's settings page for this exact site
+    window.open('chrome://settings/content/notifications', '_blank');
+    // chrome:// URLs are blocked in most contexts, so fallback:
+    showToast('🔒 Ve al 🔒 en la barra de dirección → Notificaciones → Permitir', 6000);
     return;
   }
-  
+
   if (permission === 'default') {
-    await requestNotifPermission();
+    try {
+      const perm = await Notification.requestPermission();
+      checkPushStatus();
+      if (perm === 'granted') {
+        showToast('✅ Notificaciones activadas');
+        setTimeout(() => new Notification('Apart Hotel Najos Admin', {
+          body: '🎉 Recibirás alertas de nuevos registros',
+          icon: '/favicon.ico'
+        }), 800);
+      } else {
+        showToast('⚠️ Permiso denegado');
+      }
+    } catch(e) {
+      showToast('⚠️ Error al solicitar permiso');
+    }
     return;
   }
-  
-  // permission === 'granted': toggle saved preference
+
+  // granted — toggle preference
   const isOn = document.getElementById('pushToggle').classList.contains('on');
   document.getElementById('pushToggle').classList.toggle('on', !isOn);
   document.getElementById('pushStatus').textContent = !isOn ? 'Activadas ✓' : 'Desactivadas';
@@ -1690,10 +1674,18 @@ function sendNewRegNotification(reg) {
 }
 
 /* ── TOAST ── */
-window.showToast = function(msg) {
+window.showToast = function(msg, duration = 3000) {
   const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+  t.textContent = msg;
+  t.style.whiteSpace = 'normal';
+  t.style.maxWidth = '300px';
+  t.style.textAlign = 'center';
+  t.classList.add('show');
+  setTimeout(() => {
+    t.classList.remove('show');
+    t.style.whiteSpace = '';
+    t.style.maxWidth = '';
+  }, duration);
 };
 </script>
 </body>
