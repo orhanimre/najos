@@ -1595,10 +1595,12 @@ window.togglePush = async function() {
   const permission = Notification.permission;
 
   if (permission === 'denied') {
-    // This opens the browser's settings page for this exact site
-    window.open('chrome://settings/content/notifications', '_blank');
-    // chrome:// URLs are blocked in most contexts, so fallback:
-    showToast('🔒 Ve al 🔒 en la barra de dirección → Notificaciones → Permitir', 6000);
+    // For Safari/iOS - provide proper instructions
+    if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
+      showToast('🔕 Bloqueadas. Ve a Ajustes > Safari > Notificaciones > Permitir', 5000);
+    } else {
+      showToast('� Bloqueadas. Ve a Configuración del sitio > Notificaciones > Permitir', 5000);
+    }
     return;
   }
 
