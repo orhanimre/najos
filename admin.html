@@ -906,7 +906,7 @@ getRedirectResult(auth).catch(e => console.error(e));
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    const allowed = ["orhanimre@gmail.com", "marizulynaranjo@gmail.com"];
+    const allowed = ["orhanimre@gmail.com", "xxx@gmail.com"];
     if (!allowed.includes(user.email)) { alert("Sin permisos."); signOut(auth); return; }
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('appScreen').classList.add('visible');
@@ -1563,8 +1563,9 @@ function checkPushStatus() {
   const pushToggle = document.getElementById('pushToggle');
   const pushStatus = document.getElementById('pushStatus');
   if (!('Notification' in window)) {
-    pushStatus.textContent = 'No soportado en este dispositivo';
+    pushStatus.textContent = 'Solo disponible en Safari (instalado en pantalla de inicio)';
     pushToggle.style.opacity = '0.4';
+    pushToggle.style.pointerEvents = 'none';
     return;
   }
   const permission = Notification.permission;
@@ -1573,67 +1574,69 @@ function checkPushStatus() {
     pushStatus.textContent = 'Activadas ✓';
   } else if (permission === 'denied') {
     pushToggle.classList.remove('on');
-    pushStatus.textContent = 'Bloqueadas';
+    pushStatus.textContent = 'Bloqueadas — activa desde Ajustes del navegador';
     pushToggle.style.opacity = '0.4';
+    pushToggle.style.pointerEvents = 'none';
   } else {
-    // Default state - not yet requested
     pushToggle.classList.remove('on');
     pushStatus.textContent = 'Toca para activar';
   }
 }
 
 window.togglePush = async function() {
-  if (!('Notification' in window)) { 
-    showToast('⚠️ Notificaciones no soportadas en este dispositivo'); 
-    return; 
+  if (!('Notification' in window)) {
+    showToast('⚠️ Solo disponible en Safari instalado en pantalla de inicio');
+    return;
   }
-  
   const permission = Notification.permission;
-  
-  if (permission === 'denied') { 
-    showToast('⚠️ Notificaciones bloqueadas. Ve a Ajustes > Safari > Notificaciones'); 
-    return; 
+  if (permission === 'denied') {
+    showToast('⚠️ Bloqueadas. Activa en Ajustes > navegador > Notificaciones');
+    return;
   }
-  
-  if (permission === 'granted') {
-    // Already granted, just toggle the UI state
-    const currentState = document.getElementById('pushToggle').classList.contains('on');
-    if (currentState) {
-      document.getElementById('pushToggle').classList.remove('on');
-      document.getElementById('pushStatus').textContent = 'Desactivadas';
-      showToast('🔕 Notificaciones desactivadas');
-    } else {
-      document.getElementById('pushToggle').classList.add('on');
-      document.getElementById('pushStatus').textContent = 'Activadas ✓';
-      showToast('✅ Notificaciones activadas');
-      // Send test notification
-      setTimeout(() => new Notification('Apart Hotel Najos Admin', { 
-        body: '🎉 Recibirás alertas de nuevos registros', 
-        icon: '/favicon.ico' 
-      }), 1000);
-    }
-  } else {
-    // Permission is 'default' - request permission
+  if (permission === 'default') {
     await requestNotifPermission();
+    return;
+  }
+  // permission === 'granted': toggle the saved preference
+  const isOn = document.getElementById('pushToggle').classList.contains('on');
+  document.getElementById('pushToggle').classList.toggle('on', !isOn);
+  document.getElementById('pushStatus').textContent = !isOn ? 'Activadas ✓' : 'Desactivadas';
+  showToast(!isOn ? '✅ Notificaciones activadas' : '🔕 Notificaciones desactivadas');
+  if (!isOn) {
+    setTimeout(() => new Notification('Apart Hotel Najos Admin', {
+      body: '🎉 Recibirás alertas de nuevos registros',
+      icon: '/favicon.ico'
+    }), 800);
   }
 };
 
 window.requestNotifPermission = async function() {
-  if (!('Notification' in window)) { showToast('⚠️ Abre esta app en Safari para notificaciones'); return; }
-  if (Notification.permission === 'granted') {
-    new Notification('Apart Hotel Najos Admin', { body: '✅ Las notificaciones funcionan correctamente', icon: '/favicon.ico' });
-    showToast('✅ Notificaciones ya activadas — enviando prueba'); return;
+  if (!('Notification' in window)) { 
+    showToast('⚠️ Solo disponible en Safari instalado en pantalla de inicio'); 
+    return; 
   }
-  if (Notification.permission === 'denied') { showToast('⚠️ Bloqueadas. Ve a Ajustes > Safari > Notificaciones'); return; }
+  if (Notification.permission === 'denied') { 
+    showToast('⚠️ Bloqueadas. Activa en Ajustes > Safari > Notificaciones'); 
+    return; 
+  }
+  if (Notification.permission === 'granted') {
+    checkPushStatus(); // just sync UI, don't fire a test notif
+    return;
+  }
   try {
     const perm = await Notification.requestPermission();
-    document.getElementById('pushToggle').classList.toggle('on', perm === 'granted');
-    document.getElementById('pushStatus').textContent = perm === 'granted' ? 'Activadas ✓' : 'No permitidas';
+    checkPushStatus(); // sync toggle + label from real permission state
     if (perm === 'granted') {
       showToast('✅ Notificaciones activadas');
-      setTimeout(() => new Notification('Apart Hotel Najos Admin', { body: '🎉 Recibirás alertas de nuevos registros', icon: '/favicon.ico' }), 1000);
-    } else { showToast('⚠️ Permiso denegado'); }
-  } catch(e) { showToast('⚠️ Error: abre desde Safari instalado en pantalla de inicio'); }
+      setTimeout(() => new Notification('Apart Hotel Najos Admin', { 
+        body: '🎉 Recibirás alertas de nuevos registros', icon: '/favicon.ico' 
+      }), 1000);
+    } else { 
+      showToast('⚠️ Permiso denegado'); 
+    }
+  } catch(e) { 
+    showToast('⚠️ Error: abre desde Safari instalado en pantalla de inicio'); 
+  }
 };
 
 function sendNewRegNotification(reg) {
