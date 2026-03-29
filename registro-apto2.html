@@ -972,6 +972,38 @@ html, body { overscroll-behavior: none; }
           .calendar-day-number { font-size: 11px; }
         }
       }
+
+      /* ── Calendar Instruction Banner ── */
+      .calendar-instruction {
+        display: flex; align-items: center; justify-content: center;
+        gap: 10px; padding: 12px 20px; font-size: 15px; font-weight: 600;
+        text-align: center; transition: all 0.4s ease; flex-shrink: 0;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      .calendar-instruction.state-checkin {
+        background: linear-gradient(135deg, #ebf8ff 0%, #dbeafe 100%);
+        color: #1e40af;
+      }
+      .calendar-instruction.state-checkout {
+        background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+        color: #9a3412;
+        animation: instructionPulse 1.5s ease-in-out 2;
+      }
+      .calendar-instruction.state-done {
+        background: linear-gradient(135deg, #f0fff4 0%, #dcfce7 100%);
+        color: #166534;
+      }
+      @keyframes instructionPulse {
+        0%, 100% { transform: scale(1); box-shadow: none; }
+        50% { transform: scale(1.01); box-shadow: 0 2px 12px rgba(154,58,18,0.2); }
+      }
+      .date-selection-btn.pulse-hint {
+        animation: btnPulse 1s ease-in-out 3;
+      }
+      @keyframes btnPulse {
+        0%, 100% { box-shadow: none; }
+        50% { box-shadow: 0 0 0 4px rgba(255,255,255,0.6); }
+      }
     </style>
   </head>
   <body>
@@ -1081,6 +1113,18 @@ html, body { overscroll-behavior: none; }
             <div class="form-group">
               <label for="ciudad">Ciudad de Procedencia <span class="required">*</span></label>
               <input type="text" id="ciudad" name="ciudad" required placeholder="Ej: Bogotá, Medellín, Cali" autocomplete="address-level2" />
+            </div>
+            <div class="form-group">
+              <label for="pais">País <span class="required">*</span></label>
+              <select id="pais" name="pais" required>
+                <option value="">Selecciona tu país</option>
+                <option value="Colombia" selected>🇨🇴 Colombia</option>
+                <option value="__otro__">➕ Agrega tu país...</option>
+              </select>
+              <div id="otrosPaisContainer" style="display:none; margin-top:12px;">
+                <input type="text" id="otrosPais" placeholder="Escribe tu país" autocomplete="country"
+                  style="width:100%;padding:14px 18px;border:2px solid #14b8a6;border-radius:12px;font-size:16px;font-family:inherit;background:#fafafa;" />
+              </div>
             </div>
           </div>
 
@@ -1238,6 +1282,10 @@ html, body { overscroll-behavior: none; }
           <button class="modal-close" onclick="closeDatePickerModal()">✕</button>
         </div>
         <div class="date-picker-body">
+          <div id="calendarInstruction" class="calendar-instruction state-checkin">
+            <span id="calendarInstructionIcon">👆</span>
+            <span id="calendarInstructionText">Toca el día en que llegas</span>
+          </div>
           <div class="date-picker-scroll" id="datePickerScroll"></div>
           <div class="calendar-legend">
             <div class="legend-item">
@@ -1345,13 +1393,13 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       window.resetCheckInDate = function(event) {
         if (event) { event.preventDefault(); event.stopPropagation(); }
         selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
-        updateDateDisplay(); renderCalendar();
+        updateDateDisplay(); renderCalendar(); updateInstruction();
       };
 
       window.resetCheckOutDate = function(event) {
         if (event) { event.preventDefault(); event.stopPropagation(); }
         selectedCheckOut = null; selectingCheckIn = false;
-        updateDateDisplay(); renderCalendar();
+        updateDateDisplay(); renderCalendar(); updateInstruction();
       };
 
       document.getElementById("resetCheckIn").addEventListener("click", resetCheckInDate);
@@ -1455,6 +1503,12 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       }
 
       function validateStep(step) {
+        if (step === 1) {
+          const paisSelect = document.getElementById("pais");
+          if (paisSelect.value === "__otro__" && !document.getElementById("otrosPais").value.trim()) {
+            showToast("⚠️ Por favor escribe tu país de origen"); return false;
+          }
+        }
         // Custom check: rules must be accepted on step 3
         if (step === 3 && rulesConsentHidden.value !== "accepted") {
           showToast("📋 Debes leer y aceptar el Reglamento del Apartamento para continuar.");
@@ -1646,7 +1700,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         const modal = document.getElementById("datePickerModal");
         modal.classList.add("show");
         document.body.style.overflow = "hidden";
-        if (bookedDatesLoaded) { renderCalendar(); }
+        if (bookedDatesLoaded) { renderCalendar(); updateInstruction(); }
         else {
           document.getElementById("datePickerScroll").innerHTML = '<div style="text-align:center;padding:40px;color:#14b8a6;font-size:18px;">⏳ Cargando disponibilidad...</div>';
           loadBookedDates().then(() => { bookedDatesLoaded = true; renderCalendar(); });
@@ -1701,6 +1755,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         }
         document.getElementById("fechaEntrada").value = selectedCheckIn  || "";
         document.getElementById("fechaSalida").value  = selectedCheckOut || "";
+        updateInstruction();
         if (selectingCheckIn) {
           if (checkInBtn) checkInBtn.classList.add("active");
           if (checkOutBtn) checkOutBtn.classList.remove("active");
@@ -1803,6 +1858,10 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
       form.addEventListener("submit", async function(e) {
         e.preventDefault();
         if (!selectedCheckIn || !selectedCheckOut) { showToast("⚠️ Por favor selecciona tus fechas de estadía"); return; }
+        const paisSelect = document.getElementById("pais");
+        if (paisSelect.value === "__otro__" && !document.getElementById("otrosPais").value.trim()) {
+          showToast("⚠️ Por favor escribe tu país de origen"); return;
+        }
         const formData = new FormData(form);
         const data = {
           cabana: "Apto Najos-2",
@@ -1810,6 +1869,7 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
           nombre: formData.get("nombre"), apellido: formData.get("apellido"),
           celular: formData.get("celular"), tipoId: formData.get("tipoId"),
           numeroId: formData.get("numeroId"), ciudad: formData.get("ciudad"),
+          pais: (paisSelect.value === "__otro__" ? document.getElementById("otrosPais").value.trim() : paisSelect.value),
           totalHuespedes: Number(formData.get("totalHuespedes") || 0),
           fechaEntrada: selectedCheckIn, horaEntrada: formData.get("horaEntrada"),
           fechaSalida: selectedCheckOut, horaSalida: formData.get("horaSalida"),
@@ -1929,6 +1989,48 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
         }
       }
       consentCheckbox.addEventListener("change", updateSubmitBtn);
+
+      // ── País dropdown ──
+      document.getElementById("pais").addEventListener("change", function() {
+        const container = document.getElementById("otrosPaisContainer");
+        const input = document.getElementById("otrosPais");
+        if (this.value === "__otro__") {
+          container.style.display = "block";
+          input.focus();
+        } else {
+          container.style.display = "none";
+          input.value = "";
+        }
+      });
+
+      // ── Calendar instruction banner ──
+      function updateInstruction() {
+        const banner = document.getElementById("calendarInstruction");
+        const icon   = document.getElementById("calendarInstructionIcon");
+        const text   = document.getElementById("calendarInstructionText");
+        const checkInBtn  = document.getElementById("checkInBtn");
+        const checkOutBtn = document.getElementById("checkOutBtn");
+        if (!banner) return;
+        checkInBtn.classList.remove("pulse-hint");
+        checkOutBtn.classList.remove("pulse-hint");
+        if (!selectedCheckIn) {
+          banner.className = "calendar-instruction state-checkin";
+          icon.textContent = "👆";
+          text.textContent = "Toca el día en que llegas";
+          void checkInBtn.offsetWidth;
+          checkInBtn.classList.add("pulse-hint");
+        } else if (!selectedCheckOut) {
+          banner.className = "calendar-instruction state-checkout";
+          icon.textContent = "🎉";
+          text.textContent = "¡Llegada lista! Ahora toca el día en que te vas";
+          void checkOutBtn.offsetWidth;
+          checkOutBtn.classList.add("pulse-hint");
+        } else {
+          banner.className = "calendar-instruction state-done";
+          icon.textContent = "✅";
+          text.textContent = "¡Perfecto! Confirma tus fechas abajo";
+        }
+      }
 
       updateProgress();
       updateDateDisplay();
