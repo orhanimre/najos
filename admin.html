@@ -1101,7 +1101,7 @@ function renderList() {
       </div>
       <div class="card-bottom">
         <div class="card-city">📍 ${reg.ciudad || '—'}</div>
-        <div class="card-guests">👥 ${guests}</div>
+        <div class="card-guests" style="font-size:11px;">${'👤'.repeat(guests)} (${guests})</div>
       </div>
       ${statusBadge ? `<div>${statusBadge}</div>` : ''}
     </div>`;
