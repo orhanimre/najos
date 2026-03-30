@@ -1043,7 +1043,16 @@ function getFilteredData() {
   if (aptoFilter) src = src.filter(r => r.apto === aptoFilter);
   const today = new Date(); today.setHours(0,0,0,0);
   if (dateFilter === 'today') src = src.filter(r => { if (!r.fechaEntrada || !r.fechaSalida) return false; const e = new Date(r.fechaEntrada+'T00:00:00'); const s = new Date(r.fechaSalida+'T00:00:00'); return e <= today && s >= today; });
-  if (dateFilter === 'week') { const e = new Date(today); e.setDate(today.getDate()+7); src = src.filter(r => r.fechaEntrada && new Date(r.fechaEntrada+'T00:00:00') >= today && new Date(r.fechaEntrada+'T00:00:00') <= e); }
+  if (dateFilter === 'week') { 
+  const e = new Date(today); 
+  e.setDate(today.getDate()+7); 
+  src = src.filter(r => { 
+    if (!r.fechaEntrada || !r.fechaSalida) return false; 
+    const entrada = new Date(r.fechaEntrada+'T00:00:00'); 
+    const salida = new Date(r.fechaSalida+'T00:00:00'); 
+    return entrada <= e && salida >= today; 
+  }); 
+}
   if (dateFilter === 'month') { const s = new Date(today.getFullYear(), today.getMonth(), 1); const e = new Date(today.getFullYear(), today.getMonth()+1, 0); src = src.filter(r => r.fechaEntrada && new Date(r.fechaEntrada+'T00:00:00') >= s && new Date(r.fechaEntrada+'T00:00:00') <= e); }
   if (searchTerm) {
     src = src.filter(r => {
