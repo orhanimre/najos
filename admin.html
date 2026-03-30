@@ -983,12 +983,12 @@ function updateStats() {
 
 /* ── CAL COUNTS ── */
 function updateCalCounts() {
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' });
   [2, 3, 4].forEach((n, idx) => {
     const count = allRegs.filter(r => {
       const salida = r.fechaSalida?.toDate
-        ? r.fechaSalida.toDate().toISOString().split('T')[0]
-        : r.fechaSalida;
+  ? r.fechaSalida.toDate().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' })
+  : r.fechaSalida;
       return r.apto === `Apto Najos-${n}` && salida >= todayStr;
     }).length;
     const el = document.getElementById(`calCount${idx + 1}`);
@@ -1038,7 +1038,7 @@ applyTheme(localStorage.getItem('theme') === 'light');
 
 /* ── RENDER LIST ── */
 function getFilteredData() {
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' });
   let src = showArchive ? [...allArchived] : [...allRegs];
   if (aptoFilter) src = src.filter(r => r.apto === aptoFilter);
   const today = new Date(); today.setHours(0,0,0,0);
@@ -1069,7 +1069,7 @@ function renderList() {
     wrap.innerHTML = `<div class="list-empty"><div class="icon">${searchTerm ? '🔍' : '📭'}</div>${searchTerm ? 'Sin resultados para "' + searchTerm + '"' : 'Sin registros con estos filtros'}</div>`;
     return;
   }
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' });
   wrap.innerHTML = data.map((reg) => {
     const cn = reg.apto ? reg.apto.slice(-1) : '?';
     // Map apto number to color class: 2->c1, 3->c2, 4->c3
@@ -1369,12 +1369,12 @@ function renderCalendar() {
   const aptoName = `Apto Najos-${currentCalCabin}`;
 
   const normalize = r => ({
-    ...r,
-    fechaEntrada: r.fechaEntrada?.toDate ? r.fechaEntrada.toDate().toISOString().split('T')[0] : r.fechaEntrada,
-    fechaSalida:  r.fechaSalida?.toDate  ? r.fechaSalida.toDate().toISOString().split('T')[0]  : r.fechaSalida,
-  });
+  ...r,
+  fechaEntrada: r.fechaEntrada?.toDate ? r.fechaEntrada.toDate().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' }) : r.fechaEntrada,
+  fechaSalida:  r.fechaSalida?.toDate  ? r.fechaSalida.toDate().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' }) : r.fechaSalida,
+});
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' });
   const regs = allRegs.filter(r => r.apto === aptoName && r.fechaSalida >= todayStr).map(normalize);
   regs.sort((a, b) => (a.fechaEntrada || '') < (b.fechaEntrada || '') ? -1 : 1);
 
