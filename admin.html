@@ -837,7 +837,7 @@
   </div>
 </div>
 
-<!-- CONFIRM -->
+<!-- CONFIRM DELETE -->
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
     <div class="confirm-icon">⚠️</div>
@@ -846,6 +846,19 @@
     <div class="confirm-btns">
       <button class="confirm-cancel" onclick="closeConfirm()">Cancelar</button>
       <button class="confirm-delete" id="confirmDeleteBtn">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM RESTORE -->
+<div class="confirm-overlay" id="confirmRestoreOverlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">♻️</div>
+    <div class="confirm-title">¿Restaurar registro?</div>
+    <div class="confirm-msg">El registro volverá a la lista principal de registros activos.</div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="closeRestoreConfirm()">Cancelar</button>
+      <button class="confirm-delete" onclick="doRestore()" style="background:var(--green);">Restaurar</button>
     </div>
   </div>
 </div>
@@ -1383,8 +1396,21 @@ async function doDelete() {
   } catch(e) { console.error(e); showToast('❌ Error al eliminar'); }
 }
 
-window.restoreRegistration = async function() {
+window.restoreRegistration = function() {
   if (!currentReg) return;
+  closeDetailSheet();
+  setTimeout(() => {
+    document.getElementById('confirmRestoreOverlay').classList.add('show');
+  }, 200);
+};
+
+window.closeRestoreConfirm = function() {
+  document.getElementById('confirmRestoreOverlay').classList.remove('show');
+};
+
+async function doRestore() {
+  if (!currentReg) return;
+  closeRestoreConfirm();
   try {
     const regToRestore = { ...currentReg };
     delete regToRestore.archivedAt;
@@ -1409,11 +1435,10 @@ window.restoreRegistration = async function() {
       allRegs.sort((a, b) => new Date(a.fechaEntrada || 0) - new Date(b.fechaEntrada || 0));
     }
     currentReg = null;
-    closeDetailSheet();
     updateStats(); updateCalCounts(); renderList();
     showToast('✅ Registro restaurado');
   } catch(e) { console.error(e); showToast('❌ Error al restaurar'); }
-};
+}
 
 /* ── CALENDAR TOOLTIP ── */
 let tooltipOpen = false;
