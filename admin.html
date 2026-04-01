@@ -913,7 +913,7 @@ getRedirectResult(auth).catch(e => console.error(e));
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    const allowed = ["orhanimre@gmail.com", "xxx@gmail.com"];
+    const allowed = ["orhanimre@gmail.com", "hugofda79@gmail.com"];
     if (!allowed.includes(user.email)) { alert("Sin permisos."); signOut(auth); return; }
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('appScreen').classList.add('visible');
