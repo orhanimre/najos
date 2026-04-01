@@ -1848,7 +1848,7 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
         try {
           const regRef = await addDoc(collection(db, "registrations"), data);
           await addDoc(collection(db, "cabin_availability"), {
-            cabana: "Apto Najos-3", fechaInicio: selectedCheckIn, fechaFin: selectedCheckOut,
+            apto: "Apto Najos-3", fechaInicio: selectedCheckIn, fechaFin: selectedCheckOut,
             registrationId: regRef.id, createdAt: serverTimestamp(),
           });
           try {
