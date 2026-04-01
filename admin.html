@@ -765,9 +765,10 @@
     </div>
     <div class="sheet-body" id="detailBody"></div>
     <div class="sheet-actions">
-      <button class="action-btn btn-edit" onclick="openEdit()">✏️ Editar</button>
-      <button class="action-btn btn-delete" onclick="confirmDelete()">🗑️ Eliminar</button>
-    </div>
+  <button class="action-btn btn-edit" onclick="openEdit()">✏️ Editar</button>
+  <button class="action-btn btn-restore" id="restoreBtn" onclick="restoreRegistration()" style="display:none; flex:1; padding:14px; border-radius:14px; border:none; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.2s; align-items:center; justify-content:center; gap:6px; background:rgba(52,211,153,0.15); color:#059669; border:1px solid rgba(52,211,153,0.3);">♻️ Restaurar</button>
+  <button class="action-btn btn-delete" onclick="confirmDelete()">🗑️ Eliminar</button>
+</div>
   </div>
 </div>
 
@@ -1245,6 +1246,7 @@ const cn = cnMatch ? cnMatch[1] : '?';
 
   _detailOpenTime = Date.now();
   document.getElementById('detailOverlay').classList.add('show');
+  document.getElementById('restoreBtn').style.display = showArchive ? 'flex' : 'none';
 };
 
 window.closeDetail = function(e) {};
@@ -1378,6 +1380,34 @@ async function doDelete() {
     updateStats(); updateCalCounts(); renderList(); showToast('🗑️ Registro eliminado');
   } catch(e) { console.error(e); showToast('❌ Error al eliminar'); }
 }
+
+window.restoreRegistration = async function() {
+  if (!currentReg) return;
+  try {
+    await setDoc(doc(db, 'registrations', currentReg.id), {
+      ...currentReg,
+      restoredAt: serverTimestamp(),
+      restoredBy: auth.currentUser?.email || 'unknown'
+    });
+    await deleteDoc(doc(db, 'archived_registrations', currentReg.id));
+    // Also restore cabin_availability
+    try {
+      await setDoc(doc(db, 'cabin_availability', currentReg.id), {
+        cabana: currentReg.cabana,
+        fechaInicio: currentReg.fechaEntrada,
+        fechaFin: currentReg.fechaSalida,
+        registrationId: currentReg.id
+      });
+    } catch(e) {}
+    allArchived = allArchived.filter(r => r.id !== currentReg.id);
+    allRegs.push({ ...currentReg });
+    allRegs.sort((a, b) => new Date(a.fechaEntrada || 0) - new Date(b.fechaEntrada || 0));
+    currentReg = null;
+    closeDetailSheet();
+    updateStats(); updateCalCounts(); renderList();
+    showToast('✅ Registro restaurado');
+  } catch(e) { console.error(e); showToast('❌ Error al restaurar'); }
+};
 
 /* ── CALENDAR TOOLTIP ── */
 let tooltipOpen = false;
