@@ -523,10 +523,10 @@
 
     /* ── CONFIRM DIALOG ── */
     .confirm-overlay {
-      position: fixed; inset: 0; z-index: 1002;
-      background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
-      display: none; align-items: center; justify-content: center; padding: 24px;
-    }
+  position: fixed; inset: 0; z-index: 1010;
+  background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+  display: none; align-items: center; justify-content: center; padding: 24px;
+}
     .confirm-overlay.show { display: flex; }
     .confirm-box {
       background: var(--surface); border-radius: 20px; padding: 28px 24px;
@@ -1398,17 +1398,17 @@ async function doDelete() {
 
 window.restoreRegistration = function() {
   if (!currentReg) return;
-  closeDetailSheet();
+  document.getElementById('detailOverlay').classList.remove('show');
   setTimeout(() => {
     document.getElementById('confirmRestoreOverlay').classList.add('show');
-  }, 200);
+  }, 300);
 };
 
 window.closeRestoreConfirm = function() {
   document.getElementById('confirmRestoreOverlay').classList.remove('show');
 };
 
-async function doRestore() {
+window.doRestore = async function() {
   if (!currentReg) return;
   closeRestoreConfirm();
   try {
