@@ -600,7 +600,7 @@
         }
 
         async function loadReservations() {
-            const snap = await getDocs(query(collection(db, "registrations"), where("cabana", "==", CABIN)));
+            const snap = await getDocs(query(collection(db, "registrations"), where("apto", "==", CABIN)));
             const reservations = [];
             snap.forEach(doc => {
                 const d = doc.data();
