@@ -1528,17 +1528,24 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       }
 
       window.closeSuccessModal = function() {
-        const modal = document.getElementById("successModal");
-        if (modal) {
-          modal.style.animation = "fadeOut 0.3s ease";
-          setTimeout(() => {
-            modal.remove(); form.reset();
-            companions = []; companionFilledStatus = {};
-            companionsContainer.innerHTML = "";
-            consentGroup.classList.remove("checked");
-            rulesGroup.classList.remove("checked");
-            rulesModalOpened = false;
-            currentStep = 1; currentCompanionCount = 0;
+    const modal = document.getElementById("successModal");
+    if (modal) {
+      modal.style.animation = "fadeOut 0.3s ease";
+      setTimeout(() => {
+        modal.remove(); form.reset();
+        companions = []; companionFilledStatus = {};
+        companionsContainer.innerHTML = "";
+        consentGroup.classList.remove("checked");
+        rulesConsentHidden.value = "";
+        const mc = document.getElementById("rulesModalCheck");
+        if (mc) mc.checked = false;
+        const cb = document.getElementById("rulesConfirmBtn");
+        if (cb) { cb.disabled = true; cb.style.opacity = "0.5"; cb.style.cursor = "not-allowed"; }
+        const st = document.getElementById("rulesTriggerStatus");
+        if (st) st.textContent = "👆 Toca para leer";
+        const tb = document.getElementById("rulesTriggerBtn");
+        if (tb) tb.classList.remove("accepted");
+        currentStep = 1; currentCompanionCount = 0;
             stepperValue.textContent = "0"; totalHuespedesInput.value = "0";
             updateStepperButtons();
             selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
