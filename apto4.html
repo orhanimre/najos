@@ -604,6 +604,9 @@
             const reservations = [];
             snap.forEach(doc => {
                 const d = doc.data();
+                // Handle both old 'cabana' and new 'apto' fields for backward compatibility
+                const apartmentField = d.apto || d.cabana;
+                console.log('Document fields:', { apto: d.apto, cabana: d.cabana, apartmentField });
                 if (d.fechaEntrada && d.fechaSalida) {
                     reservations.push({ start: d.fechaEntrada, end: d.fechaSalida });
                 }

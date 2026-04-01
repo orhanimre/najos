@@ -1667,14 +1667,20 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         const checkInDates = []; const checkOutDates = [];
         querySnapshot.forEach(doc => {
             const d = doc.data();
-            if (d.apto === "Apto Najos-2") {
+            // Handle both old 'cabana' and new 'apto' fields for backward compatibility
+            const apartmentField = d.apto || d.cabana;
+            console.log('Document fields:', { apto: d.apto, cabana: d.cabana, apartmentField });
+            if (apartmentField === "Apto Najos-2") {
                 if (d.fechaInicio) checkInDates.push(d.fechaInicio);
                 if (d.fechaFin)    checkOutDates.push(d.fechaFin);
             }
         });
         querySnapshot.forEach(doc => {
             const d = doc.data();
-            if (d.apto === "Apto Najos-2" && d.fechaInicio && d.fechaFin) {
+            // Handle both old 'cabana' and new 'apto' fields for backward compatibility
+            const apartmentField = d.apto || d.cabana;
+            console.log('Second query - Document fields:', { apto: d.apto, cabana: d.cabana, apartmentField });
+            if (apartmentField === "Apto Najos-2" && d.fechaInicio && d.fechaFin) {
                 const start = new Date(d.fechaInicio + "T00:00:00"); const end = new Date(d.fechaFin + "T00:00:00");
                 const isCheckInShared  = checkOutDates.includes(d.fechaInicio);
                 const isCheckOutShared = checkInDates.includes(d.fechaFin);
