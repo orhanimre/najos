@@ -1118,10 +1118,10 @@ function renderList() {
   }).slice(0, 5);
 
   wrap.innerHTML = data.map((reg) => {
-    const cn = reg.apto ? reg.apto.slice(-1) : '?';
-    // Map apto number to color class: 2->c1, 3->c2, 4->c3
-    const colorMap = {'2':'c1','3':'c2','4':'c3'};
-    const cc = colorMap[cn] || 'c1';
+    const cnMatch = reg.apto ? reg.apto.match(/(\d+)$/) : null;
+const cn = cnMatch ? cnMatch[1] : '?';
+const colorMap = {'2':'c1','3':'c2','4':'c3'};
+const cc = colorMap[cn] || 'c1';
     const guests = (reg.totalHuespedes || 0) + 1;
 
     // ── STATUS CLASS ──
@@ -1194,7 +1194,8 @@ window.showDetail = function(id) {
   currentReg = src.find(r => r.id === id);
   if (!currentReg) return;
   const r = currentReg;
-  const cn = r.apto ? r.apto.slice(-1) : '?';
+  const cnMatch = r.apto ? r.apto.match(/(\d+)$/) : null;
+const cn = cnMatch ? cnMatch[1] : '?';
   const colorMap = {'2':'c1','3':'c2','4':'c3'};
   const cc = colorMap[cn] || 'c1';
   const fdt = d => { if (!d) return '—'; const [y,m,dd] = d.split('-'); return `${dd}/${m}/${y}`; };
