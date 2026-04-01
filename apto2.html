@@ -600,16 +600,18 @@
         }
 
         async function loadReservations() {
-            const snap = await getDocs(query(collection(db, "registrations"), where("apto", "==", CABIN)));
-            const reservations = [];
-            snap.forEach(doc => {
-                const d = doc.data();
-                if (d.fechaEntrada && d.fechaSalida) {
-                    reservations.push({ start: d.fechaEntrada, end: d.fechaSalida });
-                }
-            });
-            return reservations;
+    const snap = await getDocs(
+        query(collection(db, "cabin_availability"), where("apto", "==", CABIN))
+    );
+    const reservations = [];
+    snap.forEach(doc => {
+        const d = doc.data();
+        if (d.fechaInicio && d.fechaFin) {
+            reservations.push({ start: d.fechaInicio, end: d.fechaFin });
         }
+    });
+    return reservations;
+}
 
         function buildDateSets(reservations) {
             // Collect all check-in and check-out dates to detect shared days
