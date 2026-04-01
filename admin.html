@@ -764,10 +764,12 @@
       <div class="sheet-close" onclick="closeDetailSheet()">✕</div>
     </div>
     <div class="sheet-body" id="detailBody"></div>
-    <div class="sheet-actions">
-  <button class="action-btn btn-edit" onclick="openEdit()">✏️ Editar</button>
-  <button class="action-btn btn-restore" id="restoreBtn" onclick="restoreRegistration()" style="display:none; flex:1; padding:14px; border-radius:14px; border:none; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.2s; align-items:center; justify-content:center; gap:6px; background:rgba(52,211,153,0.15); color:#059669; border:1px solid rgba(52,211,153,0.3);">♻️ Restaurar</button>
-  <button class="action-btn btn-delete" onclick="confirmDelete()">🗑️ Eliminar</button>
+    <div class="sheet-actions" style="flex-direction:column; gap:10px;">
+  <div style="display:flex; gap:10px;">
+    <button class="action-btn btn-edit" onclick="openEdit()">✏️ Editar</button>
+    <button class="action-btn btn-delete" onclick="confirmDelete()">🗑️ Eliminar</button>
+  </div>
+  <button class="action-btn" id="restoreBtn" onclick="restoreRegistration()" style="display:none; background:rgba(52,211,153,0.15); color:#059669; border:1px solid rgba(52,211,153,0.3);">♻️ Restaurar registro</button>
 </div>
   </div>
 </div>
@@ -1384,13 +1386,15 @@ async function doDelete() {
 window.restoreRegistration = async function() {
   if (!currentReg) return;
   try {
+    const regToRestore = { ...currentReg };
+    delete regToRestore.archivedAt;
+    delete regToRestore.archivedBy;
     await setDoc(doc(db, 'registrations', currentReg.id), {
-      ...currentReg,
+      ...regToRestore,
       restoredAt: serverTimestamp(),
       restoredBy: auth.currentUser?.email || 'unknown'
     });
     await deleteDoc(doc(db, 'archived_registrations', currentReg.id));
-    // Also restore cabin_availability
     try {
       await setDoc(doc(db, 'cabin_availability', currentReg.id), {
         cabana: currentReg.cabana,
@@ -1400,8 +1404,10 @@ window.restoreRegistration = async function() {
       });
     } catch(e) {}
     allArchived = allArchived.filter(r => r.id !== currentReg.id);
-    allRegs.push({ ...currentReg });
-    allRegs.sort((a, b) => new Date(a.fechaEntrada || 0) - new Date(b.fechaEntrada || 0));
+    if (!allRegs.find(r => r.id === currentReg.id)) {
+      allRegs.push({ ...regToRestore });
+      allRegs.sort((a, b) => new Date(a.fechaEntrada || 0) - new Date(b.fechaEntrada || 0));
+    }
     currentReg = null;
     closeDetailSheet();
     updateStats(); updateCalCounts(); renderList();
