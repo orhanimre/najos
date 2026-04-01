@@ -972,9 +972,14 @@ function setupRealtimeListener() {
 
 /* ── DATA ── */
 async function loadData() {
+  console.log('loadData called');
   allRegs = [];
   const snap = await getDocs(query(collection(db, "registrations")));
-  snap.forEach(d => allRegs.push({ id: d.id, ...d.data() }));
+  console.log('snap size:', snap.size);
+  snap.forEach(d => {
+    console.log('doc:', d.id, JSON.stringify(d.data()));
+    allRegs.push({ id: d.id, ...d.data() });
+  });
   allRegs.sort((a, b) => new Date(a.fechaEntrada || 0) - new Date(b.fechaEntrada || 0));
   try {
     allArchived = [];
