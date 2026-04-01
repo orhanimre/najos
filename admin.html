@@ -985,11 +985,23 @@ async function loadData() {
 
 /* ── STATS ── */
 function updateStats() {
-  const src = getFilteredData();
+  const todayStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' });
+  const nowTime = new Date().toLocaleTimeString('en-CA', {
+    timeZone: 'America/Bogota', hour12: false
+  }).slice(0, 5);
+
+  // Exclude past/expired registrations (same logic as renderList gray cards)
+  const src = getFilteredData().filter(r => {
+    if (!r.fechaSalida) return true;
+    if (r.fechaSalida < todayStr) return false;
+    if (r.fechaSalida === todayStr && r.horaSalida && nowTime >= r.horaSalida) return false;
+    return true;
+  });
+
   document.getElementById('numAll').textContent = src.length;
-  document.getElementById('numC1').textContent = src.filter(r => r.apto === 'Apto Najos-2').length;
-  document.getElementById('numC2').textContent = src.filter(r => r.apto === 'Apto Najos-3').length;
-  document.getElementById('numC3').textContent = src.filter(r => r.apto === 'Apto Najos-4').length;
+  document.getElementById('numC1').textContent = src.filter(r => r.cabana === 'Cabaña MariaMar-1').length;
+  document.getElementById('numC2').textContent = src.filter(r => r.cabana === 'Cabaña MariaMar-2').length;
+  document.getElementById('numC3').textContent = src.filter(r => r.cabana === 'Cabaña MariaMar-3').length;
 }
 
 /* ── CAL COUNTS ── */
