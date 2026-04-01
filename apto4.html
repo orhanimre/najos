@@ -748,10 +748,14 @@
 
         document.getElementById('calPrevBtn').style.opacity = calOffset === 0 ? '0.3' : '1';
         document.getElementById('calPrevBtn').style.cursor  = calOffset === 0 ? 'default' : 'pointer';
+        document.getElementById('calNextBtn').style.opacity = calOffset >= 2 ? '0.3' : '1';
+        document.getElementById('calNextBtn').style.cursor  = calOffset >= 2 ? 'default' : 'pointer';
     }
 
     window.calNavigate = function(direction) {
+        const maxOffset = 2; // 3 pages total: 0, 1, 2 (showing 6 months max)
         if (direction === -1 && calOffset === 0) return;
+        if (direction === 1 && calOffset >= maxOffset) return;
         calOffset += direction;
         renderPage();
     };
