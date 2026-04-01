@@ -461,32 +461,54 @@
 
             <!-- ── AVAILABILITY CALENDAR ── -->
             <div class="section" id="availabilitySection">
-                <h2>📅 Disponibilidad — Apto 2</h2>
-                <p style="color:#6B7280; font-size:13px; margin-bottom:20px; font-weight:400;">
-                    Consulta las fechas disponibles para tu estadía
-                </p>
-                <div id="calendarContainer">
-                    <div class="cal-loading">Cargando disponibilidad…</div>
-                </div>
-                <div class="cal-legend">
-                    <div class="cal-legend-item">
-                        <div class="cal-legend-dot" style="background:white; border:1px solid #e5e7eb;"></div>
-                        Disponible
-                    </div>
-                    <div class="cal-legend-item">
-                        <div class="cal-legend-dot" style="background:#fecaca;"></div>
-                        Reservado
-                    </div>
-                    <div class="cal-legend-item">
-                        <div class="cal-legend-dot" style="background:linear-gradient(90deg, white 50%, #fecaca 50%); border:1px solid #e5e7eb;"></div>
-                        Día de entrada
-                    </div>
-                    <div class="cal-legend-item">
-                        <div class="cal-legend-dot" style="background:linear-gradient(90deg, #fecaca 50%, white 50%); border:1px solid #e5e7eb;"></div>
-                        Día de salida
-                    </div>
-                </div>
-            </div>
+    <h2>📅 Disponibilidad — Apto 2</h2>
+    <p style="color:#6B7280; font-size:13px; margin-bottom:20px; font-weight:400;">
+        Consulta las fechas disponibles para tu estadía
+    </p>
+
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+        <button id="calPrevBtn" onclick="calNavigate(-1)"
+            style="width:40px;height:40px;border-radius:50%;border:1.5px solid #d1d5eb;background:white;
+                   font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+                   transition:all 0.2s;color:#374151;"
+            onmouseover="this.style.background='#f3f4f6';this.style.borderColor='#9ca3af'"
+            onmouseout="this.style.background='white';this.style.borderColor='#d1d5eb'">
+            ‹
+        </button>
+        <span id="calRangeLabel" style="font-size:13px;font-weight:600;color:#6B7280;"></span>
+        <button id="calNextBtn" onclick="calNavigate(1)"
+            style="width:40px;height:40px;border-radius:50%;border:1.5px solid #d1d5eb;background:white;
+                   font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+                   transition:all 0.2s;color:#374151;"
+            onmouseover="this.style.background='#f3f4f6';this.style.borderColor='#9ca3af'"
+            onmouseout="this.style.background='white';this.style.borderColor='#d1d5eb'">
+            ›
+        </button>
+    </div>
+
+    <div id="calendarContainer">
+        <div class="cal-loading">Cargando disponibilidad…</div>
+    </div>
+
+    <div class="cal-legend">
+        <div class="cal-legend-item">
+            <div class="cal-legend-dot" style="background:white; border:1px solid #e5e7eb;"></div>
+            Disponible
+        </div>
+        <div class="cal-legend-item">
+            <div class="cal-legend-dot" style="background:#fecaca;"></div>
+            Reservado
+        </div>
+        <div class="cal-legend-item">
+            <div class="cal-legend-dot" style="background:linear-gradient(90deg, white 50%, #fecaca 50%); border:1px solid #e5e7eb;"></div>
+            Día de entrada
+        </div>
+        <div class="cal-legend-item">
+            <div class="cal-legend-dot" style="background:linear-gradient(90deg, #fecaca 50%, white 50%); border:1px solid #e5e7eb;"></div>
+            Día de salida
+        </div>
+    </div>
+</div>
 
             <div class="section" style="display: none;">
                 <h2>🌐 Reserva en línea</h2>
@@ -576,168 +598,178 @@
     </script>
 
     <!-- ── FIREBASE AVAILABILITY CALENDAR ── -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBGno4JfubhTO-deCJtP9ozXD_pdPrhmh8",
-            authDomain: "aptos-najos.firebaseapp.com",
-            projectId: "aptos-najos",
-            storageBucket: "aptos-najos.firebasestorage.app",
-            messagingSenderId: "773909398953",
-            appId: "1:773909398953:web:157467cae451bf125ff0b8"
-        };
+    const firebaseConfig = {
+        apiKey: "AIzaSyBGno4JfubhTO-deCJtP9ozXD_pdPrhmh8",
+        authDomain: "aptos-najos.firebaseapp.com",
+        projectId: "aptos-najos",
+        storageBucket: "aptos-najos.firebasestorage.app",
+        messagingSenderId: "773909398953",
+        appId: "1:773909398953:web:157467cae451bf125ff0b8"
+    };
 
-        const CABIN = "Apto Najos-2";
-        const MONTHS_AHEAD = 5; // show current month + 5 ahead
+    const CABIN = "Apto Najos-2";
+    const MONTHS_PER_PAGE = 2;
 
-        const app  = initializeApp(firebaseConfig);
-        const db   = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
 
-        function toDateStr(d) {
-            return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    let calOffset = 0;
+    let dateSets  = null;
+
+    function toDateStr(d) {
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    }
+
+    async function loadReservations() {
+        const snap = await getDocs(query(collection(db, "cabin_availability"), where("apto", "==", CABIN)));
+        const reservations = [];
+        snap.forEach(doc => {
+            const d = doc.data();
+            if (d.fechaInicio && d.fechaFin)
+                reservations.push({ start: d.fechaInicio, end: d.fechaFin });
+        });
+        return reservations;
+    }
+
+    function buildDateSets(reservations) {
+        const allCheckins  = new Set(reservations.map(r => r.start));
+        const allCheckouts = new Set(reservations.map(r => r.end));
+        const mid = new Set(), checkin = new Set(), checkout = new Set(), shared = new Set();
+
+        reservations.forEach(({ start, end }) => {
+            const s = new Date(start + "T00:00:00");
+            const e = new Date(end   + "T00:00:00");
+
+            if (allCheckouts.has(start)) shared.add(start);
+            else checkin.add(start);
+
+            const cur = new Date(s);
+            cur.setDate(cur.getDate() + 1);
+            while (cur < e) { mid.add(toDateStr(cur)); cur.setDate(cur.getDate() + 1); }
+
+            if (allCheckins.has(end)) shared.add(end);
+            else checkout.add(end);
+        });
+
+        return { mid, checkin, checkout, shared };
+    }
+
+    function renderMonth(year, month) {
+        const today = new Date(); today.setHours(0, 0, 0, 0);
+        const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                             'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'cal-month';
+
+        const header = document.createElement('div');
+        header.className = 'cal-month-header';
+        header.textContent = `${MONTH_NAMES[month]} ${year}`;
+        wrapper.appendChild(header);
+
+        const grid = document.createElement('div');
+        grid.className = 'cal-grid';
+
+        ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].forEach(d => {
+            const h = document.createElement('div');
+            h.className = 'cal-dow'; h.textContent = d; grid.appendChild(h);
+        });
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const offset   = firstDay === 0 ? 6 : firstDay - 1;
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        for (let i = 0; i < offset; i++) {
+            const blank = document.createElement('div');
+            blank.className = 'cal-day other-month'; grid.appendChild(blank);
         }
 
-        async function loadReservations() {
-    const snap = await getDocs(
-        query(collection(db, "cabin_availability"), where("apto", "==", CABIN))
-    );
-    const reservations = [];
-    snap.forEach(doc => {
-        const d = doc.data();
-        if (d.fechaInicio && d.fechaFin) {
-            reservations.push({ start: d.fechaInicio, end: d.fechaFin });
-        }
-    });
-    return reservations;
-}
+        for (let d = 1; d <= daysInMonth; d++) {
+            const cell    = document.createElement('div');
+            cell.className = 'cal-day';
+            const cur     = new Date(year, month, d);
+            const dateStr = toDateStr(cur);
 
-        function buildDateSets(reservations) {
-            // Collect all check-in and check-out dates to detect shared days
-            const allCheckins  = new Set(reservations.map(r => r.start));
-            const allCheckouts = new Set(reservations.map(r => r.end));
-
-            const mid      = new Set(); // fully booked interior days
-            const checkin  = new Set(); // check-in only (left half free)
-            const checkout = new Set(); // check-out only (right half free)
-            const shared   = new Set(); // both check-in and check-out (fully booked)
-
-            reservations.forEach(({ start, end }) => {
-                const s = new Date(start + "T00:00:00");
-                const e = new Date(end   + "T00:00:00");
-
-                // Check-in day
-                if (allCheckouts.has(start)) shared.add(start);
-                else checkin.add(start);
-
-                // Middle days
-                const cur = new Date(s);
-                cur.setDate(cur.getDate() + 1);
-                while (cur < e) {
-                    mid.add(toDateStr(cur));
-                    cur.setDate(cur.getDate() + 1);
-                }
-
-                // Check-out day
-                if (allCheckins.has(end)) shared.add(end);
-                else checkout.add(end);
-            });
-
-            return { mid, checkin, checkout, shared };
-        }
-
-        function renderMonth(year, month, dateSets) {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-                                 'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-
-            const wrapper = document.createElement('div');
-            wrapper.className = 'cal-month';
-
-            const header = document.createElement('div');
-            header.className = 'cal-month-header';
-            header.textContent = `${MONTH_NAMES[month]} ${year}`;
-            wrapper.appendChild(header);
-
-            const grid = document.createElement('div');
-            grid.className = 'cal-grid';
-
-            // Day-of-week headers (Mon–Sun)
-            ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].forEach(d => {
-                const h = document.createElement('div');
-                h.className = 'cal-dow';
-                h.textContent = d;
-                grid.appendChild(h);
-            });
-
-            const firstDay = new Date(year, month, 1).getDay(); // 0=Sun
-            const offset   = firstDay === 0 ? 6 : firstDay - 1;
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-            // Empty cells before 1st
-            for (let i = 0; i < offset; i++) {
-                const blank = document.createElement('div');
-                blank.className = 'cal-day other-month';
-                grid.appendChild(blank);
+            if (cur < today) {
+                cell.classList.add('past');
+            } else if (dateSets.shared.has(dateStr)) {
+                cell.classList.add('booked-shared');
+            } else if (dateSets.mid.has(dateStr)) {
+                cell.classList.add('booked-mid');
+            } else if (dateSets.checkin.has(dateStr)) {
+                cell.classList.add('booked-checkin');
+            } else if (dateSets.checkout.has(dateStr)) {
+                cell.classList.add('booked-checkout');
             }
 
-            for (let d = 1; d <= daysInMonth; d++) {
-                const cell  = document.createElement('div');
-                cell.className = 'cal-day';
-
-                const cur     = new Date(year, month, d);
-                const dateStr = toDateStr(cur);
-
-                if (cur < today) {
-                    cell.classList.add('past');
-                } else if (dateSets.shared.has(dateStr)) {
-                    cell.classList.add('booked-shared');
-                } else if (dateSets.mid.has(dateStr)) {
-                    cell.classList.add('booked-mid');
-                } else if (dateSets.checkin.has(dateStr)) {
-                    cell.classList.add('booked-checkin');
-                } else if (dateSets.checkout.has(dateStr)) {
-                    cell.classList.add('booked-checkout');
-                }
-
-                if (toDateStr(cur) === toDateStr(today)) cell.classList.add('today');
-
-                cell.textContent = d;
-                grid.appendChild(cell);
-            }
-
-            wrapper.appendChild(grid);
-            return wrapper;
+            if (toDateStr(cur) === toDateStr(today)) cell.classList.add('today');
+            cell.textContent = d;
+            grid.appendChild(cell);
         }
 
-        async function initCalendar() {
-            const container = document.getElementById('calendarContainer');
-            try {
-                const reservations = await loadReservations();
-                const dateSets     = buildDateSets(reservations);
+        wrapper.appendChild(grid);
+        return wrapper;
+    }
 
-                const monthsWrapper = document.createElement('div');
-                monthsWrapper.className = 'cal-months-wrapper';
+    function updateRangeLabel() {
+        const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                             'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+        const now = new Date();
+        const abs0 = now.getMonth() + calOffset * MONTHS_PER_PAGE;
+        const abs1 = abs0 + 1;
+        const y0 = now.getFullYear() + Math.floor(abs0 / 12);
+        const m0 = ((abs0 % 12) + 12) % 12;
+        const y1 = now.getFullYear() + Math.floor(abs1 / 12);
+        const m1 = ((abs1 % 12) + 12) % 12;
+        document.getElementById('calRangeLabel').textContent =
+            `${MONTH_NAMES[m0]} ${y0}  –  ${MONTH_NAMES[m1]} ${y1}`;
+    }
 
-                const now = new Date();
-                for (let i = 0; i <= MONTHS_AHEAD; i++) {
-                    const y = now.getFullYear()  + Math.floor((now.getMonth() + i) / 12);
-                    const m = (now.getMonth() + i) % 12;
-                    monthsWrapper.appendChild(renderMonth(y, m, dateSets));
-                }
+    function renderPage() {
+        const container = document.getElementById('calendarContainer');
+        container.innerHTML = '';
+        const monthsWrapper = document.createElement('div');
+        monthsWrapper.className = 'cal-months-wrapper';
 
-                container.innerHTML = '';
-                container.appendChild(monthsWrapper);
-            } catch (err) {
-                console.error("Error loading availability:", err);
-                container.innerHTML = '<div class="cal-loading">No se pudo cargar la disponibilidad. Intenta de nuevo.</div>';
-            }
+        const now = new Date();
+        for (let i = 0; i < MONTHS_PER_PAGE; i++) {
+            const abs = now.getMonth() + calOffset * MONTHS_PER_PAGE + i;
+            const y = now.getFullYear() + Math.floor(abs / 12);
+            const m = ((abs % 12) + 12) % 12;
+            monthsWrapper.appendChild(renderMonth(y, m));
         }
 
-        initCalendar();
-    </script>
+        container.appendChild(monthsWrapper);
+        updateRangeLabel();
+
+        document.getElementById('calPrevBtn').style.opacity = calOffset === 0 ? '0.3' : '1';
+        document.getElementById('calPrevBtn').style.cursor  = calOffset === 0 ? 'default' : 'pointer';
+    }
+
+    window.calNavigate = function(direction) {
+        if (direction === -1 && calOffset === 0) return;
+        calOffset += direction;
+        renderPage();
+    };
+
+    async function initCalendar() {
+        const container = document.getElementById('calendarContainer');
+        try {
+            const reservations = await loadReservations();
+            dateSets = buildDateSets(reservations);
+            renderPage();
+        } catch (err) {
+            console.error("Error loading availability:", err);
+            container.innerHTML = '<div class="cal-loading">No se pudo cargar la disponibilidad. Intenta de nuevo.</div>';
+        }
+    }
+
+    initCalendar();
+</script>    
+
 </body>
 </html>
