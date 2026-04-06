@@ -1,59 +1,52 @@
-const CACHE_NAME = 'najos-admin-v1';
+const CACHE_NAME = 'najos-admin-v2';
 const STATIC_ASSETS = [
-  '/admin-app.html',
+  '/admin.html',
   '/manifest.json'
 ];
 
-// Install - cache static assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS).catch(() => {
-        // Ignore cache errors for dynamic assets
-      });
-    })
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS).catch(() => {}))
   );
   self.skipWaiting();
 });
 
-// Activate - clean old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
-        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
-      );
-    })
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+    )
   );
   self.clients.claim();
 });
 
-// Fetch - network first, fallback to cache
 self.addEventListener('fetch', (event) => {
-  // Skip non-GET and Firebase requests
   if (event.request.method !== 'GET') return;
-  if (event.request.url.includes('firestore') || 
-      event.request.url.includes('firebase') ||
-      event.request.url.includes('gstatic')) return;
+  if (
+    event.request.url.includes('firestore') ||
+    event.request.url.includes('firebase') ||
+    event.request.url.includes('googleapis') ||
+    event.request.url.includes('gstatic') ||
+    event.request.url.includes('fonts.g')
+  ) return;
 
   event.respondWith(
-    fetch(event.request)
-      .then((response) => {
+    caches.match(event.request).then((cached) => {
+      const networkFetch = fetch(event.request).then((response) => {
         if (response.ok) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
         }
         return response;
-      })
-      .catch(() => caches.match(event.request))
+      }).catch(() => {});
+
+      return cached || networkFetch;
+    })
   );
 });
 
-// Push notifications
 self.addEventListener('push', (event) => {
   let data = { title: 'Nuevo Registro', body: 'Un huésped acaba de registrarse.', icon: '🏡' };
   try { data = event.data ? event.data.json() : data; } catch(e) {}
-  
   event.waitUntil(
     self.registration.showNotification(data.title, {
       body: data.body,
@@ -73,6 +66,6 @@ self.addEventListener('push', (event) => {
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
   if (event.action === 'view') {
-    event.waitUntil(clients.openWindow('/admin-app.html'));
+    event.waitUntil(clients.openWindow('/admin.html'));
   }
 });

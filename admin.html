@@ -12,6 +12,17 @@
   <title>Apart Hotel Najos Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <script>
+    if (localStorage.getItem('wasLoggedIn') === '1') {
+      document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('appScreen').classList.add('visible');
+      });
+    } else {
+      document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('loginScreen').style.display = 'flex';
+      });
+    }
+  </script>
   <style>
     :root {
       --bg: #0f1117;
@@ -588,8 +599,39 @@
 </head>
 <body>
 
+<!-- SPLASH -->
+<div id="splash" style="
+  position:fixed;inset:0;z-index:9999;
+  background:#0f1117;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:20px;
+  transition:opacity 0.4s ease;
+">
+  <div style="
+    width:80px;height:80px;border-radius:22px;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    display:flex;align-items:center;justify-content:center;
+    font-size:40px;
+    animation:floatLogo 3s ease-in-out infinite;
+  ">🏡</div>
+  <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:#f0f0f8;">Apart Hotel Najos</div>
+  <div style="width:40px;height:3px;border-radius:2px;background:rgba(102,126,234,0.3);overflow:hidden;">
+    <div style="
+      height:100%;background:#667eea;border-radius:2px;
+      animation:loadbar 1.8s ease-in-out infinite;
+    "></div>
+  </div>
+</div>
+<style>
+  @keyframes loadbar {
+    0%  { width:0%;  margin-left:0 }
+    50% { width:100%;margin-left:0 }
+    100%{ width:0%;  margin-left:100% }
+  }
+</style>
+
 <!-- LOGIN -->
-<div id="loginScreen" style="display:none;">
+<div id="loginScreen" style="display:flex;">
   <div class="login-logo-wrap">🏡</div>
   <div class="login-text">
     <h1>Apart Hotel Najos</h1>
@@ -620,6 +662,16 @@
       🔔<div class="notif-dot" id="notifDot"></div>
     </div>
     <div class="nav-avatar" id="navAvatar" onclick="switchTab('settings')">?</div>
+  </div>
+
+  <!-- OFFLINE BANNER -->
+  <div id="offlineBanner" style="
+    display:none; align-items:center; justify-content:center; gap:8px;
+    background:rgba(251,191,36,0.12); border-bottom:1px solid rgba(251,191,36,0.25);
+    padding:8px 16px; font-size:12px; font-weight:600; color:#fbbf24;
+    flex-shrink:0;
+  ">
+    📡 Sin conexión — mostrando datos guardados
   </div>
 
   <!-- INSTALL BANNER -->
@@ -885,6 +937,14 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
+/* ── SPLASH ── */
+function hideSplash() {
+  const s = document.getElementById('splash');
+  if (!s) return;
+  s.style.opacity = '0';
+  setTimeout(() => s.remove(), 400);
+}
+
 enableIndexedDbPersistence(db).catch(e => {
   if (e.code === 'failed-precondition') console.log('Persistence failed: multiple tabs open');
   if (e.code === 'unimplemented') console.log('Persistence not supported on this browser');
@@ -933,9 +993,11 @@ window.dismissInstall = () => {
 getRedirectResult(auth).catch(e => console.error(e));
 
 onAuthStateChanged(auth, (user) => {
+  hideSplash();
   if (user) {
     const allowed = ["orhanimre@gmail.com", "hugofda79@gmail.com", "rosahiguita4@gmail.com"];
     if (!allowed.includes(user.email)) { alert("Sin permisos."); signOut(auth); return; }
+    localStorage.setItem('wasLoggedIn', '1');
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('appScreen').classList.add('visible');
     const initials = (user.displayName || user.email).charAt(0).toUpperCase();
@@ -946,6 +1008,7 @@ onAuthStateChanged(auth, (user) => {
     checkPushStatus();
     setupRealtimeListener();
   } else {
+    localStorage.removeItem('wasLoggedIn');
     document.getElementById('loginScreen').style.display = 'flex';
     document.getElementById('appScreen').classList.remove('visible');
     if (unsubscribeSnapshot) { unsubscribeSnapshot(); unsubscribeSnapshot = null; }
@@ -1734,6 +1797,23 @@ window.showToast = function(msg, duration = 3000) {
     t.style.maxWidth = '';
   }, duration);
 };
+
+/* ── SPLASH THEME ── */
+const splash = document.getElementById('splash');
+if (splash && localStorage.getItem('theme') === 'light') {
+  splash.style.background = '#f0f2f8';
+  splash.querySelector('div:nth-child(2)').style.color = '#1a1d27';
+}
+
+/* ── OFFLINE DETECTION ── */
+function updateOnlineStatus() {
+  const banner = document.getElementById('offlineBanner');
+  if (!banner) return;
+  banner.style.display = navigator.onLine ? 'none' : 'flex';
+}
+window.addEventListener('online',  () => { updateOnlineStatus(); loadData(); showToast('🟢 Conexión restaurada — actualizando...'); });
+window.addEventListener('offline', () => { updateOnlineStatus(); showToast('📡 Sin conexión — usando datos guardados'); });
+updateOnlineStatus();
 </script>
 </body>
 </html>
