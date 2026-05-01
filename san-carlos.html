@@ -423,7 +423,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <script>
         // ── MAP INIT ──
-        const map = L.map('attractionsMap', { zoomControl: true, scrollWheelZoom: false }).setView([6.1887, -74.9975], 12);
+        const map = L.map('attractionsMap', { zoomControl: true, scrollWheelZoom: false }).setView([6.1879, -74.9949], 12);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -496,7 +496,7 @@
         }
 
         // ── APART HOTEL NAJOS (home base) ──
-        const hotelLat = 6.1887, hotelLng = -74.9921;
+        const hotelLat = 6.187913507949604, hotelLng = -74.99490206597002;
         const hotelMarker = L.marker([hotelLat, hotelLng], { icon: makeIcon('#0077BE', true, '🏨 Apart Hotel Najos'), zIndexOffset: 1000 }).addTo(map);
         hotelMarker.bindPopup(`
             <div class="map-popup">
