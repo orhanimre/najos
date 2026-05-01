@@ -212,8 +212,17 @@
         .map-section-header .category-count { margin-left: auto; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: rgba(0,0,0,0.07); color: #555; }
         .map-wrapper { border-radius: 18px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,77,115,0.15); border: 1px solid #bae6fd; }
         #attractionsMap { height: 460px; width: 100%; }
-        .map-legend { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: 16px; padding: 14px 18px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; }
-        .legend-item { display: flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 500; color: #374151; }
+        .map-legend { display: flex; flex-wrap: wrap; gap: 8px 10px; margin-top: 16px; padding: 12px 16px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .legend-item {
+            display: flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; color: #374151;
+            padding: 6px 12px; border-radius: 20px; cursor: pointer;
+            border: 1.5px solid transparent; background: #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            transition: all 0.2s ease; user-select: none;
+        }
+        .legend-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.14); transform: translateY(-1px); }
+        .legend-item.active { border-color: currentColor; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
+        .legend-item.dimmed { opacity: 0.4; }
         .legend-dot { width: 13px; height: 13px; border-radius: 50%; flex-shrink: 0; border: 2px solid rgba(0,0,0,0.12); }
         .leaflet-popup-content-wrapper { border-radius: 12px !important; box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important; padding: 0 !important; overflow: hidden; }
         .leaflet-popup-content { margin: 0 !important; min-width: 210px; }
@@ -291,14 +300,15 @@
                     <div id="attractionsMap"></div>
                 </div>
                 <div class="map-legend">
-                    <div class="legend-item"><div class="legend-dot" style="background:#0EA5E9"></div> Charcos</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#6366F1"></div> Cascadas</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#16A34A"></div> Senderos</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#0D9488"></div> Reservas Naturales</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#F59E0B"></div> Centros Recreativos</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#DC2626"></div> Tours y Aventura</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#EC4899"></div> Urbano y Cultural</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#0077BE; border: 2px solid #FFD700;"></div> Apart Hotel Najos</div>
+                    <div class="legend-item" id="legend-todos" onclick="filterMap('Todos')" style="color:#555"><span style="font-size:13px;">🗺️</span> Todos</div>
+                    <div class="legend-item" id="legend-Hotel" onclick="filterMap('Hotel')" style="color:#0077BE"><div class="legend-dot" style="background:#0077BE; border-color:#FFD700;"></div> Apart Hotel Najos</div>
+                    <div class="legend-item" id="legend-Charco" onclick="filterMap('Charco')" style="color:#0EA5E9"><div class="legend-dot" style="background:#0EA5E9"></div> Charcos</div>
+                    <div class="legend-item" id="legend-Cascada" onclick="filterMap('Cascada')" style="color:#6366F1"><div class="legend-dot" style="background:#6366F1"></div> Cascadas</div>
+                    <div class="legend-item" id="legend-Senderismo" onclick="filterMap('Senderismo')" style="color:#16A34A"><div class="legend-dot" style="background:#16A34A"></div> Senderos</div>
+                    <div class="legend-item" id="legend-Ecoturismo" onclick="filterMap('Ecoturismo')" style="color:#0D9488"><div class="legend-dot" style="background:#0D9488"></div> Reservas Naturales</div>
+                    <div class="legend-item" id="legend-Recreativo" onclick="filterMap('Centro Recreativo')" style="color:#F59E0B"><div class="legend-dot" style="background:#F59E0B"></div> Centros Recreativos</div>
+                    <div class="legend-item" id="legend-Aventura" onclick="filterMap('Tours & Aventura')" style="color:#DC2626"><div class="legend-dot" style="background:#DC2626"></div> Tours y Aventura</div>
+                    <div class="legend-item" id="legend-Urbano" onclick="filterMap('Urbano')" style="color:#EC4899"><div class="legend-dot" style="background:#EC4899"></div> Urbano y Cultural</div>
                 </div>
             </div>
 
@@ -458,6 +468,8 @@
             return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&destination_place_id=${encodeURIComponent(name)}`;
         }
 
+        const markersByCategory = {};
+
         function addMarker(lat, lng, name, cat, rating, photo) {
             const color = catColors[cat] || '#888';
             const marker = L.marker([lat, lng], { icon: makeIcon(color, false, name) }).addTo(map);
@@ -478,6 +490,8 @@
                         </a>
                     </div>
                 </div>`, { maxWidth: 260 });
+            if (!markersByCategory[cat]) markersByCategory[cat] = [];
+            markersByCategory[cat].push(marker);
             return marker;
         }
 
@@ -532,6 +546,47 @@
 
         // ── URBANO ──
         addMarker(6.188888, -74.992072, 'Parque Principal San Carlos', 'Urbano', '4.7', 'https://i.imgur.com/Xp0KOH5h.jpg');
+
+        let activeFilter = 'Todos';
+        const legendIds = {
+            'Todos':             'legend-todos',
+            'Hotel':             'legend-Hotel',
+            'Charco':            'legend-Charco',
+            'Cascada':           'legend-Cascada',
+            'Senderismo':        'legend-Senderismo',
+            'Ecoturismo':        'legend-Ecoturismo',
+            'Centro Recreativo': 'legend-Recreativo',
+            'Tours & Aventura':  'legend-Aventura',
+            'Urbano':            'legend-Urbano'
+        };
+
+        function filterMap(cat) {
+            if (activeFilter === cat) { cat = 'Todos'; }
+            activeFilter = cat;
+
+            Object.entries(markersByCategory).forEach(([c, markers]) => {
+                markers.forEach(m => {
+                    if (cat === 'Todos' || c === cat) m.addTo(map);
+                    else map.removeLayer(m);
+                });
+            });
+            if (cat === 'Hotel') {
+                hotelMarker.addTo(map);
+            } else if (cat !== 'Todos') {
+                map.removeLayer(hotelMarker);
+            } else {
+                hotelMarker.addTo(map);
+            }
+
+            Object.entries(legendIds).forEach(([c, id]) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.classList.toggle('active', c === cat);
+                el.classList.toggle('dimmed', cat !== 'Todos' && c !== cat);
+            });
+        }
+
+        document.getElementById('legend-todos').classList.add('active');
     </script>
 
     <script>
