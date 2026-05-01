@@ -301,7 +301,7 @@
                 </div>
                 <div class="map-legend">
                     <div class="legend-item" id="legend-todos" onclick="filterMap('Todos')" style="color:#555"><span style="font-size:13px;">🗺️</span> Todos</div>
-                    <div class="legend-item" id="legend-Hotel" onclick="filterMap('Hotel')" style="color:#0077BE"><div class="legend-dot" style="background:#0077BE; border-color:#FFD700;"></div> Apart Hotel Najos</div>
+                    <div class="legend-item" id="legend-Hotel" onclick="filterMap('Hotel')" style="color:#92400E"><svg width="13" height="13" viewBox="0 0 24 24" fill="#D97706" stroke="#92400E" stroke-width="1.2"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg> Apart Hotel Najos</div>
                     <div class="legend-item" id="legend-Charco" onclick="filterMap('Charco')" style="color:#0EA5E9"><div class="legend-dot" style="background:#0EA5E9"></div> Charcos</div>
                     <div class="legend-item" id="legend-Cascada" onclick="filterMap('Cascada')" style="color:#6366F1"><div class="legend-dot" style="background:#6366F1"></div> Cascadas</div>
                     <div class="legend-item" id="legend-Senderismo" onclick="filterMap('Senderismo')" style="color:#16A34A"><div class="legend-dot" style="background:#16A34A"></div> Senderos</div>
@@ -497,7 +497,15 @@
 
         // ── APART HOTEL NAJOS (home base) ──
         const hotelLat = 6.187913507949604, hotelLng = -74.99490206597002;
-        const hotelMarker = L.marker([hotelLat, hotelLng], { icon: makeIcon('#0077BE', true, '🏨 Apart Hotel Najos'), zIndexOffset: 1000 }).addTo(map);
+        const hotelIcon = L.divIcon({
+            className: '',
+            html: `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="#D97706" stroke="#92400E" stroke-width="1.2" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4));"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+                <div style="font-size:11px;font-weight:700;color:#92400E;background:rgba(255,255,255,0.97);border:1.5px solid #D97706;padding:1px 5px;border-radius:4px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,0.12);line-height:1.4;font-family:'Poppins',sans-serif;">Apart Hotel Najos</div>
+            </div>`,
+            iconSize: [0, 0], iconAnchor: [0, 0], popupAnchor: [0, -32]
+        });
+        const hotelMarker = L.marker([hotelLat, hotelLng], { icon: hotelIcon, zIndexOffset: 1000 }).addTo(map);
         hotelMarker.bindPopup(`
             <div class="map-popup">
                 <div class="map-popup-cat" style="color:#0077BE">🏨 Tu Alojamiento</div>
