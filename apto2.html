@@ -431,49 +431,6 @@
             .header.scrolled .nav-menu { margin-bottom: 4px; }
             .header.scrolled .header-title h1 { font-size: 15px; }
         }
-
-        /* ── ROOM SELECTION ── */
-        .rooms-intro { text-align: center; margin-bottom: 32px; }
-        .rooms-intro h2 { color: var(--ocean-dark); font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; }
-        .rooms-intro p { color: #6B7280; font-size: 14px; font-weight: 400; line-height: 1.6; }
-
-        .rooms-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 40px; }
-
-        .room-card {
-            background: white; border-radius: 20px;
-            box-shadow: 0 4px 16px rgba(0,77,115,0.10);
-            overflow: hidden; transition: transform 0.25s ease, box-shadow 0.25s ease;
-            border: 1.5px solid #e5e7eb;
-        }
-        .room-card:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(0,77,115,0.18); }
-
-        .room-card-img { position: relative; width: 100%; height: 180px; overflow: hidden; cursor: pointer; }
-        .room-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
-        .room-card:hover .room-card-img img { transform: scale(1.07); }
-
-        .room-card-body { padding: 20px; }
-        .room-card-title { font-size: 1rem; font-weight: 700; color: var(--ocean-dark); margin-bottom: 6px; }
-        .room-card-desc { font-size: 13px; color: #6B7280; line-height: 1.5; margin-bottom: 16px; }
-        .room-card-features { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
-        .room-feature { background: #f0f7ff; color: var(--ocean-dark); font-size: 11px; font-weight: 600;
-                        padding: 4px 10px; border-radius: 20px; }
-        .room-book-btn {
-            display: block; width: 100%; text-align: center;
-            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
-            color: white; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 14px;
-            padding: 12px; border-radius: 12px; text-decoration: none;
-            transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(0,119,190,0.3);
-        }
-        .room-book-btn:hover { box-shadow: 0 6px 20px rgba(0,119,190,0.45); transform: translateY(-1px); }
-
-        .shared-note {
-            background: #f0f9ff; border: 1px solid #bae6fd;
-            border-radius: 14px; padding: 18px 20px;
-            display: flex; gap: 12px; align-items: flex-start;
-            margin-bottom: 32px; font-size: 13px; color: #0369a1; line-height: 1.6;
-        }
-        .shared-note-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
-
     </style>
 </head>
 <body>
@@ -494,73 +451,23 @@
             </div>
             <div class="header-title">
                 <h1>Najos-2</h1>
-                <p class="header-subtitle">Segundo Piso · Elige tu habitación</p>
+                <p class="header-subtitle">Apartamento completo en San Carlos</p>
             </div>
         </div>
 
         <div class="content" id="mainContent">
 
-            <div class="rooms-intro">
-                <h2>🛏️ Elige tu Habitación</h2>
-                <p>El Segundo Piso cuenta con 3 habitaciones privadas para parejas.<br>
-                Cocina, baño, sala y lavadero son espacios compartidos del piso.</p>
-            </div>
-
-            <div class="shared-note">
-                <span class="shared-note-icon">ℹ️</span>
-                <span><strong>Espacios compartidos:</strong> Cocina, baños, sala y lavadero son de uso común entre los huéspedes del Segundo Piso. Cada habitación es privada y cuenta con cerradura.</span>
-            </div>
-
-            <div class="rooms-grid">
-
-                <div class="room-card">
-                    <div class="room-card-img" onclick="openModal('https://imgur.com/Bvh5FzZ.jpg')">
-                        <img src="https://imgur.com/Bvh5FzZ.jpg" alt="Habitación 1">
-                    </div>
-                    <div class="room-card-body">
-                        <div class="room-card-title">🛏️ Habitación 1</div>
-                        <div class="room-card-desc">Habitación doble privada con cama matrimonial, ventilación natural y vista al patio.</div>
-                        <div class="room-card-features">
-                            <span class="room-feature">👫 Para parejas</span>
-                            <span class="room-feature">🔒 Privada</span>
-                            <span class="room-feature">🛏️ Cama doble</span>
-                        </div>
-                        <a href="registro-apto2-hab1.html" class="room-book-btn">Reservar Habitación 1 →</a>
-                    </div>
-                </div>
-
-                <div class="room-card">
-                    <div class="room-card-img" onclick="openModal('https://imgur.com/982HPnN.jpg')">
-                        <img src="https://imgur.com/982HPnN.jpg" alt="Habitación 2">
-                    </div>
-                    <div class="room-card-body">
-                        <div class="room-card-title">🛏️ Habitación 2</div>
-                        <div class="room-card-desc">Habitación doble privada con cama matrimonial, buena iluminación y ambiente acogedor.</div>
-                        <div class="room-card-features">
-                            <span class="room-feature">👫 Para parejas</span>
-                            <span class="room-feature">🔒 Privada</span>
-                            <span class="room-feature">🛏️ Cama doble</span>
-                        </div>
-                        <a href="registro-apto2-hab2.html" class="room-book-btn">Reservar Habitación 2 →</a>
-                    </div>
-                </div>
-
-                <div class="room-card">
-                    <div class="room-card-img" onclick="openModal('https://imgur.com/gizm1jq.jpg')">
-                        <img src="https://imgur.com/gizm1jq.jpg" alt="Habitación 3">
-                    </div>
-                    <div class="room-card-body">
-                        <div class="room-card-title">🛏️ Habitación 3</div>
-                        <div class="room-card-desc">Habitación doble privada con cama matrimonial, tranquila y con acceso fácil a los espacios comunes.</div>
-                        <div class="room-card-features">
-                            <span class="room-feature">👫 Para parejas</span>
-                            <span class="room-feature">🔒 Privada</span>
-                            <span class="room-feature">🛏️ Cama doble</span>
-                        </div>
-                        <a href="registro-apto2-hab3.html" class="room-book-btn">Reservar Habitación 3 →</a>
-                    </div>
-                </div>
-
+            <div class="gallery">
+                <img src="https://imgur.com/Bvh5FzZ.jpg" alt="Cuarto-1" onclick="openModal(this.src)">
+                <img src="https://imgur.com/982HPnN.jpg" alt="Cuarto-2" onclick="openModal(this.src)">
+                <img src="https://imgur.com/gizm1jq.jpg" alt="Cuarto-3" onclick="openModal(this.src)">
+                <img src="https://imgur.com/tu0v7A0.jpg" alt="Baño-1" onclick="openModal(this.src)">
+                <img src="https://imgur.com/EzOgdgF.jpg" alt="Baño-2" onclick="openModal(this.src)">
+                <img src="https://imgur.com/7QPhDCw.jpg" alt="Casa General" onclick="openModal(this.src)">
+                <img src="https://imgur.com/JKS1XhW.jpg" alt="Cocina-1" onclick="openModal(this.src)">
+                <img src="https://imgur.com/EaAdaYq.jpg" alt="Cocina-2" onclick="openModal(this.src)">
+                <img src="https://imgur.com/Ph8nxx2.jpg" alt="Lavadero" onclick="openModal(this.src)">
+                <img src="https://imgur.com/fGr4n3i.jpg" alt="Sala" onclick="openModal(this.src)">
             </div>
 
             <div class="section">
@@ -573,6 +480,76 @@
                     <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                     Abrir en Google Maps
                 </button>
+            </div>
+
+            <!-- ── AVAILABILITY CALENDAR ── -->
+            <div class="section" id="availabilitySection">
+    <h2>📅 Disponibilidad — Apto 2</h2>
+    <p style="color:#6B7280; font-size:13px; margin-bottom:20px; font-weight:400;">
+        Consulta las fechas disponibles para tu estadía
+    </p>
+
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+        <button id="calPrevBtn" onclick="calNavigate(-1)"
+            style="width:40px;height:40px;border-radius:50%;border:1.5px solid #d1d5eb;background:white;
+                   font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+                   transition:all 0.2s;color:#374151;"
+            onmouseover="this.style.background='#f3f4f6';this.style.borderColor='#9ca3af'"
+            onmouseout="this.style.background='white';this.style.borderColor='#d1d5eb'">
+            ‹
+        </button>
+        <span id="calRangeLabel" style="font-size:13px;font-weight:600;color:#6B7280;"></span>
+        <button id="calNextBtn" onclick="calNavigate(1)"
+            style="width:40px;height:40px;border-radius:50%;border:1.5px solid #d1d5eb;background:white;
+                   font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+                   transition:all 0.2s;color:#374151;"
+            onmouseover="this.style.background='#f3f4f6';this.style.borderColor='#9ca3af'"
+            onmouseout="this.style.background='white';this.style.borderColor='#d1d5eb'">
+            ›
+        </button>
+    </div>
+
+    <div id="calendarContainer">
+        <div class="cal-loading">Cargando disponibilidad…</div>
+    </div>
+
+    <div class="cal-legend">
+        <div class="cal-legend-item">
+            <div class="cal-legend-dot" style="background:white; border:1px solid #e5e7eb;"></div>
+            Disponible
+        </div>
+        <div class="cal-legend-item">
+            <div class="cal-legend-dot" style="background:#fecaca;"></div>
+            Reservado
+        </div>
+        <div class="cal-legend-item">
+            <div class="cal-legend-dot" style="background:linear-gradient(90deg, white 50%, #fecaca 50%); border:1px solid #e5e7eb;"></div>
+            Día de entrada
+        </div>
+        <div class="cal-legend-item">
+            <div class="cal-legend-dot" style="background:linear-gradient(90deg, #fecaca 50%, white 50%); border:1px solid #e5e7eb;"></div>
+            Día de salida
+        </div>
+    </div>
+</div>
+
+            <div class="section" style="display: none;">
+                <h2>🌐 Reserva en línea</h2>
+                <p class="contact-subtitle">¡Haz click para reservar tus vacaciones ahora mismo!</p>
+                <div class="platform-cards">
+                    <a href="https://www.booking.com/hotel/co/casa-selva-san-carlos.en-gb.html" class="platform-card" target="_blank" rel="noopener">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 60" class="platform-logo logo-booking" style="display:block;margin:0 auto;" aria-label="Booking.com">
+                            <text x="220" y="46" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="40" font-weight="900">
+                                <tspan fill="#003580">Booking</tspan><tspan fill="#0071C2">.com</tspan>
+                            </text>
+                        </svg>
+                        <span class="platform-cta">Reservar ahora →</span>
+                    </a>
+                    <a href="https://www.airbnb.com" class="platform-card" target="_blank" rel="noopener">
+                        <img src="https://i.imgur.com/5vFuTC4.jpg" alt="Airbnb" class="platform-logo logo-airbnb">
+                        <span class="platform-cta">Reservar ahora →</span>
+                    </a>
+                </div>
             </div>
 
             <div class="contact-section">
@@ -700,7 +677,185 @@
             const dx = e.changedTouches[0].clientX - _tx;
             if (Math.abs(dx) > 40) slideModal(dx < 0 ? 1 : -1);
         });
-    </script>    
+    </script>
+
+    <!-- ── FIREBASE AVAILABILITY CALENDAR ── -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBGno4JfubhTO-deCJtP9ozXD_pdPrhmh8",
+        authDomain: "aptos-najos.firebaseapp.com",
+        projectId: "aptos-najos",
+        storageBucket: "aptos-najos.firebasestorage.app",
+        messagingSenderId: "773909398953",
+        appId: "1:773909398953:web:157467cae451bf125ff0b8"
+    };
+
+    const CABIN = "Apto Najos-2";
+    const MONTHS_PER_PAGE = 2;
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
+
+    let calOffset = 0;
+    let dateSets  = null;
+
+    function toDateStr(d) {
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    }
+
+    async function loadReservations() {
+        const snap = await getDocs(query(collection(db, "cabin_availability"), where("apto", "==", CABIN)));
+        const reservations = [];
+        snap.forEach(doc => {
+            const d = doc.data();
+            if (d.fechaInicio && d.fechaFin)
+                reservations.push({ start: d.fechaInicio, end: d.fechaFin });
+        });
+        return reservations;
+    }
+
+    function buildDateSets(reservations) {
+        const allCheckins  = new Set(reservations.map(r => r.start));
+        const allCheckouts = new Set(reservations.map(r => r.end));
+        const mid = new Set(), checkin = new Set(), checkout = new Set(), shared = new Set();
+
+        reservations.forEach(({ start, end }) => {
+            const s = new Date(start + "T00:00:00");
+            const e = new Date(end   + "T00:00:00");
+
+            if (allCheckouts.has(start)) shared.add(start);
+            else checkin.add(start);
+
+            const cur = new Date(s);
+            cur.setDate(cur.getDate() + 1);
+            while (cur < e) { mid.add(toDateStr(cur)); cur.setDate(cur.getDate() + 1); }
+
+            if (allCheckins.has(end)) shared.add(end);
+            else checkout.add(end);
+        });
+
+        return { mid, checkin, checkout, shared };
+    }
+
+    function renderMonth(year, month) {
+        const today = new Date(); today.setHours(0, 0, 0, 0);
+        const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                             'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'cal-month';
+
+        const header = document.createElement('div');
+        header.className = 'cal-month-header';
+        header.textContent = `${MONTH_NAMES[month]} ${year}`;
+        wrapper.appendChild(header);
+
+        const grid = document.createElement('div');
+        grid.className = 'cal-grid';
+
+        ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].forEach(d => {
+            const h = document.createElement('div');
+            h.className = 'cal-dow'; h.textContent = d; grid.appendChild(h);
+        });
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const offset   = firstDay === 0 ? 6 : firstDay - 1;
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        for (let i = 0; i < offset; i++) {
+            const blank = document.createElement('div');
+            blank.className = 'cal-day other-month'; grid.appendChild(blank);
+        }
+
+        for (let d = 1; d <= daysInMonth; d++) {
+            const cell    = document.createElement('div');
+            cell.className = 'cal-day';
+            const cur     = new Date(year, month, d);
+            const dateStr = toDateStr(cur);
+
+            if (cur < today) {
+                cell.classList.add('past');
+            } else if (dateSets.shared.has(dateStr)) {
+                cell.classList.add('booked-shared');
+            } else if (dateSets.mid.has(dateStr)) {
+                cell.classList.add('booked-mid');
+            } else if (dateSets.checkin.has(dateStr)) {
+                cell.classList.add('booked-checkin');
+            } else if (dateSets.checkout.has(dateStr)) {
+                cell.classList.add('booked-checkout');
+            }
+
+            if (toDateStr(cur) === toDateStr(today)) cell.classList.add('today');
+            cell.textContent = d;
+            grid.appendChild(cell);
+        }
+
+        wrapper.appendChild(grid);
+        return wrapper;
+    }
+
+    function updateRangeLabel() {
+        const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                             'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+        const now = new Date();
+        const abs0 = now.getMonth() + calOffset * MONTHS_PER_PAGE;
+        const abs1 = abs0 + 1;
+        const y0 = now.getFullYear() + Math.floor(abs0 / 12);
+        const m0 = ((abs0 % 12) + 12) % 12;
+        const y1 = now.getFullYear() + Math.floor(abs1 / 12);
+        const m1 = ((abs1 % 12) + 12) % 12;
+        document.getElementById('calRangeLabel').textContent =
+            `${MONTH_NAMES[m0]} ${y0}  –  ${MONTH_NAMES[m1]} ${y1}`;
+    }
+
+    function renderPage() {
+        const container = document.getElementById('calendarContainer');
+        container.innerHTML = '';
+        const monthsWrapper = document.createElement('div');
+        monthsWrapper.className = 'cal-months-wrapper';
+
+        const now = new Date();
+        for (let i = 0; i < MONTHS_PER_PAGE; i++) {
+            const abs = now.getMonth() + calOffset * MONTHS_PER_PAGE + i;
+            const y = now.getFullYear() + Math.floor(abs / 12);
+            const m = ((abs % 12) + 12) % 12;
+            monthsWrapper.appendChild(renderMonth(y, m));
+        }
+
+        container.appendChild(monthsWrapper);
+        updateRangeLabel();
+
+        document.getElementById('calPrevBtn').style.opacity = calOffset === 0 ? '0.3' : '1';
+        document.getElementById('calPrevBtn').style.cursor  = calOffset === 0 ? 'default' : 'pointer';
+        document.getElementById('calNextBtn').style.opacity = calOffset >= 2 ? '0.3' : '1';
+        document.getElementById('calNextBtn').style.cursor  = calOffset >= 2 ? 'default' : 'pointer';
+    }
+
+    window.calNavigate = function(direction) {
+        const maxOffset = 2; // 3 pages total: 0, 1, 2 (showing 6 months max)
+        if (direction === -1 && calOffset === 0) return;
+        if (direction === 1 && calOffset >= maxOffset) return;
+        calOffset += direction;
+        renderPage();
+    };
+
+    async function initCalendar() {
+        const container = document.getElementById('calendarContainer');
+        try {
+            const reservations = await loadReservations();
+            dateSets = buildDateSets(reservations);
+            renderPage();
+        } catch (err) {
+            console.error("Error loading availability:", err);
+            container.innerHTML = '<div class="cal-loading">No se pudo cargar la disponibilidad. Intenta de nuevo.</div>';
+        }
+    }
+
+    initCalendar();
+</script>    
 
 </body>
 </html>
