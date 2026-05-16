@@ -74,33 +74,6 @@
 
         .logo-link:hover { opacity: 0.9; }
 
-        .logo-home-badge {
-            position: absolute;
-            top: -8px; right: -8px;
-            width: 26px; height: 26px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.25), 0 0 0 2px rgba(0,119,190,0.35);
-            pointer-events: none;
-            transition: box-shadow 0.25s ease;
-        }
-
-        .logo-home-badge svg {
-            width: 13px; height: 13px;
-            stroke: var(--ocean-dark); fill: none;
-            stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
-        }
-
-        .logo-link:hover .logo-home-badge {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 0 2px var(--ocean-light);
-        }
-
-        @media (max-width: 768px) {
-            .logo-home-badge { width: 20px; height: 20px; top: -6px; right: -6px; }
-            .logo-home-badge svg { width: 10px; height: 10px; }
-        }
-
         .logo {
             max-width: 120px; width: 100%; height: auto;
             display: block; border-radius: 16px;
@@ -433,6 +406,31 @@
             .contact-card { flex-direction: row; padding: 18px 20px; gap: 16px; }
             .contact-card-text { text-align: left; }
         }
+    
+        /* ── SHRINKING HEADER ON SCROLL ── */
+        .header { transition: padding 0.3s ease, box-shadow 0.3s ease; }
+        .header.scrolled { padding: 6px 40px; box-shadow: 0 2px 12px rgba(0,119,190,0.4); }
+        .header-content { transition: min-height 0.3s ease; }
+        .header.scrolled .header-content { min-height: 40px; }
+        .logo { transition: max-width 0.3s ease; }
+        .header.scrolled .logo { max-width: 50px; }
+        .header-title { transition: padding 0.3s ease; }
+        .header.scrolled .header-title { padding: 0; }
+        .header-title h1 { transition: font-size 0.3s ease, margin-bottom 0.3s ease; }
+        .header.scrolled .header-title h1 { font-size: 18px; margin-bottom: 0; }
+        .header-subtitle {
+            max-height: 30px; overflow: hidden;
+            transition: opacity 0.3s ease, max-height 0.3s ease;
+        }
+        .header.scrolled .header-subtitle { opacity: 0; max-height: 0; }
+        .nav-menu { transition: margin-bottom 0.3s ease; }
+        .header.scrolled .nav-menu { margin-bottom: 6px; }
+        @media (max-width: 768px) {
+            .header.scrolled { padding: 4px 16px; }
+            .header.scrolled .logo { max-width: 40px; }
+            .header.scrolled .nav-menu { margin-bottom: 4px; }
+            .header.scrolled .header-title h1 { font-size: 15px; }
+        }
     </style>
 </head>
 <body>
@@ -442,9 +440,6 @@
                 <div class="header-left">
                     <a href="/" class="logo-link" aria-label="Ir al inicio">
                         <img src="https://i.imgur.com/L8KoquC.jpg" alt="Logo Apart Hotel Najos" class="logo">
-                        <span class="logo-home-badge">
-                            <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9.5z"/><polyline points="9 21 9 12 15 12 15 21"/></svg>
-                        </span>
                     </a>
                 </div>
                 <div class="header-right">
@@ -604,15 +599,38 @@
     </div>
 
     <script>
+        // ── SHRINKING HEADER ──
+        const siteHeader = document.getElementById('siteHeader');
+        let isShrunk = false, rafId = null;
+
         function adjustContentPadding() {
-            const header = document.getElementById('siteHeader');
             const content = document.getElementById('mainContent');
-            if (header && content) {
-                content.style.paddingTop = (header.getBoundingClientRect().height + 32) + 'px';
+            if (siteHeader && content) {
+                content.style.paddingTop = (siteHeader.getBoundingClientRect().height + 32) + 'px';
             }
         }
+
+        function trackDuringTransition() {
+            if (rafId) cancelAnimationFrame(rafId);
+            const start = performance.now();
+            function tick(now) {
+                adjustContentPadding();
+                if (now - start < 350) rafId = requestAnimationFrame(tick);
+                else rafId = null;
+            }
+            rafId = requestAnimationFrame(tick);
+        }
+
         window.addEventListener('load', adjustContentPadding);
         window.addEventListener('resize', adjustContentPadding);
+
+        window.addEventListener('scroll', () => {
+            const shrink = window.scrollY > 60;
+            if (shrink === isShrunk) return;
+            isShrunk = shrink;
+            siteHeader.classList.toggle('scrolled', shrink);
+            trackDuringTransition();
+        }, { passive: true });
 
         // ── LIGHTBOX SLIDER ──
         let _imgs = [], _idx = 0;
