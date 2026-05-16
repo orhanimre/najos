@@ -434,7 +434,7 @@ html, body { overscroll-behavior: none; }
             <div class="cabanas-grid">
                 <div class="cabana-card">
                     <div class="cabana-image-wrapper">
-                        <img src="https://imgur.com/dVlUrNm.jpg" alt="Apto Najos-2" class="cabana-image">
+                        <img src="https://imgur.com/Bvh5FzZ.jpg" alt="Apto Najos-2" class="cabana-image">
                     </div>
                     <div class="cabana-content">
                         <h3>Najos-2</h3>
@@ -454,7 +454,7 @@ html, body { overscroll-behavior: none; }
 
                 <div class="cabana-card">
                     <div class="cabana-image-wrapper">
-                        <img src="https://imgur.com/21Ay90Q.jpg" alt="Apto Najos-3" class="cabana-image">
+                        <img src="https://imgur.com/rR8w3I0.jpg" alt="Apto Najos-3" class="cabana-image">
                     </div>
                     <div class="cabana-content">
                         <h3>Najos-3</h3>
@@ -474,7 +474,7 @@ html, body { overscroll-behavior: none; }
 
                 <div class="cabana-card">
                     <div class="cabana-image-wrapper">
-                        <img src="https://imgur.com/QLnvbcu.jpg" alt="Apto Najos-4" class="cabana-image">
+                        <img src="https://imgur.com/YKfbIGO.jpg" alt="Apto Najos-4" class="cabana-image">
                     </div>
                     <div class="cabana-content">
                         <h3>Najos-4</h3>
@@ -540,6 +540,11 @@ window.addEventListener('scroll', () => {
 
         function showInfo(aptoNumber) {
             window.location.href = `apto${aptoNumber + 1}.html`;
+        }
+
+        // Register service worker for offline + instant load
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
         }
     </script>
 </body>
