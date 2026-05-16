@@ -690,9 +690,16 @@
         <div class="stat-pill-label" style="font-weight:700;font-size:11px;font-family:'Roboto Mono',monospace;font-style:italic;">Total</div>
       </div>
       <div style="width:1px;background:var(--muted);margin:8px 0;border-radius:1px;opacity:0.8;"></div>
-      <div class="stat-pill c1" id="statC1" onclick="filterByApto('Apto Najos-2')">
-        <div class="stat-pill-num" id="numC1">-</div>
-        <div class="stat-pill-label">Apto 2</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+        <div class="stat-pill c1" id="statC1" onclick="filterByApto('Apto Najos-2')">
+          <div class="stat-pill-num" id="numC1">-</div>
+          <div class="stat-pill-label">Apto 2</div>
+        </div>
+        <div class="sub-pills" id="subPillsApto2">
+          <div class="sub-pill" id="subHab1" onclick="filterByApto('Apto Najos-2 Hab 1')">Hab 1</div>
+          <div class="sub-pill" id="subHab2" onclick="filterByApto('Apto Najos-2 Hab 2')">Hab 2</div>
+          <div class="sub-pill" id="subHab3" onclick="filterByApto('Apto Najos-2 Hab 3')">Hab 3</div>
+        </div>
       </div>
       <div class="stat-pill c2" id="statC2" onclick="filterByApto('Apto Najos-3')">
         <div class="stat-pill-num" id="numC2">-</div>
@@ -839,7 +846,10 @@
       <div class="edit-group">
         <label class="edit-label">Apto</label>
         <select id="edc_apto" class="edit-input">
-          <option value="Apto Najos-2">Apto 2</option>
+          <option value="Apto Najos-2">Apto 2 (completo)</option>
+          <option value="Apto Najos-2 Hab 1">Apto 2 · Hab 1</option>
+          <option value="Apto Najos-2 Hab 2">Apto 2 · Hab 2</option>
+          <option value="Apto Najos-2 Hab 3">Apto 2 · Hab 3</option>
           <option value="Apto Najos-3">Apto 3</option>
           <option value="Apto Najos-4">Apto 4</option>
         </select>
@@ -1091,7 +1101,7 @@ function updateStats() {
   });
 
   document.getElementById('numAll').textContent = src.length;
-  document.getElementById('numC1').textContent = src.filter(r => r.apto === 'Apto Najos-2').length;
+  document.getElementById('numC1').textContent = src.filter(r => r.apto && r.apto.startsWith('Apto Najos-2')).length;
   document.getElementById('numC2').textContent = src.filter(r => r.apto === 'Apto Najos-3').length;
   document.getElementById('numC3').textContent = src.filter(r => r.apto === 'Apto Najos-4').length;
 }
@@ -1115,7 +1125,22 @@ function updateCalCounts() {
 window.filterByApto = function(apto) {
   aptoFilter = apto;
   document.querySelectorAll('.stat-pill').forEach(p => p.classList.remove('active'));
-  const map = {'':'statAll','Apto Najos-2':'statC1','Apto Najos-3':'statC2','Apto Najos-4':'statC3'};
+  const map = {
+    '':'statAll',
+    'Apto Najos-2':'statC1','Apto Najos-2 Hab 1':'statC1','Apto Najos-2 Hab 2':'statC1','Apto Najos-2 Hab 3':'statC1',
+    'Apto Najos-3':'statC2','Apto Najos-4':'statC3'
+  };
+  // Show sub-pills when Apto 2 family selected
+  const subPills = document.getElementById('subPillsApto2');
+  const isApto2Family = filter === 'Apto Najos-2' || filter.startsWith('Apto Najos-2 Hab');
+  if (subPills) subPills.classList.toggle('show', isApto2Family);
+  // Update sub-pill active state
+  ['subHab1','subHab2','subHab3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const habMap = {'subHab1':'Apto Najos-2 Hab 1','subHab2':'Apto Najos-2 Hab 2','subHab3':'Apto Najos-2 Hab 3'};
+    el.classList.toggle('active', filter === habMap[id]);
+  });
   document.getElementById(map[apto] || 'statAll').classList.add('active');
   updateStats(); renderList();
 };
