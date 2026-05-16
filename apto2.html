@@ -1,436 +1,267 @@
 <!DOCTYPE html>
-<!-- Najos-2 v2 -->
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Najos-2 - Apart Hotel Najos</title>
+    <title>San Carlos - Apart Hotel Najos</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { overscroll-behavior: none; }
         :root {
-            --ocean: #0077BE;
-            --ocean-dark: #005A8D;
-            --ocean-light: #4DA8DA;
-            --white: #FFFFFF;
-            --sand: #F4E8D8;
-            --cream: #FFF9F0;
-            --shadow: rgba(0, 77, 115, 0.15);
-            --whatsapp: #25D366;
-            --whatsapp-dark: #1aab52;
-            --phone: #0077BE;
-            --phone-dark: #005A8D;
-        }
+            --ocean: #0077BE; --ocean-dark: #005A8D; --ocean-light: #4DA8DA;
+            --sand: #F4E8D8; --sunset: #FF6B35; --white: #FFFFFF; --shadow: rgba(0,77,115,0.15);
+            --charco: #0EA5E9; --cascada: #6366F1; --sendero: #16A34A;
+            --reserva: #0D9488; --recreativo: #F59E0B; --urbano: #EC4899; --aventura: #DC2626;
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-light) 100%);
+            --card-bg-charco:     #E0F7FA;
+            --card-bg-cascada:    #EDE7F6;
+            --card-bg-sendero:    #E8F5E9;
+            --card-bg-reserva:    #E0F2F1;
+            --card-bg-recreativo: #FFF3E0;
+            --card-bg-aventura:   #FCE4EC;
+            --card-bg-urbano:     #FFFDE7;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: var(--white);
-            min-height: 100vh;
-        }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-light) 100%); min-height: 100vh; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; background: var(--white); min-height: 100vh; box-shadow: 0 20px 60px var(--shadow); }
 
         /* ── HEADER ── */
-        .header {
-            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
-            color: var(--white);
-            padding: 12px 40px;
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 16px rgba(0, 119, 190, 0.3);
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-            min-height: 60px;
-        }
-
+        .header { background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%); color: var(--white); padding: 12px 40px; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; box-shadow: 0 4px 16px rgba(0,119,190,0.3); transition: padding 0.3s ease, box-shadow 0.3s ease; }
+        .header.scrolled { padding: 6px 40px; box-shadow: 0 2px 12px rgba(0,119,190,0.4); }
+        .header-content { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; min-height: 60px; transition: min-height 0.3s ease; }
+        .header.scrolled .header-content { min-height: 40px; }
         .header-left { flex-shrink: 0; }
         .header-right { flex-shrink: 0; }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50%       { transform: translateY(-8px); }
-        }
-
-        .logo-link {
-            display: inline-block;
-            text-decoration: none;
-            position: relative;
-            animation: float 3s ease-in-out infinite;
-            transition: opacity 0.3s ease;
-        }
-
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .logo-link { display: inline-block; text-decoration: none; position: relative; animation: float 3s ease-in-out infinite; transition: opacity 0.3s ease; }
         .logo-link:hover { opacity: 0.9; }
+        .logo-home-badge { position: absolute; top: -8px; right: -8px; width: 26px; height: 26px; background: rgba(255,255,255,0.95); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.25), 0 0 0 2px rgba(0,119,190,0.35); pointer-events: none; transition: box-shadow 0.25s ease; }
+        .logo-home-badge svg { width: 13px; height: 13px; stroke: var(--ocean-dark); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+        .logo-link:hover .logo-home-badge { box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 0 2px var(--ocean-light); }
+        @media (max-width: 768px) { .logo-home-badge { width: 20px; height: 20px; top: -6px; right: -6px; } .logo-home-badge svg { width: 10px; height: 10px; } }
+        .logo { max-width: 120px; display: block; border-radius: 16px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); transition: max-width 0.3s ease; }
+        .header.scrolled .logo { max-width: 50px; }
 
-        .logo {
-            max-width: 120px; width: 100%; height: auto;
-            display: block; border-radius: 16px;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
-        }
-
-        .header-title { text-align: center; padding: 6px 0 0; }
-        .header-title h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(24px, 4vw, 32px);
-            font-weight: 900; margin-bottom: 4px;
-            letter-spacing: -1px;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.2);
-        }
-        .header-subtitle {
-            font-size: clamp(12px, 2vw, 16px);
-            font-weight: 300; opacity: 0.95; letter-spacing: 0.5px;
-        }
-
-        .nav-menu { display: flex; justify-content: center; gap: 10px; margin-bottom: 24px; }
+        .header-title { text-align: center; padding: 6px 0 0; transition: padding 0.3s ease; }
+        .header.scrolled .header-title { padding: 0; }
+        .header-title h1 { font-family: 'Playfair Display', serif; font-size: clamp(24px, 4vw, 32px); font-weight: 900; margin-bottom: 4px; letter-spacing: -1px; text-shadow: 0 2px 12px rgba(0,0,0,0.2); transition: font-size 0.3s ease, margin-bottom 0.3s ease; }
+        .header.scrolled .header-title h1 { font-size: 18px; margin-bottom: 0; }
+        .header-subtitle { font-size: clamp(12px, 2vw, 16px); font-weight: 300; opacity: 0.95; letter-spacing: 0.5px; transition: opacity 0.3s ease, max-height 0.3s ease; max-height: 30px; overflow: hidden; }
+        .header.scrolled .header-subtitle { opacity: 0; max-height: 0; }
+        .nav-menu { display: flex; justify-content: center; gap: 10px; margin-bottom: 24px; transition: margin-bottom 0.3s ease; }
+        .header.scrolled .nav-menu { margin-bottom: 6px; }
 
         @keyframes navGlowPulse {
             0%, 100% { box-shadow: 0 0 0px rgba(255,255,255,0); border-color: rgba(255,255,255,0.35); }
             50% { box-shadow: 0 0 12px rgba(255,255,255,0.45), 0 0 24px rgba(77,168,218,0.3); border-color: rgba(255,255,255,0.85); }
         }
-
-        .nav-link {
-            position: relative;
-            color: rgba(255,255,255,0.92);
-            text-decoration: none; font-weight: 500; font-size: 12.5px;
-            letter-spacing: 0.8px; text-transform: uppercase;
-            padding: 8px 20px; border-radius: 5px;
-            background: transparent; border: 1.5px solid rgba(255,255,255,0.35);
-            transition: color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
-            overflow: hidden;
-            animation: navGlowPulse 2.2s ease-in-out infinite;
-        }
-
+        .nav-link { position: relative; color: rgba(255,255,255,0.92); text-decoration: none; font-weight: 500; font-size: 12.5px; letter-spacing: 0.8px; text-transform: uppercase; padding: 8px 20px; border-radius: 5px; background: transparent; border: 1.5px solid rgba(255,255,255,0.35); transition: color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease; overflow: hidden; animation: navGlowPulse 2.2s ease-in-out infinite; }
         .nav-link:nth-child(2) { animation-delay: 0.5s; }
-
-        .nav-link::after {
-            content: ''; position: absolute; inset: 0;
-            background: rgba(255,255,255,0.10); opacity: 0; transition: opacity 0.22s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--white); border-color: rgba(255,255,255,0.80);
-            box-shadow: 0 0 0 1px rgba(255,255,255,0.15) inset, 0 3px 14px rgba(0,0,0,0.18);
-            background: rgba(255,255,255,0.06);
-        }
-
+        .nav-link::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.10); opacity: 0; transition: opacity 0.22s ease; }
+        .nav-link:hover { color: var(--white); border-color: rgba(255,255,255,0.80); box-shadow: 0 0 0 1px rgba(255,255,255,0.15) inset, 0 3px 14px rgba(0,0,0,0.18); background: rgba(255,255,255,0.06); }
         .nav-link:hover::after { opacity: 1; }
-
-        .nav-link::before {
-            content: ''; position: absolute;
-            bottom: 0; left: 50%;
-            width: 0; height: 2px;
-            background: rgba(255,255,255,0.7); border-radius: 2px;
-            transform: translateX(-50%);
-            transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
+        .nav-link::before { content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 2px; background: rgba(255,255,255,0.7); border-radius: 2px; transform: translateX(-50%); transition: width 0.25s cubic-bezier(0.16,1,0.3,1); }
         .nav-link:hover::before { width: calc(100% - 24px); }
+        .nav-link.active { background: rgba(255,255,255,0.25); }
 
         /* ── CONTENT ── */
-        .content {
-            padding: 170px 40px 60px;
-            max-width: 900px; margin: 0 auto;
-        }
+        /* Top spacing is handled by #header-spacer — never touch paddingTop on scroll */
+        .content { padding: 0 40px 60px; max-width: 900px; margin: 0 auto; }
+        #header-spacer { transition: none; } /* no CSS transition — JS RAF keeps it in sync */
+        .hero-intro { text-align: center; margin-bottom: 48px; padding: 40px 32px; background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%); border-radius: 20px; border: 1px solid #bae6fd; }
+        .hero-intro h2 { font-family: 'Playfair Display', serif; font-size: clamp(22px, 4vw, 30px); color: var(--ocean-dark); margin-bottom: 12px; }
+        .hero-intro p { font-size: 15px; color: #4B5563; line-height: 1.75; max-width: 600px; margin: 0 auto; }
 
-        /* ── GALLERY ── */
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px; margin-bottom: 40px;
-        }
-        .gallery img {
-            width: 100%; height: 200px;
-            object-fit: cover; border-radius: 12px;
-            cursor: pointer; transition: all 0.3s ease;
-        }
-        .gallery img:hover { transform: scale(1.05); box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
+        .category-section { margin-bottom: 52px; }
+        .category-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 3px solid; }
+        .category-icon { font-size: 28px; line-height: 1; }
+        .category-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(20px, 3vw, 26px); font-weight: 700; }
+        .category-count { margin-left: auto; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: rgba(0,0,0,0.07); color: #555; }
 
-        /* ── SECTIONS ── */
-        .section {
-            background: #f8f9fa; padding: 40px;
-            border-radius: 16px; margin-bottom: 32px;
-        }
-        .section h2 { color: var(--ocean-dark); margin-bottom: 20px; font-size: 1.4rem; font-weight: 600; }
+        .cat-charco .category-header { border-color: var(--charco); } .cat-charco .category-header h2 { color: var(--charco); }
+        .cat-cascada .category-header { border-color: var(--cascada); } .cat-cascada .category-header h2 { color: var(--cascada); }
+        .cat-sendero .category-header { border-color: var(--sendero); } .cat-sendero .category-header h2 { color: var(--sendero); }
+        .cat-reserva .category-header { border-color: var(--reserva); } .cat-reserva .category-header h2 { color: var(--reserva); }
+        .cat-recreativo .category-header { border-color: var(--recreativo); } .cat-recreativo .category-header h2 { color: var(--recreativo); }
+        .cat-urbano .category-header { border-color: var(--urbano); } .cat-urbano .category-header h2 { color: var(--urbano); }
+        .cat-aventura .category-header { border-color: var(--aventura); } .cat-aventura .category-header h2 { color: var(--aventura); }
 
-        /* ── MAP ── */
-        .map-container { margin: 20px 0; border-radius: 12px; overflow: hidden; }
-        .map-container iframe { display: block; }
-        .map-btn {
-            display: inline-flex; align-items: center; gap: 8px;
-            background: #dc3545; color: white;
-            padding: 12px 24px; border: none; border-radius: 10px;
-            cursor: pointer; font-weight: 500; font-size: 0.9rem;
-            margin-top: 16px; transition: all 0.2s ease;
-        }
-        .map-btn:hover { background: #c82333; transform: translateY(-1px); }
+        .attractions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
 
-        /* ── AVAILABILITY CALENDAR ── */
-        .cal-legend {
-            display: flex; flex-wrap: wrap; gap: 12px;
-            margin-top: 20px;
+        /* ── CARD BASE ── */
+        .attraction-card {
+            border-radius: 16px; overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.06);
         }
-        .cal-legend-item {
-            display: flex; align-items: center; gap: 6px;
-            font-size: 12px; color: #6B7280; font-weight: 500;
-        }
-        .cal-legend-dot {
-            width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0;
-        }
-        .cal-loading {
-            text-align: center; padding: 32px 20px;
-            color: #9ca3af; font-size: 14px;
-        }
+        .attraction-card:hover { transform: translateY(-5px); box-shadow: 0 12px 28px rgba(0,0,0,0.14); }
 
-        .cal-months-wrapper {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 24px;
-            margin-top: 4px;
-        }
+        .cat-charco     .attraction-card { background: var(--card-bg-charco); }
+        .cat-cascada    .attraction-card { background: var(--card-bg-cascada); }
+        .cat-sendero    .attraction-card { background: var(--card-bg-sendero); }
+        .cat-reserva    .attraction-card { background: var(--card-bg-reserva); }
+        .cat-recreativo .attraction-card { background: var(--card-bg-recreativo); }
+        .cat-aventura   .attraction-card { background: var(--card-bg-aventura); }
+        .cat-urbano     .attraction-card { background: var(--card-bg-urbano); }
 
-        .cal-month {
-            background: white; border-radius: 12px;
-            border: 1px solid #e5e7eb;
-            overflow: hidden;
-        }
+        .card-img { width: 100%; height: 160px; overflow: hidden; cursor: zoom-in; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+        .attraction-card:hover .card-img img { transform: scale(1.05); }
 
-        .cal-month-header {
-            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
-            color: white; padding: 10px 14px;
-            font-size: 13px; font-weight: 700;
-            text-align: center; letter-spacing: 0.3px;
-        }
-
-        .cal-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 0;
-            padding: 8px;
-        }
-
-        .cal-dow {
-            text-align: center; font-size: 10px;
-            font-weight: 700; color: var(--ocean);
-            padding: 4px 2px; text-transform: uppercase;
-        }
-
-        .cal-day {
-            position: relative;
-            aspect-ratio: 1;
+        /* ── LIGHTBOX MODAL ── */
+        #imgModal { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; padding: 16px; }
+        #imgModal.active { display: flex; }
+        .modal-inner { position: relative; display: inline-flex; }
+        #imgModal img { max-width: 100%; max-height: 90vh; border-radius: 10px; box-shadow: 0 8px 40px rgba(0,0,0,0.6); object-fit: contain; display: block; }
+        #imgModal .modal-close {
+            position: absolute; top: -14px; right: -14px;
+            width: 32px; height: 32px;
+            background: #E53E3E; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 12px; font-weight: 500;
-            border-radius: 6px;
-            margin: 1px;
+            color: #fff; font-size: 18px; line-height: 1;
+            cursor: pointer; font-weight: 700;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            transition: background 0.2s, transform 0.2s;
+            z-index: 10;
+        }
+        #imgModal .modal-close:hover { background: #C53030; transform: scale(1.12); }
+        .card-placeholder { width: 100%; height: 160px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font-size: 36px; }
+        .card-placeholder span { font-size: 12px; font-weight: 500; opacity: 0.6; font-family: 'Poppins', sans-serif; }
+        .cat-charco .card-placeholder { background: linear-gradient(135deg, #bae6fd, #e0f2fe); }
+        .cat-cascada .card-placeholder { background: linear-gradient(135deg, #c7d2fe, #ede9fe); }
+        .cat-sendero .card-placeholder { background: linear-gradient(135deg, #bbf7d0, #dcfce7); }
+        .cat-reserva .card-placeholder { background: linear-gradient(135deg, #99f6e4, #ccfbf1); }
+        .cat-recreativo .card-placeholder { background: linear-gradient(135deg, #fde68a, #fef9c3); }
+        .cat-urbano .card-placeholder { background: linear-gradient(135deg, #fbcfe8, #fce7f3); }
+        .cat-aventura .card-placeholder { background: linear-gradient(135deg, #fecaca, #fee2e2); }
+
+        .card-body { padding: 18px 20px 20px; }
+        .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+        .card-name { font-size: 15px; font-weight: 600; color: #1F2937; line-height: 1.3; }
+        .card-rating { display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: #F59E0B; white-space: nowrap; flex-shrink: 0; }
+        .card-desc { font-size: 13px; color: #4B5563; line-height: 1.6; }
+        .card-badge { display: inline-block; margin-top: 10px; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.3px; }
+        .cat-charco .card-badge     { background: rgba(14,165,233,0.15); color: #0369a1; }
+        .cat-cascada .card-badge    { background: rgba(99,102,241,0.15); color: #5B21B6; }
+        .cat-sendero .card-badge    { background: rgba(22,163,74,0.15);  color: #15803D; }
+        .cat-reserva .card-badge    { background: rgba(13,148,136,0.15); color: #0F766E; }
+        .cat-recreativo .card-badge { background: rgba(245,158,11,0.15); color: #A16207; }
+        .cat-urbano .card-badge     { background: rgba(236,72,153,0.15); color: #BE185D; }
+        .cat-aventura .card-badge   { background: rgba(220,38,38,0.15);  color: #B91C1C; }
+
+        /* ── QUICK NAVIGATION ── */
+        .quick-nav-section { margin-bottom: 52px; }
+        .quick-nav-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 3px solid var(--ocean); }
+        .quick-nav-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(20px, 3vw, 26px); font-weight: 700; color: var(--ocean-dark); }
+
+        /* ── FIX 1: plain list, no pills ── */
+        .quick-nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .quick-nav-list li {
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .quick-nav-list li:last-child {
+            border-bottom: none;
+        }
+        .quick-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 4px;
+            text-decoration: none;
             color: #374151;
-            background: white;
-            transition: transform 0.15s;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 0;
+            background: none;
+            border: none;
+            transition: color 0.2s ease, padding-left 0.2s ease;
+            cursor: pointer;
+        }
+        .quick-nav-link:hover {
+            color: var(--ocean-dark);
+            padding-left: 10px;
+        }
+        .quick-nav-link::before {
+            content: '›';
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--ocean-light);
+            transition: color 0.2s ease;
+            flex-shrink: 0;
+        }
+        .quick-nav-link:hover::before {
+            color: var(--ocean-dark);
         }
 
-        .cal-day.other-month { visibility: hidden; }
-
-        .cal-day.past {
-            color: #d1d5db;
-            background: white;
+        /* ── MAP SECTION ── */
+        .map-section { margin-bottom: 52px; }
+        .map-section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 3px solid var(--ocean); }
+        .map-section-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(20px, 3vw, 26px); font-weight: 700; color: var(--ocean-dark); }
+        .map-section-header .category-count { margin-left: auto; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: rgba(0,0,0,0.07); color: #555; }
+        .map-wrapper { border-radius: 18px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,77,115,0.15); border: 1px solid #bae6fd; }
+        #attractionsMap { height: 460px; width: 100%; }
+        .map-legend { display: flex; flex-wrap: wrap; gap: 8px 10px; margin-top: 16px; padding: 12px 16px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .legend-item {
+            display: flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; color: #374151;
+            padding: 6px 12px; border-radius: 20px; cursor: pointer;
+            border: 1.5px solid transparent; background: #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            transition: all 0.2s ease; user-select: none;
         }
+        .legend-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.14); transform: translateY(-1px); }
+        .legend-item.active { border-color: currentColor; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
+        .legend-item.dimmed { opacity: 0.4; }
+        .legend-dot { width: 13px; height: 13px; border-radius: 50%; flex-shrink: 0; border: 2px solid rgba(0,0,0,0.12); }
+        .leaflet-popup-content-wrapper { border-radius: 12px !important; box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important; padding: 0 !important; overflow: hidden; }
+        .leaflet-popup-content { margin: 0 !important; min-width: 210px; }
+        .map-popup-img { width: 100%; height: 140px; object-fit: cover; display: block; cursor: zoom-in; transition: opacity 0.2s; }
+        .map-popup-img:hover { opacity: 0.9; }
+        .map-popup-img-placeholder { width: 100%; height: 140px; display: flex; align-items: center; justify-content: center; font-size: 32px; background: #f1f5f9; }
+        .map-popup { padding: 12px 14px 14px; }
+        .map-popup-cat { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+        .map-popup-name { font-size: 14px; font-weight: 700; color: #1F2937; margin-bottom: 5px; line-height: 1.3; font-family: 'Poppins', sans-serif; }
+        .map-popup-rating { font-size: 12px; color: #F59E0B; font-weight: 600; margin-bottom: 10px; }
+        .map-popup-link { display: inline-flex !important; align-items: center !important; gap: 5px !important; font-size: 12px !important; font-weight: 600 !important; color: #ffffff !important; background: #0077BE !important; padding: 6px 12px !important; border-radius: 20px !important; text-decoration: none !important; transition: background 0.2s; }
+        .map-popup-link:hover { background: #005A8D !important; color: #ffffff !important; }
+        .map-popup-link svg { stroke: #ffffff !important; flex-shrink: 0; }
 
-        .cal-day.today {
-            outline: 2px solid var(--ocean);
-            font-weight: 700; color: var(--ocean);
-        }
-
-        /* Fully booked middle day */
-        .cal-day.booked-mid {
-            background: #fecaca;
-            color: #dc2626; font-weight: 600;
-        }
-
-        /* Check-in day (left half free, right half booked) */
-        .cal-day.booked-checkin {
-            background: linear-gradient(90deg, white 50%, #fecaca 50%);
-            color: #374151; font-weight: 600;
-        }
-
-        /* Check-out day (left half booked, right half free) */
-        .cal-day.booked-checkout {
-            background: linear-gradient(90deg, #fecaca 50%, white 50%);
-            color: #374151; font-weight: 600;
-        }
-
-        /* Shared day (check-out of one = check-in of another → fully booked) */
-        .cal-day.booked-shared {
-            background: #fecaca;
-            color: #dc2626; font-weight: 700;
-        }
-
-        /* ── CONTACT SECTION ── */
-        .contact-section {
-            background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 100%);
-            border: 1px solid #d0e8f8; padding: 40px;
-            border-radius: 20px; margin-bottom: 32px;
-        }
-        .contact-section h2 { color: var(--ocean-dark); font-size: 1.4rem; font-weight: 600; margin-bottom: 8px; }
-        .contact-subtitle { color: #6B7280; font-size: 14px; margin-bottom: 32px; font-weight: 400; }
-        .contact-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-        .contact-card {
-            display: flex; flex-direction: column; align-items: center;
-            justify-content: center; gap: 12px; padding: 28px 20px;
-            border-radius: 16px; text-decoration: none;
-            font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 15px;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative; overflow: hidden; border: none; cursor: pointer;
-        }
-        .contact-card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.25s ease; }
-        .contact-card:hover::before { opacity: 1; }
-        .contact-card:hover { transform: translateY(-3px); }
-        .contact-card:active { transform: translateY(0); }
-
-        .card-whatsapp { background: #25D366; color: white; box-shadow: 0 4px 16px rgba(37,211,102,0.3); }
-        .card-whatsapp::before { background: linear-gradient(135deg, #20bd5a 0%, #128c7e 100%); }
-        .card-whatsapp:hover { box-shadow: 0 8px 24px rgba(37,211,102,0.45); }
-
-        .card-phone { background: #dc3545; color: white; box-shadow: 0 4px 16px rgba(220,53,69,0.3); }
-        .card-phone::before { background: linear-gradient(135deg, #c82333 0%, #a71d2a 100%); }
-        .card-phone:hover { box-shadow: 0 8px 24px rgba(220,53,69,0.45); }
-
-        .contact-card-icon {
-            width: 52px; height: 52px; border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-        }
-        .contact-card-icon svg { width: 26px; height: 26px; fill: white; }
-        .contact-card-text { text-align: center; }
-        .contact-card-label { font-size: 12px; font-weight: 500; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
-        .contact-card-value { font-size: 16px; font-weight: 700; }
-
-        /* ── FOOTER ── */
-        .footer {
-            text-align: center; padding: 40px 32px;
-            background: linear-gradient(180deg, transparent 0%, var(--sand) 50%);
-            color: var(--ocean-dark); font-size: 14px;
-            margin-top: 60px; border-top: 1px solid rgba(0,77,115,0.08);
-        }
+        .footer { text-align: center; padding: 40px 32px; background: linear-gradient(180deg, transparent 0%, var(--sand) 50%); color: var(--ocean-dark); font-size: 14px; margin-top: 60px; border-top: 1px solid rgba(0,77,115,0.08); }
         .footer::before { content: '🌊'; display: block; font-size: 32px; margin-bottom: 16px; }
 
-        /* ── LIGHTBOX SLIDER ── */
-        #imgModal { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,0.93); align-items: center; justify-content: center; padding: 16px; }
-        #imgModal.active { display: flex; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        #imgModal.active { animation: fadeIn 0.25s ease; }
-        .modal-inner { position: relative; display: flex; align-items: center; justify-content: center; max-width: 92vw; max-height: 90vh; }
-        #modalImg { max-width: 88vw; max-height: 85vh; border-radius: 12px; object-fit: contain; box-shadow: 0 8px 40px rgba(0,0,0,0.6); display: block; }
-        .modal-close {
-            position: absolute; top: -14px; right: -14px;
-            background: #E53E3E; border: none; font-size: 18px; font-weight: 700; color: #fff;
-            cursor: pointer; width: 32px; height: 32px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%; transition: all 0.2s ease; z-index: 2001;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-        }
-        .modal-close:hover { background: #C53030; transform: scale(1.12); }
-        .modal-nav {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            background: rgba(255,255,255,0.15); border: none; color: white;
-            font-size: 28px; font-weight: 300; cursor: pointer;
-            width: 44px; height: 44px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            transition: background 0.2s ease; z-index: 2001; backdrop-filter: blur(4px);
-            user-select: none;
-        }
-        .modal-nav:hover { background: rgba(255,255,255,0.3); }
-        .modal-prev { left: -54px; }
-        .modal-next { right: -54px; }
-        .modal-counter {
-            position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%);
-            color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 500;
-            white-space: nowrap;
-        }
-        @media (max-width: 600px) {
-            .modal-prev { left: 6px; }
-            .modal-next { right: 6px; }
-            #modalImg { max-width: 100vw; border-radius: 8px; }
-        }
-
-        /* Platform booking cards */
-        .platform-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .platform-card {
-            display: flex; flex-direction: column; align-items: center;
-            justify-content: center; gap: 16px; padding: 28px 24px;
-            border-radius: 16px; text-decoration: none;
-            background: transparent; border: 2px solid #e5e7eb;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: none;
-        }
-        .platform-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); border-color: #c5d0dc; background: rgba(0,0,0,0.02); }
-        .platform-logo { object-fit: contain; }
-        .logo-booking { width: 100%; max-width: 280px; height: 60px; }
-        .logo-airbnb { width: 160px; height: 80px; }
-        .platform-cta { font-size: 13px; font-weight: 600; color: #6B7280; letter-spacing: 0.2px; transition: color 0.2s ease; text-align: center; width: 100%; }
-        .platform-card:hover .platform-cta { color: var(--ocean-dark); }
-
-        /* ── MOBILE ── */
         @media (max-width: 768px) {
             .header { padding: 10px 16px; }
             .header-content { min-height: auto; }
             .logo { max-width: 70px; }
+            .nav-menu { gap: 6px; }
             .nav-link { font-size: 10px; padding: 6px 12px; letter-spacing: 0.5px; }
-            .content { padding: 160px 20px 40px; }
-            .section { padding: 24px 20px; }
-            .contact-section { padding: 24px 20px; }
-            .contact-cards { grid-template-columns: 1fr 1fr; gap: 12px; }
-            .contact-card { padding: 20px 12px; gap: 10px; }
-            .contact-card-icon { width: 44px; height: 44px; }
-            .contact-card-icon svg { width: 22px; height: 22px; }
-            .contact-card-value { font-size: 14px; }
-            .contact-card-label { font-size: 11px; }
-            .platform-cards { grid-template-columns: 1fr; gap: 12px; }
-            .platform-card { padding: 24px 20px; gap: 12px; }
-            .logo-booking { max-width: 260px; height: 50px; }
-            .logo-airbnb { width: 140px; height: 50px; }
-            .cal-months-wrapper { grid-template-columns: 1fr; }
+            .content { padding: 0 20px 40px; }
+            .hero-intro { padding: 0 20px; }
+            .attractions-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+            .card-placeholder { height: 120px; font-size: 28px; }
+            .card-body { padding: 14px 14px 16px; }
+            .card-name { font-size: 13px; }
+            .card-desc { font-size: 12px; }
         }
+        @media (max-width: 480px) { .attractions-grid { grid-template-columns: 1fr; } .card-placeholder { height: 150px; } }
 
-        @media (max-width: 420px) {
-            .contact-cards { grid-template-columns: 1fr; }
-            .contact-card { flex-direction: row; padding: 18px 20px; gap: 16px; }
-            .contact-card-text { text-align: left; }
-        }
-    
-        /* ── SHRINKING HEADER ON SCROLL ── */
-        .header { transition: padding 0.3s ease, box-shadow 0.3s ease; }
-        .header.scrolled { padding: 6px 40px; box-shadow: 0 2px 12px rgba(0,119,190,0.4); }
-        .header-content { transition: min-height 0.3s ease; }
-        .header.scrolled .header-content { min-height: 40px; }
-        .logo { transition: max-width 0.3s ease; }
-        .header.scrolled .logo { max-width: 50px; }
-        .header-title { transition: padding 0.3s ease; }
-        .header.scrolled .header-title { padding: 0; }
-        .header-title h1 { transition: font-size 0.3s ease, margin-bottom 0.3s ease; }
-        .header.scrolled .header-title h1 { font-size: 18px; margin-bottom: 0; }
-        .header-subtitle {
-            max-height: 30px; overflow: hidden;
-            transition: opacity 0.3s ease, max-height 0.3s ease;
-        }
-        .header.scrolled .header-subtitle { opacity: 0; max-height: 0; }
-        .nav-menu { transition: margin-bottom 0.3s ease; }
-        .header.scrolled .nav-menu { margin-bottom: 6px; }
-        @media (max-width: 768px) {
-            .header.scrolled { padding: 4px 16px; }
-            .header.scrolled .logo { max-width: 40px; }
-            .header.scrolled .nav-menu { margin-bottom: 4px; }
-            .header.scrolled .header-title h1 { font-size: 15px; }
-        }
+        /* ── DISTANCE ROW ── */
+        .card-distance-row { display: flex; flex-direction: column; align-items: flex-start; margin-top: 10px; gap: 6px; }
+        .card-dist-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 700; padding: 5px 11px; border-radius: 20px; background: rgba(0,0,0,0.07); color: #374151; white-space: nowrap; }
+        .card-dir-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; padding: 4px 11px; border-radius: 20px; background: var(--ocean); color: #fff; text-decoration: none; white-space: nowrap; flex-shrink: 0; transition: background 0.2s; }
+        .card-dir-btn:hover { background: var(--ocean-dark); }
+        .card-dir-btn svg { stroke: #fff; flex-shrink: 0; }
     </style>
 </head>
 <body>
@@ -445,417 +276,418 @@
                 <div class="header-right">
                     <nav class="nav-menu">
                         <a href="sobre-nosotros.html" class="nav-link">Sobre Nosotros</a>
-                        <a href="san-carlos.html" class="nav-link">San Carlos</a>
+                        <a href="san-carlos.html" class="nav-link active">San Carlos</a>
                     </nav>
                 </div>
             </div>
             <div class="header-title">
-                <h1>Najos-2</h1>
-                <p class="header-subtitle">Apartamento completo en San Carlos</p>
+                <h1>San Carlos</h1>
+                <p class="header-subtitle">Descubre el paraíso natural de Antioquia</p>
             </div>
         </div>
 
+        <div id="header-spacer"></div>
         <div class="content" id="mainContent">
-
-            <div class="gallery">
-                <img src="https://imgur.com/Bvh5FzZ.jpg" alt="Cuarto-1" onclick="openModal(this.src)">
-                <img src="https://imgur.com/982HPnN.jpg" alt="Cuarto-2" onclick="openModal(this.src)">
-                <img src="https://imgur.com/gizm1jq.jpg" alt="Cuarto-3" onclick="openModal(this.src)">
-                <img src="https://imgur.com/tu0v7A0.jpg" alt="Baño-1" onclick="openModal(this.src)">
-                <img src="https://imgur.com/EzOgdgF.jpg" alt="Baño-2" onclick="openModal(this.src)">
-                <img src="https://imgur.com/7QPhDCw.jpg" alt="Casa General" onclick="openModal(this.src)">
-                <img src="https://imgur.com/JKS1XhW.jpg" alt="Cocina-1" onclick="openModal(this.src)">
-                <img src="https://imgur.com/EaAdaYq.jpg" alt="Cocina-2" onclick="openModal(this.src)">
-                <img src="https://imgur.com/Ph8nxx2.jpg" alt="Lavadero" onclick="openModal(this.src)">
-                <img src="https://imgur.com/fGr4n3i.jpg" alt="Sala" onclick="openModal(this.src)">
+            <div class="hero-intro">
+                <h2>🌿 Bienvenido al Paraíso de las Aguas</h2>
+                <p>San Carlos, Antioquia, es conocido como el municipio de los charcos. Con más de 200 fuentes de agua entre ríos, quebradas y cascadas, ofrece una experiencia natural única en Colombia. Desde Apart Hotel Najos, a pasos del parque principal, tienes acceso fácil a todos estos tesoros.</p>
             </div>
 
-            <div class="section">
-                <h2>📍 Ubicación</h2>
-                <p>Cl. 21 # 22-71, San Carlos, Antioquia</p>
-                <div class="map-container">
-                    <iframe src="https://www.google.com/maps?q=Cl.+21+%23+22-71,+San+Carlos,+Antioquia&output=embed" width="100%" height="300" style="border:0;" allowfullscreen></iframe>
+            <!-- MAP SECTION -->
+            <div class="map-section">
+                <div class="map-section-header">
+                    <span class="category-icon">🗺️</span>
+                    <h2>Mapa de Atracciones</h2>
+                    <span class="category-count">25 lugares</span>
                 </div>
-                <button class="map-btn" onclick="window.open('https://maps.app.goo.gl/q6hUsU9VoW3biBcBA', '_blank')">
-                    <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                    Abrir en Google Maps
-                </button>
-            </div>
-
-            <!-- ── AVAILABILITY CALENDAR ── -->
-            <div class="section" id="availabilitySection">
-    <h2>📅 Disponibilidad — Apto 2</h2>
-    <p style="color:#6B7280; font-size:13px; margin-bottom:20px; font-weight:400;">
-        Consulta las fechas disponibles para tu estadía
-    </p>
-
-    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
-        <button id="calPrevBtn" onclick="calNavigate(-1)"
-            style="width:40px;height:40px;border-radius:50%;border:1.5px solid #d1d5eb;background:white;
-                   font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-                   transition:all 0.2s;color:#374151;"
-            onmouseover="this.style.background='#f3f4f6';this.style.borderColor='#9ca3af'"
-            onmouseout="this.style.background='white';this.style.borderColor='#d1d5eb'">
-            ‹
-        </button>
-        <span id="calRangeLabel" style="font-size:13px;font-weight:600;color:#6B7280;"></span>
-        <button id="calNextBtn" onclick="calNavigate(1)"
-            style="width:40px;height:40px;border-radius:50%;border:1.5px solid #d1d5eb;background:white;
-                   font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-                   transition:all 0.2s;color:#374151;"
-            onmouseover="this.style.background='#f3f4f6';this.style.borderColor='#9ca3af'"
-            onmouseout="this.style.background='white';this.style.borderColor='#d1d5eb'">
-            ›
-        </button>
-    </div>
-
-    <div id="calendarContainer">
-        <div class="cal-loading">Cargando disponibilidad…</div>
-    </div>
-
-    <div class="cal-legend">
-        <div class="cal-legend-item">
-            <div class="cal-legend-dot" style="background:white; border:1px solid #e5e7eb;"></div>
-            Disponible
-        </div>
-        <div class="cal-legend-item">
-            <div class="cal-legend-dot" style="background:#fecaca;"></div>
-            Reservado
-        </div>
-        <div class="cal-legend-item">
-            <div class="cal-legend-dot" style="background:linear-gradient(90deg, white 50%, #fecaca 50%); border:1px solid #e5e7eb;"></div>
-            Día de entrada
-        </div>
-        <div class="cal-legend-item">
-            <div class="cal-legend-dot" style="background:linear-gradient(90deg, #fecaca 50%, white 50%); border:1px solid #e5e7eb;"></div>
-            Día de salida
-        </div>
-    </div>
-</div>
-
-            <div class="section" style="display: none;">
-                <h2>🌐 Reserva en línea</h2>
-                <p class="contact-subtitle">¡Haz click para reservar tus vacaciones ahora mismo!</p>
-                <div class="platform-cards">
-                    <a href="https://www.booking.com/hotel/co/casa-selva-san-carlos.en-gb.html" class="platform-card" target="_blank" rel="noopener">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 60" class="platform-logo logo-booking" style="display:block;margin:0 auto;" aria-label="Booking.com">
-                            <text x="220" y="46" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="40" font-weight="900">
-                                <tspan fill="#003580">Booking</tspan><tspan fill="#0071C2">.com</tspan>
-                            </text>
-                        </svg>
-                        <span class="platform-cta">Reservar ahora →</span>
-                    </a>
-                    <a href="https://www.airbnb.com" class="platform-card" target="_blank" rel="noopener">
-                        <img src="https://i.imgur.com/5vFuTC4.jpg" alt="Airbnb" class="platform-logo logo-airbnb">
-                        <span class="platform-cta">Reservar ahora →</span>
-                    </a>
+                <div class="map-wrapper">
+                    <div id="attractionsMap"></div>
+                </div>
+                <div class="map-legend">
+                    <div class="legend-item" id="legend-todos" onclick="filterMap('Todos')" style="color:#555"><span style="font-size:13px;">🗺️</span> Todos</div>
+                    <div class="legend-item" id="legend-Hotel" onclick="filterMap('Hotel')" style="color:#92400E"><svg width="13" height="13" viewBox="0 0 24 24" fill="#D97706" stroke="#92400E" stroke-width="1.2"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg> Apart Hotel Najos</div>
+                    <div class="legend-item" id="legend-Charco" onclick="filterMap('Charco')" style="color:#0EA5E9"><div class="legend-dot" style="background:#0EA5E9"></div> Charcos</div>
+                    <div class="legend-item" id="legend-Cascada" onclick="filterMap('Cascada')" style="color:#6366F1"><div class="legend-dot" style="background:#6366F1"></div> Cascadas</div>
+                    <div class="legend-item" id="legend-Senderismo" onclick="filterMap('Senderismo')" style="color:#16A34A"><div class="legend-dot" style="background:#16A34A"></div> Senderos</div>
+                    <div class="legend-item" id="legend-Ecoturismo" onclick="filterMap('Ecoturismo')" style="color:#0D9488"><div class="legend-dot" style="background:#0D9488"></div> Reservas Naturales</div>
+                    <div class="legend-item" id="legend-Recreativo" onclick="filterMap('Centro Recreativo')" style="color:#F59E0B"><div class="legend-dot" style="background:#F59E0B"></div> Centros Recreativos</div>
+                    <div class="legend-item" id="legend-Aventura" onclick="filterMap('Tours & Aventura')" style="color:#DC2626"><div class="legend-dot" style="background:#DC2626"></div> Tours y Aventura</div>
+                    <div class="legend-item" id="legend-Urbano" onclick="filterMap('Urbano')" style="color:#EC4899"><div class="legend-dot" style="background:#EC4899"></div> Urbano y Cultural</div>
                 </div>
             </div>
 
-            <div class="contact-section">
-                <h2>📞 Comuníquese con Nosotros</h2>
-                <p class="contact-subtitle">Estamos disponibles para ayudarte a planear tu estadía perfecta</p>
-                <div class="contact-cards">
-                    <a href="tel:+57XXXXXXXXXX" class="contact-card card-phone">
-                        <div class="contact-card-icon">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                            </svg>
-                        </div>
-                        <div class="contact-card-text">
-                            <div class="contact-card-label">Teléfono</div>
-                            <div class="contact-card-value">Llamar ahora</div>
-                        </div>
-                    </a>
-                    <a href="https://wa.me/57XXXXXXXXXX" class="contact-card card-whatsapp" target="_blank" rel="noopener">
-                        <div class="contact-card-icon">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                            </svg>
-                        </div>
-                        <div class="contact-card-text">
-                            <div class="contact-card-label">WhatsApp</div>
-                            <div class="contact-card-value">Escribir mensaje</div>
-                        </div>
-                    </a>
+            <!-- QUICK NAVIGATION -->
+            <div class="quick-nav-section">
+                <div class="quick-nav-header">
+                    <span class="category-icon">🧭</span>
+                    <h2>Navegación Rápida</h2>
+                    <span class="category-count">7 categorías</span>
+                </div>
+                <!-- FIX 1: <ul> list instead of flex pill links -->
+                <!-- FIX 2: onclick scrollTo() with header offset instead of href="#" -->
+                <ul class="quick-nav-list">
+                    <li><a class="quick-nav-link" onclick="scrollToSection('charcos')">💧 Charcos (9)</a></li>
+                    <li><a class="quick-nav-link" onclick="scrollToSection('cascadas')">🌊 Cascadas (4)</a></li>
+                    <li><a class="quick-nav-link" onclick="scrollToSection('senderos')">🥾 Senderos (3)</a></li>
+                    <li><a class="quick-nav-link" onclick="scrollToSection('reservas')">🌿 Reservas Naturales (1)</a></li>
+                    <li><a class="quick-nav-link" onclick="scrollToSection('centros-recreativos')">🏊 Centros Recreativos (5)</a></li>
+                    <li><a class="quick-nav-link" onclick="scrollToSection('tours-aventura')">🧗 Tours y Aventura (1)</a></li>
+                    <li><a class="quick-nav-link" onclick="scrollToSection('urbano-cultural')">🏛️ Urbano y Cultural (1)</a></li>
+                </ul>
+            </div>
+
+            <!-- CHARCOS: 9 lugares -->
+            <div id="charcos" class="category-section cat-charco">
+                <div class="category-header"><span class="category-icon">💧</span><h2>Charcos</h2><span class="category-count">9 lugares</span></div>
+                <div class="attractions-grid">
+                    <div class="attraction-card" data-lat="6.191341" data-lng="-75.02204" data-dist-label="3.1 km" data-time-label="8 min"><div class="card-img"><img src="https://i.imgur.com/K6YGUKbh.jpg" alt="Charco Los Anillos" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco Los Anillos</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">Piscina natural espectacular ubicada cerca al centro del pueblo. Calificación perfecta por sus visitantes.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card" data-lat="6.187072" data-lng="-74.951929" data-dist-label="4.1 km" data-time-label="10 min"><div class="card-img"><img src="https://i.imgur.com/g8Le3i4h.jpg" alt="Charco Redondo" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco Redondo</div><div class="card-rating">⭐ 4.9</div></div><div class="card-desc">Hermosa piscina natural accesible por una caminata de 20 a 40 minutos entre paisajes verdes.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card" data-lat="6.19542" data-lng="-75.023804" data-dist-label="21 km" data-time-label="25 min"><div class="card-img"><img src="https://i.imgur.com/X9iE6hNh.jpg" alt="Charco El Chispero" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco El Chispero</div><div class="card-rating">⭐ 4.8</div></div><div class="card-desc">Piscina natural con cascada y trampolín de roca. Aguas de color esmeralda rodeadas de vegetación exuberante. A 20 min del pueblo en carro, más 7 min a pie.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card" data-lat="6.18686" data-lng="-75.011334" data-dist-label="1.5 km" data-time-label="5 min"><div class="card-img"><img src="https://i.imgur.com/fnOhUCfh.jpg" alt="Charco Los Cajones" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco Los Cajones</div><div class="card-rating">⭐ 4.8</div></div><div class="card-desc">Piscinas naturales de aguas cristalinas ubicadas río arriba. Se llega vadeando el río, lo que lo convierte en una aventura en sí misma.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card" data-lat="6.190061" data-lng="-75.036686" data-dist-label="5.0 km" data-time-label="12 min"><div class="card-img"><img src="https://i.imgur.com/KrH4euOh.jpg" alt="Charco Negro" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco Negro (Río Tinto)</div><div class="card-rating">⭐ 4.7</div></div><div class="card-desc">Charco único en la vereda Puerto Rico. Sus aguas toman un tono oscuro por los taninos de las hojas caídas, aunque permanecen cristalinas y refrescantes.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card" data-lat="6.188296" data-lng="-75.00071" data-dist-label="0.9 km" data-time-label="3 min"><div class="card-img"><img src="https://i.imgur.com/1GSLd3Eh.jpg" alt="Charco San Antonio" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco San Antonio</div><div class="card-rating">⭐ 4.7</div></div><div class="card-desc">Piscina popular con alquiler de kayak y zona de camping. Perfecto para una aventura de un día completo.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card" data-lat="6.183872" data-lng="-75.001825" data-dist-label="1.1 km" data-time-label="4 min"><div class="card-img"><img src="https://i.imgur.com/HRScZGJh.jpg" alt="Charco El Indio" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco El Indio</div><div class="card-rating">⭐ 4.6</div></div><div class="card-desc">Piscina natural de aguas cristalinas y temperatura agradable. Buenas vistas y ambiente tranquilo, perfecto para un baño relajante en la naturaleza.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card" data-lat="6.184613" data-lng="-74.99892" data-dist-label="0.6 km" data-time-label="3 min"><div class="card-img"><img src="https://i.imgur.com/M6EwvJeh.jpg" alt="Charco El Marino" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco El Marino</div><div class="card-rating">⭐ 4.5</div></div><div class="card-desc">Aguas cristalinas y abundantes del Río San Carlos. Cuenta con cabañas y servicio de comida, ideal para pasar el día con comodidad.</div><span class="card-badge">Charco</span></div></div>
+                    <div class="attraction-card" data-lat="6.194241" data-lng="-74.990933" data-dist-label="1.0 km" data-time-label="4 min"><div class="card-img"><img src="https://i.imgur.com/qiAIBSth.jpg" alt="Charco La Natalia" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Charco La Natalia</div><div class="card-rating">⭐ 4.4</div></div><div class="card-desc">Aguas tranquilas, ideal para familias con niños. Ubicado cerca al casco urbano, de fácil acceso.</div><span class="card-badge">Charco</span></div></div>
                 </div>
             </div>
 
+            <!-- CASCADAS: 4 lugares -->
+            <div id="cascadas" class="category-section cat-cascada">
+                <div class="category-header"><span class="category-icon">🌊</span><h2>Cascadas</h2><span class="category-count">4 lugares</span></div>
+                <div class="attractions-grid">
+                    <div class="attraction-card" data-lat="6.194044" data-lng="-75.041524" data-dist-label="6.3 km" data-time-label="15 min"><div class="card-img"><img src="https://i.imgur.com/FaB0wYoh.jpg" alt="Cascada La Chorrera" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Cascada La Chorrera — Mirador y Atractivo</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">El atractivo turístico principal: impresionante cascada a solo 30 minutos del casco urbano. Vista espectacular que mezcla aventura y naturaleza.</div><span class="card-badge">Cascada</span></div></div>
+                    <div class="attraction-card" data-lat="6.193979" data-lng="-75.005066" data-dist-label="1.6 km" data-time-label="5 min"><div class="card-img"><img src="https://i.imgur.com/wb8klNch.jpg" alt="Cascada San Antonio" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Cascada San Antonio</div><div class="card-rating">⭐ 4.8</div></div><div class="card-desc">Cascada de dos saltos a pocos minutos del casco urbano. Hay una pequeña poza al pie del primer salto. Evita visitarla los fines de semana, pues se llena mucho.</div><span class="card-badge">Cascada</span></div></div>
+                    <div class="attraction-card" data-lat="6.157802" data-lng="-74.983583" data-dist-label="5.0 km" data-time-label="12 min"><div class="card-img"><img src="https://i.imgur.com/I2EZTB2h.jpg" alt="Cascada Sardinita" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Cascada Sardinita</div><div class="card-rating">⭐ 4.8</div></div><div class="card-desc">Cascada con piscina natural en la vereda Sardinita, a 20 minutos del pueblo. Acceso en carro o moto y luego 5 min a pie. Aguas cristalinas, ideal para toda la familia.</div><span class="card-badge">Cascada</span></div></div>
+                    <div class="attraction-card" data-lat="6.166412" data-lng="-75.045664" data-dist-label="8.2 km" data-time-label="20 min"><div class="card-img"><img src="https://i.imgur.com/q1YxDWgh.jpg" alt="Cascada El Salto del Tigre" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Cascada El Salto del Tigre</div><div class="card-rating">—</div></div><div class="card-desc">Cascada ubicada en San Carlos, un destino natural aún poco explorado. Ideal para quienes buscan salirse de los circuitos turísticos más concurridos.</div><span class="card-badge">Cascada</span></div></div>
+                </div>
+            </div>
+
+            <!-- SENDEROS: 3 lugares -->
+            <div id="senderos" class="category-section cat-sendero">
+                <div class="category-header"><span class="category-icon">🥾</span><h2>Senderos y Senderismo</h2><span class="category-count">3 lugares</span></div>
+                <div class="attractions-grid">
+                    <div class="attraction-card" data-lat="6.215228" data-lng="-74.994492" data-dist-label="3.0 km" data-time-label="8 min"><div class="card-img"><img src="https://i.imgur.com/Ns4qOPqh.jpg" alt="Cima Piedra El Tabor" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Cima Piedra El Tabor</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">Caminata hasta la cima con una vista panorámica de 360° sobre San Carlos y sus alrededores. Ingreso: $5.000 por persona. Llevar agua, repelente y botas de senderismo.</div><span class="card-badge">Senderismo</span></div></div>
+                    <div class="attraction-card" data-lat="6.190367" data-lng="-75.038588" data-dist-label="5.6 km" data-time-label="13 min"><div class="card-img"><img src="https://i.imgur.com/FcvJEYZh.jpg" alt="La Chorrera — Sendero Ecológico" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">La Chorrera — Sendero Ecológico</div><div class="card-rating">⭐ 4.8</div></div><div class="card-desc">El sendero que lleva hasta La Chorrera, con entrada gratuita. Se puede ir caminando desde el pueblo (~2 h) o en mototaxi hasta la vía y luego 25 min a pie.</div><span class="card-badge">Senderismo</span></div></div>
+                    <div class="attraction-card" data-lat="6.188729" data-lng="-74.999978" data-dist-label="0.8 km" data-time-label="3 min"><div class="card-img"><img src="https://i.imgur.com/nkC3r0Ph.jpg" alt="Sendero San Antonio" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Sendero San Antonio</div><div class="card-rating">⭐ 4.6</div></div><div class="card-desc">Recorrido ecológico con piscinas naturales y una cascada al final del trayecto. Una experiencia completa en la naturaleza.</div><span class="card-badge">Senderismo</span></div></div>
+                </div>
+            </div>
+
+            <!-- RESERVAS: 1 lugar -->
+            <div id="reservas" class="category-section cat-reserva">
+                <div class="category-header"><span class="category-icon">🌿</span><h2>Reservas Naturales y Ecoturismo</h2><span class="category-count">1 lugar</span></div>
+                <div class="attractions-grid">
+                    <div class="attraction-card" data-lat="6.189609" data-lng="-75.01435" data-dist-label="2.1 km" data-time-label="6 min"><div class="card-img"><img src="https://i.imgur.com/evm8v6fh.jpg" alt="Cielo Escondido — Paraíso Natural" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Cielo Escondido — Paraíso Natural</div><div class="card-rating">⭐ 4.9</div></div><div class="card-desc">Cañón oculto con piscinas de aguas turquesas y paredes rocosas de impresionante belleza. Visita guiada obligatoria. Abierto jue–lun 8 am–5 pm. A ~40 min del parque principal.</div><span class="card-badge">Ecoturismo</span></div></div>
+                </div>
+            </div>
+
+            <!-- CENTROS RECREATIVOS: 5 lugares -->
+            <div id="centros-recreativos" class="category-section cat-recreativo">
+                <div class="category-header"><span class="category-icon">🏊</span><h2>Centros Recreativos</h2><span class="category-count">5 lugares</span></div>
+                <div class="attractions-grid">
+                    <div class="attraction-card" data-lat="6.183193" data-lng="-75.004044" data-dist-label="1.3 km" data-time-label="5 min"><div class="card-img"><img src="https://i.imgur.com/4qY7CzDh.jpg" alt="Centro Turístico La Planta" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Centro Turístico La Planta</div><div class="card-rating">⭐ 4.6</div></div><div class="card-desc">Camping junto al río con BBQ, voleibol, fútbol y acceso directo al Río San Carlos. Un ambiente relajado rodeado de naturaleza para toda la familia.</div><span class="card-badge">Centro Recreativo</span></div></div>
+                    <div class="attraction-card" data-lat="6.19096" data-lng="-75.000849" data-dist-label="0.7 km" data-time-label="3 min"><div class="card-img"><img src="https://i.imgur.com/alH9gnZ.jpg" alt="Hostería El Cóndor Centro Recreativo" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Hostería El Cóndor Centro Recreativo</div><div class="card-rating">⭐ 4.5</div></div><div class="card-desc">Centro recreativo con una gran piscina especial para niños. Las familias pueden pasar el día disfrutando de comida y bebidas en un ambiente tranquilo y natural.</div><span class="card-badge">Centro Recreativo</span></div></div>
+                    <div class="attraction-card" data-lat="6.167255" data-lng="-75.022051" data-dist-label="4.8 km" data-time-label="11 min"><div class="card-img"><img src="https://i.imgur.com/TN3nUKGh.jpg" alt="Los Colores Centro Recreativo" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Los Colores Centro Recreativo</div><div class="card-rating">⭐ 4.5</div></div><div class="card-desc">Toboganes, piscina de agua natural, zona infantil y restaurante. El lugar perfecto para un día en familia con todas las comodidades. A 3 km del pueblo.</div><span class="card-badge">Centro Recreativo</span></div></div>
+                    <div class="attraction-card" data-lat="6.188397" data-lng="-74.99972" data-dist-label="0.8 km" data-time-label="3 min"><div class="card-img"><img src="https://i.imgur.com/jv0NgvZh.jpg" alt="Centro Recreativo San Antonio" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Centro Recreativo San Antonio</div><div class="card-rating">⭐ 4.5</div></div><div class="card-desc">Camping, canotaje y cascadas en un solo lugar. Ideal para quienes buscan aventura y convivencia al aire libre.</div><span class="card-badge">Centro Recreativo</span></div></div>
+                    <div class="attraction-card" data-lat="6.197947" data-lng="-75.004069" data-dist-label="1.5 km" data-time-label="5 min"><div class="card-img"><img src="https://i.imgur.com/PJyC2qo.jpg" alt="Zona Camping Centro Recreativo" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Zona Camping Centro Recreativo</div><div class="card-rating">⭐ 4.6</div></div><div class="card-desc">Las familias vienen a disfrutar del charco, comer y beber. Un lugar ideal para pasar tiempo con la familia en plena naturaleza.</div><span class="card-badge">Centro Recreativo</span></div></div>
+                </div>
+            </div>
+
+            <!-- TOURS Y AVENTURA: 1 lugar -->
+            <div id="tours-aventura" class="category-section cat-aventura">
+                <div class="category-header"><span class="category-icon">🧗</span><h2>Tours y Aventura</h2><span class="category-count">1 lugar</span></div>
+                <div class="attractions-grid">
+                    <div class="attraction-card" data-lat="6.189024" data-lng="-74.991657" data-dist-label="0.3 km" data-time-label="1 min"><div class="card-img"><img src="https://i.imgur.com/00VDd2Qh.jpg" alt="Eco Guías Colombia" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Eco Guías Colombia</div><div class="card-rating">⭐ 5.0</div></div><div class="card-desc">La operadora de aventura mejor calificada de San Carlos (112 reseñas). Cañoning, rapel en cascadas, senderismo y tubing. Guías expertos, seguros y en precios accesibles. Ubicados junto al parque principal.</div><span class="card-badge">Tours & Aventura</span></div></div>
+                </div>
+            </div>
+
+            <!-- URBANO: 1 lugar -->
+            <div id="urbano-cultural" class="category-section cat-urbano">
+                <div class="category-header"><span class="category-icon">🏛️</span><h2>Urbano y Cultural</h2><span class="category-count">1 lugar</span></div>
+                <div class="attractions-grid">
+                    <div class="attraction-card" data-lat="6.188888" data-lng="-74.992072" data-dist-label="0.3 km" data-time-label="1 min"><div class="card-img"><img src="https://i.imgur.com/Xp0KOH5h.jpg" alt="Parque Principal San Carlos" onclick="openModal(this.src)"></div><div class="card-body"><div class="card-top"><div class="card-name">Parque Principal San Carlos</div><div class="card-rating">⭐ 4.7</div></div><div class="card-desc">Plaza central del municipio, colorida y animada. Punto de encuentro de la vida local y puerta de entrada a todas las aventuras.</div><span class="card-badge">Urbano</span></div></div>
+                </div>
+            </div>
         </div>
 
         <div class="footer">
             <p>© 2026 Apart Hotel Najos · Todos los derechos reservados</p>
             <p style="margin-top: 8px; font-size: 13px; opacity: 0.7;">Tu refugio en el corazón de San Carlos</p>
         </div>
+    </div>
 
-        <div id="imgModal" onclick="if(event.target===this)closeModal()">
-            <div class="modal-inner" onclick="event.stopPropagation()">
-                <button class="modal-close" onclick="closeModal()">×</button>
-                <button class="modal-nav modal-prev" onclick="slideModal(-1)">&#8249;</button>
-                <img id="modalImg" src="" alt="Apartment photo">
-                <button class="modal-nav modal-next" onclick="slideModal(1)">&#8250;</button>
-                <div class="modal-counter" id="modalCounter"></div>
-            </div>
+    <!-- LIGHTBOX MODAL -->
+    <div id="imgModal" onclick="closeModal()">
+        <div class="modal-inner" onclick="event.stopPropagation()">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <img id="modalImg" src="" alt="Foto ampliada">
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <script>
-        // ── SHRINKING HEADER ──
-        const siteHeader = document.getElementById('siteHeader');
-        let isShrunk = false, rafId = null;
+        // ── MAP INIT ──
+        const map = L.map('attractionsMap', { zoomControl: true, scrollWheelZoom: false }).setView([6.1879, -74.9949], 12);
 
-        function adjustContentPadding() {
-            const content = document.getElementById('mainContent');
-            if (siteHeader && content) {
-                content.style.paddingTop = (siteHeader.getBoundingClientRect().height + 32) + 'px';
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            maxZoom: 18
+        }).addTo(map);
+
+        map.on('click', () => map.scrollWheelZoom.enable());
+        map.on('blur', () => map.scrollWheelZoom.disable());
+
+        const catColors = {
+            'Charco':            '#0EA5E9',
+            'Cascada':           '#6366F1',
+            'Senderismo':        '#16A34A',
+            'Ecoturismo':        '#0D9488',
+            'Centro Recreativo': '#F59E0B',
+            'Tours & Aventura':  '#DC2626',
+            'Urbano':            '#EC4899',
+            'Hotel':             '#0077BE'
+        };
+
+        function makeIcon(color, isHotel = false, name = '') {
+            const size = isHotel ? 16 : 12;
+            const border = isHotel ? '#FFD700' : 'rgba(255,255,255,0.9)';
+            const borderW = isHotel ? 3 : 2;
+            const labelStyle = isHotel
+                ? `font-size:11px;font-weight:700;color:#0077BE;background:rgba(255,255,255,0.97);border:1.5px solid #FFD700;`
+                : `font-size:10px;font-weight:600;color:#1F2937;background:rgba(255,255,255,0.93);border:1px solid rgba(0,0,0,0.12);`;
+            return L.divIcon({
+                className: '',
+                html: `
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                    <div style="width:${size}px;height:${size}px;border-radius:50%;background:${color};border:${borderW}px solid ${border};box-shadow:0 2px 6px rgba(0,0,0,0.35);flex-shrink:0;"></div>
+                    <div style="${labelStyle}padding:1px 5px;border-radius:4px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,0.12);line-height:1.4;font-family:'Poppins',sans-serif;max-width:130px;overflow:hidden;text-overflow:ellipsis;">${name}</div>
+                  </div>`,
+                iconSize: [0, 0],
+                iconAnchor: [0, 0],
+                popupAnchor: [0, -28]
+            });
+        }
+
+        function gmapsUrl(lat, lng, name) {
+            return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&destination_place_id=${encodeURIComponent(name)}`;
+        }
+
+        const markersByCategory = {};
+
+        function addMarker(lat, lng, name, cat, rating, photo) {
+            const color = catColors[cat] || '#888';
+            const marker = L.marker([lat, lng], { icon: makeIcon(color, false, name) }).addTo(map);
+            const ratingHtml = rating ? `<div class="map-popup-rating">⭐ ${rating}</div>` : `<div style="height:4px"></div>`;
+            const photoHtml = photo
+                ? `<img class="map-popup-img" src="${photo}" alt="${name}" onclick="openModal('${photo}')" loading="lazy">`
+                : `<div class="map-popup-img-placeholder">📍</div>`;
+            marker.bindPopup(`
+                <div>
+                    ${photoHtml}
+                    <div class="map-popup">
+                        <div class="map-popup-cat" style="color:${color}">${cat}</div>
+                        <div class="map-popup-name">${name}</div>
+                        ${ratingHtml}
+                        <a class="map-popup-link" style="color:#ffffff!important;text-decoration:none!important;" href="${gmapsUrl(lat, lng, name)}" target="_blank" rel="noopener">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                            Cómo llegar
+                        </a>
+                    </div>
+                </div>`, { maxWidth: 260 });
+            if (!markersByCategory[cat]) markersByCategory[cat] = [];
+            markersByCategory[cat].push(marker);
+            return marker;
+        }
+
+        // ── APART HOTEL NAJOS (home base) ──
+        const hotelLat = 6.187913507949604, hotelLng = -74.99490206597002;
+        const hotelIcon = L.divIcon({
+            className: '',
+            html: `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="#D97706" stroke="#92400E" stroke-width="1.2" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4));"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+                <div style="font-size:11px;font-weight:700;color:#92400E;background:rgba(255,255,255,0.97);border:1.5px solid #D97706;padding:1px 5px;border-radius:4px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,0.12);line-height:1.4;font-family:'Poppins',sans-serif;">Apart Hotel Najos</div>
+            </div>`,
+            iconSize: [0, 0], iconAnchor: [0, 0], popupAnchor: [0, -32]
+        });
+        const hotelMarker = L.marker([hotelLat, hotelLng], { icon: hotelIcon, zIndexOffset: 1000 }).addTo(map);
+        hotelMarker.bindPopup(`
+            <div class="map-popup">
+                <div class="map-popup-cat" style="color:#0077BE">🏨 Tu Alojamiento</div>
+                <div class="map-popup-name">Apart Hotel Najos</div>
+                <div style="font-size:12px;color:#6B7280;margin-bottom:10px;">Parque Principal, San Carlos</div>
+                <a class="map-popup-link" href="${gmapsUrl(hotelLat, hotelLng, 'Apart Hotel Najos San Carlos')}" target="_blank" rel="noopener">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                    Cómo llegar
+                </a>
+            </div>`, { maxWidth: 260 });
+
+        // ── CHARCOS ──
+        addMarker(6.191341, -75.022040, 'Charco Los Anillos',      'Charco', '5.0', 'https://i.imgur.com/K6YGUKbh.jpg');
+        addMarker(6.187072, -74.951929, 'Charco Redondo',           'Charco', '4.9', 'https://i.imgur.com/g8Le3i4h.jpg');
+        addMarker(6.195420, -75.023804, 'Charco El Chispero',       'Charco', '4.8', 'https://i.imgur.com/X9iE6hNh.jpg');
+        addMarker(6.186860, -75.011334, 'Charco Los Cajones',       'Charco', '4.8', 'https://i.imgur.com/fnOhUCfh.jpg');
+        addMarker(6.190061, -75.036686, 'Charco Negro (Río Tinto)', 'Charco', '4.7', 'https://i.imgur.com/KrH4euOh.jpg');
+        addMarker(6.188296, -75.000710, 'Charco San Antonio',       'Charco', '4.7', 'https://i.imgur.com/1GSLd3Eh.jpg');
+        addMarker(6.183872, -75.001825, 'Charco El Indio',          'Charco', '4.6', 'https://i.imgur.com/HRScZGJh.jpg');
+        addMarker(6.184613, -74.998920, 'Charco El Marino',         'Charco', '4.5', 'https://i.imgur.com/M6EwvJeh.jpg');
+        addMarker(6.194241, -74.990933, 'Charco La Natalia',        'Charco', '4.4', 'https://i.imgur.com/qiAIBSth.jpg');
+
+        // ── CASCADAS ──
+        addMarker(6.194044, -75.041524, 'Cascada La Chorrera',         'Cascada', '5.0', 'https://i.imgur.com/FaB0wYoh.jpg');
+        addMarker(6.193979, -75.005066, 'Cascada San Antonio',         'Cascada', '4.8', 'https://i.imgur.com/wb8klNch.jpg');
+        addMarker(6.157802, -74.983583, 'Cascada Sardinita',           'Cascada', '4.8', 'https://i.imgur.com/I2EZTB2h.jpg');
+        addMarker(6.166412, -75.045664, 'Cascada El Salto del Tigre',  'Cascada', null,  'https://i.imgur.com/q1YxDWgh.jpg');
+
+        // ── SENDEROS ──
+        addMarker(6.215228, -74.994492, 'Cima Piedra El Tabor',            'Senderismo', '5.0', 'https://i.imgur.com/Ns4qOPqh.jpg');
+        addMarker(6.190367, -75.038588, 'La Chorrera — Sendero Ecológico', 'Senderismo', '4.8', 'https://i.imgur.com/FcvJEYZh.jpg');
+        addMarker(6.188729, -74.999978, 'Sendero San Antonio',             'Senderismo', '4.6', 'https://i.imgur.com/nkC3r0Ph.jpg');
+
+        // ── RESERVAS ──
+        addMarker(6.189609, -75.014350, 'Cielo Escondido — Paraíso Natural', 'Ecoturismo', '4.9', 'https://i.imgur.com/evm8v6fh.jpg');
+
+        // ── CENTROS RECREATIVOS ──
+        addMarker(6.183193, -75.004044, 'Centro Turístico La Planta',      'Centro Recreativo', '4.6', 'https://i.imgur.com/4qY7CzDh.jpg');
+        addMarker(6.197947, -75.004069, 'Zona Camping Centro Recreativo',   'Centro Recreativo', '4.6', 'https://i.imgur.com/PJyC2qo.jpg');
+        addMarker(6.190960, -75.000849, 'Hostería El Cóndor',              'Centro Recreativo', '4.5', 'https://i.imgur.com/alH9gnZ.jpg');
+        addMarker(6.167255, -75.022051, 'Los Colores Centro Recreativo',   'Centro Recreativo', '4.5', 'https://i.imgur.com/TN3nUKGh.jpg');
+        addMarker(6.188397, -74.999720, 'Centro Recreativo San Antonio',   'Centro Recreativo', '4.5', 'https://i.imgur.com/jv0NgvZh.jpg');
+
+        // ── TOURS Y AVENTURA ──
+        addMarker(6.189024, -74.991657, 'Eco Guías Colombia', 'Tours & Aventura', '5.0', 'https://i.imgur.com/00VDd2Qh.jpg');
+
+        // ── URBANO ──
+        addMarker(6.188888, -74.992072, 'Parque Principal San Carlos', 'Urbano', '4.7', 'https://i.imgur.com/Xp0KOH5h.jpg');
+
+        let activeFilter = 'Todos';
+        const legendIds = {
+            'Todos':             'legend-todos',
+            'Hotel':             'legend-Hotel',
+            'Charco':            'legend-Charco',
+            'Cascada':           'legend-Cascada',
+            'Senderismo':        'legend-Senderismo',
+            'Ecoturismo':        'legend-Ecoturismo',
+            'Centro Recreativo': 'legend-Recreativo',
+            'Tours & Aventura':  'legend-Aventura',
+            'Urbano':            'legend-Urbano'
+        };
+
+        function filterMap(cat) {
+            if (activeFilter === cat) { cat = 'Todos'; }
+            activeFilter = cat;
+
+            Object.entries(markersByCategory).forEach(([c, markers]) => {
+                markers.forEach(m => {
+                    if (cat === 'Todos' || c === cat) m.addTo(map);
+                    else map.removeLayer(m);
+                });
+            });
+            if (cat === 'Hotel') {
+                hotelMarker.addTo(map);
+            } else if (cat !== 'Todos') {
+                map.removeLayer(hotelMarker);
+            } else {
+                hotelMarker.addTo(map);
             }
+
+            Object.entries(legendIds).forEach(([c, id]) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.classList.toggle('active', c === cat);
+                el.classList.toggle('dimmed', cat !== 'Todos' && c !== cat);
+            });
+        }
+
+        document.getElementById('legend-todos').classList.add('active');
+    </script>
+
+    <script>
+        function openModal(src) {
+            document.getElementById('modalImg').src = src;
+            document.getElementById('imgModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() {
+            document.getElementById('imgModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // ── HEADER SPACER — RAF-based, never runs on every scroll tick ──
+        const siteHeader = document.getElementById('siteHeader');
+        const headerSpacer = document.getElementById('header-spacer');
+        let isShrunk = false;
+        let rafId = null;
+
+        function syncSpacer() {
+            headerSpacer.style.height = (siteHeader.offsetHeight + 32) + 'px';
         }
 
         function trackDuringTransition() {
             if (rafId) cancelAnimationFrame(rafId);
             const start = performance.now();
             function tick(now) {
-                adjustContentPadding();
+                syncSpacer();
                 if (now - start < 350) rafId = requestAnimationFrame(tick);
                 else rafId = null;
             }
             rafId = requestAnimationFrame(tick);
         }
 
-        window.addEventListener('load', adjustContentPadding);
-        window.addEventListener('resize', adjustContentPadding);
+        // Set spacer once on load/resize — NOT on every scroll
+        window.addEventListener('load', syncSpacer);
+        window.addEventListener('resize', syncSpacer);
 
+        // On scroll: only toggle class when threshold crosses, then run RAF for transition duration
         window.addEventListener('scroll', () => {
             const shrink = window.scrollY > 60;
             if (shrink === isShrunk) return;
             isShrunk = shrink;
             siteHeader.classList.toggle('scrolled', shrink);
-            trackDuringTransition();
+            trackDuringTransition(); // tracks spacer only during the 300ms CSS transition
         }, { passive: true });
 
-        // ── LIGHTBOX SLIDER ──
-        let _imgs = [], _idx = 0;
-
-        function buildImgList() {
-            return Array.from(document.querySelectorAll('.gallery img')).map(i => i.src);
+        // ── FIX 2: scroll to section with live header offset ──
+        function scrollToSection(id) {
+            const target = document.getElementById(id);
+            if (!target) return;
+            const headerHeight = document.getElementById('siteHeader').getBoundingClientRect().height;
+            const targetTop = target.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+                top: targetTop - headerHeight - 16, // 16px breathing room
+                behavior: 'smooth'
+            });
         }
-
-        function openModal(src) {
-            _imgs = buildImgList();
-            _idx = _imgs.indexOf(src);
-            if (_idx < 0) _idx = 0;
-            showSlide();
-            document.getElementById('imgModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function showSlide() {
-            document.getElementById('modalImg').src = _imgs[_idx];
-            document.getElementById('modalCounter').textContent = (_idx + 1) + ' / ' + _imgs.length;
-        }
-
-        function slideModal(dir) {
-            _idx = (_idx + dir + _imgs.length) % _imgs.length;
-            showSlide();
-        }
-
-        function closeModal() {
-            document.getElementById('imgModal').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') closeModal();
-            if (e.key === 'ArrowRight') slideModal(1);
-            if (e.key === 'ArrowLeft') slideModal(-1);
-        });
-
-        // Touch/swipe support
-        let _tx = 0;
-        document.getElementById('imgModal').addEventListener('touchstart', e => { _tx = e.touches[0].clientX; }, { passive: true });
-        document.getElementById('imgModal').addEventListener('touchend', e => {
-            const dx = e.changedTouches[0].clientX - _tx;
-            if (Math.abs(dx) > 40) slideModal(dx < 0 ? 1 : -1);
-        });
     </script>
 
-    <!-- ── FIREBASE AVAILABILITY CALENDAR ── -->
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyBGno4JfubhTO-deCJtP9ozXD_pdPrhmh8",
-        authDomain: "aptos-najos.firebaseapp.com",
-        projectId: "aptos-najos",
-        storageBucket: "aptos-najos.firebasestorage.app",
-        messagingSenderId: "773909398953",
-        appId: "1:773909398953:web:157467cae451bf125ff0b8"
-    };
-
-    const CABIN = "Apto Najos-2";
-    const MONTHS_PER_PAGE = 2;
-
-    const app = initializeApp(firebaseConfig);
-    const db  = getFirestore(app);
-
-    let calOffset = 0;
-    let dateSets  = null;
-
-    function toDateStr(d) {
-        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+<script>
+    // ── DISTANCE BADGES & DIRECTION BUTTONS ──
+    const HOTEL_LAT = 6.187913507949604;
+    const HOTEL_LNG = -74.99490206597002;
+    function gmapsDirections(lat, lng) {
+        return `https://www.google.com/maps/dir/${HOTEL_LAT},${HOTEL_LNG}/${lat},${lng}`;
     }
-
-    async function loadReservations() {
-        const snap = await getDocs(query(collection(db, "cabin_availability"), where("apto", "==", CABIN)));
-        const reservations = [];
-        snap.forEach(doc => {
-            const d = doc.data();
-            if (d.fechaInicio && d.fechaFin)
-                reservations.push({ start: d.fechaInicio, end: d.fechaFin });
-        });
-        return reservations;
-    }
-
-    function buildDateSets(reservations) {
-        const allCheckins  = new Set(reservations.map(r => r.start));
-        const allCheckouts = new Set(reservations.map(r => r.end));
-        const mid = new Set(), checkin = new Set(), checkout = new Set(), shared = new Set();
-
-        reservations.forEach(({ start, end }) => {
-            const s = new Date(start + "T00:00:00");
-            const e = new Date(end   + "T00:00:00");
-
-            if (allCheckouts.has(start)) shared.add(start);
-            else checkin.add(start);
-
-            const cur = new Date(s);
-            cur.setDate(cur.getDate() + 1);
-            while (cur < e) { mid.add(toDateStr(cur)); cur.setDate(cur.getDate() + 1); }
-
-            if (allCheckins.has(end)) shared.add(end);
-            else checkout.add(end);
-        });
-
-        return { mid, checkin, checkout, shared };
-    }
-
-    function renderMonth(year, month) {
-        const today = new Date(); today.setHours(0, 0, 0, 0);
-        const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-                             'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-
-        const wrapper = document.createElement('div');
-        wrapper.className = 'cal-month';
-
-        const header = document.createElement('div');
-        header.className = 'cal-month-header';
-        header.textContent = `${MONTH_NAMES[month]} ${year}`;
-        wrapper.appendChild(header);
-
-        const grid = document.createElement('div');
-        grid.className = 'cal-grid';
-
-        ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].forEach(d => {
-            const h = document.createElement('div');
-            h.className = 'cal-dow'; h.textContent = d; grid.appendChild(h);
-        });
-
-        const firstDay = new Date(year, month, 1).getDay();
-        const offset   = firstDay === 0 ? 6 : firstDay - 1;
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-        for (let i = 0; i < offset; i++) {
-            const blank = document.createElement('div');
-            blank.className = 'cal-day other-month'; grid.appendChild(blank);
-        }
-
-        for (let d = 1; d <= daysInMonth; d++) {
-            const cell    = document.createElement('div');
-            cell.className = 'cal-day';
-            const cur     = new Date(year, month, d);
-            const dateStr = toDateStr(cur);
-
-            if (cur < today) {
-                cell.classList.add('past');
-            } else if (dateSets.shared.has(dateStr)) {
-                cell.classList.add('booked-shared');
-            } else if (dateSets.mid.has(dateStr)) {
-                cell.classList.add('booked-mid');
-            } else if (dateSets.checkin.has(dateStr)) {
-                cell.classList.add('booked-checkin');
-            } else if (dateSets.checkout.has(dateStr)) {
-                cell.classList.add('booked-checkout');
-            }
-
-            if (toDateStr(cur) === toDateStr(today)) cell.classList.add('today');
-            cell.textContent = d;
-            grid.appendChild(cell);
-        }
-
-        wrapper.appendChild(grid);
-        return wrapper;
-    }
-
-    function updateRangeLabel() {
-        const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-                             'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-        const now = new Date();
-        const abs0 = now.getMonth() + calOffset * MONTHS_PER_PAGE;
-        const abs1 = abs0 + 1;
-        const y0 = now.getFullYear() + Math.floor(abs0 / 12);
-        const m0 = ((abs0 % 12) + 12) % 12;
-        const y1 = now.getFullYear() + Math.floor(abs1 / 12);
-        const m1 = ((abs1 % 12) + 12) % 12;
-        document.getElementById('calRangeLabel').textContent =
-            `${MONTH_NAMES[m0]} ${y0}  –  ${MONTH_NAMES[m1]} ${y1}`;
-    }
-
-    function renderPage() {
-        const container = document.getElementById('calendarContainer');
-        container.innerHTML = '';
-        const monthsWrapper = document.createElement('div');
-        monthsWrapper.className = 'cal-months-wrapper';
-
-        const now = new Date();
-        for (let i = 0; i < MONTHS_PER_PAGE; i++) {
-            const abs = now.getMonth() + calOffset * MONTHS_PER_PAGE + i;
-            const y = now.getFullYear() + Math.floor(abs / 12);
-            const m = ((abs % 12) + 12) % 12;
-            monthsWrapper.appendChild(renderMonth(y, m));
-        }
-
-        container.appendChild(monthsWrapper);
-        updateRangeLabel();
-
-        document.getElementById('calPrevBtn').style.opacity = calOffset === 0 ? '0.3' : '1';
-        document.getElementById('calPrevBtn').style.cursor  = calOffset === 0 ? 'default' : 'pointer';
-        document.getElementById('calNextBtn').style.opacity = calOffset >= 2 ? '0.3' : '1';
-        document.getElementById('calNextBtn').style.cursor  = calOffset >= 2 ? 'default' : 'pointer';
-    }
-
-    window.calNavigate = function(direction) {
-        const maxOffset = 2; // 3 pages total: 0, 1, 2 (showing 6 months max)
-        if (direction === -1 && calOffset === 0) return;
-        if (direction === 1 && calOffset >= maxOffset) return;
-        calOffset += direction;
-        renderPage();
-    };
-
-    async function initCalendar() {
-        const container = document.getElementById('calendarContainer');
-        try {
-            const reservations = await loadReservations();
-            dateSets = buildDateSets(reservations);
-            renderPage();
-        } catch (err) {
-            console.error("Error loading availability:", err);
-            container.innerHTML = '<div class="cal-loading">No se pudo cargar la disponibilidad. Intenta de nuevo.</div>';
-        }
-    }
-
-    initCalendar();
-</script>    
-
+    document.querySelectorAll('.attraction-card[data-lat]').forEach(card => {
+        const lat       = parseFloat(card.dataset.lat);
+        const lng       = parseFloat(card.dataset.lng);
+        const distLabel = card.dataset.distLabel;
+        const timeLabel = card.dataset.timeLabel;
+        if (!distLabel || !timeLabel) return;
+        const row = document.createElement('div');
+        row.className = 'card-distance-row';
+        row.innerHTML = `
+            <span class="card-dist-badge">📍 ${distLabel} → ${timeLabel}</span>
+            <a class="card-dir-btn" href="${gmapsDirections(lat, lng)}" target="_blank" rel="noopener">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                    <circle cx="12" cy="9" r="2.5"/>
+                </svg>
+                Dirección
+            </a>`;
+        card.querySelector('.card-body').appendChild(row);
+    });
+</script>
 </body>
 </html>
