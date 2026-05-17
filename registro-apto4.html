@@ -1662,11 +1662,9 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         const modal = document.getElementById("datePickerModal");
         modal.classList.add("show");
         document.body.style.overflow = "hidden";
-        if (bookedDatesLoaded) { renderCalendar(); updateInstruction(); }
-        else {
-          document.getElementById("datePickerScroll").innerHTML = '<div style="text-align:center;padding:40px;color:#14b8a6;font-size:18px;">⏳ Cargando disponibilidad...</div>';
-          loadBookedDates().then(() => { bookedDatesLoaded = true; renderCalendar(); });
-        }
+        // Always reload to get fresh availability data
+        document.getElementById("datePickerScroll").innerHTML = '<div style="text-align:center;padding:40px;color:#14b8a6;font-size:18px;">⏳ Cargando disponibilidad...</div>';
+        loadBookedDates().then(() => { bookedDatesLoaded = true; renderCalendar(); updateInstruction(); });
       };
 
       window.closeDatePickerModal = function() {
