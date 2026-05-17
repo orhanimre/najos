@@ -1551,8 +1551,8 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         btnSubmit.style.display = step === 4 ? "block" : "none";
         summaryBox.style.display = step === 4 ? "block" : "none";
         if (step === 4) { updateSummary(); updateSubmitBtn(); }
-        // When entering step 3 (companions), lock maxCompanions based on rooms
-        if (step === 3) {
+        // When entering step 4 (confirmation/companions), lock maxCompanions based on rooms
+        if (step === 4) {
           maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
           if (currentCompanionCount > maxCompanions) updateCompanions(maxCompanions);
           updateStepperButtons();
