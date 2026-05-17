@@ -460,9 +460,7 @@
     .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 28px; }
     .cal-head { text-align: center; font-size: 10px; font-weight: 700; color: var(--muted); padding: 6px 0; text-transform: uppercase; }
     .cal-day {
-      min-height: 46px; display: flex; flex-direction: column;
-      align-items: center; justify-content: space-between;
-      padding: 5px 2px 4px; box-sizing: border-box;
+      aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
       font-size: 13px; font-weight: 500; border-radius: 8px;
       color: var(--muted); position: relative; transition: all 0.2s;
       background: rgba(255,255,255,0.05);
@@ -472,25 +470,25 @@
     .cal-day.past { opacity: 0.3; }
     .cal-day.other { opacity: 0; pointer-events: none; }
     .cal-day.has-bookings { cursor: pointer; }
-    .cal-day.has-bookings:active { transform: scale(0.92); }
-    .cal-day-num { line-height: 1; flex-shrink: 0; }
-    /* Horizontal chip row: C1 | C2 | C3 */
+    .cal-day.has-bookings:active { transform: scale(0.93); }
+    .cal-day-num { line-height: 1; }
+    /* Chip row — absolutely positioned at the bottom of the square cell */
     .cal-day-chips {
+      position: absolute; bottom: 3px; left: 1px; right: 1px;
       display: flex; flex-direction: row; justify-content: center;
-      align-items: center; gap: 2px; width: 100%; flex-wrap: nowrap;
+      align-items: center; gap: 2px; flex-wrap: nowrap; overflow: hidden;
     }
     .cal-room-chip {
       font-size: 8px; font-weight: 800; letter-spacing: 0.2px;
-      padding: 1px 3px; border-radius: 4px; line-height: 1.5;
+      padding: 1px 3px; border-radius: 3px; line-height: 1.4;
       border: 1px solid transparent; flex-shrink: 0;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.15);
     }
-    .cal-room-chip.c1 { background: rgba(59,130,246,0.25); color: #93c5fd; border-color: rgba(59,130,246,0.5); }
-    .cal-room-chip.c2 { background: rgba(52,211,153,0.25); color: #6ee7b7; border-color: rgba(52,211,153,0.5); }
-    .cal-room-chip.c3 { background: rgba(244,114,182,0.25); color: #f9a8d4; border-color: rgba(244,114,182,0.5); }
-    body.light .cal-room-chip.c1 { background: rgba(59,130,246,0.18); color: #1d4ed8; border-color: rgba(59,130,246,0.45); }
-    body.light .cal-room-chip.c2 { background: rgba(16,185,129,0.18); color: #065f46; border-color: rgba(16,185,129,0.45); }
-    body.light .cal-room-chip.c3 { background: rgba(236,72,153,0.18); color: #9d174d; border-color: rgba(236,72,153,0.45); }
+    .cal-room-chip.c1 { background: rgba(59,130,246,0.25); color: #93c5fd; border-color: rgba(59,130,246,0.55); }
+    .cal-room-chip.c2 { background: rgba(52,211,153,0.25); color: #6ee7b7; border-color: rgba(52,211,153,0.55); }
+    .cal-room-chip.c3 { background: rgba(244,114,182,0.25); color: #f9a8d4; border-color: rgba(244,114,182,0.55); }
+    body.light .cal-room-chip.c1 { background: rgba(59,130,246,0.15); color: #1d4ed8; border-color: rgba(59,130,246,0.45); }
+    body.light .cal-room-chip.c2 { background: rgba(16,185,129,0.15); color: #065f46; border-color: rgba(16,185,129,0.45); }
+    body.light .cal-room-chip.c3 { background: rgba(236,72,153,0.15); color: #9d174d; border-color: rgba(236,72,153,0.45); }
     /* Day popup (bottom sheet style) */
     .day-popup-overlay {
       position: fixed; inset: 0; z-index: 1005;
@@ -1889,7 +1887,7 @@ function renderCalendar() {
       if (bookingsOnDate.length > 0) {
         cell.classList.add('has-bookings');
 
-        // Horizontal chip row: C1 | C2 | C3
+        // Chip row: C1 C2 C3 — absolutely positioned at bottom of the square cell
         const chipsEl = document.createElement('div');
         chipsEl.className = 'cal-day-chips';
         const seenRooms = new Set();
