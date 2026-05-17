@@ -1467,7 +1467,7 @@ html, body { overscroll-behavior: none; }
           <button class="modal-close" onclick="closeDatePickerModal()">✕</button>
           <!-- In-modal room picker -->
           <div class="cal-room-picker" id="calRoomPicker">
-            <span class="cal-room-picker-label">🛏️ Habitaciones:</span>
+            <span class="cal-room-picker-label">🔄 Modificar habitaciones:</span>
             <div class="cal-room-picker-btns" id="calRoomPickerBtns"></div>
             <span class="cal-room-picker-hint">Toca para cambiar</span>
           </div>
@@ -2056,6 +2056,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       }
 
       function toggleCalRoom(roomId) {
+        roomId = Number(roomId); // dataset values are strings — normalise to number
         const idx = selectedRooms.indexOf(roomId);
         if (idx === -1) {
           selectedRooms.push(roomId);
