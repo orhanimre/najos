@@ -1612,6 +1612,9 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         else selectedRooms.splice(idx, 1);
         selectedRooms.sort();
         document.getElementById("roomHint").classList.remove("show");
+        // BUG FIX: reset cached dates so calendar reloads for the new room combination
+        bookedDatesLoaded = false;
+        selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
         buildRoomSelector();
       }
 
@@ -1920,11 +1923,9 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         const modal = document.getElementById("datePickerModal");
         modal.classList.add("show");
         document.body.style.overflow = "hidden";
-        if (bookedDatesLoaded) { renderCalendar(); updateInstruction(); }
-        else {
-          document.getElementById("datePickerScroll").innerHTML = '<div style="text-align:center;padding:40px;color:#14b8a6;font-size:18px;">⏳ Cargando disponibilidad...</div>';
-          loadBookedDates().then(() => { bookedDatesLoaded = true; renderCalendar(); });
-        }
+        // Always reload so dates reflect the currently selected rooms
+        document.getElementById("datePickerScroll").innerHTML = '<div style="text-align:center;padding:40px;color:#14b8a6;font-size:18px;">⏳ Cargando disponibilidad...</div>';
+        loadBookedDates().then(() => { bookedDatesLoaded = true; renderCalendar(); updateInstruction(); });
       };
 
       window.closeDatePickerModal = function() {
