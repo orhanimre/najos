@@ -1128,11 +1128,14 @@ window.updateEditRooms = function() {
     'Apto Najos-4': ['Cuarto 1'],
   };
   const rooms = roomMap[apto] || [];
+  // Apto 4 has only 1 room — hide selector, auto-select Cuarto 1
   if (rooms.length <= 1) {
-    document.getElementById('editRoomsGroup').style.display = rooms.length === 1 ? 'none' : 'none';
-    // For apto4: auto-select Cuarto 1
+    document.getElementById('editRoomsGroup').style.display = 'none';
+    // Store Cuarto 1 as a hidden data attribute so saveEdit() can pick it up
+    container.dataset.autoRoom = rooms.length === 1 ? rooms[0] : '';
     return;
   }
+  container.dataset.autoRoom = '';
   document.getElementById('editRoomsGroup').style.display = 'block';
   rooms.forEach(room => {
     const label = document.createElement('label');
@@ -1293,7 +1296,7 @@ const cc = colorMap[cn] || 'c1';
           <div class="card-name">${reg.nombre || ''} ${reg.apellido || ''}</div>
           <div style="font-size:12px;color:var(--muted);margin-top:3px;font-weight:500;">📱 ${reg.celular || '—'}</div>
         </div>
-        <div class="card-apto ${cc}">Apto ${cn}${reg.habitaciones && reg.habitaciones.length ? '<br><span style="font-size:9px;font-weight:600;opacity:0.8;">'+reg.habitaciones.join('·')+'</span>' : ''}</div>
+        <div class="card-apto ${cc}">Apto ${cn}${reg.habitaciones && reg.habitaciones.length ? '<br><span style="font-size:9px;font-weight:600;opacity:0.8;">' + reg.habitaciones.map(h => h.replace('Cuarto ','')).join(', ') + '</span>' : ''}</div>
       </div>
       <div class="card-dates">
         <strong>${formatDateShort(reg.fechaEntrada)}</strong>
@@ -1435,7 +1438,11 @@ window.closeEditSheet = function() {
 
 window.saveEdit = async function() {
   if (!currentReg) return;
-  const selectedHabitaciones = Array.from(document.querySelectorAll('#editRoomsCheckboxes input[type=checkbox]:checked')).map(cb => cb.value);
+  const container = document.getElementById('editRoomsCheckboxes');
+  const autoRoom = container?.dataset.autoRoom;
+  const selectedHabitaciones = autoRoom
+    ? [autoRoom]
+    : Array.from(document.querySelectorAll('#editRoomsCheckboxes input[type=checkbox]:checked')).map(cb => cb.value);
   const updated = {
     apto: document.getElementById('edc_apto').value,
     habitaciones: selectedHabitaciones,
