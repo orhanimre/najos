@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro Apto 2 - Apto Najos</title>
+    <title>Registro Apto 3 - Apto Najos</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -11,6 +11,7 @@
       * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html, body { overscroll-behavior: none; }
+
       body {
         font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         background: linear-gradient(135deg, #0077BE 0%, #4DA8DA 100%);
@@ -766,20 +767,12 @@ html, body { overscroll-behavior: none; }
 
       /* ── Apartment Rules ── */
       .rules-trigger-btn {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        width: 100%; display: flex; align-items: center; justify-content: space-between;
         padding: 18px 24px;
         background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
-        border: 2px solid #fc8181;
-        border-radius: 16px;
-        cursor: pointer;
-        font-size: 15px;
-        font-weight: 600;
-        color: #742a2a;
-        transition: all 0.3s ease;
-        margin-bottom: 0;
+        border: 2px solid #fc8181; border-radius: 16px;
+        cursor: pointer; font-size: 15px; font-weight: 600; color: #742a2a;
+        transition: all 0.3s ease; margin-bottom: 0;
         text-align: left;
       }
       .rules-trigger-btn:hover {
@@ -788,138 +781,101 @@ html, body { overscroll-behavior: none; }
       }
       .rules-trigger-btn.accepted {
         background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%);
-        border-color: #48bb78;
-        color: #276749;
+        border-color: #48bb78; color: #276749;
       }
       .rules-trigger-btn .rules-btn-left { display: flex; align-items: center; gap: 10px; }
       .rules-trigger-btn .rules-arrow { font-size: 14px; flex-shrink: 0; }
 
       .rules-modal-overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.75);
-        backdrop-filter: blur(4px);
-        z-index: 10001;
-        padding: 20px;
-        align-items: center;
-        justify-content: center;
+        display: none; position: fixed; inset: 0;
+        background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
+        z-index: 10001; padding: 20px; align-items: center; justify-content: center;
       }
       .rules-modal-overlay.show { display: flex; }
 
       .rules-modal {
-        background: white;
-        border-radius: 20px;
-        max-width: 600px;
-        width: 100%;
-        max-height: 85vh;
-        display: flex;
-        flex-direction: column;
+        background: white; border-radius: 20px;
+        max-width: 600px; width: 100%; max-height: 85vh;
+        display: flex; flex-direction: column;
         box-shadow: 0 24px 60px rgba(0,0,0,0.4);
-        animation: slideUp 0.3s ease;
-        overflow: hidden;
+        animation: slideUp 0.3s ease; overflow: hidden;
       }
-
       .rules-modal-header {
         background: linear-gradient(135deg, #0077BE 0%, #005A8D 100%);
-        color: white;
-        padding: 20px 24px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-shrink: 0;
+        color: white; padding: 20px 24px;
+        display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
       }
       .rules-modal-header h3 { font-size: 18px; font-weight: 700; margin: 0; }
       .rules-modal-close {
-        background: rgba(255,255,255,0.2);
-        border: none; color: white;
-        width: 34px; height: 34px;
-        border-radius: 50%; font-size: 22px;
-        cursor: pointer; display: flex;
-        align-items: center; justify-content: center;
+        background: rgba(255,255,255,0.2); border: none; color: white;
+        width: 34px; height: 34px; border-radius: 50%; font-size: 22px;
+        cursor: pointer; display: flex; align-items: center; justify-content: center;
         transition: all 0.2s ease;
       }
       .rules-modal-close:hover { background: rgba(255,255,255,0.35); transform: rotate(90deg); }
-
-      .rules-modal-body {
-        flex: 1;
-        overflow-y: auto;
-        padding: 24px;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .rules-modal-footer {
-        padding: 16px 24px;
-        background: #f9fafb;
-        border-top: 1px solid #e5e7eb;
-        flex-shrink: 0;
-      }
-
+      .rules-modal-body { flex: 1; overflow-y: auto; padding: 24px; -webkit-overflow-scrolling: touch; }
+      .rules-modal-footer { padding: 16px 24px; background: #f9fafb; border-top: 1px solid #e5e7eb; flex-shrink: 0; }
       .rules-confirm-btn {
-        width: 100%;
-        padding: 14px;
+        width: 100%; padding: 14px;
         background: linear-gradient(135deg, #0077BE 0%, #4DA8DA 100%);
-        color: white;
-        border: none;
-        border-radius: 12px;
-        font-size: 16px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(0,119,190,0.35);
+        color: white; border: none; border-radius: 12px;
+        font-size: 16px; font-weight: 700; cursor: pointer;
+        transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,119,190,0.35);
       }
       .rules-confirm-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,119,190,0.45); }
 
-      .rules-rule-item {
-        display: flex;
-        gap: 12px;
-        padding: 12px 0;
-        border-bottom: 1px solid #f0f0f0;
-        align-items: flex-start;
+      .rules-section-title {
+        font-size: 12px; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 0.8px; color: #6b7280;
+        margin: 20px 0 10px; padding-bottom: 6px; border-bottom: 2px solid #e5e7eb;
       }
+      .rules-section-title:first-child { margin-top: 0; }
+      .rules-rule-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f0f0f0; align-items: flex-start; }
       .rules-rule-item:last-child { border-bottom: none; }
-      .rules-rule-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+      .rules-rule-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
       .rules-rule-text { font-size: 14px; color: #374151; line-height: 1.55; }
       .rules-rule-text strong { color: #111827; display: block; margin-bottom: 2px; }
 
-      .rules-section-title {
-        font-size: 13px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        color: #6b7280;
-        margin: 20px 0 10px;
-        padding-bottom: 6px;
-        border-bottom: 2px solid #e5e7eb;
-      }
-      .rules-section-title:first-child { margin-top: 0; }
-
       .rules-checkbox-group {
-        display: flex;
-        align-items: start;
-        gap: 16px;
+        display: flex; align-items: start; gap: 16px;
         padding: 20px 24px;
         background: linear-gradient(135deg, #fff8e1 0%, #fef3c7 100%);
-        border-radius: 16px;
-        border: 2px solid #f59e0b;
-        margin-bottom: 20px;
-        transition: all 0.3s ease;
+        border-radius: 16px; border: 2px solid #f59e0b;
+        margin-bottom: 20px; transition: all 0.3s ease;
       }
       .rules-checkbox-group.checked {
         background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%);
         border-color: #48bb78;
       }
       .rules-checkbox-group input[type="checkbox"] {
-        width: 22px; height: 22px;
-        cursor: pointer; margin-top: 2px;
-        accent-color: #0077BE;
-        flex-shrink: 0;
+        width: 22px; height: 22px; cursor: pointer; margin-top: 2px;
+        accent-color: #0077BE; flex-shrink: 0;
       }
       .rules-checkbox-group label {
-        margin: 0; cursor: pointer;
-        flex: 1; font-weight: 500;
-        font-size: 14px; color: #374151;
-        line-height: 1.5;
+        margin: 0; cursor: pointer; flex: 1;
+        font-weight: 500; font-size: 14px; color: #374151; line-height: 1.5;
+      }
+      .rules-modal-consent {
+        padding: 14px 0 12px;
+        display: flex;
+        align-items: flex-start;
+      }
+      .rules-modal-consent-label {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        color: #374151;
+        line-height: 1.45;
+      }
+      .rules-modal-consent-label input[type="checkbox"] {
+        width: 20px; height: 20px;
+        accent-color: #0077BE;
+        flex-shrink: 0;
+        margin-top: 1px;
+        cursor: pointer;
       }
 
       /* ── Responsive ── */
@@ -973,10 +929,11 @@ html, body { overscroll-behavior: none; }
         }
       }
 
+
       /* ── Room Selector ── */
       .room-selector-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 16px;
         margin-top: 20px;
       }
@@ -984,71 +941,22 @@ html, body { overscroll-behavior: none; }
         .room-selector-grid { grid-template-columns: 1fr; gap: 12px; }
       }
       .room-card {
-        border: 2.5px solid #e2e8f0;
-        border-radius: 16px;
-        padding: 20px 16px;
-        text-align: center;
-        cursor: pointer;
-        background: #fafafa;
-        transition: all 0.25s ease;
-        position: relative;
-        user-select: none;
+        border: 2.5px solid #e2e8f0; border-radius: 16px;
+        padding: 20px 16px; text-align: center; cursor: pointer;
+        background: #fafafa; transition: all 0.25s ease;
+        position: relative; user-select: none;
       }
-      .room-card:hover {
-        border-color: #14b8a6;
-        background: #f0fdfa;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(20,184,166,0.15);
-      }
-      .room-card.selected {
-        border-color: #0077BE;
-        background: linear-gradient(135deg, #ebf8ff 0%, #e0f7f4 100%);
-        box-shadow: 0 4px 16px rgba(0,119,190,0.2);
-        transform: translateY(-2px);
-      }
-      .room-card.selected::after {
-        content: "✓";
-        position: absolute;
-        top: -10px; right: -10px;
-        width: 26px; height: 26px;
-        background: #0077BE;
-        color: white;
-        border-radius: 50%;
-        font-size: 14px; font-weight: 700;
-        display: flex; align-items: center; justify-content: center;
-        border: 2px solid white;
-        box-shadow: 0 2px 8px rgba(0,119,190,0.4);
-      }
+      .room-card:hover { border-color: #14b8a6; background: #f0fdfa; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(20,184,166,0.15); }
+      .room-card.selected { border-color: #0077BE; background: linear-gradient(135deg, #ebf8ff 0%, #e0f7f4 100%); box-shadow: 0 4px 16px rgba(0,119,190,0.2); transform: translateY(-2px); }
+      .room-card.selected::after { content: "✓"; position: absolute; top: -10px; right: -10px; width: 26px; height: 26px; background: #0077BE; color: white; border-radius: 50%; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 8px rgba(0,119,190,0.4); }
       .room-card-icon { font-size: 36px; margin-bottom: 10px; display: block; }
-      .room-card-name {
-        font-weight: 700; font-size: 15px; color: #2d3748; margin-bottom: 6px;
-      }
+      .room-card-name { font-weight: 700; font-size: 15px; color: #2d3748; margin-bottom: 6px; }
       .room-card.selected .room-card-name { color: #0077BE; }
-      .room-card-detail {
-        font-size: 12px; color: #718096; line-height: 1.4;
-      }
-      .room-selection-hint {
-        text-align: center;
-        padding: 12px 20px;
-        background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
-        border: 1.5px solid #fb923c;
-        border-radius: 12px;
-        font-size: 14px; font-weight: 600; color: #9a3412;
-        margin-top: 20px;
-        display: none;
-      }
+      .room-card-detail { font-size: 12px; color: #718096; line-height: 1.4; }
+      .room-selection-hint { text-align: center; padding: 12px 20px; background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border: 1.5px solid #fb923c; border-radius: 12px; font-size: 14px; font-weight: 600; color: #9a3412; margin-top: 20px; display: none; }
       .room-selection-hint.show { display: block; }
-      .selected-rooms-summary {
-        margin-top: 20px;
-        padding: 14px 20px;
-        background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%);
-        border: 2px solid #48bb78;
-        border-radius: 12px;
-        font-size: 14px; font-weight: 600; color: #276749;
-        display: none;
-      }
+      .selected-rooms-summary { margin-top: 20px; padding: 14px 20px; background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%); border: 2px solid #48bb78; border-radius: 12px; font-size: 14px; font-weight: 600; color: #276749; display: none; }
       .selected-rooms-summary.show { display: block; }
-
       /* ── Calendar Instruction Banner ── */
       .calendar-instruction {
         display: flex; align-items: center; justify-content: center;
@@ -1301,8 +1209,6 @@ html, body { overscroll-behavior: none; }
         text-transform: capitalize;
       }
       .room-avail-cal-wrap { min-height: 200px; }
-
-      /* mini calendar grid reusing chip styles */
       .ra-cal-grid {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
@@ -1372,7 +1278,7 @@ html, body { overscroll-behavior: none; }
           <!-- Title + cabin name -->
           <div class="header-center">
             <h1>Registro de Huéspedes</h1>
-            <p class="header-subtitle">🏡 Apart Hotel Najos-2</p>
+            <p class="header-subtitle">🏡 Apart Hotel Najos-3</p>
           </div>
 
           <!-- empty right to keep layout balanced -->
@@ -1384,8 +1290,8 @@ html, body { overscroll-behavior: none; }
 
       <div class="banner-container">
         <img
-          src="https://imgur.com/Bvh5FzZ.jpg"
-          alt="Apto Najos-2"
+          src="https://imgur.com/rR8w3I0.jpg"
+          alt="Apto Najos-3"
           class="banner-image"
           onclick="showBannerLightbox()"
         />
@@ -1429,21 +1335,17 @@ html, body { overscroll-behavior: none; }
           <div class="step-container active" data-step="1">
             <div class="step-intro">
               <h2>🛏️ ¿Qué habitaciones necesitas?</h2>
-              <p>Cada habitación puede ser reservada por huéspedes distintos. Selecciona una o más según tu grupo.</p>
+              <p>Apto 3 tiene 2 cuartos independientes. Selecciona uno o ambos según tu grupo.</p>
             </div>
-            <div class="room-selector-grid" id="roomSelectorGrid">
-              <!-- Rooms injected by JS -->
-            </div>
-            <div class="room-selection-hint" id="roomHint">
-              ⚠️ Por favor selecciona al menos una habitación para continuar.
-            </div>
+            <div class="room-selector-grid" id="roomSelectorGrid"></div>
+            <div class="room-selection-hint" id="roomHint">⚠️ Por favor selecciona al menos una habitación para continuar.</div>
             <div class="selected-rooms-summary" id="roomsSummary"></div>
           </div>
 
-          <!-- Step 2 — Datos (was Step 1) -->
+          <!-- Step 2 -->
           <div class="step-container" data-step="2">
             <div class="step-intro">
-              <h2>🌴 ¡Bienvenidos a Apart Hotel Najos-2!</h2>
+              <h2>🌴 ¡Bienvenidos a Apart Hotel Najos-3!</h2>
               <p>Solo necesitamos unos datos básicos para prepararte una llegada perfecta.</p>
             </div>
             <div class="grid-2">
@@ -1476,7 +1378,7 @@ html, body { overscroll-behavior: none; }
                 <input type="text" id="numeroId" name="numeroId" required placeholder="Ej: 1234567890" autocomplete="off" />
               </div>
             </div>
-            <div class="form-group">
+           <div class="form-group">
               <label for="ciudad">Ciudad de Procedencia <span class="required">*</span></label>
               <input type="text" id="ciudad" name="ciudad" required placeholder="Ej: Bogotá, Medellín, Cali" autocomplete="address-level2" />
             </div>
@@ -1494,7 +1396,7 @@ html, body { overscroll-behavior: none; }
             </div>
           </div>
 
-          <!-- Step 3 — Tu Estadía (was Step 2) -->
+          <!-- Step 3 -->
           <div class="step-container" data-step="3">
             <div class="step-intro">
               <h2>🌊 ¡Genial! Ahora dime cuándo vienes</h2>
@@ -1523,7 +1425,7 @@ html, body { overscroll-behavior: none; }
             </div>
           </div>
 
-          <!-- Step 4 — Confirmación (was Step 3) -->
+          <!-- Step 4 -->
           <div class="step-container" data-step="4">
             <div class="step-intro">
               <h2>👨‍👩‍👧‍👦 Casi listos... completa los datos de tu grupo</h2>
@@ -1544,7 +1446,7 @@ html, body { overscroll-behavior: none; }
               <div class="checkbox-group" id="consentGroup">
                 <input type="checkbox" id="consent" name="consent" required />
                 <label for="consent">
-                  Autorizo el tratamiento de mis datos personales por Aptos Najos-2 conforme a la ley colombiana.
+                  Autorizo el tratamiento de mis datos personales por Aptos Najos-3 conforme a la ley colombiana.
                   <span class="required">*</span>
                   <br /><small style="color:#742a2a; margin-top:6px; display:block; font-weight:400;">
                     Al marcar acepto la política de privacidad y el manejo responsable de mi información.
@@ -1562,7 +1464,6 @@ html, body { overscroll-behavior: none; }
               <input type="hidden" id="rulesConsent" name="rulesConsent" value="" />
             </div>
 
-            <!-- Summary -->
             <div class="summary-box" id="summaryBox" style="display:none">
               <div class="summary-title">📋 Resumen de tu Registro</div>
               <div id="summaryContent"></div>
@@ -1720,6 +1621,7 @@ html, body { overscroll-behavior: none; }
     getFirestore, collection, addDoc, serverTimestamp, getDocs,
     doc, getDoc, onSnapshot, query, where,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
       const firebaseConfig = {
         apiKey: "AIzaSyBGno4JfubhTO-deCJtP9ozXD_pdPrhmh8",
         authDomain: "aptos-najos.firebaseapp.com",
@@ -1733,23 +1635,20 @@ html, body { overscroll-behavior: none; }
       const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
-// ── Room definitions for Apto 2 ──
-const ROOMS_CONFIG = [
-  { id: 1, name: "Cuarto 1", icon: "🛏️", detail: "Cama doble · 2 personas" },
-  { id: 2, name: "Cuarto 2", icon: "🛏️", detail: "Cama doble · 2 personas" },
-  { id: 3, name: "Cuarto 3", icon: "🛏️", detail: "Cama sencilla · 1 persona" },
-];
-
-let selectedRooms = []; // array of room ids e.g. [1, 3]
-
 function toDateStr(d) {
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
 let currentStep = 1;
+let selectedRooms = []; // array of room ids
+
+const ROOMS_CONFIG = [
+  { id: 1, name: "Cuarto 1", icon: "🛏️", detail: "Cama doble · 2 personas" },
+  { id: 2, name: "Cuarto 2", icon: "🛏️", detail: "Cama doble · 2 personas" },
+];
       let companions = [];
       let companionFilledStatus = {};
-      let maxCompanions = 1; // updated dynamically after room selection
+      let maxCompanions = 3; // updated when rooms are selected
       let selectedCheckIn  = null;
       let selectedCheckOut = null;
       let selectingCheckIn = true;
@@ -1779,11 +1678,8 @@ let currentStep = 1;
 
 window.updateReservationDisplay = function(reservation) {
     if (!reservation.fechaEntrada || !reservation.fechaSalida) return;
-    // Restore rooms from saved registration
     if (reservation.habitaciones && Array.isArray(reservation.habitaciones)) {
-      selectedRooms = reservation.habitaciones
-        .map(name => parseInt(name.replace("Cuarto ", "")))
-        .filter(n => !isNaN(n));
+      selectedRooms = reservation.habitaciones.map(name => parseInt(name.replace("Cuarto ", ""))).filter(n => !isNaN(n));
       selectedRooms.sort();
       maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
       buildRoomSelector();
@@ -1889,9 +1785,10 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       decreaseBtn.addEventListener("click", () => { if (currentCompanionCount > 0) updateCompanions(currentCompanionCount - 1); });
       increaseBtn.addEventListener("click", () => {
         if (currentCompanionCount < maxCompanions) updateCompanions(currentCompanionCount + 1);
-        else showToast(`👥 Máximo ${maxCompanions} acompañante(s) para las habitaciones seleccionadas`);
+        else showToast(`👥 Máximo ${maxCompanions} acompañantes permitidos`);
       });
       updateStepperButtons();
+
 
       // ── Room selector ──
       function buildRoomSelector() {
@@ -1899,21 +1796,15 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         if (!grid) return;
         grid.innerHTML = "";
         ROOMS_CONFIG.forEach(room => {
-          // Wrapper column: card on top, peek link below
           const col = document.createElement("div");
           col.className = "room-card-col";
 
           const card = document.createElement("div");
           card.className = "room-card" + (selectedRooms.includes(room.id) ? " selected" : "");
           card.dataset.roomId = room.id;
-          card.innerHTML = `
-            <span class="room-card-icon">${room.icon}</span>
-            <div class="room-card-name">${room.name}</div>
-            <div class="room-card-detail">${room.detail}</div>
-          `;
+          card.innerHTML = `<span class="room-card-icon">${room.icon}</span><div class="room-card-name">${room.name}</div><div class="room-card-detail">${room.detail}</div>`;
           card.addEventListener("click", () => toggleRoom(room.id));
 
-          // Peek link sits below the card, clearly separate
           const peekBtn = document.createElement("button");
           peekBtn.type = "button";
           peekBtn.className = "room-avail-peek-btn";
@@ -1926,11 +1817,9 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         });
         updateRoomsSummary();
       }
-
       function toggleRoom(roomId) {
         const idx = selectedRooms.indexOf(roomId);
-        if (idx === -1) selectedRooms.push(roomId);
-        else selectedRooms.splice(idx, 1);
+        if (idx === -1) selectedRooms.push(roomId); else selectedRooms.splice(idx, 1);
         selectedRooms.sort();
         document.getElementById("roomHint").classList.remove("show");
         // BUG FIX: reset cached dates so calendar reloads for the new room combination
@@ -1938,22 +1827,14 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
         buildRoomSelector();
       }
-
       function updateRoomsSummary() {
         const el = document.getElementById("roomsSummary");
         if (!el) return;
-        if (selectedRooms.length === 0) {
-          el.classList.remove("show"); return;
-        }
+        if (selectedRooms.length === 0) { el.classList.remove("show"); return; }
         const names = selectedRooms.map(id => ROOMS_CONFIG.find(r => r.id === id)?.name).join(", ");
-        const totalCap = selectedRooms.reduce((sum, id) => {
-          const r = ROOMS_CONFIG.find(x => x.id === id);
-          return sum + (r ? parseInt(r.detail) : 2);
-        }, 0);
         el.classList.add("show");
         el.innerHTML = `✅ Seleccionaste: <strong>${names}</strong> · ${selectedRooms.length} habitación(es) · hasta ${selectedRooms.length * 2} personas`;
       }
-
       function applyRoomUrlParams() {
         const params = new URLSearchParams(window.location.search);
         const cuartos = params.get("cuartos");
@@ -1962,8 +1843,6 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           selectedRooms.sort();
         }
       }
-
-      // Read URL params and build selector on load
       applyRoomUrlParams();
       buildRoomSelector();
 
@@ -1992,20 +1871,15 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         btnSubmit.style.display = step === 4 ? "block" : "none";
         summaryBox.style.display = step === 4 ? "block" : "none";
         if (step === 4) { updateSummary(); updateSubmitBtn(); }
-        if (step === 3 && !bookedDatesLoaded) {
-          loadBookedDates().then(() => { bookedDatesLoaded = true; });
-        }
-        // When entering step 2, lock in maxCompanions based on selected rooms
-        if (step === 2) {
+        // When entering step 4 (confirmation/companions), lock maxCompanions based on rooms
+        if (step === 4) {
           maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
           if (currentCompanionCount > maxCompanions) updateCompanions(maxCompanions);
           updateStepperButtons();
-          const helperEl = document.getElementById("companionsHelperText");
-          if (helperEl) {
-            const cap = selectedRooms.length * 2;
-            helperEl.textContent = `Capacidad total: ${cap} persona(s) · máximo ${maxCompanions} acompañante(s)`;
-          }
+          const helperEl = document.getElementById('companionsHelperText');
+          if (helperEl) helperEl.textContent = `Capacidad total: ${selectedRooms.length * 2} persona(s) · máximo ${maxCompanions} acompañante(s)`;
         }
+        if (step === 3 && !bookedDatesLoaded) loadBookedDates().then(() => { bookedDatesLoaded = true; });
         updateProgress();
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
@@ -2015,12 +1889,10 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         if (step === 1) {
           if (selectedRooms.length === 0) {
             document.getElementById("roomHint").classList.add("show");
-            showToast("🛏️ Por favor selecciona al menos una habitación");
-            return false;
+            showToast("🛏️ Por favor selecciona al menos una habitación"); return false;
           }
           return true;
         }
-        // Step 2: país check
         if (step === 2) {
           const paisSelect = document.getElementById("pais");
           if (paisSelect.value === "__otro__" && !document.getElementById("otrosPais").value.trim()) {
@@ -2034,7 +1906,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
             return false;
           }
         }
-        // Step 4: rules must be accepted
+        // Custom check: rules must be accepted on step 4
         if (step === 4 && rulesConsentHidden.value !== "accepted") {
           showToast("📋 Debes leer y aceptar el Reglamento del Apartamento para continuar.");
           return false;
@@ -2053,31 +1925,29 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       }
 
       window.closeSuccessModal = function() {
-    const modal = document.getElementById("successModal");
-    if (modal) {
-      modal.style.animation = "fadeOut 0.3s ease";
-      setTimeout(() => {
-        modal.remove(); form.reset();
-        companions = []; companionFilledStatus = {};
-        companionsContainer.innerHTML = "";
-        consentGroup.classList.remove("checked");
-        rulesConsentHidden.value = "";
-        const mc = document.getElementById("rulesModalCheck");
-        if (mc) mc.checked = false;
-        const cb = document.getElementById("rulesConfirmBtn");
-        if (cb) { cb.disabled = true; cb.style.opacity = "0.5"; cb.style.cursor = "not-allowed"; }
-        const st = document.getElementById("rulesTriggerStatus");
-        if (st) st.textContent = "👆 Toca para leer";
-        const tb = document.getElementById("rulesTriggerBtn");
-        if (tb) tb.classList.remove("accepted");
-        currentStep = 1; currentCompanionCount = 0;
+        const modal = document.getElementById("successModal");
+        if (modal) {
+          modal.style.animation = "fadeOut 0.3s ease";
+          setTimeout(() => {
+            modal.remove(); form.reset();
+            companions = []; companionFilledStatus = {};
+            companionsContainer.innerHTML = "";
+            consentGroup.classList.remove("checked");
+            rulesConsentHidden.value = "";
+            const mc = document.getElementById("rulesModalCheck");
+            if (mc) mc.checked = false;
+            const cb = document.getElementById("rulesConfirmBtn");
+            if (cb) { cb.disabled = true; cb.style.opacity = "0.5"; cb.style.cursor = "not-allowed"; }
+            const st = document.getElementById("rulesTriggerStatus");
+            if (st) st.textContent = "👆 Toca para leer";
+            const tb = document.getElementById("rulesTriggerBtn");
+            if (tb) tb.classList.remove("accepted");
+            currentStep = 1; currentCompanionCount = 0;
             stepperValue.textContent = "0"; totalHuespedesInput.value = "0";
             updateStepperButtons();
             selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
+            selectedRooms = []; maxCompanions = 1; buildRoomSelector();
             bookedDatesLoaded = false;
-            // Reset room selection
-            selectedRooms = []; maxCompanions = 1;
-            buildRoomSelector();
             updateDateDisplay();
             horaEntrada.value = "14:00"; horaSalida.value = "11:00";
             showStep(1);
@@ -2090,7 +1960,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           <div class="lightbox-overlay" onclick="this.remove()">
             <div class="lightbox-content" onclick="event.stopPropagation()">
               <button class="lightbox-close" onclick="this.closest('.lightbox-overlay').remove()">×</button>
-              <img src="https://imgur.com/Bvh5FzZ.jpg" alt="Apto Najos-2" class="lightbox-image" />
+              <img src="https://imgur.com/rR8w3I0.jpg" alt="Apto Najos-3" class="lightbox-image" />
             </div>
           </div>
         `);
@@ -2199,45 +2069,33 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
 
       async function loadBookedDates() {
     try {
-        // Fetch all availability for this apto and filter client-side by selected rooms.
-        // A doc matches if:
-        //   a) it has no habitacion field (legacy whole-apto booking → blocks everything)
-        //   b) its habitacion matches one of the selected rooms
         const selectedRoomNames = selectedRooms.map(id => `Cuarto ${id}`);
         const querySnapshot = await getDocs(
-          query(collection(db, "cabin_availability"), where("apto", "==", "Apto Najos-2"))
+          query(collection(db, "cabin_availability"), where("apto", "==", "Apto Najos-3"))
         );
         const relevantDocs = [];
         querySnapshot.forEach(doc => {
           const d = doc.data();
           if (!d.fechaInicio || !d.fechaFin) return;
-          // Include if no habitacion (legacy) OR if habitacion is one of the selected rooms
-          if (!d.habitacion || selectedRoomNames.includes(d.habitacion)) {
-            relevantDocs.push(d);
-          }
+          // Include if no habitacion (legacy) OR habitacion matches a selected room
+          if (!d.habitacion || selectedRoomNames.includes(d.habitacion)) relevantDocs.push(d);
         });
-
         bookedDates = [];
         window.checkoutDates = []; window.checkinDates = []; window.middleDates = []; window.sharedDates = [];
         const checkInDates  = relevantDocs.map(d => d.fechaInicio);
         const checkOutDates = relevantDocs.map(d => d.fechaFin);
-
         relevantDocs.forEach(d => {
-            const start = new Date(d.fechaInicio + "T00:00:00");
-            const end   = new Date(d.fechaFin   + "T00:00:00");
+            const start = new Date(d.fechaInicio + "T00:00:00"); const end = new Date(d.fechaFin + "T00:00:00");
             const isCheckInShared  = checkOutDates.includes(d.fechaInicio);
             const isCheckOutShared = checkInDates.includes(d.fechaFin);
-
-            if (isCheckInShared) { if (!window.sharedDates.includes(d.fechaInicio))  window.sharedDates.push(d.fechaInicio); }
-            else                 { if (!window.checkinDates.includes(d.fechaInicio))  window.checkinDates.push(d.fechaInicio); }
-
+            if (isCheckInShared) { if (!window.sharedDates.includes(d.fechaInicio)) window.sharedDates.push(d.fechaInicio); }
+            else { if (!window.checkinDates.includes(d.fechaInicio)) window.checkinDates.push(d.fechaInicio); }
             for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
                 const s = toDateStr(dt);
                 if (s !== d.fechaInicio && s !== d.fechaFin && !window.middleDates.includes(s)) window.middleDates.push(s);
             }
-            if (isCheckOutShared) { if (!window.sharedDates.includes(d.fechaFin))    window.sharedDates.push(d.fechaFin); }
-            else                  { if (!window.checkoutDates.includes(d.fechaFin))   window.checkoutDates.push(d.fechaFin); }
-
+            if (isCheckOutShared) { if (!window.sharedDates.includes(d.fechaFin)) window.sharedDates.push(d.fechaFin); }
+            else { if (!window.checkoutDates.includes(d.fechaFin)) window.checkoutDates.push(d.fechaFin); }
             for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
                 const s = toDateStr(dt);
                 if (!bookedDates.includes(s)) bookedDates.push(s);
@@ -2297,7 +2155,6 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         const abs = now.getMonth() + newOffset;
         const y = now.getFullYear() + Math.floor(abs / 12);
         const m = ((abs % 12) + 12) % 12;
-        // Don't go before current month
         if (y < now.getFullYear() || (y === now.getFullYear() && m < now.getMonth())) return;
         roomAvailOffset = newOffset;
         renderRoomAvailMonth();
@@ -2306,17 +2163,16 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       async function loadAndRenderRoomAvail() {
         try {
           const snap = await getDocs(
-            query(collection(db, "cabin_availability"), where("apto", "==", "Apto Najos-2"))
+            query(collection(db, "cabin_availability"), where("apto", "==", "Apto Najos-3"))
           );
           const reservations = [];
           snap.forEach(doc => {
             const d = doc.data();
             if (!d.fechaInicio || !d.fechaFin) return;
-            const roomKey = roomAvailCurrentRoom.name; // e.g. "Cuarto 1"
+            const roomKey = roomAvailCurrentRoom.name;
             if (!d.habitacion || d.habitacion === roomKey)
               reservations.push({ start: d.fechaInicio, end: d.fechaFin });
           });
-          // Build date sets
           const allCheckins  = new Set(reservations.map(r => r.start));
           const allCheckouts = new Set(reservations.map(r => r.end));
           const mid = new Set(), checkin = new Set(), checkout = new Set(), shared = new Set();
@@ -2345,12 +2201,8 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         const m = ((abs % 12) + 12) % 12;
 
         document.getElementById("roomAvailMonthLabel").textContent = `${RA_MONTHS[m]} ${y}`;
+        document.getElementById("roomAvailPrev").disabled = (y === now.getFullYear() && m === now.getMonth());
 
-        // Prev button: disable if at current month
-        const prevBtn = document.getElementById("roomAvailPrev");
-        prevBtn.disabled = (y === now.getFullYear() && m === now.getMonth());
-
-        // Build mini grid
         const grid = document.createElement("div");
         grid.className = "ra-cal-grid";
         ["L","M","X","J","V","S","D"].forEach(d => {
@@ -2382,7 +2234,6 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         wrap.appendChild(grid);
       }
 
-      // Close modal on overlay click
       document.getElementById("roomAvailModal").addEventListener("click", function(e) {
         if (e.target === this) closeRoomAvailModal();
       });
@@ -2418,6 +2269,15 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         selectedRooms.sort();
         // Sync to main room selector
         buildRoomSelector();
+        // Update maxCompanions dynamically: 1 room→1, 2 rooms→3, 3 rooms→5
+        maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
+        if (currentCompanionCount > maxCompanions) updateCompanions(maxCompanions);
+        // Update helper text if visible
+        const helperEl = document.getElementById("companionsHelperText");
+        if (helperEl) {
+          const cap = selectedRooms.length * 2;
+          helperEl.textContent = `Capacidad total: ${cap} persona(s) · máximo ${maxCompanions} acompañante(s)`;
+        }
         // Reset dates since room combo changed
         selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
         updateDateDisplay();
@@ -2439,7 +2299,6 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           bookedDatesLoaded = true;
           renderCalendar();
           updateInstruction();
-          // If we auto-filled rooms for preview, clear them back so step 1 stays unselected
           if (previewAll) { selectedRooms = []; buildRoomSelector(); buildCalRoomPicker(); renderCalendar(); }
         });
       };
@@ -2615,10 +2474,8 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
           showToast("⚠️ Por favor escribe tu país de origen"); return;
         }
         const formData = new FormData(form);
-        const habitacionNames = selectedRooms.map(id => `Cuarto ${id}`);
         const data = {
-          apto: "Apto Najos-2",
-          habitaciones: habitacionNames,
+          apto: "Apto Najos-3",
           timestamp: serverTimestamp(),
           nombre: formData.get("nombre"), apellido: formData.get("apellido"),
           celular: formData.get("celular"), tipoId: formData.get("tipoId"),
@@ -2637,16 +2494,14 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
         });
         btnSubmit.textContent = "Enviando..."; btnSubmit.disabled = true;
         try {
+          const habitacionNames = selectedRooms.map(id => `Cuarto ${id}`);
+          data.habitaciones = habitacionNames;
           const regRef = await addDoc(collection(db, "registrations"), data);
-          // Write one cabin_availability doc per selected room
           for (const roomName of habitacionNames) {
             await addDoc(collection(db, "cabin_availability"), {
-              apto: "Apto Najos-2",
-              habitacion: roomName,
-              fechaInicio: selectedCheckIn,
-              fechaFin: selectedCheckOut,
-              registrationId: regRef.id,
-              createdAt: serverTimestamp(),
+              apto: "Apto Najos-3", habitacion: roomName,
+              fechaInicio: selectedCheckIn, fechaFin: selectedCheckOut,
+              registrationId: regRef.id, createdAt: serverTimestamp(),
             });
           }
           try {
@@ -2663,9 +2518,7 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
                 <button class="modal-close" onclick="closeSuccessModal()">×</button>
                 <div class="modal-icon">🎉</div>
                 <div class="modal-title">¡Registro Completado!</div>
-                <div class="modal-text">Te esperamos con ríos, naturaleza y buenas vibras.<br><br>
-                  <strong>Habitación(es):</strong> ${habitacionNames.join(", ")}
-                </div>
+                <div class="modal-text">Te esperamos con ríos, naturaleza y buenas vibras.<br><br><strong>Habitación(es):</strong> ${habitacionNames.join(", ")}</div>
               </div>
             </div>
           `);
@@ -2706,7 +2559,6 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
           confirmBtn.disabled = true;
           confirmBtn.style.opacity = "0.5";
           confirmBtn.style.cursor = "not-allowed";
-          // Revert trigger button and hidden input if user unchecks inside modal
           rulesConsentHidden.value = "";
           const statusEl = document.getElementById("rulesTriggerStatus");
           const triggerBtn = document.getElementById("rulesTriggerBtn");
@@ -2740,15 +2592,9 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
         const consentOk = consentCheckbox.checked;
         const rulesOk   = rulesConsentHidden.value === "accepted";
         if (consentOk && rulesOk) {
-          btn.disabled = false;
-          btn.style.opacity = "1";
-          btn.style.cursor  = "pointer";
-          btn.style.filter  = "";
+          btn.disabled = false; btn.style.opacity = "1"; btn.style.cursor = "pointer"; btn.style.filter = "";
         } else {
-          btn.disabled = true;
-          btn.style.opacity = "0.5";
-          btn.style.cursor  = "not-allowed";
-          btn.style.filter  = "grayscale(30%)";
+          btn.disabled = true; btn.style.opacity = "0.5"; btn.style.cursor = "not-allowed"; btn.style.filter = "grayscale(30%)";
         }
       }
       consentCheckbox.addEventListener("change", updateSubmitBtn);
