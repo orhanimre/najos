@@ -1127,7 +1127,7 @@ alt="Apto Najos-4"
                 <button type="button" class="stepper-btn" id="increaseBtn">+</button>
               </div>
               <input type="hidden" id="totalHuespedes" name="totalHuespedes" value="0" required />
-              <div class="helper-text">Máximo 3 acompañantes (sin incluirte a ti)</div>
+              <div class="helper-text">Máximo 1 acompañante (cuarto para 2 personas)</div>
             </div>
             <div class="companions-container" id="companionsContainer"></div>
             <div style="margin-top: 40px">
@@ -1270,7 +1270,7 @@ alt="Apto Najos-4"
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import {
     getFirestore, collection, addDoc, serverTimestamp, getDocs,
-    doc, getDoc, onSnapshot,
+    doc, getDoc, onSnapshot, query, where,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -1293,7 +1293,7 @@ function toDateStr(d) {
 let currentStep = 1;
       let companions = [];
       let companionFilledStatus = {};
-      const maxCompanions = 3;
+      const maxCompanions = 1; // Apto 4 has 1 room (2 people max)
       let selectedCheckIn  = null;
       let selectedCheckOut = null;
       let selectingCheckIn = true;
@@ -1605,6 +1605,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         const apellido = formData.get("apellido");
         const filled   = Object.values(companionFilledStatus).filter(s => s).length;
         let html = `
+          <div class="summary-item"><span class="summary-label">Habitación:</span><span class="summary-value">Cuarto 1</span></div>
           <div class="summary-item"><span class="summary-label">Huésped Principal:</span><span class="summary-value">${nombre} ${apellido}</span></div>
         `;
         if (selectedCheckIn && selectedCheckOut) {
@@ -1624,37 +1625,35 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
 
       async function loadBookedDates() {
     try {
-        const querySnapshot = await getDocs(collection(db, "cabin_availability"));
+        const querySnapshot = await getDocs(
+          query(collection(db, "cabin_availability"), where("apto", "==", "Apto Najos-4"))
+        );
+        const relevantDocs = [];
+        querySnapshot.forEach(doc => {
+          const d = doc.data();
+          if (d.fechaInicio && d.fechaFin) relevantDocs.push(d);
+        });
         bookedDates = [];
         window.checkoutDates = []; window.checkinDates = []; window.middleDates = []; window.sharedDates = [];
-        const checkInDates = []; const checkOutDates = [];
-        querySnapshot.forEach(doc => {
-            const d = doc.data();
-            if (d.apto === "Apto Najos-4") {
-                if (d.fechaInicio) checkInDates.push(d.fechaInicio);
-                if (d.fechaFin)    checkOutDates.push(d.fechaFin);
+        const checkInDates  = relevantDocs.map(d => d.fechaInicio);
+        const checkOutDates = relevantDocs.map(d => d.fechaFin);
+        relevantDocs.forEach(d => {
+            const start = new Date(d.fechaInicio + "T00:00:00"); const end = new Date(d.fechaFin + "T00:00:00");
+            const isCheckInShared  = checkOutDates.includes(d.fechaInicio);
+            const isCheckOutShared = checkInDates.includes(d.fechaFin);
+            if (isCheckInShared) { if (!window.sharedDates.includes(d.fechaInicio)) window.sharedDates.push(d.fechaInicio); }
+            else { if (!window.checkinDates.includes(d.fechaInicio)) window.checkinDates.push(d.fechaInicio); }
+            for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
+                const s = toDateStr(dt);
+                if (s !== d.fechaInicio && s !== d.fechaFin && !window.middleDates.includes(s)) window.middleDates.push(s);
             }
-        });
-        querySnapshot.forEach(doc => {
-            const d = doc.data();
-            if (d.apto === "Apto Najos-4" && d.fechaInicio && d.fechaFin) {
-                const start = new Date(d.fechaInicio + "T00:00:00"); const end = new Date(d.fechaFin + "T00:00:00");
-                const isCheckInShared  = checkOutDates.includes(d.fechaInicio);
-                const isCheckOutShared = checkInDates.includes(d.fechaFin);
-                if (isCheckInShared) { if (!window.sharedDates.includes(d.fechaInicio)) window.sharedDates.push(d.fechaInicio); }
-                else { if (!window.checkinDates.includes(d.fechaInicio)) window.checkinDates.push(d.fechaInicio); }
-                for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
-                    const s = toDateStr(dt);
-                    if (s !== d.fechaInicio && s !== d.fechaFin && !window.middleDates.includes(s)) window.middleDates.push(s);
-                }
-                if (isCheckOutShared) { if (!window.sharedDates.includes(d.fechaFin)) window.sharedDates.push(d.fechaFin); }
-                else { if (!window.checkoutDates.includes(d.fechaFin)) window.checkoutDates.push(d.fechaFin); }
-                for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
-                    const s = toDateStr(dt);
-                    if (!bookedDates.includes(s)) bookedDates.push(s);
-                }
-                if (isCheckOutShared && !bookedDates.includes(d.fechaFin)) bookedDates.push(d.fechaFin);
+            if (isCheckOutShared) { if (!window.sharedDates.includes(d.fechaFin)) window.sharedDates.push(d.fechaFin); }
+            else { if (!window.checkoutDates.includes(d.fechaFin)) window.checkoutDates.push(d.fechaFin); }
+            for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
+                const s = toDateStr(dt);
+                if (!bookedDates.includes(s)) bookedDates.push(s);
             }
+            if (isCheckOutShared && !bookedDates.includes(d.fechaFin)) bookedDates.push(d.fechaFin);
         });
     } catch (err) { console.error("Error loading booked dates:", err); }
 }
@@ -1846,9 +1845,11 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
         });
         btnSubmit.textContent = "Enviando..."; btnSubmit.disabled = true;
         try {
+          data.habitaciones = ["Cuarto 1"];
           const regRef = await addDoc(collection(db, "registrations"), data);
           await addDoc(collection(db, "cabin_availability"), {
-            apto: "Apto Najos-4", fechaInicio: selectedCheckIn, fechaFin: selectedCheckOut,
+            apto: "Apto Najos-4", habitacion: "Cuarto 1",
+            fechaInicio: selectedCheckIn, fechaFin: selectedCheckOut,
             registrationId: regRef.id, createdAt: serverTimestamp(),
           });
           try {
