@@ -2207,11 +2207,11 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           }
           const num = document.createElement("div"); num.className = "calendar-day-number"; num.textContent = day;
           cell.appendChild(num);
-          // Per-room availability chips (only for future dates after data is loaded)
+          // Per-room availability chips — only for selected rooms
           if (cellDate >= today && window.roomAvailMap !== undefined) {
             const chips = document.createElement("div");
             chips.className = "room-chips";
-            ROOMS_CONFIG.forEach(room => {
+            ROOMS_CONFIG.filter(room => selectedRooms.includes(room.id)).forEach(room => {
               const chip = document.createElement("span");
               const isBooked = window.roomAvailMap[dateStr]?.[room.name] === 'booked';
               chip.className = "room-chip " + (isBooked ? "chip-booked" : "chip-available");
