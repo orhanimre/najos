@@ -281,16 +281,40 @@
     .badge-time.red    { color: #7f1d1d; background: #fecaca; border: 1.5px solid #ef4444; }
     .badge-time.violet { color: #4c1d95; background: #ede9fe; border: 1.5px solid #7c3aed; }
 
-    .card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
     .card-name { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; }
     .card-apto {
-      font-size: 12px; font-weight: 800; padding: 5px 12px; border-radius: 8px;
+      font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 7px;
       text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; margin-left: 8px;
       border: 1.5px solid transparent;
     }
     .card-apto.c1 { background: #bfdbfe; color: #1e3a5f; border-color: #3b82f6; }
     .card-apto.c2 { background: #a7f3d0; color: #064e3b; border-color: #10b981; }
     .card-apto.c3 { background: #fce7f3; color: #831843; border-color: #ec4899; }
+
+    /* ── ROOM PILLS ── */
+    .card-rooms {
+      display: flex; flex-wrap: wrap; gap: 5px;
+      margin-bottom: 8px;
+    }
+    .room-pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 700;
+      padding: 3px 9px; border-radius: 20px;
+      border: 1.5px solid transparent;
+      letter-spacing: 0.2px;
+    }
+    .room-pill.c1 { background: rgba(59,130,246,0.1); color: #1e3a5f; border-color: rgba(59,130,246,0.35); }
+    .room-pill.c2 { background: rgba(16,185,129,0.1); color: #064e3b; border-color: rgba(16,185,129,0.35); }
+    .room-pill.c3 { background: rgba(236,72,153,0.1); color: #831843; border-color: rgba(236,72,153,0.35); }
+    body.light .room-pill.c1 { background: rgba(59,130,246,0.12); }
+    body.light .room-pill.c2 { background: rgba(16,185,129,0.12); }
+    body.light .room-pill.c3 { background: rgba(236,72,153,0.12); }
+    .room-pill-warn {
+      font-size: 11px; font-weight: 600; color: var(--amber);
+      padding: 3px 8px; border-radius: 20px;
+      background: rgba(251,191,36,0.1); border: 1.5px solid rgba(251,191,36,0.3);
+    }
 
     .card-dates {
       display: flex; align-items: center; gap: 8px;
@@ -1296,7 +1320,13 @@ const cc = colorMap[cn] || 'c1';
           <div class="card-name">${reg.nombre || ''} ${reg.apellido || ''}</div>
           <div style="font-size:12px;color:var(--muted);margin-top:3px;font-weight:500;">📱 ${reg.celular || '—'}</div>
         </div>
-        <div class="card-apto ${cc}">Apto ${cn}${reg.habitaciones && reg.habitaciones.length ? '<br><span style="font-size:9px;font-weight:600;opacity:0.8;">' + reg.habitaciones.map(h => h.replace('Cuarto ','')).join(', ') + '</span>' : ''}</div>
+        <div class="card-apto ${cc}">Apto ${cn}</div>
+      </div>
+      <div class="card-rooms">
+        ${(reg.habitaciones && reg.habitaciones.length)
+          ? reg.habitaciones.map(h => `<span class="room-pill ${cc}">🛏️ ${h}</span>`).join('')
+          : (cn !== '4' ? `<span class="room-pill-warn">⚠️ Sin habitación</span>` : `<span class="room-pill ${cc}">🛏️ Cuarto 1</span>`)
+        }
       </div>
       <div class="card-dates">
         <strong>${formatDateShort(reg.fechaEntrada)}</strong>
@@ -1306,9 +1336,9 @@ const cc = colorMap[cn] || 'c1';
       </div>
       <div class="card-bottom">
         <div class="card-city">📍 ${reg.ciudad || '—'}</div>
-        <div class="card-guests" style="font-size:11px;">${'👤'.repeat(guests)} (${guests})</div>
+        <div class="card-guests" style="font-size:11px;">${'👤'.repeat(Math.min(guests,6))} (${guests})</div>
       </div>
-      ${statusBadge ? `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">${statusBadge}</div>` : ''}
+      ${statusBadge ? `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px;">${statusBadge}</div>` : ''}
     </div>`;
   }).join('');
 }
