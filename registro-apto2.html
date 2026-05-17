@@ -1216,24 +1216,23 @@ html, body { overscroll-behavior: none; }
       /* ── Per-card availability peek link ── */
       .room-avail-peek-btn {
         display: block;
-        width: 100%;
-        margin-top: 6px;
-        padding: 5px 8px;
+        width: fit-content;
+        margin: 6px auto 0;
+        padding: 3px 12px;
         background: none;
         border: none;
         font-family: inherit;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 500;
         color: #64748b;
         cursor: pointer;
         text-align: center;
-        text-decoration: underline;
-        text-decoration-style: dotted;
-        text-underline-offset: 3px;
+        letter-spacing: 0.2px;
+        line-height: 1.4;
         transition: color 0.15s;
-        letter-spacing: 0.1px;
+        border-radius: 6px;
       }
-      .room-avail-peek-btn:hover { color: #15803d; }
+      .room-avail-peek-btn:hover { color: #0077BE; background: rgba(0,119,190,0.07); }
 
       /* ── Room availability modal ── */
       .room-avail-overlay {
@@ -1918,7 +1917,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           const peekBtn = document.createElement("button");
           peekBtn.type = "button";
           peekBtn.className = "room-avail-peek-btn";
-          peekBtn.textContent = "••• Ver disponibilidad 📅";
+          peekBtn.textContent = "Ver disponibilidad 📅";
           peekBtn.addEventListener("click", () => openRoomAvailModal(room));
 
           col.appendChild(card);
