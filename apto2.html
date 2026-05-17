@@ -406,7 +406,205 @@
             .contact-card { flex-direction: row; padding: 18px 20px; gap: 16px; }
             .contact-card-text { text-align: left; }
         }
-    
+
+        /* ── ROOM CARDS ── */
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 8px;
+        }
+
+        .room-card {
+            background: white;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,77,115,0.07);
+            transition: box-shadow 0.25s ease, transform 0.25s ease;
+        }
+
+        .room-card:hover {
+            box-shadow: 0 8px 28px rgba(0,77,115,0.14);
+            transform: translateY(-2px);
+        }
+
+        .room-card-header {
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
+            color: white;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .room-card-name {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+        }
+
+        .room-card-badge {
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 3px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .room-card-body {
+            padding: 14px;
+        }
+
+        .room-card-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .room-cal-btn {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            border: 1.5px solid #d1d5eb;
+            background: white;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+            color: #374151;
+        }
+
+        .room-cal-btn:hover { background: #f3f4f6; border-color: #9ca3af; }
+
+        .room-cal-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6B7280;
+        }
+
+        .room-cal-container {
+            min-height: 180px;
+        }
+
+        .room-cal-loading {
+            text-align: center;
+            padding: 24px 12px;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        .room-cal-months {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .room-cal-month {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+
+        .room-cal-month-header {
+            background: #f3f4f6;
+            color: #374151;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .room-cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0;
+            padding: 6px;
+        }
+
+        .room-cal-dow {
+            text-align: center;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--ocean);
+            padding: 3px 1px;
+            text-transform: uppercase;
+        }
+
+        .room-cal-day {
+            position: relative;
+            aspect-ratio: 1;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px;
+            font-weight: 500;
+            border-radius: 4px;
+            margin: 1px;
+            color: #374151;
+            background: white;
+        }
+
+        .room-cal-day.other-month { visibility: hidden; }
+        .room-cal-day.past { color: #d1d5db; }
+        .room-cal-day.today { outline: 2px solid var(--ocean); font-weight: 700; color: var(--ocean); }
+        .room-cal-day.booked-mid  { background: #fecaca; color: #dc2626; font-weight: 600; }
+        .room-cal-day.booked-checkin  { background: linear-gradient(90deg, white 50%, #fecaca 50%); font-weight: 600; }
+        .room-cal-day.booked-checkout { background: linear-gradient(90deg, #fecaca 50%, white 50%); font-weight: 600; }
+        .room-cal-day.booked-shared   { background: #fecaca; color: #dc2626; font-weight: 700; }
+
+        .room-card-footer {
+            padding: 12px 14px 14px;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .room-reserve-btn {
+            display: block;
+            width: 100%;
+            padding: 11px 16px;
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0,119,190,0.3);
+        }
+
+        .room-reserve-btn:hover {
+            background: linear-gradient(135deg, var(--ocean-dark) 0%, #004470 100%);
+            box-shadow: 0 6px 18px rgba(0,119,190,0.4);
+            transform: translateY(-1px);
+        }
+
+        .rooms-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .rooms-legend-item {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 12px; color: #6B7280; font-weight: 500;
+        }
+
+        .rooms-legend-dot {
+            width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .rooms-grid { grid-template-columns: 1fr; gap: 16px; }
+        }
+
         /* ── SHRINKING HEADER ON SCROLL ── */
         .header { transition: padding 0.3s ease, box-shadow 0.3s ease; }
         .header.scrolled { padding: 6px 40px; box-shadow: 0 2px 12px rgba(0,119,190,0.4); }
@@ -482,56 +680,106 @@
                 </button>
             </div>
 
-            <!-- ── AVAILABILITY CALENDAR ── -->
+            <!-- ── PER-ROOM AVAILABILITY ── -->
             <div class="section" id="availabilitySection">
-    <h2>📅 Disponibilidad — Apto 2</h2>
-    <p style="color:#6B7280; font-size:13px; margin-bottom:20px; font-weight:400;">
-        Consulta las fechas disponibles para tu estadía
-    </p>
+                <h2>📅 Disponibilidad por Cuarto — Apto 2</h2>
+                <p style="color:#6B7280; font-size:13px; margin-bottom:24px; font-weight:400;">
+                    Este apartamento tiene 3 cuartos independientes. Puedes reservar uno o varios cuartos según tu grupo.
+                </p>
 
-    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
-        <button id="calPrevBtn" onclick="calNavigate(-1)"
-            style="width:40px;height:40px;border-radius:50%;border:1.5px solid #d1d5eb;background:white;
-                   font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-                   transition:all 0.2s;color:#374151;"
-            onmouseover="this.style.background='#f3f4f6';this.style.borderColor='#9ca3af'"
-            onmouseout="this.style.background='white';this.style.borderColor='#d1d5eb'">
-            ‹
-        </button>
-        <span id="calRangeLabel" style="font-size:13px;font-weight:600;color:#6B7280;"></span>
-        <button id="calNextBtn" onclick="calNavigate(1)"
-            style="width:40px;height:40px;border-radius:50%;border:1.5px solid #d1d5eb;background:white;
-                   font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-                   transition:all 0.2s;color:#374151;"
-            onmouseover="this.style.background='#f3f4f6';this.style.borderColor='#9ca3af'"
-            onmouseout="this.style.background='white';this.style.borderColor='#d1d5eb'">
-            ›
-        </button>
-    </div>
+                <div class="rooms-grid">
+                    <!-- Cuarto 1 -->
+                    <div class="room-card">
+                        <div class="room-card-header">
+                            <span class="room-card-name">🛏️ Cuarto 1</span>
+                            <span class="room-card-badge">Hasta 2 personas</span>
+                        </div>
+                        <div class="room-card-body">
+                            <div class="room-card-nav">
+                                <button class="room-cal-btn" onclick="roomNavigate('r1',-1)">‹</button>
+                                <span class="room-cal-label" id="r1-label"></span>
+                                <button class="room-cal-btn" onclick="roomNavigate('r1',1)">›</button>
+                            </div>
+                            <div class="room-cal-container" id="r1-cal">
+                                <div class="room-cal-loading">Cargando…</div>
+                            </div>
+                        </div>
+                        <div class="room-card-footer">
+                            <a href="registro-apto2.html?cuartos=1" class="room-reserve-btn">Reservar Cuarto 1 →</a>
+                        </div>
+                    </div>
 
-    <div id="calendarContainer">
-        <div class="cal-loading">Cargando disponibilidad…</div>
-    </div>
+                    <!-- Cuarto 2 -->
+                    <div class="room-card">
+                        <div class="room-card-header">
+                            <span class="room-card-name">🛏️ Cuarto 2</span>
+                            <span class="room-card-badge">Hasta 2 personas</span>
+                        </div>
+                        <div class="room-card-body">
+                            <div class="room-card-nav">
+                                <button class="room-cal-btn" onclick="roomNavigate('r2',-1)">‹</button>
+                                <span class="room-cal-label" id="r2-label"></span>
+                                <button class="room-cal-btn" onclick="roomNavigate('r2',1)">›</button>
+                            </div>
+                            <div class="room-cal-container" id="r2-cal">
+                                <div class="room-cal-loading">Cargando…</div>
+                            </div>
+                        </div>
+                        <div class="room-card-footer">
+                            <a href="registro-apto2.html?cuartos=2" class="room-reserve-btn">Reservar Cuarto 2 →</a>
+                        </div>
+                    </div>
 
-    <div class="cal-legend">
-        <div class="cal-legend-item">
-            <div class="cal-legend-dot" style="background:white; border:1px solid #e5e7eb;"></div>
-            Disponible
-        </div>
-        <div class="cal-legend-item">
-            <div class="cal-legend-dot" style="background:#fecaca;"></div>
-            Reservado
-        </div>
-        <div class="cal-legend-item">
-            <div class="cal-legend-dot" style="background:linear-gradient(90deg, white 50%, #fecaca 50%); border:1px solid #e5e7eb;"></div>
-            Día de entrada
-        </div>
-        <div class="cal-legend-item">
-            <div class="cal-legend-dot" style="background:linear-gradient(90deg, #fecaca 50%, white 50%); border:1px solid #e5e7eb;"></div>
-            Día de salida
-        </div>
-    </div>
-</div>
+                    <!-- Cuarto 3 -->
+                    <div class="room-card">
+                        <div class="room-card-header">
+                            <span class="room-card-name">🛏️ Cuarto 3</span>
+                            <span class="room-card-badge">Hasta 2 personas</span>
+                        </div>
+                        <div class="room-card-body">
+                            <div class="room-card-nav">
+                                <button class="room-cal-btn" onclick="roomNavigate('r3',-1)">‹</button>
+                                <span class="room-cal-label" id="r3-label"></span>
+                                <button class="room-cal-btn" onclick="roomNavigate('r3',1)">›</button>
+                            </div>
+                            <div class="room-cal-container" id="r3-cal">
+                                <div class="room-cal-loading">Cargando…</div>
+                            </div>
+                        </div>
+                        <div class="room-card-footer">
+                            <a href="registro-apto2.html?cuartos=3" class="room-reserve-btn">Reservar Cuarto 3 →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multi-room tip -->
+                <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:14px 18px; margin-top:4px; display:flex; align-items:flex-start; gap:10px;">
+                    <span style="font-size:18px; flex-shrink:0;">💡</span>
+                    <p style="font-size:13px; color:#1e40af; margin:0; font-weight:500; line-height:1.5;">
+                        ¿Vienes con más personas? Puedes reservar 2 o 3 cuartos a la vez desde el formulario de registro.
+                        <a href="registro-apto2.html" style="color:#1d4ed8; font-weight:700; text-decoration:underline;">Reservar varios cuartos →</a>
+                    </p>
+                </div>
+
+                <div class="rooms-legend">
+                    <div class="rooms-legend-item">
+                        <div class="rooms-legend-dot" style="background:white; border:1px solid #e5e7eb;"></div>
+                        Disponible
+                    </div>
+                    <div class="rooms-legend-item">
+                        <div class="rooms-legend-dot" style="background:#fecaca;"></div>
+                        Reservado
+                    </div>
+                    <div class="rooms-legend-item">
+                        <div class="rooms-legend-dot" style="background:linear-gradient(90deg, white 50%, #fecaca 50%); border:1px solid #e5e7eb;"></div>
+                        Día de entrada
+                    </div>
+                    <div class="rooms-legend-item">
+                        <div class="rooms-legend-dot" style="background:linear-gradient(90deg, #fecaca 50%, white 50%); border:1px solid #e5e7eb;"></div>
+                        Día de salida
+                    </div>
+                </div>
+            </div>
 
             <div class="section" style="display: none;">
                 <h2>🌐 Reserva en línea</h2>
@@ -679,7 +927,7 @@
         });
     </script>
 
-    <!-- ── FIREBASE AVAILABILITY CALENDAR ── -->
+    <!-- ── FIREBASE PER-ROOM AVAILABILITY ── -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -694,26 +942,50 @@
     };
 
     const CABIN = "Apto Najos-2";
-    const MONTHS_PER_PAGE = 2;
+    const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                         'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+    const ROOMS = [
+        { id: 'r1', key: 'Cuarto 1', calId: 'r1-cal', labelId: 'r1-label' },
+        { id: 'r2', key: 'Cuarto 2', calId: 'r2-cal', labelId: 'r2-label' },
+        { id: 'r3', key: 'Cuarto 3', calId: 'r3-cal', labelId: 'r3-label' },
+    ];
+
+    // Per-room state: offset + cached dateSets
+    const roomState = {};
+    ROOMS.forEach(r => { roomState[r.id] = { offset: 0, dateSets: null }; });
 
     const app = initializeApp(firebaseConfig);
     const db  = getFirestore(app);
-
-    let calOffset = 0;
-    let dateSets  = null;
 
     function toDateStr(d) {
         return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     }
 
-    async function loadReservations() {
-        const snap = await getDocs(query(collection(db, "cabin_availability"), where("apto", "==", CABIN)));
+    async function loadRoomReservations(roomKey) {
+        // Fetch docs for this specific room, plus legacy docs (no habitacion field = full cabin block)
+        const snap = await getDocs(
+            query(collection(db, "cabin_availability"),
+                  where("apto", "==", CABIN),
+                  where("habitacion", "==", roomKey))
+        );
         const reservations = [];
         snap.forEach(doc => {
             const d = doc.data();
             if (d.fechaInicio && d.fechaFin)
                 reservations.push({ start: d.fechaInicio, end: d.fechaFin });
         });
+
+        // Also fetch legacy docs (no habitacion field) — treat as blocking all rooms
+        const legacySnap = await getDocs(
+            query(collection(db, "cabin_availability"), where("apto", "==", CABIN))
+        );
+        legacySnap.forEach(doc => {
+            const d = doc.data();
+            if (!d.habitacion && d.fechaInicio && d.fechaFin)
+                reservations.push({ start: d.fechaInicio, end: d.fechaFin });
+        });
+
         return reservations;
     }
 
@@ -723,12 +995,11 @@
         const mid = new Set(), checkin = new Set(), checkout = new Set(), shared = new Set();
 
         reservations.forEach(({ start, end }) => {
-            const s = new Date(start + "T00:00:00");
-            const e = new Date(end   + "T00:00:00");
-
             if (allCheckouts.has(start)) shared.add(start);
             else checkin.add(start);
 
+            const s = new Date(start + "T00:00:00");
+            const e = new Date(end   + "T00:00:00");
             const cur = new Date(s);
             cur.setDate(cur.getDate() + 1);
             while (cur < e) { mid.add(toDateStr(cur)); cur.setDate(cur.getDate() + 1); }
@@ -740,25 +1011,23 @@
         return { mid, checkin, checkout, shared };
     }
 
-    function renderMonth(year, month) {
+    function renderRoomMonth(year, month, dateSets) {
         const today = new Date(); today.setHours(0, 0, 0, 0);
-        const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-                             'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
         const wrapper = document.createElement('div');
-        wrapper.className = 'cal-month';
+        wrapper.className = 'room-cal-month';
 
         const header = document.createElement('div');
-        header.className = 'cal-month-header';
+        header.className = 'room-cal-month-header';
         header.textContent = `${MONTH_NAMES[month]} ${year}`;
         wrapper.appendChild(header);
 
         const grid = document.createElement('div');
-        grid.className = 'cal-grid';
+        grid.className = 'room-cal-grid';
 
-        ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].forEach(d => {
+        ['L','M','X','J','V','S','D'].forEach(d => {
             const h = document.createElement('div');
-            h.className = 'cal-dow'; h.textContent = d; grid.appendChild(h);
+            h.className = 'room-cal-dow'; h.textContent = d; grid.appendChild(h);
         });
 
         const firstDay = new Date(year, month, 1).getDay();
@@ -767,12 +1036,12 @@
 
         for (let i = 0; i < offset; i++) {
             const blank = document.createElement('div');
-            blank.className = 'cal-day other-month'; grid.appendChild(blank);
+            blank.className = 'room-cal-day other-month'; grid.appendChild(blank);
         }
 
         for (let d = 1; d <= daysInMonth; d++) {
             const cell    = document.createElement('div');
-            cell.className = 'cal-day';
+            cell.className = 'room-cal-day';
             const cur     = new Date(year, month, d);
             const dateStr = toDateStr(cur);
 
@@ -788,7 +1057,7 @@
                 cell.classList.add('booked-checkout');
             }
 
-            if (toDateStr(cur) === toDateStr(today)) cell.classList.add('today');
+            if (dateStr === toDateStr(today)) cell.classList.add('today');
             cell.textContent = d;
             grid.appendChild(cell);
         }
@@ -797,65 +1066,60 @@
         return wrapper;
     }
 
-    function updateRangeLabel() {
-        const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-                             'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-        const now = new Date();
-        const abs0 = now.getMonth() + calOffset * MONTHS_PER_PAGE;
-        const abs1 = abs0 + 1;
-        const y0 = now.getFullYear() + Math.floor(abs0 / 12);
-        const m0 = ((abs0 % 12) + 12) % 12;
-        const y1 = now.getFullYear() + Math.floor(abs1 / 12);
-        const m1 = ((abs1 % 12) + 12) % 12;
-        document.getElementById('calRangeLabel').textContent =
-            `${MONTH_NAMES[m0]} ${y0}  –  ${MONTH_NAMES[m1]} ${y1}`;
+    function renderRoomPage(room) {
+        const state    = roomState[room.id];
+        const calEl    = document.getElementById(room.calId);
+        const labelEl  = document.getElementById(room.labelId);
+        const now      = new Date();
+
+        // Render 1 month per page for compact cards
+        const abs  = now.getMonth() + state.offset;
+        const y    = now.getFullYear() + Math.floor(abs / 12);
+        const m    = ((abs % 12) + 12) % 12;
+
+        const monthsDiv = document.createElement('div');
+        monthsDiv.className = 'room-cal-months';
+        monthsDiv.appendChild(renderRoomMonth(y, m, state.dateSets));
+
+        calEl.innerHTML = '';
+        calEl.appendChild(monthsDiv);
+
+        labelEl.textContent = `${MONTH_NAMES[m]} ${y}`;
+
+        // Disable prev if at current month
+        const prevBtn = calEl.closest('.room-card').querySelector('.room-cal-btn:first-child');
+        const nextBtn = calEl.closest('.room-card').querySelector('.room-cal-btn:last-child');
+        prevBtn.style.opacity = state.offset === 0 ? '0.3' : '1';
+        prevBtn.style.cursor  = state.offset === 0 ? 'default' : 'pointer';
+        nextBtn.style.opacity = state.offset >= 5 ? '0.3' : '1';
+        nextBtn.style.cursor  = state.offset >= 5 ? 'default' : 'pointer';
     }
 
-    function renderPage() {
-        const container = document.getElementById('calendarContainer');
-        container.innerHTML = '';
-        const monthsWrapper = document.createElement('div');
-        monthsWrapper.className = 'cal-months-wrapper';
-
-        const now = new Date();
-        for (let i = 0; i < MONTHS_PER_PAGE; i++) {
-            const abs = now.getMonth() + calOffset * MONTHS_PER_PAGE + i;
-            const y = now.getFullYear() + Math.floor(abs / 12);
-            const m = ((abs % 12) + 12) % 12;
-            monthsWrapper.appendChild(renderMonth(y, m));
-        }
-
-        container.appendChild(monthsWrapper);
-        updateRangeLabel();
-
-        document.getElementById('calPrevBtn').style.opacity = calOffset === 0 ? '0.3' : '1';
-        document.getElementById('calPrevBtn').style.cursor  = calOffset === 0 ? 'default' : 'pointer';
-        document.getElementById('calNextBtn').style.opacity = calOffset >= 2 ? '0.3' : '1';
-        document.getElementById('calNextBtn').style.cursor  = calOffset >= 2 ? 'default' : 'pointer';
-    }
-
-    window.calNavigate = function(direction) {
-        const maxOffset = 2; // 3 pages total: 0, 1, 2 (showing 6 months max)
-        if (direction === -1 && calOffset === 0) return;
-        if (direction === 1 && calOffset >= maxOffset) return;
-        calOffset += direction;
-        renderPage();
+    window.roomNavigate = function(roomId, direction) {
+        const state = roomState[roomId];
+        if (direction === -1 && state.offset === 0) return;
+        if (direction ===  1 && state.offset >= 5)  return;
+        state.offset += direction;
+        const room = ROOMS.find(r => r.id === roomId);
+        renderRoomPage(room);
     };
 
-    async function initCalendar() {
-        const container = document.getElementById('calendarContainer');
-        try {
-            const reservations = await loadReservations();
-            dateSets = buildDateSets(reservations);
-            renderPage();
-        } catch (err) {
-            console.error("Error loading availability:", err);
-            container.innerHTML = '<div class="cal-loading">No se pudo cargar la disponibilidad. Intenta de nuevo.</div>';
+    async function initRoomCalendars() {
+        for (const room of ROOMS) {
+            const calEl = document.getElementById(room.calId);
+            try {
+                const reservations = await loadRoomReservations(room.key);
+                roomState[room.id].dateSets = buildDateSets(reservations);
+                renderRoomPage(room);
+            } catch (err) {
+                console.error(`Error loading room ${room.key}:`, err);
+                calEl.innerHTML = '<div class="room-cal-loading">No se pudo cargar. Intenta de nuevo.</div>';
+            }
         }
     }
 
-    initCalendar();
-</script>    
+    initRoomCalendars();
+</script>
 
 </body>
 </html>
