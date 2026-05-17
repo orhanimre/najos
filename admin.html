@@ -457,7 +457,12 @@
     .cal-cabin-tab.active.c3 { background: rgba(244,114,182,0.15); border-color: var(--c3); color: var(--c3); }
 
     .cal-month-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--text); }
-    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 28px; }
+    /* Cap the calendar so cells never grow huge on desktop */
+    .cal-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      gap: 3px; margin-bottom: 28px;
+      max-width: 420px;
+    }
     .cal-head { text-align: center; font-size: 10px; font-weight: 700; color: var(--muted); padding: 6px 0; text-transform: uppercase; }
     .cal-day {
       aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
@@ -472,7 +477,7 @@
     .cal-day.has-bookings { cursor: pointer; }
     .cal-day.has-bookings:active { transform: scale(0.93); }
     .cal-day-num { line-height: 1; }
-    /* Chip row — absolutely positioned at the bottom of the square cell */
+    /* Chip row — absolutely positioned at bottom of the square cell */
     .cal-day-chips {
       position: absolute; bottom: 3px; left: 1px; right: 1px;
       display: flex; flex-direction: row; justify-content: center;
