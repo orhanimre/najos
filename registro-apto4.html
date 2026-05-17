@@ -1616,6 +1616,13 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
             showToast("⚠️ Por favor escribe tu país de origen"); return false;
           }
         }
+        // Step 2: must have check-in and check-out selected
+        if (step === 2) {
+          if (!selectedCheckIn || !selectedCheckOut) {
+            showToast("📅 Por favor selecciona las fechas de check-in y check-out");
+            return false;
+          }
+        }
         // Custom check: rules must be accepted on step 3
         if (step === 3 && rulesConsentHidden.value !== "accepted") {
           showToast("📋 Debes leer y aceptar el Reglamento del Apartamento para continuar.");
