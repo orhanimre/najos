@@ -2269,6 +2269,15 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         selectedRooms.sort();
         // Sync to main room selector
         buildRoomSelector();
+        // Update maxCompanions dynamically: 1 room→1, 2 rooms→3, 3 rooms→5
+        maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
+        if (currentCompanionCount > maxCompanions) updateCompanions(maxCompanions);
+        // Update helper text if visible
+        const helperEl = document.getElementById("companionsHelperText");
+        if (helperEl) {
+          const cap = selectedRooms.length * 2;
+          helperEl.textContent = `Capacidad total: ${cap} persona(s) · máximo ${maxCompanions} acompañante(s)`;
+        }
         // Reset dates since room combo changed
         selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
         updateDateDisplay();
