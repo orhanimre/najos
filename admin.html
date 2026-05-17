@@ -460,10 +460,12 @@
     .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 28px; }
     .cal-head { text-align: center; font-size: 10px; font-weight: 700; color: var(--muted); padding: 6px 0; text-transform: uppercase; }
     .cal-day {
-      aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+      min-height: 42px; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
+      padding: 5px 2px 4px;
       font-size: 13px; font-weight: 500; border-radius: 8px;
       color: var(--muted); position: relative; transition: all 0.2s;
-      background: rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.05); box-sizing: border-box;
     }
     body.light .cal-day { background: rgba(0,0,0,0.05); }
     .cal-day.today { color: var(--accent); font-weight: 800; }
@@ -471,14 +473,24 @@
     .cal-day.other { opacity: 0; pointer-events: none; }
     .cal-day.has-bookings { cursor: pointer; }
     .cal-day.has-bookings:active { transform: scale(0.93); }
-    .cal-day-num { line-height: 1; }
-    .cal-day-dots {
-      display: flex; justify-content: center; gap: 3px;
-      position: absolute; bottom: 4px; left: 0; right: 0;
+    .cal-day-num { line-height: 1; margin-bottom: 3px; flex-shrink: 0; }
+    .cal-day-chips {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 2px; width: 100%;
     }
-    .cal-room-dot {
-      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+    .cal-room-chip {
+      font-size: 9px; font-weight: 800; letter-spacing: 0.3px;
+      padding: 1px 4px; border-radius: 4px;
+      width: calc(100% - 4px); text-align: center;
+      line-height: 1.4; flex-shrink: 0;
+      border: 1px solid transparent;
     }
+    .cal-room-chip.c1 { background: rgba(59,130,246,0.22); color: #93c5fd; border-color: rgba(59,130,246,0.4); }
+    .cal-room-chip.c2 { background: rgba(52,211,153,0.22); color: #6ee7b7; border-color: rgba(52,211,153,0.4); }
+    .cal-room-chip.c3 { background: rgba(244,114,182,0.22); color: #f9a8d4; border-color: rgba(244,114,182,0.4); }
+    body.light .cal-room-chip.c1 { background: rgba(59,130,246,0.15); color: #1d4ed8; border-color: rgba(59,130,246,0.35); }
+    body.light .cal-room-chip.c2 { background: rgba(16,185,129,0.15); color: #065f46; border-color: rgba(16,185,129,0.35); }
+    body.light .cal-room-chip.c3 { background: rgba(236,72,153,0.15); color: #9d174d; border-color: rgba(236,72,153,0.35); }
     /* Day popup (bottom sheet style) */
     .day-popup-overlay {
       position: fixed; inset: 0; z-index: 1005;
@@ -1877,22 +1889,29 @@ function renderCalendar() {
       if (bookingsOnDate.length > 0) {
         cell.classList.add('has-bookings');
 
-        // Dots row
-        const dotsEl = document.createElement('div');
-        dotsEl.className = 'cal-day-dots';
-        // One dot per unique room that has a booking
+        // Room chips — one per unique room booked on this date
+        const chipsEl = document.createElement('div');
+        chipsEl.className = 'cal-day-chips';
         const seenRooms = new Set();
-        bookingsOnDate.forEach(({ roomIdx }) => {
+        bookingsOnDate.forEach(({ roomName, roomIdx, eventType }) => {
           if (seenRooms.has(roomIdx)) return;
           seenRooms.add(roomIdx);
-          const dot = document.createElement('div');
-          dot.className = 'cal-room-dot';
-          dot.style.background = ROOM_COLORS[roomIdx].dot;
-          dotsEl.appendChild(dot);
+          const chip = document.createElement('div');
+          const colorClass = ['c1','c2','c3'][roomIdx] || 'c1';
+          chip.className = `cal-room-chip ${colorClass}`;
+          // Short label: "C1 →" for checkin, "C1 ←" for checkout, "C1" for staying
+          const icon = eventType.includes('Entrada/Salida') ? '↕' :
+                       eventType.includes('Entrada')        ? '→' :
+                       eventType.includes('Salida')         ? '←' : '';
+          // "C1" from "Cuarto 1", "C2" from "Cuarto 2", etc.
+          const shortName = roomName.replace('Cuarto ', 'C');
+          chip.textContent = icon ? `${shortName} ${icon}` : shortName;
+          chip.title = `${roomName} · ${eventType}`;
+          chipsEl.appendChild(chip);
         });
-        cell.appendChild(dotsEl);
+        cell.appendChild(chipsEl);
 
-        // Tap → open day popup
+        // Tap → open day popup with guest details
         cell.onclick = (e) => { e.stopPropagation(); showDayPopup(dateStr, bookingsOnDate, ROOM_COLORS); };
       }
 
