@@ -963,29 +963,18 @@
     }
 
     async function loadRoomReservations(roomKey) {
-        // Fetch docs for this specific room, plus legacy docs (no habitacion field = full cabin block)
+        // Single-field query (no composite index needed) — filter by habitacion in JS
         const snap = await getDocs(
-            query(collection(db, "cabin_availability"),
-                  where("apto", "==", CABIN),
-                  where("habitacion", "==", roomKey))
+            query(collection(db, "cabin_availability"), where("apto", "==", CABIN))
         );
         const reservations = [];
         snap.forEach(doc => {
             const d = doc.data();
-            if (d.fechaInicio && d.fechaFin)
+            if (!d.fechaInicio || !d.fechaFin) return;
+            // Include if it matches this room OR has no habitacion (legacy whole-apto block)
+            if (!d.habitacion || d.habitacion === roomKey)
                 reservations.push({ start: d.fechaInicio, end: d.fechaFin });
         });
-
-        // Also fetch legacy docs (no habitacion field) — treat as blocking all rooms
-        const legacySnap = await getDocs(
-            query(collection(db, "cabin_availability"), where("apto", "==", CABIN))
-        );
-        legacySnap.forEach(doc => {
-            const d = doc.data();
-            if (!d.habitacion && d.fechaInicio && d.fechaFin)
-                reservations.push({ start: d.fechaInicio, end: d.fechaFin });
-        });
-
         return reservations;
     }
 
