@@ -753,9 +753,9 @@
   <div id="tabCalendar" style="display:none;flex-direction:column;flex:1;overflow:hidden;min-height:0;">
     <div style="padding:12px 16px 0;">
       <div class="cal-cabin-tabs">
-        <div class="cal-cabin-tab c1 active" id="calTab1" onclick="setCalCabin(2)">Apto 2<br><span id="calCount1" style="font-size:11px;font-weight:700;opacity:0.8;">0</span></div>
-        <div class="cal-cabin-tab c2" id="calTab2" onclick="setCalCabin(3)">Apto 3<br><span id="calCount2" style="font-size:11px;font-weight:700;opacity:0.8;">0</span></div>
-        <div class="cal-cabin-tab c3" id="calTab3" onclick="setCalCabin(4)">Apto 4<br><span id="calCount3" style="font-size:11px;font-weight:700;opacity:0.8;">0</span></div>
+        <div class="cal-cabin-tab c1 active" id="calTab1" onclick="setCalCabin(2)">Apto 2<br><span style="font-size:10px;opacity:0.7;font-weight:600;">3 cuartos</span><br><span id="calCount1" style="font-size:11px;font-weight:700;opacity:0.8;">0 reservas</span></div>
+        <div class="cal-cabin-tab c2" id="calTab2" onclick="setCalCabin(3)">Apto 3<br><span style="font-size:10px;opacity:0.7;font-weight:600;">2 cuartos</span><br><span id="calCount2" style="font-size:11px;font-weight:700;opacity:0.8;">0 reservas</span></div>
+        <div class="cal-cabin-tab c3" id="calTab3" onclick="setCalCabin(4)">Apto 4<br><span style="font-size:10px;opacity:0.7;font-weight:600;">1 cuarto</span><br><span id="calCount3" style="font-size:11px;font-weight:700;opacity:0.8;">0 reservas</span></div>
       </div>
     </div>
     <div class="calendar-wrap" id="calendarWrap"></div>
@@ -1135,7 +1135,7 @@ function updateCalCounts() {
       return r.apto === `Apto Najos-${n}` && salida >= todayStr;
     }).length;
     const el = document.getElementById(`calCount${idx + 1}`);
-    if (el) el.textContent = `(${count})`;
+    if (el) el.textContent = `${count} reserva${count !== 1 ? 's' : ''}`;
   });
 }
 
@@ -1669,27 +1669,56 @@ function renderCalendar() {
   });
 
   const todayStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' });
-  const regs = allRegs.filter(r => r.apto === aptoName && r.fechaSalida >= todayStr).map(normalize);
-  regs.sort((a, b) => (a.fechaEntrada || '') < (b.fechaEntrada || '') ? -1 : 1);
+  const allAptoRegs = allRegs.filter(r => r.apto === aptoName && r.fechaSalida >= todayStr).map(normalize);
 
+  // Room config per apto
+  const roomConfig = {
+    2: ['Cuarto 1', 'Cuarto 2', 'Cuarto 3'],
+    3: ['Cuarto 1', 'Cuarto 2'],
+    4: ['Cuarto 1'],
+  };
+  const rooms = roomConfig[currentCalCabin] || ['Cuarto 1'];
+
+  // Color palette — one per guest registration (cycling)
   const PALETTE = [
-    { bg: '#bfdbfe', text: '#1e3a5f' },
-    { bg: '#a7f3d0', text: '#064e3b' },
-    { bg: '#fce7f3', text: '#831843' },
-    { bg: '#fde68a', text: '#78350f' },
-    { bg: '#ddd6fe', text: '#3b0764' },
-    { bg: '#fed7aa', text: '#7c2d12' },
-    { bg: '#cffafe', text: '#164e63' },
-    { bg: '#fecaca', text: '#7f1d1d' },
-    { bg: '#d1fae5', text: '#065f46' },
-    { bg: '#e0e7ff', text: '#1e1b4b' },
+    { bg: '#bfdbfe', text: '#1e3a5f', border: '#93c5fd' },
+    { bg: '#a7f3d0', text: '#064e3b', border: '#6ee7b7' },
+    { bg: '#fde68a', text: '#78350f', border: '#fcd34d' },
+    { bg: '#ddd6fe', text: '#3b0764', border: '#c4b5fd' },
+    { bg: '#fed7aa', text: '#7c2d12', border: '#fdba74' },
+    { bg: '#cffafe', text: '#164e63', border: '#a5f3fc' },
+    { bg: '#fecaca', text: '#7f1d1d', border: '#fca5a5' },
+    { bg: '#d1fae5', text: '#065f46', border: '#6ee7b7' },
+    { bg: '#e0e7ff', text: '#1e1b4b', border: '#a5b4fc' },
+    { bg: '#fce7f3', text: '#831843', border: '#f9a8d4' },
   ];
 
+  // Assign a stable color to each registration by their id sorted
+  const sortedRegIds = [...new Set(allAptoRegs.map(r => r.id))].sort();
   const colorMap = {};
-  regs.forEach((r, i) => { colorMap[r.id] = PALETTE[i % PALETTE.length]; });
+  sortedRegIds.forEach((id, i) => { colorMap[id] = PALETTE[i % PALETTE.length]; });
 
   const months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
+  // ── Legend ──
+  const legendEl = document.createElement('div');
+  legendEl.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;';
+  allAptoRegs.forEach(r => {
+    const c = colorMap[r.id] || PALETTE[0];
+    const roomLabel = r.habitaciones?.join(' + ') || '—';
+    const dot = document.createElement('div');
+    dot.style.cssText = `display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;border:1.5px solid ${c.border};background:${c.bg};cursor:pointer;`;
+    dot.innerHTML = `<span style="font-size:11px;font-weight:700;color:${c.text};">🛏️ ${r.nombre} ${r.apellido}</span>`;
+    dot.title = `${roomLabel} · ${r.fechaEntrada} → ${r.fechaSalida}`;
+    dot.onclick = () => showDetail(r.id);
+    legendEl.appendChild(dot);
+  });
+  if (allAptoRegs.length === 0) {
+    legendEl.innerHTML = `<span style="font-size:13px;color:var(--muted);">Sin reservas activas</span>`;
+  }
+  wrap.appendChild(legendEl);
+
+  // ── Per-room sections ──
   for (let off = -1; off <= 5; off++) {
     const d = new Date(today.getFullYear(), today.getMonth() + off, 1);
     const year = d.getFullYear(); const month = d.getMonth();
@@ -1697,93 +1726,135 @@ function renderCalendar() {
     const firstDay = new Date(year, month, 1).getDay();
     const blanks = firstDay === 0 ? 6 : firstDay - 1;
 
-    const sec = document.createElement('div');
-    sec.innerHTML = `<div class="cal-month-title">${months[month]} ${year}</div>`;
-    const grid = document.createElement('div'); grid.className = 'cal-grid';
+    // Month title (only once, spanning all rooms)
+    const monthTitle = document.createElement('div');
+    monthTitle.className = 'cal-month-title';
+    monthTitle.textContent = `${months[month]} ${year}`;
+    wrap.appendChild(monthTitle);
+
+    // Day-of-week headers (once per month block)
+    const dowRow = document.createElement('div');
+    dowRow.style.cssText = 'display:grid;grid-template-columns:80px repeat(7,1fr);gap:3px;margin-bottom:2px;';
+    const emptyCorner = document.createElement('div');
+    dowRow.appendChild(emptyCorner);
     ['L','M','X','J','V','S','D'].forEach(h => {
-      const el = document.createElement('div'); el.className = 'cal-head'; el.textContent = h; grid.appendChild(el);
-    });
-    for (let b = 0; b < blanks; b++) {
-      const el = document.createElement('div'); el.className = 'cal-day other'; grid.appendChild(el);
-    }
-
-    for (let day = 1; day <= dim; day++) {
-      const cellDate = new Date(year, month, day);
-      const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
       const el = document.createElement('div');
-      el.className = 'cal-day';
-      el.textContent = day;
-      if (cellDate.getTime() === today.getTime()) el.classList.add('today');
-      if (cellDate < today) el.classList.add('past');
+      el.className = 'cal-head';
+      el.textContent = h;
+      dowRow.appendChild(el);
+    });
+    wrap.appendChild(dowRow);
 
-      const checkoutRegs = regs.filter(r => r.fechaSalida === dateStr);
-      const checkinRegs  = regs.filter(r => r.fechaEntrada === dateStr);
-      const middleRegs   = regs.filter(r => r.fechaEntrada && r.fechaSalida && dateStr > r.fechaEntrada && dateStr < r.fechaSalida);
-
-      const anyReg = checkoutRegs.length || checkinRegs.length || middleRegs.length;
-      if (!anyReg) { grid.appendChild(el); continue; }
-
-      el.classList.remove('past');
-      el.style.cursor = 'pointer';
-      el.style.borderRadius = '8px';
-      el.style.fontWeight = '700';
-
-      const tooltipEntries = [];
-      const aptoNum = currentCalCabin;
-
-      // Collect all regs active on this day for coloring
-      const dayRegs = [...new Set([...checkoutRegs, ...checkinRegs, ...middleRegs])];
-      const colors = dayRegs.map(r => colorMap[r.id] || PALETTE[0]);
-
-      // Pick a representative background (first active reg)
-      const primaryC = colors[0] || PALETTE[0];
-      if (dayRegs.length === 1) {
-        const r = dayRegs[0];
-        const c = colorMap[r.id] || PALETTE[0];
-        const isCheckin  = checkinRegs.includes(r);
-        const isCheckout = checkoutRegs.includes(r);
-        if (isCheckout && isCheckin) {
-          el.style.background = c.bg; el.style.color = c.text;
-        } else if (isCheckout) {
-          el.style.background = `linear-gradient(90deg, ${c.bg} 50%, transparent 50%)`; el.style.color = c.text;
-        } else if (isCheckin) {
-          el.style.background = `linear-gradient(90deg, transparent 50%, ${c.bg} 50%)`; el.style.color = c.text;
-        } else {
-          el.style.background = c.bg; el.style.color = c.text;
+    // One row per room
+    rooms.forEach(roomName => {
+      // Registrations for this specific room
+      const roomRegs = allAptoRegs.filter(r => {
+        if (r.habitaciones && r.habitaciones.length > 0) {
+          return r.habitaciones.includes(roomName);
         }
-      } else {
-        // Multiple regs (different rooms) — stripe them
-        const stops = dayRegs.map((r, i) => {
-          const c = colorMap[r.id] || PALETTE[i];
-          const pct1 = Math.round(i / dayRegs.length * 100);
-          const pct2 = Math.round((i + 1) / dayRegs.length * 100);
-          return `${c.bg} ${pct1}%, ${c.bg} ${pct2}%`;
-        }).join(', ');
-        el.style.background = `linear-gradient(90deg, ${stops})`;
-        el.style.color = colors[0].text;
+        // Legacy: no habitaciones field → treat as occupying all rooms
+        return true;
+      });
+
+      const row = document.createElement('div');
+      row.style.cssText = 'display:grid;grid-template-columns:80px repeat(7,1fr);gap:3px;margin-bottom:3px;align-items:center;';
+
+      // Room label
+      const label = document.createElement('div');
+      label.style.cssText = 'font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;padding-right:4px;text-align:right;line-height:1.2;';
+      label.textContent = roomName.replace('Cuarto ', 'C.');
+      row.appendChild(label);
+
+      // Blank cells for padding
+      for (let b = 0; b < blanks; b++) {
+        const el = document.createElement('div');
+        el.style.cssText = 'aspect-ratio:1;';
+        row.appendChild(el);
       }
 
-      // Build tooltip entries
-      checkoutRegs.forEach(r => {
-        const rooms = r.habitaciones?.join(', ') || '';
-        tooltipEntries.push({ id: r.id, nombre: r.nombre, apellido: r.apellido, label: `⬅️ Salida${rooms ? ' · '+rooms : ''}`, aptoNum, color: (colorMap[r.id]||PALETTE[0]).bg, guests: (r.totalHuespedes||0)+1 });
-      });
-      checkinRegs.forEach(r => {
-        if (checkoutRegs.includes(r)) return;
-        const rooms = r.habitaciones?.join(', ') || '';
-        tooltipEntries.push({ id: r.id, nombre: r.nombre, apellido: r.apellido, label: `🏠 Entrada${rooms ? ' · '+rooms : ''}`, aptoNum, color: (colorMap[r.id]||PALETTE[0]).bg, guests: (r.totalHuespedes||0)+1 });
-      });
-      middleRegs.forEach(r => {
-        if (checkoutRegs.includes(r) || checkinRegs.includes(r)) return;
-        const rooms = r.habitaciones?.join(', ') || '';
-        tooltipEntries.push({ id: r.id, nombre: r.nombre, apellido: r.apellido, label: `🛏️ Hospedado${rooms ? ' · '+rooms : ''}`, aptoNum, color: (colorMap[r.id]||PALETTE[0]).bg, guests: (r.totalHuespedes||0)+1 });
-      });
+      for (let day = 1; day <= dim; day++) {
+        const cellDate = new Date(year, month, day);
+        const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        const el = document.createElement('div');
+        el.style.cssText = 'aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;border-radius:6px;position:relative;transition:all 0.15s;';
 
-      el.onclick = (e) => { e.stopPropagation(); showCalTooltip(e, tooltipEntries); };
-      grid.appendChild(el);
-    }
-    sec.appendChild(grid);
-    wrap.appendChild(sec);
+        if (cellDate.getTime() === today.getTime()) {
+          el.style.outline = '2px solid var(--accent)';
+          el.style.color = 'var(--accent)';
+          el.style.fontWeight = '800';
+        } else if (cellDate < today) {
+          el.style.opacity = '0.25';
+          el.style.color = 'var(--muted)';
+          el.style.background = 'rgba(255,255,255,0.03)';
+        } else {
+          el.style.color = 'var(--muted)';
+          el.style.background = 'rgba(255,255,255,0.03)';
+        }
+        el.textContent = day;
+
+        const checkoutHere = roomRegs.filter(r => r.fechaSalida === dateStr);
+        const checkinHere  = roomRegs.filter(r => r.fechaEntrada === dateStr);
+        const middleHere   = roomRegs.filter(r => r.fechaEntrada && r.fechaSalida && dateStr > r.fechaEntrada && dateStr < r.fechaSalida);
+        const anyReg = checkoutHere.length || checkinHere.length || middleHere.length;
+
+        if (anyReg) {
+          el.style.opacity = '1';
+          el.style.cursor = 'pointer';
+          el.style.fontWeight = '700';
+
+          // Pick color from first active reg on this cell
+          const activeReg = checkinHere[0] || middleHere[0] || checkoutHere[0];
+          const c = colorMap[activeReg?.id] || PALETTE[0];
+
+          if (checkinHere.length && checkoutHere.length) {
+            // Same day in/out (turnover) — split diagonally
+            el.style.background = `linear-gradient(135deg, ${c.bg} 50%, ${(colorMap[checkinHere[0]?.id]||PALETTE[1]).bg} 50%)`;
+            el.style.color = c.text;
+          } else if (checkoutHere.length && !checkinHere.length) {
+            el.style.background = `linear-gradient(90deg, ${c.bg} 50%, rgba(255,255,255,0.03) 50%)`;
+            el.style.color = c.text;
+          } else if (checkinHere.length && !checkoutHere.length) {
+            el.style.background = `linear-gradient(90deg, rgba(255,255,255,0.03) 50%, ${c.bg} 50%)`;
+            el.style.color = c.text;
+          } else {
+            el.style.background = c.bg;
+            el.style.color = c.text;
+          }
+
+          // Tooltip entries for this cell+room
+          const tooltipEntries = [];
+          checkoutHere.forEach(r => {
+            tooltipEntries.push({ id: r.id, nombre: r.nombre, apellido: r.apellido,
+              label: `⬅️ Salida · ${roomName}`, aptoNum: currentCalCabin,
+              color: (colorMap[r.id]||PALETTE[0]).bg, guests: (r.totalHuespedes||0)+1 });
+          });
+          checkinHere.forEach(r => {
+            if (checkoutHere.includes(r)) return;
+            tooltipEntries.push({ id: r.id, nombre: r.nombre, apellido: r.apellido,
+              label: `🏠 Entrada · ${roomName}`, aptoNum: currentCalCabin,
+              color: (colorMap[r.id]||PALETTE[0]).bg, guests: (r.totalHuespedes||0)+1 });
+          });
+          middleHere.forEach(r => {
+            if (checkoutHere.includes(r) || checkinHere.includes(r)) return;
+            tooltipEntries.push({ id: r.id, nombre: r.nombre, apellido: r.apellido,
+              label: `🛏️ ${roomName}`, aptoNum: currentCalCabin,
+              color: (colorMap[r.id]||PALETTE[0]).bg, guests: (r.totalHuespedes||0)+1 });
+          });
+          el.onclick = (e) => { e.stopPropagation(); showCalTooltip(e, tooltipEntries); };
+          el.onmouseenter = () => { el.style.transform = 'scale(1.15)'; el.style.zIndex = '10'; };
+          el.onmouseleave = () => { el.style.transform = ''; el.style.zIndex = ''; };
+        }
+
+        row.appendChild(el);
+      }
+
+      wrap.appendChild(row);
+    });
+
+    // Separator between months
+    const sep = document.createElement('div');
+    sep.style.cssText = 'height:1px;background:var(--border);margin:16px 0 20px;';
+    wrap.appendChild(sep);
   }
 }
 
