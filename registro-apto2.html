@@ -1200,6 +1200,143 @@ html, body { overscroll-behavior: none; }
         color: #15803d;
       }
       .avail-peek-icon { font-size: 16px; }
+
+      /* ── Per-card availability peek button ── */
+      .room-avail-peek-btn {
+        display: block;
+        width: 100%;
+        margin-top: 10px;
+        padding: 7px 10px;
+        background: rgba(21,128,61,0.08);
+        border: 1.5px solid rgba(21,128,61,0.25);
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 500;
+        color: #15803d;
+        cursor: pointer;
+        text-align: center;
+        transition: background 0.18s, border-color 0.18s;
+        letter-spacing: 0.2px;
+      }
+      .room-avail-peek-btn:hover { background: rgba(21,128,61,0.15); border-color: rgba(21,128,61,0.5); }
+
+      /* ── Room availability modal ── */
+      .room-avail-overlay {
+        display: none;
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,0.55);
+        z-index: 9000;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+      .room-avail-overlay.open { display: flex; }
+      .room-avail-modal {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 24px 64px rgba(0,0,0,0.28);
+        width: 100%;
+        max-width: 380px;
+        overflow: hidden;
+        animation: fadeSlideUp 0.22s ease;
+      }
+      @keyframes fadeSlideUp {
+        from { opacity: 0; transform: translateY(18px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .room-avail-header {
+        background: linear-gradient(135deg, #15803d 0%, #166534 100%);
+        color: #fff;
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .room-avail-header h3 { font-size: 15px; font-weight: 600; margin: 0; }
+      .room-avail-close {
+        background: rgba(255,255,255,0.18);
+        border: none;
+        color: #fff;
+        font-size: 18px;
+        width: 30px; height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+        transition: background 0.15s;
+      }
+      .room-avail-close:hover { background: rgba(255,255,255,0.32); }
+      .room-avail-body { padding: 16px; }
+      .room-avail-nav {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: 12px;
+      }
+      .room-avail-nav-btn {
+        background: #f0fdf4; border: 1.5px solid #bbf7d0;
+        color: #15803d; font-size: 18px;
+        width: 34px; height: 34px;
+        border-radius: 50%; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        transition: background 0.15s;
+      }
+      .room-avail-nav-btn:hover:not(:disabled) { background: #dcfce7; }
+      .room-avail-nav-btn:disabled { opacity: 0.35; cursor: default; }
+      .room-avail-month-label {
+        font-size: 14px; font-weight: 600; color: #1e293b;
+        text-transform: capitalize;
+      }
+      .room-avail-cal-wrap { min-height: 200px; }
+
+      /* mini calendar grid reusing chip styles */
+      .ra-cal-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 2px;
+      }
+      .ra-cal-dow {
+        font-size: 10px; font-weight: 600; color: #94a3b8;
+        text-align: center; padding: 4px 0;
+      }
+      .ra-cal-day {
+        aspect-ratio: 1;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 12px; font-weight: 500;
+        border-radius: 6px;
+        color: #1e293b;
+        position: relative;
+      }
+      .ra-cal-day.other-month { visibility: hidden; }
+      .ra-cal-day.past { color: #cbd5e1; }
+      .ra-cal-day.today { font-weight: 700; outline: 2px solid #15803d; outline-offset: -2px; }
+      .ra-cal-day.booked-mid { background: #fee2e2; color: #991b1b; }
+      .ra-cal-day.booked-checkin {
+        background: linear-gradient(to right, transparent 50%, #fee2e2 50%);
+        color: #991b1b;
+      }
+      .ra-cal-day.booked-checkout {
+        background: linear-gradient(to left, transparent 50%, #fee2e2 50%);
+        color: #991b1b;
+      }
+      .ra-cal-day.booked-shared { background: #fee2e2; color: #991b1b; }
+      .room-avail-legend {
+        display: flex; gap: 12px; flex-wrap: wrap;
+        margin-top: 12px;
+        font-size: 11px; color: #64748b;
+        justify-content: center;
+      }
+      .ra-legend-item { display: flex; align-items: center; gap: 5px; }
+      .ra-legend-dot {
+        width: 12px; height: 12px; border-radius: 3px;
+        flex-shrink: 0;
+      }
+      .ra-legend-dot.avail { background: #fff; border: 1.5px solid #e2e8f0; }
+      .ra-legend-dot.taken { background: #fee2e2; border: 1.5px solid #fca5a5; }
+      .room-avail-loading {
+        text-align: center; padding: 32px 0;
+        color: #64748b; font-size: 13px;
+      }
     </style>
   </head>
   <body>
@@ -1288,13 +1425,6 @@ html, body { overscroll-behavior: none; }
               ⚠️ Por favor selecciona al menos una habitación para continuar.
             </div>
             <div class="selected-rooms-summary" id="roomsSummary"></div>
-            <div style="text-align:center; margin-top:24px;">
-              <button type="button" class="avail-peek-btn" onclick="openDatePickerModal()">
-                <span class="avail-peek-dots">•••</span>
-                <span class="avail-peek-label">Ver disponibilidad del calendario</span>
-                <span class="avail-peek-icon">📅</span>
-              </button>
-            </div>
           </div>
 
           <!-- Step 2 — Datos (was Step 1) -->
@@ -1477,6 +1607,30 @@ html, body { overscroll-behavior: none; }
           <button type="button" class="rules-confirm-btn" id="rulesConfirmBtn" onclick="confirmRulesRead()" disabled style="opacity:0.5;cursor:not-allowed;">
             ✓ Cerrar — He leído el reglamento
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Room Availability Modal -->
+    <div id="roomAvailModal" class="room-avail-overlay">
+      <div class="room-avail-modal">
+        <div class="room-avail-header">
+          <h3 id="roomAvailTitle">📅 Disponibilidad</h3>
+          <button class="room-avail-close" onclick="closeRoomAvailModal()">✕</button>
+        </div>
+        <div class="room-avail-body">
+          <div class="room-avail-nav">
+            <button class="room-avail-nav-btn" id="roomAvailPrev" onclick="roomAvailNavigate(-1)">‹</button>
+            <span class="room-avail-month-label" id="roomAvailMonthLabel">—</span>
+            <button class="room-avail-nav-btn" id="roomAvailNext" onclick="roomAvailNavigate(1)">›</button>
+          </div>
+          <div class="room-avail-cal-wrap" id="roomAvailCalWrap">
+            <div class="room-avail-loading">Cargando disponibilidad…</div>
+          </div>
+          <div class="room-avail-legend">
+            <div class="ra-legend-item"><div class="ra-legend-dot avail"></div>Disponible</div>
+            <div class="ra-legend-item"><div class="ra-legend-dot taken"></div>Ocupado</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1741,6 +1895,18 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
             <div class="room-card-detail">${room.detail}</div>
           `;
           card.addEventListener("click", () => toggleRoom(room.id));
+
+          // Per-card availability peek button
+          const peekBtn = document.createElement("button");
+          peekBtn.type = "button";
+          peekBtn.className = "room-avail-peek-btn";
+          peekBtn.innerHTML = `••• Ver disponibilidad 📅`;
+          peekBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            openRoomAvailModal(room);
+          });
+          card.appendChild(peekBtn);
+
           grid.appendChild(card);
         });
         updateRoomsSummary();
@@ -2077,6 +2243,128 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         buildCalRoomPicker();
     } catch (err) { console.error("Error loading booked dates:", err); }
 }
+
+      // ── Room Availability Modal ──────────────────────────────
+      let roomAvailOffset = 0;
+      let roomAvailDateSets = null;
+      let roomAvailCurrentRoom = null;
+
+      function raToDateStr(d) {
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      }
+
+      async function openRoomAvailModal(room) {
+        roomAvailCurrentRoom = room;
+        roomAvailOffset = 0;
+        roomAvailDateSets = null;
+        document.getElementById("roomAvailTitle").textContent = `📅 ${room.name} · Disponibilidad`;
+        document.getElementById("roomAvailCalWrap").innerHTML = '<div class="room-avail-loading">Cargando…</div>';
+        document.getElementById("roomAvailModal").classList.add("open");
+        document.body.style.overflow = "hidden";
+        await loadAndRenderRoomAvail();
+      }
+
+      function closeRoomAvailModal() {
+        document.getElementById("roomAvailModal").classList.remove("open");
+        document.body.style.overflow = "";
+      }
+
+      function roomAvailNavigate(delta) {
+        const now = new Date();
+        const newOffset = roomAvailOffset + delta;
+        const abs = now.getMonth() + newOffset;
+        const y = now.getFullYear() + Math.floor(abs / 12);
+        const m = ((abs % 12) + 12) % 12;
+        // Don't go before current month
+        if (y < now.getFullYear() || (y === now.getFullYear() && m < now.getMonth())) return;
+        roomAvailOffset = newOffset;
+        renderRoomAvailMonth();
+      }
+
+      async function loadAndRenderRoomAvail() {
+        try {
+          const snap = await getDocs(
+            query(collection(db, "cabin_availability"), where("apto", "==", "Apto Najos-2"))
+          );
+          const reservations = [];
+          snap.forEach(doc => {
+            const d = doc.data();
+            if (!d.fechaInicio || !d.fechaFin) return;
+            const roomKey = roomAvailCurrentRoom.name; // e.g. "Cuarto 1"
+            if (!d.habitacion || d.habitacion === roomKey)
+              reservations.push({ start: d.fechaInicio, end: d.fechaFin });
+          });
+          // Build date sets
+          const allCheckins  = new Set(reservations.map(r => r.start));
+          const allCheckouts = new Set(reservations.map(r => r.end));
+          const mid = new Set(), checkin = new Set(), checkout = new Set(), shared = new Set();
+          reservations.forEach(({ start, end }) => {
+            if (allCheckouts.has(start)) shared.add(start); else checkin.add(start);
+            const s = new Date(start + "T00:00:00");
+            const e = new Date(end   + "T00:00:00");
+            const cur = new Date(s); cur.setDate(cur.getDate() + 1);
+            while (cur < e) { mid.add(raToDateStr(cur)); cur.setDate(cur.getDate() + 1); }
+            if (allCheckins.has(end)) shared.add(end); else checkout.add(end);
+          });
+          roomAvailDateSets = { mid, checkin, checkout, shared };
+          renderRoomAvailMonth();
+        } catch (err) {
+          document.getElementById("roomAvailCalWrap").innerHTML = '<div class="room-avail-loading">Error al cargar datos.</div>';
+        }
+      }
+
+      const RA_MONTHS = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+
+      function renderRoomAvailMonth() {
+        if (!roomAvailDateSets) return;
+        const now = new Date(); now.setHours(0,0,0,0);
+        const abs = now.getMonth() + roomAvailOffset;
+        const y = now.getFullYear() + Math.floor(abs / 12);
+        const m = ((abs % 12) + 12) % 12;
+
+        document.getElementById("roomAvailMonthLabel").textContent = `${RA_MONTHS[m]} ${y}`;
+
+        // Prev button: disable if at current month
+        const prevBtn = document.getElementById("roomAvailPrev");
+        prevBtn.disabled = (y === now.getFullYear() && m === now.getMonth());
+
+        // Build mini grid
+        const grid = document.createElement("div");
+        grid.className = "ra-cal-grid";
+        ["L","M","X","J","V","S","D"].forEach(d => {
+          const h = document.createElement("div");
+          h.className = "ra-cal-dow"; h.textContent = d; grid.appendChild(h);
+        });
+        const firstDay = new Date(y, m, 1).getDay();
+        const offset = firstDay === 0 ? 6 : firstDay - 1;
+        const daysInMonth = new Date(y, m + 1, 0).getDate();
+        for (let i = 0; i < offset; i++) {
+          const b = document.createElement("div"); b.className = "ra-cal-day other-month"; grid.appendChild(b);
+        }
+        for (let d = 1; d <= daysInMonth; d++) {
+          const cell = document.createElement("div");
+          cell.className = "ra-cal-day";
+          const cur = new Date(y, m, d);
+          const ds = raToDateStr(cur);
+          if (cur < now) cell.classList.add("past");
+          else if (roomAvailDateSets.shared.has(ds))   cell.classList.add("booked-shared");
+          else if (roomAvailDateSets.mid.has(ds))      cell.classList.add("booked-mid");
+          else if (roomAvailDateSets.checkin.has(ds))  cell.classList.add("booked-checkin");
+          else if (roomAvailDateSets.checkout.has(ds)) cell.classList.add("booked-checkout");
+          if (ds === raToDateStr(now)) cell.classList.add("today");
+          cell.textContent = d;
+          grid.appendChild(cell);
+        }
+        const wrap = document.getElementById("roomAvailCalWrap");
+        wrap.innerHTML = "";
+        wrap.appendChild(grid);
+      }
+
+      // Close modal on overlay click
+      document.getElementById("roomAvailModal").addEventListener("click", function(e) {
+        if (e.target === this) closeRoomAvailModal();
+      });
+      // ── End Room Availability Modal ──────────────────────────
 
       function buildCalRoomPicker() {
         const btns = document.getElementById("calRoomPickerBtns");
