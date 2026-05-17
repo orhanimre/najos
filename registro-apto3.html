@@ -898,7 +898,7 @@ html, body { overscroll-behavior: none; }
         .step-intro p  { font-size: 14px; }
 
         .grid-2 { grid-template-columns: 1fr; }
-        .step-container[data-step="2"] .grid-2 { grid-template-columns: 1fr 1fr; gap: 12px; }
+        .step-container[data-step="3"] .grid-2 { grid-template-columns: 1fr 1fr; gap: 12px; }
 
         .step-navigation { flex-direction: column-reverse; gap: 12px; margin-top: 30px; padding-top: 20px; }
         .nav-btn { padding: 14px 24px; font-size: 15px; }
@@ -929,6 +929,34 @@ html, body { overscroll-behavior: none; }
         }
       }
 
+
+      /* ── Room Selector ── */
+      .room-selector-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        margin-top: 20px;
+      }
+      @media (max-width: 600px) {
+        .room-selector-grid { grid-template-columns: 1fr; gap: 12px; }
+      }
+      .room-card {
+        border: 2.5px solid #e2e8f0; border-radius: 16px;
+        padding: 20px 16px; text-align: center; cursor: pointer;
+        background: #fafafa; transition: all 0.25s ease;
+        position: relative; user-select: none;
+      }
+      .room-card:hover { border-color: #14b8a6; background: #f0fdfa; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(20,184,166,0.15); }
+      .room-card.selected { border-color: #0077BE; background: linear-gradient(135deg, #ebf8ff 0%, #e0f7f4 100%); box-shadow: 0 4px 16px rgba(0,119,190,0.2); transform: translateY(-2px); }
+      .room-card.selected::after { content: "✓"; position: absolute; top: -10px; right: -10px; width: 26px; height: 26px; background: #0077BE; color: white; border-radius: 50%; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 8px rgba(0,119,190,0.4); }
+      .room-card-icon { font-size: 36px; margin-bottom: 10px; display: block; }
+      .room-card-name { font-weight: 700; font-size: 15px; color: #2d3748; margin-bottom: 6px; }
+      .room-card.selected .room-card-name { color: #0077BE; }
+      .room-card-detail { font-size: 12px; color: #718096; line-height: 1.4; }
+      .room-selection-hint { text-align: center; padding: 12px 20px; background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border: 1.5px solid #fb923c; border-radius: 12px; font-size: 14px; font-weight: 600; color: #9a3412; margin-top: 20px; display: none; }
+      .room-selection-hint.show { display: block; }
+      .selected-rooms-summary { margin-top: 20px; padding: 14px 20px; background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%); border: 2px solid #48bb78; border-radius: 12px; font-size: 14px; font-weight: 600; color: #276749; display: none; }
+      .selected-rooms-summary.show { display: block; }
       /* ── Calendar Instruction Banner ── */
       .calendar-instruction {
         display: flex; align-items: center; justify-content: center;
@@ -1009,16 +1037,21 @@ html, body { overscroll-behavior: none; }
           </div>
           <div class="progress-step active" data-step="1">
             <div class="progress-circle">1</div>
-            <div class="progress-label">Bienvenidos</div>
-            <div class="progress-icon">🌴</div>
+            <div class="progress-label">Habitaciones</div>
+            <div class="progress-icon">🛏️</div>
           </div>
           <div class="progress-step" data-step="2">
             <div class="progress-circle">2</div>
-            <div class="progress-label">Tu Estadía</div>
-            <div class="progress-icon">🏖️</div>
+            <div class="progress-label">Bienvenidos</div>
+            <div class="progress-icon">🌴</div>
           </div>
           <div class="progress-step" data-step="3">
             <div class="progress-circle">3</div>
+            <div class="progress-label">Tu Estadía</div>
+            <div class="progress-icon">🏖️</div>
+          </div>
+          <div class="progress-step" data-step="4">
+            <div class="progress-circle">4</div>
             <div class="progress-label">Confirmación</div>
             <div class="progress-icon">✓</div>
           </div>
@@ -1030,8 +1063,19 @@ html, body { overscroll-behavior: none; }
         <div id="errorMessage"   class="message error-message"></div>
 
         <form id="registrationForm">
-          <!-- Step 1 -->
+          <!-- Step 1 — Room Selection -->
           <div class="step-container active" data-step="1">
+            <div class="step-intro">
+              <h2>🛏️ ¿Qué habitaciones necesitas?</h2>
+              <p>Apto 3 tiene 2 cuartos independientes. Selecciona uno o ambos según tu grupo.</p>
+            </div>
+            <div class="room-selector-grid" id="roomSelectorGrid"></div>
+            <div class="room-selection-hint" id="roomHint">⚠️ Por favor selecciona al menos una habitación para continuar.</div>
+            <div class="selected-rooms-summary" id="roomsSummary"></div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-container" data-step="2">
             <div class="step-intro">
               <h2>🌴 ¡Bienvenidos a Apart Hotel Najos-3!</h2>
               <p>Solo necesitamos unos datos básicos para prepararte una llegada perfecta.</p>
@@ -1084,8 +1128,8 @@ html, body { overscroll-behavior: none; }
             </div>
           </div>
 
-          <!-- Step 2 -->
-          <div class="step-container" data-step="2">
+          <!-- Step 3 -->
+          <div class="step-container" data-step="3">
             <div class="step-intro">
               <h2>🌊 ¡Genial! Ahora dime cuándo vienes</h2>
               <p>Selecciona tus fechas de entrada y salida en nuestro calendario interactivo.</p>
@@ -1113,8 +1157,8 @@ html, body { overscroll-behavior: none; }
             </div>
           </div>
 
-          <!-- Step 3 -->
-          <div class="step-container" data-step="3">
+          <!-- Step 4 -->
+          <div class="step-container" data-step="4">
             <div class="step-intro">
               <h2>👨‍👩‍👧‍👦 Casi listos... completa los datos de tu grupo</h2>
               <p>Indica cuántos acompañantes tienes y completa su información.</p>
@@ -1127,7 +1171,7 @@ html, body { overscroll-behavior: none; }
                 <button type="button" class="stepper-btn" id="increaseBtn">+</button>
               </div>
               <input type="hidden" id="totalHuespedes" name="totalHuespedes" value="0" required />
-              <div class="helper-text">Máximo 3 acompañantes (sin incluirte a ti)</div>
+              <div class="helper-text" id="companionsHelperText">La capacidad depende de las habitaciones seleccionadas</div>
             </div>
             <div class="companions-container" id="companionsContainer"></div>
             <div style="margin-top: 40px">
@@ -1270,7 +1314,7 @@ html, body { overscroll-behavior: none; }
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import {
     getFirestore, collection, addDoc, serverTimestamp, getDocs,
-    doc, getDoc, onSnapshot,
+    doc, getDoc, onSnapshot, query, where,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -1291,9 +1335,15 @@ function toDateStr(d) {
 }
 
 let currentStep = 1;
+let selectedRooms = []; // array of room ids
+
+const ROOMS_CONFIG = [
+  { id: 1, name: "Cuarto 1", icon: "🛏️", detail: "Cama doble · 2 personas" },
+  { id: 2, name: "Cuarto 2", icon: "🛏️", detail: "Cama doble · 2 personas" },
+];
       let companions = [];
       let companionFilledStatus = {};
-      const maxCompanions = 3;
+      let maxCompanions = 3; // updated when rooms are selected
       let selectedCheckIn  = null;
       let selectedCheckOut = null;
       let selectingCheckIn = true;
@@ -1323,6 +1373,12 @@ let currentStep = 1;
 
 window.updateReservationDisplay = function(reservation) {
     if (!reservation.fechaEntrada || !reservation.fechaSalida) return;
+    if (reservation.habitaciones && Array.isArray(reservation.habitaciones)) {
+      selectedRooms = reservation.habitaciones.map(name => parseInt(name.replace("Cuarto ", ""))).filter(n => !isNaN(n));
+      selectedRooms.sort();
+      maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
+      buildRoomSelector();
+    }
     selectedCheckIn  = reservation.fechaEntrada;
     selectedCheckOut = reservation.fechaSalida;
     selectingCheckIn = true;
@@ -1428,8 +1484,50 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       });
       updateStepperButtons();
 
+
+      // ── Room selector ──
+      function buildRoomSelector() {
+        const grid = document.getElementById("roomSelectorGrid");
+        if (!grid) return;
+        grid.innerHTML = "";
+        ROOMS_CONFIG.forEach(room => {
+          const card = document.createElement("div");
+          card.className = "room-card" + (selectedRooms.includes(room.id) ? " selected" : "");
+          card.dataset.roomId = room.id;
+          card.innerHTML = `<span class="room-card-icon">${room.icon}</span><div class="room-card-name">${room.name}</div><div class="room-card-detail">${room.detail}</div>`;
+          card.addEventListener("click", () => toggleRoom(room.id));
+          grid.appendChild(card);
+        });
+        updateRoomsSummary();
+      }
+      function toggleRoom(roomId) {
+        const idx = selectedRooms.indexOf(roomId);
+        if (idx === -1) selectedRooms.push(roomId); else selectedRooms.splice(idx, 1);
+        selectedRooms.sort();
+        document.getElementById("roomHint").classList.remove("show");
+        buildRoomSelector();
+      }
+      function updateRoomsSummary() {
+        const el = document.getElementById("roomsSummary");
+        if (!el) return;
+        if (selectedRooms.length === 0) { el.classList.remove("show"); return; }
+        const names = selectedRooms.map(id => ROOMS_CONFIG.find(r => r.id === id)?.name).join(", ");
+        el.classList.add("show");
+        el.innerHTML = `✅ Seleccionaste: <strong>${names}</strong> · ${selectedRooms.length} habitación(es) · hasta ${selectedRooms.length * 2} personas`;
+      }
+      function applyRoomUrlParams() {
+        const params = new URLSearchParams(window.location.search);
+        const cuartos = params.get("cuartos");
+        if (cuartos) {
+          selectedRooms = cuartos.split(",").map(Number).filter(n => n >= 1 && n <= ROOMS_CONFIG.length);
+          selectedRooms.sort();
+        }
+      }
+      applyRoomUrlParams();
+      buildRoomSelector();
+
       function updateProgress() {
-        progressFill.style.width = ((currentStep - 1) / 2 * 100) + "%";
+        progressFill.style.width = ((currentStep - 1) / 3 * 100) + "%";
         document.querySelectorAll(".progress-step").forEach((step, index) => {
           const n = index + 1;
           step.classList.remove("active", "completed");
@@ -1449,24 +1547,40 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         document.querySelectorAll(".step-container").forEach(c => c.classList.remove("active"));
         document.querySelector(`.step-container[data-step="${step}"]`).classList.add("active");
         btnBack.style.display   = step === 1 ? "none" : "block";
-        btnNext.style.display   = step === 3 ? "none" : "block";
-        btnSubmit.style.display = step === 3 ? "block" : "none";
-        summaryBox.style.display = step === 3 ? "block" : "none";
-        if (step === 3) { updateSummary(); updateSubmitBtn(); }
-        if (step === 2 && !bookedDatesLoaded) loadBookedDates().then(() => { bookedDatesLoaded = true; });
+        btnNext.style.display   = step === 4 ? "none" : "block";
+        btnSubmit.style.display = step === 4 ? "block" : "none";
+        summaryBox.style.display = step === 4 ? "block" : "none";
+        if (step === 4) { updateSummary(); updateSubmitBtn(); }
+        // When entering step 3 (companions), lock maxCompanions based on rooms
+        if (step === 3) {
+          maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
+          if (currentCompanionCount > maxCompanions) updateCompanions(maxCompanions);
+          updateStepperButtons();
+          const helperEl = document.getElementById('companionsHelperText');
+          if (helperEl) helperEl.textContent = `Capacidad total: ${selectedRooms.length * 2} persona(s) · máximo ${maxCompanions} acompañante(s)`;
+        }
+        if (step === 3 && !bookedDatesLoaded) loadBookedDates().then(() => { bookedDatesLoaded = true; });
         updateProgress();
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
       function validateStep(step) {
+        // Step 1: must select at least one room
         if (step === 1) {
+          if (selectedRooms.length === 0) {
+            document.getElementById("roomHint").classList.add("show");
+            showToast("🛏️ Por favor selecciona al menos una habitación"); return false;
+          }
+          return true;
+        }
+        if (step === 2) {
           const paisSelect = document.getElementById("pais");
           if (paisSelect.value === "__otro__" && !document.getElementById("otrosPais").value.trim()) {
             showToast("⚠️ Por favor escribe tu país de origen"); return false;
           }
         }
-        // Custom check: rules must be accepted on step 3
-        if (step === 3 && rulesConsentHidden.value !== "accepted") {
+        // Custom check: rules must be accepted on step 4
+        if (step === 4 && rulesConsentHidden.value !== "accepted") {
           showToast("📋 Debes leer y aceptar el Reglamento del Apartamento para continuar.");
           return false;
         }
@@ -1505,6 +1619,8 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
             stepperValue.textContent = "0"; totalHuespedesInput.value = "0";
             updateStepperButtons();
             selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
+            selectedRooms = []; maxCompanions = 1; buildRoomSelector();
+            bookedDatesLoaded = false;
             updateDateDisplay();
             horaEntrada.value = "14:00"; horaSalida.value = "11:00";
             showStep(1);
@@ -1604,7 +1720,9 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         const nombre   = formData.get("nombre");
         const apellido = formData.get("apellido");
         const filled   = Object.values(companionFilledStatus).filter(s => s).length;
+        const roomNames = selectedRooms.map(id => ROOMS_CONFIG.find(r => r.id === id)?.name).join(", ");
         let html = `
+          <div class="summary-item"><span class="summary-label">Habitación(es):</span><span class="summary-value">${roomNames || "—"}</span></div>
           <div class="summary-item"><span class="summary-label">Huésped Principal:</span><span class="summary-value">${nombre} ${apellido}</span></div>
         `;
         if (selectedCheckIn && selectedCheckOut) {
@@ -1624,37 +1742,38 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
 
       async function loadBookedDates() {
     try {
-        const querySnapshot = await getDocs(collection(db, "cabin_availability"));
+        const selectedRoomNames = selectedRooms.map(id => `Cuarto ${id}`);
+        const querySnapshot = await getDocs(
+          query(collection(db, "cabin_availability"), where("apto", "==", "Apto Najos-3"))
+        );
+        const relevantDocs = [];
+        querySnapshot.forEach(doc => {
+          const d = doc.data();
+          if (!d.fechaInicio || !d.fechaFin) return;
+          // Include if no habitacion (legacy) OR habitacion matches a selected room
+          if (!d.habitacion || selectedRoomNames.includes(d.habitacion)) relevantDocs.push(d);
+        });
         bookedDates = [];
         window.checkoutDates = []; window.checkinDates = []; window.middleDates = []; window.sharedDates = [];
-        const checkInDates = []; const checkOutDates = [];
-        querySnapshot.forEach(doc => {
-            const d = doc.data();
-            if (d.apto === "Apto Najos-3") {
-                if (d.fechaInicio) checkInDates.push(d.fechaInicio);
-                if (d.fechaFin)    checkOutDates.push(d.fechaFin);
+        const checkInDates  = relevantDocs.map(d => d.fechaInicio);
+        const checkOutDates = relevantDocs.map(d => d.fechaFin);
+        relevantDocs.forEach(d => {
+            const start = new Date(d.fechaInicio + "T00:00:00"); const end = new Date(d.fechaFin + "T00:00:00");
+            const isCheckInShared  = checkOutDates.includes(d.fechaInicio);
+            const isCheckOutShared = checkInDates.includes(d.fechaFin);
+            if (isCheckInShared) { if (!window.sharedDates.includes(d.fechaInicio)) window.sharedDates.push(d.fechaInicio); }
+            else { if (!window.checkinDates.includes(d.fechaInicio)) window.checkinDates.push(d.fechaInicio); }
+            for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
+                const s = toDateStr(dt);
+                if (s !== d.fechaInicio && s !== d.fechaFin && !window.middleDates.includes(s)) window.middleDates.push(s);
             }
-        });
-        querySnapshot.forEach(doc => {
-            const d = doc.data();
-            if (d.apto === "Apto Najos-3" && d.fechaInicio && d.fechaFin) {
-                const start = new Date(d.fechaInicio + "T00:00:00"); const end = new Date(d.fechaFin + "T00:00:00");
-                const isCheckInShared  = checkOutDates.includes(d.fechaInicio);
-                const isCheckOutShared = checkInDates.includes(d.fechaFin);
-                if (isCheckInShared) { if (!window.sharedDates.includes(d.fechaInicio)) window.sharedDates.push(d.fechaInicio); }
-                else { if (!window.checkinDates.includes(d.fechaInicio)) window.checkinDates.push(d.fechaInicio); }
-                for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
-                    const s = toDateStr(dt);
-                    if (s !== d.fechaInicio && s !== d.fechaFin && !window.middleDates.includes(s)) window.middleDates.push(s);
-                }
-                if (isCheckOutShared) { if (!window.sharedDates.includes(d.fechaFin)) window.sharedDates.push(d.fechaFin); }
-                else { if (!window.checkoutDates.includes(d.fechaFin)) window.checkoutDates.push(d.fechaFin); }
-                for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
-                    const s = toDateStr(dt);
-                    if (!bookedDates.includes(s)) bookedDates.push(s);
-                }
-                if (isCheckOutShared && !bookedDates.includes(d.fechaFin)) bookedDates.push(d.fechaFin);
+            if (isCheckOutShared) { if (!window.sharedDates.includes(d.fechaFin)) window.sharedDates.push(d.fechaFin); }
+            else { if (!window.checkoutDates.includes(d.fechaFin)) window.checkoutDates.push(d.fechaFin); }
+            for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
+                const s = toDateStr(dt);
+                if (!bookedDates.includes(s)) bookedDates.push(s);
             }
+            if (isCheckOutShared && !bookedDates.includes(d.fechaFin)) bookedDates.push(d.fechaFin);
         });
     } catch (err) { console.error("Error loading booked dates:", err); }
 }
@@ -1820,6 +1939,7 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
 
       form.addEventListener("submit", async function(e) {
         e.preventDefault();
+        if (selectedRooms.length === 0) { showToast("🛏️ Por favor selecciona al menos una habitación"); return; }
         if (!selectedCheckIn || !selectedCheckOut) { showToast("⚠️ Por favor selecciona tus fechas de estadía"); return; }
         const paisSelect = document.getElementById("pais");
         if (paisSelect.value === "__otro__" && !document.getElementById("otrosPais").value.trim()) {
@@ -1846,11 +1966,16 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
         });
         btnSubmit.textContent = "Enviando..."; btnSubmit.disabled = true;
         try {
+          const habitacionNames = selectedRooms.map(id => `Cuarto ${id}`);
+          data.habitaciones = habitacionNames;
           const regRef = await addDoc(collection(db, "registrations"), data);
-          await addDoc(collection(db, "cabin_availability"), {
-            apto: "Apto Najos-3", fechaInicio: selectedCheckIn, fechaFin: selectedCheckOut,
-            registrationId: regRef.id, createdAt: serverTimestamp(),
-          });
+          for (const roomName of habitacionNames) {
+            await addDoc(collection(db, "cabin_availability"), {
+              apto: "Apto Najos-3", habitacion: roomName,
+              fechaInicio: selectedCheckIn, fechaFin: selectedCheckOut,
+              registrationId: regRef.id, createdAt: serverTimestamp(),
+            });
+          }
           try {
             const emailResp = await fetch("/api/send-email", {
               method: "POST", headers: { "Content-Type": "application/json" },
@@ -1865,7 +1990,7 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
                 <button class="modal-close" onclick="closeSuccessModal()">×</button>
                 <div class="modal-icon">🎉</div>
                 <div class="modal-title">¡Registro Completado!</div>
-                <div class="modal-text">Te esperamos con ríos, naturaleza y buenas vibras.</div>
+                <div class="modal-text">Te esperamos con ríos, naturaleza y buenas vibras.<br><br><strong>Habitación(es):</strong> ${habitacionNames.join(", ")}</div>
               </div>
             </div>
           `);
