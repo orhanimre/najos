@@ -2124,12 +2124,12 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         await loadAndRenderRoomAvail();
       }
 
-      function closeRoomAvailModal() {
+      window.closeRoomAvailModal = function() {
         document.getElementById("roomAvailModal").classList.remove("open");
         document.body.style.overflow = "";
-      }
+      };
 
-      function roomAvailNavigate(delta) {
+      window.roomAvailNavigate = function(delta) {
         const now = new Date();
         const newOffset = roomAvailOffset + delta;
         const abs = now.getMonth() + newOffset;
@@ -2138,7 +2138,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         if (y < now.getFullYear() || (y === now.getFullYear() && m < now.getMonth())) return;
         roomAvailOffset = newOffset;
         renderRoomAvailMonth();
-      }
+      };
 
       async function loadAndRenderRoomAvail() {
         try {
