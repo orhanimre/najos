@@ -1109,25 +1109,39 @@ html, body { overscroll-behavior: none; }
       }
       .avail-peek-icon { font-size: 16px; }
 
-      /* ── Per-card availability peek button ── */
+      /* ── Room card column wrapper (card + peek link stacked) ── */
+      .room-card-col {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+      }
+      .room-card-col .room-card {
+        flex: 1;
+        margin-bottom: 0;
+      }
+
+      /* ── Per-card availability peek link ── */
       .room-avail-peek-btn {
         display: block;
         width: 100%;
-        margin-top: 10px;
-        padding: 7px 10px;
-        background: rgba(21,128,61,0.08);
-        border: 1.5px solid rgba(21,128,61,0.25);
-        border-radius: 10px;
+        margin-top: 6px;
+        padding: 5px 8px;
+        background: none;
+        border: none;
         font-family: inherit;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 500;
-        color: #15803d;
+        color: #64748b;
         cursor: pointer;
         text-align: center;
-        transition: background 0.18s, border-color 0.18s;
-        letter-spacing: 0.2px;
+        text-decoration: underline;
+        text-decoration-style: dotted;
+        text-underline-offset: 3px;
+        transition: color 0.15s;
+        letter-spacing: 0.1px;
       }
-      .room-avail-peek-btn:hover { background: rgba(21,128,61,0.15); border-color: rgba(21,128,61,0.5); }
+      .room-avail-peek-btn:hover { color: #15803d; }
 
       /* ── Room availability modal ── */
       .room-avail-overlay {
@@ -1783,24 +1797,24 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         if (!grid) return;
         grid.innerHTML = "";
         ROOMS_CONFIG.forEach(room => {
+          const col = document.createElement("div");
+          col.className = "room-card-col";
+
           const card = document.createElement("div");
           card.className = "room-card" + (selectedRooms.includes(room.id) ? " selected" : "");
           card.dataset.roomId = room.id;
           card.innerHTML = `<span class="room-card-icon">${room.icon}</span><div class="room-card-name">${room.name}</div><div class="room-card-detail">${room.detail}</div>`;
           card.addEventListener("click", () => toggleRoom(room.id));
 
-          // Per-card availability peek button
           const peekBtn = document.createElement("button");
           peekBtn.type = "button";
           peekBtn.className = "room-avail-peek-btn";
-          peekBtn.innerHTML = `••• Ver disponibilidad 📅`;
-          peekBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            openRoomAvailModal(room);
-          });
-          card.appendChild(peekBtn);
+          peekBtn.textContent = "••• Ver disponibilidad 📅";
+          peekBtn.addEventListener("click", () => openRoomAvailModal(room));
 
-          grid.appendChild(card);
+          col.appendChild(card);
+          col.appendChild(peekBtn);
+          grid.appendChild(col);
         });
         updateRoomsSummary();
       }
