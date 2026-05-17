@@ -457,15 +457,15 @@
     .cal-cabin-tab.active.c3 { background: rgba(244,114,182,0.15); border-color: var(--c3); color: var(--c3); }
 
     .cal-month-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--text); }
-    /* Cap the calendar so cells never grow huge on desktop */
+    /* Full width grid — fixed row height so cells never grow huge on desktop */
     .cal-grid {
       display: grid; grid-template-columns: repeat(7, 1fr);
+      grid-auto-rows: 52px;
       gap: 3px; margin-bottom: 28px;
-      max-width: 420px;
     }
     .cal-head { text-align: center; font-size: 10px; font-weight: 700; color: var(--muted); padding: 6px 0; text-transform: uppercase; }
     .cal-day {
-      aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+      height: 52px; display: flex; align-items: center; justify-content: center;
       font-size: 13px; font-weight: 500; border-radius: 8px;
       color: var(--muted); position: relative; transition: all 0.2s;
       background: rgba(255,255,255,0.05);
@@ -477,15 +477,15 @@
     .cal-day.has-bookings { cursor: pointer; }
     .cal-day.has-bookings:active { transform: scale(0.93); }
     .cal-day-num { line-height: 1; }
-    /* Chip row — absolutely positioned at bottom of the square cell */
+    /* Chip row — absolutely positioned at bottom of the cell */
     .cal-day-chips {
-      position: absolute; bottom: 3px; left: 1px; right: 1px;
+      position: absolute; bottom: 4px; left: 2px; right: 2px;
       display: flex; flex-direction: row; justify-content: center;
       align-items: center; gap: 2px; flex-wrap: nowrap; overflow: hidden;
     }
     .cal-room-chip {
-      font-size: 8px; font-weight: 800; letter-spacing: 0.2px;
-      padding: 1px 3px; border-radius: 3px; line-height: 1.4;
+      font-size: 9px; font-weight: 800; letter-spacing: 0.2px;
+      padding: 1px 4px; border-radius: 3px; line-height: 1.4;
       border: 1px solid transparent; flex-shrink: 0;
     }
     .cal-room-chip.c1 { background: rgba(59,130,246,0.25); color: #93c5fd; border-color: rgba(59,130,246,0.55); }
@@ -1892,7 +1892,7 @@ function renderCalendar() {
       if (bookingsOnDate.length > 0) {
         cell.classList.add('has-bookings');
 
-        // Chip row: C1 C2 C3 — absolutely positioned at bottom of the square cell
+        // Chip row: C1 C2 C3 — absolutely positioned at bottom of the cell
         const chipsEl = document.createElement('div');
         chipsEl.className = 'cal-day-chips';
         const seenRooms = new Set();
