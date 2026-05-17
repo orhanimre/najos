@@ -284,35 +284,38 @@
     .card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
     .card-name { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; }
     .card-apto {
-      font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 7px;
-      text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; margin-left: 8px;
-      border: 1.5px solid transparent;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
+      flex-shrink: 0; margin-left: 8px;
     }
-    .card-apto.c1 { background: #bfdbfe; color: #1e3a5f; border-color: #3b82f6; }
-    .card-apto.c2 { background: #a7f3d0; color: #064e3b; border-color: #10b981; }
-    .card-apto.c3 { background: #fce7f3; color: #831843; border-color: #ec4899; }
+    .card-apto-label {
+      font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 7px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      border: 1.5px solid transparent; white-space: nowrap;
+    }
+    .card-apto.c1 .card-apto-label { background: #bfdbfe; color: #1e3a5f; border-color: #3b82f6; }
+    .card-apto.c2 .card-apto-label { background: #a7f3d0; color: #064e3b; border-color: #10b981; }
+    .card-apto.c3 .card-apto-label { background: #fce7f3; color: #831843; border-color: #ec4899; }
 
-    /* ── ROOM PILLS ── */
+    /* ── ROOM PILLS (now inside .card-apto) ── */
     .card-rooms {
-      display: flex; flex-wrap: wrap; gap: 5px;
-      margin-bottom: 8px;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 3px;
     }
     .room-pill {
       display: inline-flex; align-items: center; gap: 4px;
-      font-size: 11px; font-weight: 700;
-      padding: 3px 9px; border-radius: 20px;
+      font-size: 10px; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px;
       border: 1.5px solid transparent;
-      letter-spacing: 0.2px;
+      letter-spacing: 0.2px; white-space: nowrap;
     }
-    .room-pill.c1 { background: rgba(59,130,246,0.1); color: #1e3a5f; border-color: rgba(59,130,246,0.35); }
-    .room-pill.c2 { background: rgba(16,185,129,0.1); color: #064e3b; border-color: rgba(16,185,129,0.35); }
-    .room-pill.c3 { background: rgba(236,72,153,0.1); color: #831843; border-color: rgba(236,72,153,0.35); }
+    .room-pill.c1 { background: rgba(59,130,246,0.12); color: #1e3a5f; border-color: rgba(59,130,246,0.35); }
+    .room-pill.c2 { background: rgba(16,185,129,0.12); color: #064e3b; border-color: rgba(16,185,129,0.35); }
+    .room-pill.c3 { background: rgba(236,72,153,0.12); color: #831843; border-color: rgba(236,72,153,0.35); }
     body.light .room-pill.c1 { background: rgba(59,130,246,0.12); }
     body.light .room-pill.c2 { background: rgba(16,185,129,0.12); }
     body.light .room-pill.c3 { background: rgba(236,72,153,0.12); }
     .room-pill-warn {
-      font-size: 11px; font-weight: 600; color: var(--amber);
-      padding: 3px 8px; border-radius: 20px;
+      font-size: 10px; font-weight: 600; color: var(--amber);
+      padding: 2px 8px; border-radius: 20px;
       background: rgba(251,191,36,0.1); border: 1.5px solid rgba(251,191,36,0.3);
     }
 
@@ -1438,19 +1441,20 @@ const cc = colorMap[cn] || 'c1';
       statusBadge = `<span class="status-badge tomorrow">📅 Entrada mañana</span>${timeChip}`;
     }
 
+    const roomsHtml = (reg.habitaciones && reg.habitaciones.length)
+      ? reg.habitaciones.map(h => `<span class="room-pill ${cc}">🛏️ ${h}</span>`).join('')
+      : (cn !== '4' ? `<span class="room-pill-warn">⚠️ Sin hab.</span>` : `<span class="room-pill ${cc}">🛏️ C. 1</span>`);
+
     return `<div class="reg-card ${statusClass}" onclick="showDetail('${reg.id}')">
       <div class="card-top">
         <div>
           <div class="card-name">${reg.nombre || ''} ${reg.apellido || ''}</div>
           <div style="font-size:12px;color:var(--muted);margin-top:3px;font-weight:500;">📱 ${reg.celular || '—'}</div>
         </div>
-        <div class="card-apto ${cc}">Apto ${cn}</div>
-      </div>
-      <div class="card-rooms">
-        ${(reg.habitaciones && reg.habitaciones.length)
-          ? reg.habitaciones.map(h => `<span class="room-pill ${cc}">🛏️ ${h}</span>`).join('')
-          : (cn !== '4' ? `<span class="room-pill-warn">⚠️ Sin habitación</span>` : `<span class="room-pill ${cc}">🛏️ Cuarto 1</span>`)
-        }
+        <div class="card-apto ${cc}">
+          <span class="card-apto-label">Apto ${cn}</span>
+          <div class="card-rooms">${roomsHtml}</div>
+        </div>
       </div>
       <div class="card-dates">
         <strong>${formatDateShort(reg.fechaEntrada)}</strong>
