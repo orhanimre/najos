@@ -826,6 +826,17 @@
     </div>
   </div>
 
+
+  <!-- ADD RESERVATION FAB -->
+  <button id="addFab" onclick="openAddSheet()" style="
+    position:fixed;bottom:calc(80px + env(safe-area-inset-bottom,20px) + 12px);right:20px;
+    z-index:998;width:52px;height:52px;border-radius:16px;border:none;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:white;font-size:26px;cursor:pointer;
+    box-shadow:0 4px 20px rgba(102,126,234,0.5);
+    display:flex;align-items:center;justify-content:center;
+    transition:transform 0.2s,box-shadow 0.2s;
+  " onmouseenter="this.style.transform='scale(1.08)'" onmouseleave="this.style.transform=''">＋</button>
 </div><!-- /appScreen -->
 
 <!-- CALENDAR TOOLTIP -->
@@ -939,6 +950,73 @@
     <div class="confirm-btns">
       <button class="confirm-cancel" onclick="closeRestoreConfirm()">Cancelar</button>
       <button class="confirm-delete" onclick="doRestore()" style="background:var(--green);">Restaurar</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ADD RESERVATION SHEET -->
+<div class="sheet-overlay" id="addOverlay" onclick="closeAddSheet(event)">
+  <div class="sheet" id="addSheet">
+    <div class="sheet-handle"><div class="handle-bar"></div></div>
+    <div class="sheet-header">
+      <div class="sheet-title">➕ Nueva Reserva</div>
+      <div class="sheet-close" onclick="closeAddSheetDirect()">✕</div>
+    </div>
+    <div class="sheet-body" id="addBody">
+      <div class="edit-section-title">🏠 Apto y Habitación</div>
+      <div class="edit-group">
+        <label class="edit-label">Apto</label>
+        <select id="add_apto" class="edit-input" onchange="updateAddRooms()">
+          <option value="Apto Najos-2">Apto 2</option>
+          <option value="Apto Najos-3">Apto 3</option>
+          <option value="Apto Najos-4">Apto 4</option>
+        </select>
+      </div>
+      <div class="edit-group" id="addRoomsGroup">
+        <label class="edit-label">Habitación(es)</label>
+        <div id="addRoomsCheckboxes" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;"></div>
+      </div>
+      <div class="edit-section-title">📅 Estadía</div>
+      <div class="edit-row">
+        <div class="edit-group"><label class="edit-label">Fecha Entrada</label><input type="date" id="add_fechaEntrada" class="edit-input"/></div>
+        <div class="edit-group"><label class="edit-label">Hora Entrada</label><input type="time" id="add_horaEntrada" class="edit-input" value="14:00"/></div>
+      </div>
+      <div class="edit-row">
+        <div class="edit-group"><label class="edit-label">Fecha Salida</label><input type="date" id="add_fechaSalida" class="edit-input"/></div>
+        <div class="edit-group"><label class="edit-label">Hora Salida</label><input type="time" id="add_horaSalida" class="edit-input" value="11:00"/></div>
+      </div>
+      <div class="edit-section-title">👤 Huésped Principal</div>
+      <div class="edit-row">
+        <div class="edit-group"><label class="edit-label">Nombre</label><input type="text" id="add_nombre" class="edit-input" placeholder="Nombre"/></div>
+        <div class="edit-group"><label class="edit-label">Apellido</label><input type="text" id="add_apellido" class="edit-input" placeholder="Apellido"/></div>
+      </div>
+      <div class="edit-row">
+        <div class="edit-group">
+          <label class="edit-label">Tipo ID</label>
+          <select id="add_tipoId" class="edit-input">
+            <option value="cc">CC</option><option value="ce">CE</option>
+            <option value="ti">TI</option><option value="pasaporte">Pasaporte</option>
+          </select>
+        </div>
+        <div class="edit-group"><label class="edit-label">Número ID</label><input type="text" id="add_numeroId" class="edit-input" placeholder="Número"/></div>
+      </div>
+      <div class="edit-row">
+        <div class="edit-group"><label class="edit-label">Celular</label><input type="tel" id="add_celular" class="edit-input" placeholder="Celular"/></div>
+        <div class="edit-group"><label class="edit-label">Ciudad</label><input type="text" id="add_ciudad" class="edit-input" placeholder="Ciudad"/></div>
+      </div>
+      <div class="edit-group">
+        <label class="edit-label">Total Huéspedes (incluido titular)</label>
+        <input type="number" id="add_totalHuespedes" class="edit-input" min="1" max="6" value="1"/>
+      </div>
+      <div class="edit-section-title">📝 Comentario</div>
+      <div class="edit-group">
+        <textarea id="add_comentario" class="edit-input" rows="3" style="height:auto;line-height:1.5;padding:12px 14px;" placeholder="Observaciones opcionales..."></textarea>
+      </div>
+    </div>
+    <div class="sheet-actions">
+      <button class="action-btn btn-delete" onclick="closeAddSheetDirect()" style="background:rgba(107,114,128,0.15);color:var(--muted);border:1px solid var(--border);">Cancelar</button>
+      <button class="action-btn btn-edit" onclick="saveAdd()">✅ Crear Reserva</button>
     </div>
   </div>
 </div>
@@ -1498,15 +1576,26 @@ window.saveEdit = async function() {
     updated[`acomp${i}NumId`]    = document.getElementById(`ec_${i}_numId`)?.value    || '';
   }
   if (!updated.fechaEntrada || !updated.fechaSalida) { showToast('⚠️ Fechas obligatorias'); return; }
+  if (selectedHabitaciones.length === 0) { showToast('⚠️ Selecciona al menos una habitación'); return; }
   try {
     const col = showArchive ? 'archived_registrations' : 'registrations';
     await updateDoc(doc(db, col, currentReg.id), updated);
+    // BUG FIX: delete ALL old cabin_availability docs for this registration,
+    // then write fresh ones — one per room — with correct apto, habitacion, and dates.
     try {
       const avSnap = await getDocs(query(collection(db, 'cabin_availability'), where('registrationId', '==', currentReg.id)));
-      if (!avSnap.empty) {
-        await updateDoc(doc(db, 'cabin_availability', avSnap.docs[0].id), { apto: updated.apto, fechaInicio: updated.fechaEntrada, fechaFin: updated.fechaSalida });
+      for (const avDoc of avSnap.docs) await deleteDoc(doc(db, 'cabin_availability', avDoc.id));
+      for (const roomName of selectedHabitaciones) {
+        await addDoc(collection(db, 'cabin_availability'), {
+          apto: updated.apto,
+          habitacion: roomName,
+          fechaInicio: updated.fechaEntrada,
+          fechaFin: updated.fechaSalida,
+          registrationId: currentReg.id,
+          updatedAt: serverTimestamp(),
+        });
       }
-    } catch(e) {}
+    } catch(e) { console.warn('Could not sync cabin_availability:', e); }
     const arr = showArchive ? allArchived : allRegs;
     const idx = arr.findIndex(r => r.id === currentReg.id);
     if (idx !== -1) arr[idx] = { ...arr[idx], ...updated };
@@ -1569,14 +1658,22 @@ window.doRestore = async function() {
       restoredBy: auth.currentUser?.email || 'unknown'
     });
     await deleteDoc(doc(db, 'archived_registrations', currentReg.id));
+    // BUG FIX: restore per-room cabin_availability docs correctly
     try {
-      await setDoc(doc(db, 'cabin_availability', currentReg.id), {
-        cabana: currentReg.cabana,
-        fechaInicio: currentReg.fechaEntrada,
-        fechaFin: currentReg.fechaSalida,
-        registrationId: currentReg.id
-      });
-    } catch(e) {}
+      const habitaciones = currentReg.habitaciones && currentReg.habitaciones.length
+        ? currentReg.habitaciones
+        : ['Cuarto 1'];
+      for (const roomName of habitaciones) {
+        await addDoc(collection(db, 'cabin_availability'), {
+          apto: currentReg.apto,
+          habitacion: roomName,
+          fechaInicio: currentReg.fechaEntrada,
+          fechaFin: currentReg.fechaSalida,
+          registrationId: currentReg.id,
+          restoredAt: serverTimestamp(),
+        });
+      }
+    } catch(e) { console.warn('Could not restore cabin_availability:', e); }
     allArchived = allArchived.filter(r => r.id !== currentReg.id);
     if (!allRegs.find(r => r.id === currentReg.id)) {
       allRegs.push({ ...regToRestore });
@@ -1990,6 +2087,124 @@ function updateOnlineStatus() {
 window.addEventListener('online',  () => { updateOnlineStatus(); loadData(); showToast('🟢 Conexión restaurada — actualizando...'); });
 window.addEventListener('offline', () => { updateOnlineStatus(); showToast('📡 Sin conexión — usando datos guardados'); });
 updateOnlineStatus();
+
+/* ── ADD RESERVATION ── */
+window.updateAddRooms = function() {
+  const apto = document.getElementById('add_apto').value;
+  const container = document.getElementById('addRoomsCheckboxes');
+  if (!container) return;
+  container.innerHTML = '';
+  const roomMap = {
+    'Apto Najos-2': ['Cuarto 1', 'Cuarto 2', 'Cuarto 3'],
+    'Apto Najos-3': ['Cuarto 1', 'Cuarto 2'],
+    'Apto Najos-4': ['Cuarto 1'],
+  };
+  const rooms = roomMap[apto] || [];
+  if (rooms.length <= 1) {
+    document.getElementById('addRoomsGroup').style.display = 'none';
+    container.dataset.autoRoom = rooms.length === 1 ? rooms[0] : '';
+    return;
+  }
+  container.dataset.autoRoom = '';
+  document.getElementById('addRoomsGroup').style.display = 'block';
+  rooms.forEach(room => {
+    const label = document.createElement('label');
+    label.style.cssText = 'display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;cursor:pointer;';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox'; cb.value = room;
+    cb.style.cssText = 'width:18px;height:18px;accent-color:var(--accent);cursor:pointer;';
+    label.appendChild(cb);
+    label.appendChild(document.createTextNode(room));
+    container.appendChild(label);
+  });
+};
+
+window.openAddSheet = function() {
+  // Reset form
+  document.getElementById('add_apto').value = 'Apto Najos-2';
+  updateAddRooms();
+  document.getElementById('add_fechaEntrada').value = '';
+  document.getElementById('add_horaEntrada').value = '14:00';
+  document.getElementById('add_fechaSalida').value = '';
+  document.getElementById('add_horaSalida').value = '11:00';
+  document.getElementById('add_nombre').value = '';
+  document.getElementById('add_apellido').value = '';
+  document.getElementById('add_tipoId').value = 'cc';
+  document.getElementById('add_numeroId').value = '';
+  document.getElementById('add_celular').value = '';
+  document.getElementById('add_ciudad').value = '';
+  document.getElementById('add_totalHuespedes').value = '1';
+  document.getElementById('add_comentario').value = '';
+  document.getElementById('addOverlay').classList.add('show');
+};
+
+window.closeAddSheet = function(e) {
+  if (e && e.target !== document.getElementById('addOverlay')) return;
+  document.getElementById('addOverlay').classList.remove('show');
+};
+
+window.closeAddSheetDirect = function() {
+  document.getElementById('addOverlay').classList.remove('show');
+};
+
+window.saveAdd = async function() {
+  const container = document.getElementById('addRoomsCheckboxes');
+  const autoRoom = container?.dataset.autoRoom;
+  const selectedHabitaciones = autoRoom
+    ? [autoRoom]
+    : Array.from(document.querySelectorAll('#addRoomsCheckboxes input[type=checkbox]:checked')).map(cb => cb.value);
+  const apto      = document.getElementById('add_apto').value;
+  const fechaEntrada = document.getElementById('add_fechaEntrada').value;
+  const fechaSalida  = document.getElementById('add_fechaSalida').value;
+  const nombre    = document.getElementById('add_nombre').value.trim();
+  const apellido  = document.getElementById('add_apellido').value.trim();
+  const tipoId    = document.getElementById('add_tipoId').value;
+  const numeroId  = document.getElementById('add_numeroId').value.trim();
+  const celular   = document.getElementById('add_celular').value.trim();
+  const ciudad    = document.getElementById('add_ciudad').value.trim();
+  const totalHuespedes = parseInt(document.getElementById('add_totalHuespedes').value) - 1 || 0;
+  const comentario = document.getElementById('add_comentario').value.trim();
+
+  if (selectedHabitaciones.length === 0) { showToast('⚠️ Selecciona al menos una habitación'); return; }
+  if (!fechaEntrada || !fechaSalida)     { showToast('⚠️ Fechas obligatorias'); return; }
+  if (fechaSalida <= fechaEntrada)       { showToast('⚠️ La salida debe ser después de la entrada'); return; }
+  if (!nombre || !apellido)              { showToast('⚠️ Nombre y apellido obligatorios'); return; }
+  if (!numeroId)                         { showToast('⚠️ Número de documento obligatorio'); return; }
+
+  const data = {
+    apto, habitaciones: selectedHabitaciones,
+    fechaEntrada, horaEntrada: document.getElementById('add_horaEntrada').value,
+    fechaSalida,  horaSalida:  document.getElementById('add_horaSalida').value,
+    nombre, apellido, tipoId, numeroId, celular, ciudad,
+    totalHuespedes, comentario,
+    timestamp: serverTimestamp(),
+    createdBy: auth.currentUser?.email || 'admin',
+    consent: true,
+  };
+
+  const saveBtn = document.querySelector('#addSheet .btn-edit');
+  saveBtn.textContent = 'Guardando...'; saveBtn.disabled = true;
+  try {
+    const regRef = await addDoc(collection(db, 'registrations'), data);
+    for (const roomName of selectedHabitaciones) {
+      await addDoc(collection(db, 'cabin_availability'), {
+        apto, habitacion: roomName,
+        fechaInicio: fechaEntrada, fechaFin: fechaSalida,
+        registrationId: regRef.id, createdAt: serverTimestamp(),
+      });
+    }
+    closeAddSheetDirect();
+    showToast('✅ Reserva creada correctamente');
+  } catch(e) {
+    console.error(e); showToast('❌ Error al crear la reserva');
+  } finally {
+    saveBtn.textContent = '✅ Crear Reserva'; saveBtn.disabled = false;
+  }
+};
+
+// Init add rooms on load
+document.addEventListener('DOMContentLoaded', () => { if (window.updateAddRooms) updateAddRooms(); });
+
 </script>
 </body>
 </html>
