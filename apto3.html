@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- Najos-3 v2 -->
+<!-- Najos-4 v2 -->
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Najos-3 - Apart Hotel Najos</title>
+    <title>Najos-4 - Apart Hotel Najos</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -407,9 +407,8 @@
             .contact-card-text { text-align: left; }
         }
 
-        /* ── ROOM CARDS ── */
-        .rooms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-bottom: 8px; }
-        .room-card { background: white; border: 1.5px solid #e5e7eb; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,77,115,0.07); transition: box-shadow 0.25s ease, transform 0.25s ease; }
+        /* ── ROOM CARD ── */
+        .room-card { background: white; border: 1.5px solid #e5e7eb; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,77,115,0.07); transition: box-shadow 0.25s ease, transform 0.25s ease; max-width: 420px; }
         .room-card:hover { box-shadow: 0 8px 28px rgba(0,77,115,0.14); transform: translateY(-2px); }
         .room-card-header { background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%); color: white; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
         .room-card-name { font-size: 15px; font-weight: 700; letter-spacing: 0.2px; }
@@ -440,7 +439,6 @@
         .rooms-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
         .rooms-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #6B7280; font-weight: 500; }
         .rooms-legend-dot { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; }
-        @media (max-width: 768px) { .rooms-grid { grid-template-columns: 1fr; gap: 16px; } }
 
         /* ── SHRINKING HEADER ON SCROLL ── */
         .header { transition: padding 0.3s ease, box-shadow 0.3s ease; }
@@ -485,7 +483,7 @@
                 </div>
             </div>
             <div class="header-title">
-                <h1>Najos-3</h1>
+                <h1>Najos-4</h1>
                 <p class="header-subtitle">Apartamento completo en San Carlos</p>
             </div>
         </div>
@@ -493,15 +491,16 @@
         <div class="content" id="mainContent">
 
             <div class="gallery">
-                <img src="https://imgur.com/rR8w3I0.jpg" alt="Cuarto-1" onclick="openModal(this.src)">
-                <img src="https://imgur.com/JzCkcQx.jpg" alt="Cuarto-2" onclick="openModal(this.src)">
-                <img src="https://imgur.com/WhS9y1g.jpg" alt="Cuarto-3" onclick="openModal(this.src)">
-                <img src="https://imgur.com/fTBIHMQ.jpg" alt="Baño" onclick="openModal(this.src)">
-                <img src="https://imgur.com/cAPVEeQ.jpg" alt="Cocina-1" onclick="openModal(this.src)">
-                <img src="https://imgur.com/LFG8Hax.jpg" alt="Cocina-2" onclick="openModal(this.src)">
-                <img src="https://imgur.com/Z6HCtDh.jpg" alt="Comedor" onclick="openModal(this.src)">
-                <img src="https://imgur.com/XWIaf5p.jpg" alt="Lavadero" onclick="openModal(this.src)">
-                <img src="https://imgur.com/lPQrf5n.jpg" alt="Sala" onclick="openModal(this.src)">
+                <img src="https://imgur.com/YKfbIGO.jpg" alt="Cuarto-1" onclick="openModal(this.src)">
+                <img src="https://imgur.com/1sMvn3o.jpg" alt="Cuarto-2" onclick="openModal(this.src)">
+                <img src="https://imgur.com/VpeebK8.jpg" alt="Baño" onclick="openModal(this.src)">
+                <img src="https://imgur.com/U7T9PL7.jpg" alt="Cocina-1" onclick="openModal(this.src)">
+                <img src="https://imgur.com/305crTy.jpg" alt="Cocina-2" onclick="openModal(this.src)">
+                <img src="https://imgur.com/Gpqepzl.jpg" alt="Lavadero" onclick="openModal(this.src)">
+                <img src="https://imgur.com/z6zSgr5.jpg" alt="Sala-1" onclick="openModal(this.src)">
+                <img src="https://imgur.com/MbRApFz.jpg" alt="Sala-2" onclick="openModal(this.src)">
+                <img src="https://imgur.com/8HfXKg0.jpg" alt="Terraza-1" onclick="openModal(this.src)">
+                <img src="https://imgur.com/yovoffl.jpg" alt="Terraza-2" onclick="openModal(this.src)">
             </div>
 
             <div class="section">
@@ -516,63 +515,31 @@
                 </button>
             </div>
 
-            <!-- ── PER-ROOM AVAILABILITY ── -->
+            <!-- ── ROOM AVAILABILITY ── -->
             <div class="section" id="availabilitySection">
-                <h2>📅 Disponibilidad por Cuarto — Apto 3</h2>
+                <h2>📅 Disponibilidad — Apto 4</h2>
                 <p style="color:#6B7280; font-size:13px; margin-bottom:24px; font-weight:400;">
-                    Este apartamento tiene 2 cuartos independientes. Puedes reservar uno o ambos cuartos.
+                    Apartamento de un solo cuarto privado, ideal para parejas o viajeros solos.
                 </p>
 
-                <div class="rooms-grid">
-                    <!-- Cuarto 1 -->
-                    <div class="room-card">
-                        <div class="room-card-header">
-                            <span class="room-card-name">🛏️ Cuarto 1</span>
-                            <span class="room-card-badge">Hasta 2 personas</span>
+                <div class="room-card">
+                    <div class="room-card-header">
+                        <span class="room-card-name">🛏️ Cuarto 1</span>
+                        <span class="room-card-badge">Hasta 2 personas</span>
+                    </div>
+                    <div class="room-card-body">
+                        <div class="room-card-nav">
+                            <button class="room-cal-btn" onclick="roomNavigate(-1)">‹</button>
+                            <span class="room-cal-label" id="r1-label"></span>
+                            <button class="room-cal-btn" onclick="roomNavigate(1)">›</button>
                         </div>
-                        <div class="room-card-body">
-                            <div class="room-card-nav">
-                                <button class="room-cal-btn" onclick="roomNavigate('r1',-1)">‹</button>
-                                <span class="room-cal-label" id="r1-label"></span>
-                                <button class="room-cal-btn" onclick="roomNavigate('r1',1)">›</button>
-                            </div>
-                            <div class="room-cal-container" id="r1-cal">
-                                <div class="room-cal-loading">Cargando…</div>
-                            </div>
-                        </div>
-                        <div class="room-card-footer">
-                            <a href="registro-apto3.html?cuartos=1" class="room-reserve-btn">Reservar Cuarto 1 →</a>
+                        <div class="room-cal-container" id="r1-cal">
+                            <div class="room-cal-loading">Cargando…</div>
                         </div>
                     </div>
-
-                    <!-- Cuarto 2 -->
-                    <div class="room-card">
-                        <div class="room-card-header">
-                            <span class="room-card-name">🛏️ Cuarto 2</span>
-                            <span class="room-card-badge">Hasta 2 personas</span>
-                        </div>
-                        <div class="room-card-body">
-                            <div class="room-card-nav">
-                                <button class="room-cal-btn" onclick="roomNavigate('r2',-1)">‹</button>
-                                <span class="room-cal-label" id="r2-label"></span>
-                                <button class="room-cal-btn" onclick="roomNavigate('r2',1)">›</button>
-                            </div>
-                            <div class="room-cal-container" id="r2-cal">
-                                <div class="room-cal-loading">Cargando…</div>
-                            </div>
-                        </div>
-                        <div class="room-card-footer">
-                            <a href="registro-apto3.html?cuartos=2" class="room-reserve-btn">Reservar Cuarto 2 →</a>
-                        </div>
+                    <div class="room-card-footer">
+                        <a href="registro-apto4.html" class="room-reserve-btn">Reservar ahora →</a>
                     </div>
-                </div>
-
-                <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:14px 18px; margin-top:4px; display:flex; align-items:flex-start; gap:10px;">
-                    <span style="font-size:18px; flex-shrink:0;">💡</span>
-                    <p style="font-size:13px; color:#1e40af; margin:0; font-weight:500; line-height:1.5;">
-                        ¿Vienes con más personas? Puedes reservar ambos cuartos a la vez desde el formulario de registro.
-                        <a href="registro-apto3.html" style="color:#1d4ed8; font-weight:700; text-decoration:underline;">Reservar ambos cuartos →</a>
-                    </p>
                 </div>
 
                 <div class="rooms-legend">
@@ -729,7 +696,7 @@
         });
     </script>
 
-    <!-- ── FIREBASE PER-ROOM AVAILABILITY ── -->
+    <!-- ── FIREBASE ROOM AVAILABILITY ── -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -743,50 +710,41 @@
         appId: "1:773909398953:web:157467cae451bf125ff0b8"
     };
 
-    const CABIN = "Apto Najos-3";
+    const CABIN = "Apto Najos-4";
+    const ROOM_KEY = "Cuarto 1";
     const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
                          'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
-    const ROOMS = [
-        { id: 'r1', key: 'Cuarto 1', calId: 'r1-cal', labelId: 'r1-label' },
-        { id: 'r2', key: 'Cuarto 2', calId: 'r2-cal', labelId: 'r2-label' },
-    ];
-
-    const roomState = {};
-    ROOMS.forEach(r => { roomState[r.id] = { offset: 0, dateSets: null }; });
-
     const app = initializeApp(firebaseConfig);
     const db  = getFirestore(app);
+    let calOffset = 0, dateSets = null;
 
     function toDateStr(d) {
         return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     }
 
-    async function loadRoomReservations(roomKey) {
+    async function loadReservations() {
         const snap = await getDocs(
             query(collection(db, "cabin_availability"),
                   where("apto", "==", CABIN),
-                  where("habitacion", "==", roomKey))
+                  where("habitacion", "==", ROOM_KEY))
         );
         const reservations = [];
         snap.forEach(doc => {
             const d = doc.data();
-            if (d.fechaInicio && d.fechaFin)
-                reservations.push({ start: d.fechaInicio, end: d.fechaFin });
+            if (d.fechaInicio && d.fechaFin) reservations.push({ start: d.fechaInicio, end: d.fechaFin });
         });
-        const legacySnap = await getDocs(
-            query(collection(db, "cabin_availability"), where("apto", "==", CABIN))
-        );
-        legacySnap.forEach(doc => {
+        // Legacy docs (no habitacion field)
+        const legacy = await getDocs(query(collection(db, "cabin_availability"), where("apto", "==", CABIN)));
+        legacy.forEach(doc => {
             const d = doc.data();
-            if (!d.habitacion && d.fechaInicio && d.fechaFin)
-                reservations.push({ start: d.fechaInicio, end: d.fechaFin });
+            if (!d.habitacion && d.fechaInicio && d.fechaFin) reservations.push({ start: d.fechaInicio, end: d.fechaFin });
         });
         return reservations;
     }
 
     function buildDateSets(reservations) {
-        const allCheckins  = new Set(reservations.map(r => r.start));
+        const allCheckins = new Set(reservations.map(r => r.start));
         const allCheckouts = new Set(reservations.map(r => r.end));
         const mid = new Set(), checkin = new Set(), checkout = new Set(), shared = new Set();
         reservations.forEach(({ start, end }) => {
@@ -799,7 +757,7 @@
         return { mid, checkin, checkout, shared };
     }
 
-    function renderRoomMonth(year, month, dateSets) {
+    function renderMonth(year, month) {
         const today = new Date(); today.setHours(0, 0, 0, 0);
         const wrapper = document.createElement('div'); wrapper.className = 'room-cal-month';
         const header = document.createElement('div'); header.className = 'room-cal-month-header';
@@ -824,47 +782,41 @@
         wrapper.appendChild(grid); return wrapper;
     }
 
-    function renderRoomPage(room) {
-        const state = roomState[room.id];
-        const calEl = document.getElementById(room.calId);
-        const labelEl = document.getElementById(room.labelId);
+    function renderPage() {
+        const calEl = document.getElementById('r1-cal');
+        const labelEl = document.getElementById('r1-label');
         const now = new Date();
-        const abs = now.getMonth() + state.offset;
+        const abs = now.getMonth() + calOffset;
         const y = now.getFullYear() + Math.floor(abs / 12);
         const m = ((abs % 12) + 12) % 12;
         const monthsDiv = document.createElement('div'); monthsDiv.className = 'room-cal-months';
-        monthsDiv.appendChild(renderRoomMonth(y, m, state.dateSets));
+        monthsDiv.appendChild(renderMonth(y, m));
         calEl.innerHTML = ''; calEl.appendChild(monthsDiv);
         labelEl.textContent = `${MONTH_NAMES[m]} ${y}`;
-        const prevBtn = calEl.closest('.room-card').querySelector('.room-cal-btn:first-child');
-        const nextBtn = calEl.closest('.room-card').querySelector('.room-cal-btn:last-child');
-        prevBtn.style.opacity = state.offset === 0 ? '0.3' : '1'; prevBtn.style.cursor = state.offset === 0 ? 'default' : 'pointer';
-        nextBtn.style.opacity = state.offset >= 5 ? '0.3' : '1'; nextBtn.style.cursor = state.offset >= 5 ? 'default' : 'pointer';
+        const btns = document.querySelectorAll('.room-cal-btn');
+        btns[0].style.opacity = calOffset === 0 ? '0.3' : '1'; btns[0].style.cursor = calOffset === 0 ? 'default' : 'pointer';
+        btns[1].style.opacity = calOffset >= 5 ? '0.3' : '1'; btns[1].style.cursor = calOffset >= 5 ? 'default' : 'pointer';
     }
 
-    window.roomNavigate = function(roomId, direction) {
-        const state = roomState[roomId];
-        if (direction === -1 && state.offset === 0) return;
-        if (direction ===  1 && state.offset >= 5)  return;
-        state.offset += direction;
-        renderRoomPage(ROOMS.find(r => r.id === roomId));
+    window.roomNavigate = function(direction) {
+        if (direction === -1 && calOffset === 0) return;
+        if (direction ===  1 && calOffset >= 5)  return;
+        calOffset += direction; renderPage();
     };
 
-    async function initRoomCalendars() {
-        for (const room of ROOMS) {
-            const calEl = document.getElementById(room.calId);
-            try {
-                const reservations = await loadRoomReservations(room.key);
-                roomState[room.id].dateSets = buildDateSets(reservations);
-                renderRoomPage(room);
-            } catch (err) {
-                console.error(`Error loading room ${room.key}:`, err);
-                calEl.innerHTML = '<div class="room-cal-loading">No se pudo cargar. Intenta de nuevo.</div>';
-            }
+    async function initCalendar() {
+        const calEl = document.getElementById('r1-cal');
+        try {
+            const reservations = await loadReservations();
+            dateSets = buildDateSets(reservations);
+            renderPage();
+        } catch (err) {
+            console.error("Error loading availability:", err);
+            calEl.innerHTML = '<div class="room-cal-loading">No se pudo cargar. Intenta de nuevo.</div>';
         }
     }
 
-    initRoomCalendars();
+    initCalendar();
 </script>
 </body>
 </html>
