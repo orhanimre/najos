@@ -989,59 +989,93 @@ html, body { overscroll-behavior: none; }
         50% { box-shadow: 0 0 0 4px rgba(255,255,255,0.6); }
       }
 
-      /* ── Per-room availability dots ── */
-      .room-dots {
+      /* ── Per-room availability chips ── */
+      .room-chips {
         display: flex;
         justify-content: center;
         gap: 2px;
         margin-top: 3px;
+        flex-wrap: wrap;
       }
-      .room-dot {
-        width: 7px; height: 7px;
-        border-radius: 50%;
-        border: 1px solid rgba(255,255,255,0.6);
-        flex-shrink: 0;
+      .room-chip {
+        font-size: 8px;
+        font-weight: 700;
+        padding: 1px 4px;
+        border-radius: 4px;
+        line-height: 1.4;
+        letter-spacing: 0.2px;
+        white-space: nowrap;
+        border: 1px solid transparent;
       }
-      .dot-available { background: #48bb78; }
-      .dot-booked    { background: #f56565; }
+      .chip-available {
+        background: #d1fae5;
+        color: #065f46;
+        border-color: #6ee7b7;
+      }
+      .chip-booked {
+        background: #fee2e2;
+        color: #991b1b;
+        border-color: #fca5a5;
+      }
       @media (max-width: 400px) {
-        .room-dot { width: 5px; height: 5px; }
+        .room-chip { font-size: 7px; padding: 1px 3px; }
       }
 
-      /* ── Room dots legend strip ── */
-      .room-dots-legend {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 8px 16px;
-        padding: 10px 16px;
-        background: #f8fafc;
-        border-top: 1px solid #e5e7eb;
-        font-size: 12px;
-        color: #4a5568;
-      }
-      .rdl-rooms {
+      /* ── In-modal room picker ── */
+      .cal-room-picker {
         display: flex;
         align-items: center;
         gap: 8px;
-        font-weight: 600;
+        padding: 10px 16px;
+        background: rgba(255,255,255,0.12);
+        border-top: 1px solid rgba(255,255,255,0.2);
+        flex-wrap: wrap;
       }
-      .rdl-room {
+      .cal-room-picker-label {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: rgba(255,255,255,0.85);
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .cal-room-picker-btns {
         display: flex;
-        align-items: center;
-        gap: 4px;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .cal-room-btn {
+        padding: 5px 11px;
+        border-radius: 20px;
+        border: 1.5px solid rgba(255,255,255,0.45);
+        background: rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.9);
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-family: inherit;
         white-space: nowrap;
       }
-      .rdl-dot {
-        display: inline-block;
-        width: 9px; height: 9px;
-        border-radius: 50%;
+      .cal-room-btn:hover {
+        background: rgba(255,255,255,0.25);
+        border-color: rgba(255,255,255,0.75);
       }
-      .rdl-sep {
-        color: #cbd5e0;
-        font-size: 16px;
-        line-height: 1;
+      .cal-room-btn.active {
+        background: white;
+        color: #0077BE;
+        border-color: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      }
+      .cal-room-picker-hint {
+        font-size: 10px;
+        color: rgba(255,255,255,0.65);
+        margin-left: auto;
+        white-space: nowrap;
+      }
+      @media (max-width: 480px) {
+        .cal-room-picker-hint { display: none; }
       }
     </style>
   </head>
@@ -1334,6 +1368,12 @@ html, body { overscroll-behavior: none; }
             </div>
           </div>
           <button class="modal-close" onclick="closeDatePickerModal()">✕</button>
+          <!-- In-modal room picker -->
+          <div class="cal-room-picker" id="calRoomPicker">
+            <span class="cal-room-picker-label">🛏️ Habitaciones:</span>
+            <div class="cal-room-picker-btns" id="calRoomPickerBtns"></div>
+            <span class="cal-room-picker-hint">Toca para cambiar</span>
+          </div>
         </div>
         <div class="date-picker-body">
           <div id="calendarInstruction" class="calendar-instruction state-checkin">
@@ -1350,15 +1390,13 @@ html, body { overscroll-behavior: none; }
               <div class="legend-color selected"></div>
               <span>Seleccionado</span>
             </div>
-          </div>
-          <!-- Per-room dots legend (populated by JS) -->
-          <div class="room-dots-legend" id="roomDotsLegend" style="display:none;">
-            <span style="font-weight:700;color:#374151;">🏠 Cuartos&nbsp;</span>
-            <div class="rdl-rooms" id="rdlRoomItems"></div>
-            <span class="rdl-sep">·</span>
-            <span class="rdl-room"><span class="rdl-dot" style="background:#48bb78;"></span>&nbsp;Libre</span>
-            <span class="rdl-sep">·</span>
-            <span class="rdl-room"><span class="rdl-dot" style="background:#f56565;"></span>&nbsp;Ocupado</span>
+            <div class="legend-item">
+              <div style="display:flex;gap:3px;align-items:center;">
+                <span style="font-size:9px;font-weight:700;padding:2px 5px;background:#d1fae5;color:#065f46;border-radius:4px;border:1px solid #6ee7b7;">C1</span>
+                <span style="font-size:9px;font-weight:700;padding:2px 5px;background:#fee2e2;color:#991b1b;border-radius:4px;border:1px solid #fca5a5;">C2</span>
+              </div>
+              <span>Libre / Ocupado</span>
+            </div>
           </div>
           <div style="padding:16px 24px; background:white; border-top:1px solid #e5e7eb;">
             <button
@@ -1859,22 +1897,53 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           window.roomAvailMap[d.fechaFin][d.habitacion] = 'booked';
         });
 
-        // Show / refresh the per-room legend
-        const legend = document.getElementById("roomDotsLegend");
-        const rdl    = document.getElementById("rdlRoomItems");
-        if (legend && rdl) {
-          rdl.innerHTML = ROOMS_CONFIG.map(r =>
-            `<span class="rdl-room"><span class="rdl-dot dot-available"></span>&nbsp;${r.name}</span>`
-          ).join('<span class="rdl-sep">·</span>');
-          legend.style.display = "flex";
-        }
+        // Build / refresh the in-modal room picker
+        buildCalRoomPicker();
     } catch (err) { console.error("Error loading booked dates:", err); }
 }
+
+      function buildCalRoomPicker() {
+        const btns = document.getElementById("calRoomPickerBtns");
+        if (!btns) return;
+        btns.innerHTML = "";
+        ROOMS_CONFIG.forEach(room => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "cal-room-btn" + (selectedRooms.includes(room.id) ? " active" : "");
+          btn.textContent = room.name;
+          btn.dataset.roomId = room.id;
+          btn.addEventListener("click", () => toggleCalRoom(room.id));
+          btns.appendChild(btn);
+        });
+      }
+
+      function toggleCalRoom(roomId) {
+        const idx = selectedRooms.indexOf(roomId);
+        if (idx === -1) {
+          selectedRooms.push(roomId);
+        } else {
+          if (selectedRooms.length === 1) {
+            showToast("🛏️ Debes tener al menos una habitación seleccionada");
+            return;
+          }
+          selectedRooms.splice(idx, 1);
+        }
+        selectedRooms.sort();
+        // Sync to main room selector
+        buildRoomSelector();
+        // Reset dates since room combo changed
+        selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
+        updateDateDisplay();
+        // Reload availability for new combo
+        document.getElementById("datePickerScroll").innerHTML = '<div style="text-align:center;padding:40px;color:#14b8a6;font-size:18px;">⏳ Cargando disponibilidad...</div>';
+        loadBookedDates().then(() => { bookedDatesLoaded = true; renderCalendar(); updateInstruction(); buildCalRoomPicker(); });
+      }
 
       window.openDatePickerModal = function() {
         const modal = document.getElementById("datePickerModal");
         modal.classList.add("show");
         document.body.style.overflow = "hidden";
+        buildCalRoomPicker();
         // Always reload so dates reflect the currently selected rooms
         document.getElementById("datePickerScroll").innerHTML = '<div style="text-align:center;padding:40px;color:#14b8a6;font-size:18px;">⏳ Cargando disponibilidad...</div>';
         loadBookedDates().then(() => { bookedDatesLoaded = true; renderCalendar(); updateInstruction(); });
@@ -1999,17 +2068,19 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           }
           const num = document.createElement("div"); num.className = "calendar-day-number"; num.textContent = day;
           cell.appendChild(num);
-          // Per-room availability dots (only for future dates after data is loaded)
+          // Per-room availability chips (only for future dates after data is loaded)
           if (cellDate >= today && window.roomAvailMap !== undefined) {
-            const dots = document.createElement("div");
-            dots.className = "room-dots";
+            const chips = document.createElement("div");
+            chips.className = "room-chips";
             ROOMS_CONFIG.forEach(room => {
-              const dot = document.createElement("span");
-              dot.className = "room-dot " + (window.roomAvailMap[dateStr]?.[room.name] ? "dot-booked" : "dot-available");
-              dot.title = `${room.name}: ${window.roomAvailMap[dateStr]?.[room.name] ? "Ocupado" : "Disponible"}`;
-              dots.appendChild(dot);
+              const chip = document.createElement("span");
+              const isBooked = window.roomAvailMap[dateStr]?.[room.name] === 'booked';
+              chip.className = "room-chip " + (isBooked ? "chip-booked" : "chip-available");
+              chip.textContent = "C" + room.id;
+              chip.title = `${room.name}: ${isBooked ? "Ocupado" : "Disponible"}`;
+              chips.appendChild(chip);
             });
-            cell.appendChild(dots);
+            cell.appendChild(chips);
           }
           if (isClickable) { cell.style.cursor = "pointer"; cell.addEventListener("click", () => selectDate(dateStr)); }
           grid.appendChild(cell);
