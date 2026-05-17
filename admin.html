@@ -838,11 +838,15 @@
       <div class="edit-section-title">📅 Estadía</div>
       <div class="edit-group">
         <label class="edit-label">Apto</label>
-        <select id="edc_apto" class="edit-input">
+        <select id="edc_apto" class="edit-input" onchange="updateEditRooms()">
           <option value="Apto Najos-2">Apto 2</option>
           <option value="Apto Najos-3">Apto 3</option>
           <option value="Apto Najos-4">Apto 4</option>
         </select>
+      </div>
+      <div class="edit-group" id="editRoomsGroup">
+        <label class="edit-label">Habitación(es)</label>
+        <div id="editRoomsCheckboxes" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;"></div>
       </div>
       <div class="edit-row">
         <div class="edit-group"><label class="edit-label">Fecha Entrada</label><input type="date" id="edc_fechaEntrada" class="edit-input"/></div>
@@ -1112,6 +1116,36 @@ function updateCalCounts() {
 }
 
 /* ── FILTERS ── */
+
+window.updateEditRooms = function() {
+  const apto = document.getElementById('edc_apto').value;
+  const container = document.getElementById('editRoomsCheckboxes');
+  if (!container) return;
+  container.innerHTML = '';
+  const roomMap = {
+    'Apto Najos-2': ['Cuarto 1', 'Cuarto 2', 'Cuarto 3'],
+    'Apto Najos-3': ['Cuarto 1', 'Cuarto 2'],
+    'Apto Najos-4': ['Cuarto 1'],
+  };
+  const rooms = roomMap[apto] || [];
+  if (rooms.length <= 1) {
+    document.getElementById('editRoomsGroup').style.display = rooms.length === 1 ? 'none' : 'none';
+    // For apto4: auto-select Cuarto 1
+    return;
+  }
+  document.getElementById('editRoomsGroup').style.display = 'block';
+  rooms.forEach(room => {
+    const label = document.createElement('label');
+    label.style.cssText = 'display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;cursor:pointer;';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox'; cb.value = room;
+    cb.style.cssText = 'width:18px;height:18px;accent-color:var(--accent);cursor:pointer;';
+    label.appendChild(cb);
+    label.appendChild(document.createTextNode(room));
+    container.appendChild(label);
+  });
+};
+
 window.filterByApto = function(apto) {
   aptoFilter = apto;
   document.querySelectorAll('.stat-pill').forEach(p => p.classList.remove('active'));
@@ -1259,7 +1293,7 @@ const cc = colorMap[cn] || 'c1';
           <div class="card-name">${reg.nombre || ''} ${reg.apellido || ''}</div>
           <div style="font-size:12px;color:var(--muted);margin-top:3px;font-weight:500;">📱 ${reg.celular || '—'}</div>
         </div>
-        <div class="card-apto ${cc}">Apto ${cn}</div>
+        <div class="card-apto ${cc}">Apto ${cn}${reg.habitaciones && reg.habitaciones.length ? '<br><span style="font-size:9px;font-weight:600;opacity:0.8;">'+reg.habitaciones.join('·')+'</span>' : ''}</div>
       </div>
       <div class="card-dates">
         <strong>${formatDateShort(reg.fechaEntrada)}</strong>
@@ -1303,6 +1337,7 @@ const cn = cnMatch ? cnMatch[1] : '?';
       <div class="detail-section-title">Apto</div>
       <div class="detail-card">
         <div class="detail-row"><span class="detail-label">Apto</span><span class="detail-value" style="color:var(--${cc})">Najos-${cn}</span></div>
+        ${(r.habitaciones && r.habitaciones.length) ? `<div class="detail-row"><span class="detail-label">Habitación(es)</span><span class="detail-value">🛏️ ${r.habitaciones.join(", ")}</span></div>` : (cn !== '4' ? '<div class="detail-row"><span class="detail-label">Habitación(es)</span><span class="detail-value" style="color:var(--amber)">Sin especificar</span></div>' : '')}
         <div class="detail-row"><span class="detail-label">Huéspedes</span><span class="detail-value">👥 ${(r.totalHuespedes||0)+1}</span></div>
       </div>
     </div>
@@ -1349,6 +1384,12 @@ window.openEdit = function() {
   closeDetailSheet();
   setTimeout(() => {
     document.getElementById('edc_apto').value = r.apto || '';
+    updateEditRooms();
+    // Restore checked rooms
+    setTimeout(() => {
+      const boxes = document.querySelectorAll('#editRoomsCheckboxes input[type=checkbox]');
+      boxes.forEach(cb => { cb.checked = (r.habitaciones || []).includes(cb.value); });
+    }, 50);
     document.getElementById('edc_fechaEntrada').value = r.fechaEntrada || '';
     document.getElementById('edc_horaEntrada').value = r.horaEntrada || '';
     document.getElementById('edc_fechaSalida').value = r.fechaSalida || '';
@@ -1394,8 +1435,10 @@ window.closeEditSheet = function() {
 
 window.saveEdit = async function() {
   if (!currentReg) return;
+  const selectedHabitaciones = Array.from(document.querySelectorAll('#editRoomsCheckboxes input[type=checkbox]:checked')).map(cb => cb.value);
   const updated = {
     apto: document.getElementById('edc_apto').value,
+    habitaciones: selectedHabitaciones,
     fechaEntrada: document.getElementById('edc_fechaEntrada').value,
     horaEntrada: document.getElementById('edc_horaEntrada').value,
     fechaSalida: document.getElementById('edc_fechaSalida').value,
@@ -1636,11 +1679,12 @@ function renderCalendar() {
       if (cellDate.getTime() === today.getTime()) el.classList.add('today');
       if (cellDate < today) el.classList.add('past');
 
-      const checkoutReg = regs.find(r => r.fechaSalida === dateStr);
-      const checkinReg  = regs.find(r => r.fechaEntrada === dateStr);
-      const middleReg   = regs.find(r => r.fechaEntrada && r.fechaSalida && dateStr > r.fechaEntrada && dateStr < r.fechaSalida);
+      const checkoutRegs = regs.filter(r => r.fechaSalida === dateStr);
+      const checkinRegs  = regs.filter(r => r.fechaEntrada === dateStr);
+      const middleRegs   = regs.filter(r => r.fechaEntrada && r.fechaSalida && dateStr > r.fechaEntrada && dateStr < r.fechaSalida);
 
-      if (!checkoutReg && !checkinReg && !middleReg) { grid.appendChild(el); continue; }
+      const anyReg = checkoutRegs.length || checkinRegs.length || middleRegs.length;
+      if (!anyReg) { grid.appendChild(el); continue; }
 
       el.classList.remove('past');
       el.style.cursor = 'pointer';
@@ -1650,29 +1694,53 @@ function renderCalendar() {
       const tooltipEntries = [];
       const aptoNum = currentCalCabin;
 
-      if (checkoutReg && checkinReg) {
-        const outC = colorMap[checkoutReg.id] || PALETTE[0];
-        const inC  = colorMap[checkinReg.id]  || PALETTE[1];
-        el.style.background = `linear-gradient(90deg, ${outC.bg} 50%, ${inC.bg} 50%)`;
-        el.style.color = outC.text;
-        tooltipEntries.push({ id: checkoutReg.id, nombre: checkoutReg.nombre, apellido: checkoutReg.apellido, label: '⬅️ Salida', aptoNum, color: outC.bg, guests: (checkoutReg.totalHuespedes || 0) + 1 });
-        tooltipEntries.push({ id: checkinReg.id, nombre: checkinReg.nombre, apellido: checkinReg.apellido, label: '🏠 Entrada', aptoNum, color: inC.bg, guests: (checkinReg.totalHuespedes || 0) + 1 });
-      } else if (checkoutReg) {
-        const outC = colorMap[checkoutReg.id] || PALETTE[0];
-        el.style.background = `linear-gradient(90deg, ${outC.bg} 50%, transparent 50%)`;
-        el.style.color = outC.text;
-        tooltipEntries.push({ id: checkoutReg.id, nombre: checkoutReg.nombre, apellido: checkoutReg.apellido, label: '⬅️ Salida', aptoNum, color: outC.bg, guests: (checkoutReg.totalHuespedes || 0) + 1 });
-      } else if (checkinReg) {
-        const inC = colorMap[checkinReg.id] || PALETTE[0];
-        el.style.background = `linear-gradient(90deg, transparent 50%, ${inC.bg} 50%)`;
-        el.style.color = inC.text;
-        tooltipEntries.push({ id: checkinReg.id, nombre: checkinReg.nombre, apellido: checkinReg.apellido, label: '🏠 Entrada', aptoNum, color: inC.bg, guests: (checkinReg.totalHuespedes || 0) + 1 });
-      } else if (middleReg) {
-        const c = colorMap[middleReg.id] || PALETTE[0];
-        el.style.background = c.bg;
-        el.style.color = c.text;
-        tooltipEntries.push({ id: middleReg.id, nombre: middleReg.nombre, apellido: middleReg.apellido, label: '🛏️ Hospedado', aptoNum, color: c.bg, guests: (middleReg.totalHuespedes || 0) + 1 });
+      // Collect all regs active on this day for coloring
+      const dayRegs = [...new Set([...checkoutRegs, ...checkinRegs, ...middleRegs])];
+      const colors = dayRegs.map(r => colorMap[r.id] || PALETTE[0]);
+
+      // Pick a representative background (first active reg)
+      const primaryC = colors[0] || PALETTE[0];
+      if (dayRegs.length === 1) {
+        const r = dayRegs[0];
+        const c = colorMap[r.id] || PALETTE[0];
+        const isCheckin  = checkinRegs.includes(r);
+        const isCheckout = checkoutRegs.includes(r);
+        if (isCheckout && isCheckin) {
+          el.style.background = c.bg; el.style.color = c.text;
+        } else if (isCheckout) {
+          el.style.background = `linear-gradient(90deg, ${c.bg} 50%, transparent 50%)`; el.style.color = c.text;
+        } else if (isCheckin) {
+          el.style.background = `linear-gradient(90deg, transparent 50%, ${c.bg} 50%)`; el.style.color = c.text;
+        } else {
+          el.style.background = c.bg; el.style.color = c.text;
+        }
+      } else {
+        // Multiple regs (different rooms) — stripe them
+        const stops = dayRegs.map((r, i) => {
+          const c = colorMap[r.id] || PALETTE[i];
+          const pct1 = Math.round(i / dayRegs.length * 100);
+          const pct2 = Math.round((i + 1) / dayRegs.length * 100);
+          return `${c.bg} ${pct1}%, ${c.bg} ${pct2}%`;
+        }).join(', ');
+        el.style.background = `linear-gradient(90deg, ${stops})`;
+        el.style.color = colors[0].text;
       }
+
+      // Build tooltip entries
+      checkoutRegs.forEach(r => {
+        const rooms = r.habitaciones?.join(', ') || '';
+        tooltipEntries.push({ id: r.id, nombre: r.nombre, apellido: r.apellido, label: `⬅️ Salida${rooms ? ' · '+rooms : ''}`, aptoNum, color: (colorMap[r.id]||PALETTE[0]).bg, guests: (r.totalHuespedes||0)+1 });
+      });
+      checkinRegs.forEach(r => {
+        if (checkoutRegs.includes(r)) return;
+        const rooms = r.habitaciones?.join(', ') || '';
+        tooltipEntries.push({ id: r.id, nombre: r.nombre, apellido: r.apellido, label: `🏠 Entrada${rooms ? ' · '+rooms : ''}`, aptoNum, color: (colorMap[r.id]||PALETTE[0]).bg, guests: (r.totalHuespedes||0)+1 });
+      });
+      middleRegs.forEach(r => {
+        if (checkoutRegs.includes(r) || checkinRegs.includes(r)) return;
+        const rooms = r.habitaciones?.join(', ') || '';
+        tooltipEntries.push({ id: r.id, nombre: r.nombre, apellido: r.apellido, label: `🛏️ Hospedado${rooms ? ' · '+rooms : ''}`, aptoNum, color: (colorMap[r.id]||PALETTE[0]).bg, guests: (r.totalHuespedes||0)+1 });
+      });
 
       el.onclick = (e) => { e.stopPropagation(); showCalTooltip(e, tooltipEntries); };
       grid.appendChild(el);
