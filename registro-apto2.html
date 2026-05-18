@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro Apto 2 - Apto Najos</title>
+    <title>Registro Apto 4 - Apto Najos</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -11,6 +11,7 @@
       * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html, body { overscroll-behavior: none; }
+
       body {
         font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         background: linear-gradient(135deg, #0077BE 0%, #4DA8DA 100%);
@@ -766,20 +767,12 @@ html, body { overscroll-behavior: none; }
 
       /* ── Apartment Rules ── */
       .rules-trigger-btn {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        width: 100%; display: flex; align-items: center; justify-content: space-between;
         padding: 18px 24px;
         background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
-        border: 2px solid #fc8181;
-        border-radius: 16px;
-        cursor: pointer;
-        font-size: 15px;
-        font-weight: 600;
-        color: #742a2a;
-        transition: all 0.3s ease;
-        margin-bottom: 0;
+        border: 2px solid #fc8181; border-radius: 16px;
+        cursor: pointer; font-size: 15px; font-weight: 600; color: #742a2a;
+        transition: all 0.3s ease; margin-bottom: 0;
         text-align: left;
       }
       .rules-trigger-btn:hover {
@@ -788,138 +781,101 @@ html, body { overscroll-behavior: none; }
       }
       .rules-trigger-btn.accepted {
         background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%);
-        border-color: #48bb78;
-        color: #276749;
+        border-color: #48bb78; color: #276749;
       }
       .rules-trigger-btn .rules-btn-left { display: flex; align-items: center; gap: 10px; }
       .rules-trigger-btn .rules-arrow { font-size: 14px; flex-shrink: 0; }
 
       .rules-modal-overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.75);
-        backdrop-filter: blur(4px);
-        z-index: 10001;
-        padding: 20px;
-        align-items: center;
-        justify-content: center;
+        display: none; position: fixed; inset: 0;
+        background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
+        z-index: 10001; padding: 20px; align-items: center; justify-content: center;
       }
       .rules-modal-overlay.show { display: flex; }
 
       .rules-modal {
-        background: white;
-        border-radius: 20px;
-        max-width: 600px;
-        width: 100%;
-        max-height: 85vh;
-        display: flex;
-        flex-direction: column;
+        background: white; border-radius: 20px;
+        max-width: 600px; width: 100%; max-height: 85vh;
+        display: flex; flex-direction: column;
         box-shadow: 0 24px 60px rgba(0,0,0,0.4);
-        animation: slideUp 0.3s ease;
-        overflow: hidden;
+        animation: slideUp 0.3s ease; overflow: hidden;
       }
-
       .rules-modal-header {
         background: linear-gradient(135deg, #0077BE 0%, #005A8D 100%);
-        color: white;
-        padding: 20px 24px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-shrink: 0;
+        color: white; padding: 20px 24px;
+        display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
       }
       .rules-modal-header h3 { font-size: 18px; font-weight: 700; margin: 0; }
       .rules-modal-close {
-        background: rgba(255,255,255,0.2);
-        border: none; color: white;
-        width: 34px; height: 34px;
-        border-radius: 50%; font-size: 22px;
-        cursor: pointer; display: flex;
-        align-items: center; justify-content: center;
+        background: rgba(255,255,255,0.2); border: none; color: white;
+        width: 34px; height: 34px; border-radius: 50%; font-size: 22px;
+        cursor: pointer; display: flex; align-items: center; justify-content: center;
         transition: all 0.2s ease;
       }
       .rules-modal-close:hover { background: rgba(255,255,255,0.35); transform: rotate(90deg); }
-
-      .rules-modal-body {
-        flex: 1;
-        overflow-y: auto;
-        padding: 24px;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .rules-modal-footer {
-        padding: 16px 24px;
-        background: #f9fafb;
-        border-top: 1px solid #e5e7eb;
-        flex-shrink: 0;
-      }
-
+      .rules-modal-body { flex: 1; overflow-y: auto; padding: 24px; -webkit-overflow-scrolling: touch; }
+      .rules-modal-footer { padding: 16px 24px; background: #f9fafb; border-top: 1px solid #e5e7eb; flex-shrink: 0; }
       .rules-confirm-btn {
-        width: 100%;
-        padding: 14px;
+        width: 100%; padding: 14px;
         background: linear-gradient(135deg, #0077BE 0%, #4DA8DA 100%);
-        color: white;
-        border: none;
-        border-radius: 12px;
-        font-size: 16px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(0,119,190,0.35);
+        color: white; border: none; border-radius: 12px;
+        font-size: 16px; font-weight: 700; cursor: pointer;
+        transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,119,190,0.35);
       }
       .rules-confirm-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,119,190,0.45); }
 
-      .rules-rule-item {
-        display: flex;
-        gap: 12px;
-        padding: 12px 0;
-        border-bottom: 1px solid #f0f0f0;
-        align-items: flex-start;
+      .rules-section-title {
+        font-size: 12px; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 0.8px; color: #6b7280;
+        margin: 20px 0 10px; padding-bottom: 6px; border-bottom: 2px solid #e5e7eb;
       }
+      .rules-section-title:first-child { margin-top: 0; }
+      .rules-rule-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f0f0f0; align-items: flex-start; }
       .rules-rule-item:last-child { border-bottom: none; }
-      .rules-rule-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+      .rules-rule-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
       .rules-rule-text { font-size: 14px; color: #374151; line-height: 1.55; }
       .rules-rule-text strong { color: #111827; display: block; margin-bottom: 2px; }
 
-      .rules-section-title {
-        font-size: 13px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        color: #6b7280;
-        margin: 20px 0 10px;
-        padding-bottom: 6px;
-        border-bottom: 2px solid #e5e7eb;
-      }
-      .rules-section-title:first-child { margin-top: 0; }
-
       .rules-checkbox-group {
-        display: flex;
-        align-items: start;
-        gap: 16px;
+        display: flex; align-items: start; gap: 16px;
         padding: 20px 24px;
         background: linear-gradient(135deg, #fff8e1 0%, #fef3c7 100%);
-        border-radius: 16px;
-        border: 2px solid #f59e0b;
-        margin-bottom: 20px;
-        transition: all 0.3s ease;
+        border-radius: 16px; border: 2px solid #f59e0b;
+        margin-bottom: 20px; transition: all 0.3s ease;
       }
       .rules-checkbox-group.checked {
         background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%);
         border-color: #48bb78;
       }
       .rules-checkbox-group input[type="checkbox"] {
-        width: 22px; height: 22px;
-        cursor: pointer; margin-top: 2px;
-        accent-color: #0077BE;
-        flex-shrink: 0;
+        width: 22px; height: 22px; cursor: pointer; margin-top: 2px;
+        accent-color: #0077BE; flex-shrink: 0;
       }
       .rules-checkbox-group label {
-        margin: 0; cursor: pointer;
-        flex: 1; font-weight: 500;
-        font-size: 14px; color: #374151;
-        line-height: 1.5;
+        margin: 0; cursor: pointer; flex: 1;
+        font-weight: 500; font-size: 14px; color: #374151; line-height: 1.5;
+      }
+      .rules-modal-consent {
+        padding: 14px 0 12px;
+        display: flex;
+        align-items: flex-start;
+      }
+      .rules-modal-consent-label {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        color: #374151;
+        line-height: 1.45;
+      }
+      .rules-modal-consent-label input[type="checkbox"] {
+        width: 20px; height: 20px;
+        accent-color: #0077BE;
+        flex-shrink: 0;
+        margin-top: 1px;
+        cursor: pointer;
       }
 
       /* ── Responsive ── */
@@ -942,7 +898,7 @@ html, body { overscroll-behavior: none; }
         .step-intro p  { font-size: 14px; }
 
         .grid-2 { grid-template-columns: 1fr; }
-        .step-container[data-step="3"] .grid-2 { grid-template-columns: 1fr 1fr; gap: 12px; }
+        .step-container[data-step="2"] .grid-2 { grid-template-columns: 1fr 1fr; gap: 12px; }
 
         .step-navigation { flex-direction: column-reverse; gap: 12px; margin-top: 30px; padding-top: 20px; }
         .nav-btn { padding: 14px 24px; font-size: 15px; }
@@ -972,59 +928,6 @@ html, body { overscroll-behavior: none; }
           .calendar-day-number { font-size: 11px; }
         }
       }
-
-      /* ── Room Selector ── */
-      /* ── Booking-style Room Listing ── */
-      .room-listing { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
-      .room-listing-card {
-        border: 1.5px solid #e2e8f0; border-radius: 16px;
-        background: #fff; overflow: hidden; transition: box-shadow 0.2s;
-      }
-      .room-listing-card.selected { border-color: #0077BE; box-shadow: 0 4px 16px rgba(0,119,190,0.18); }
-      .room-listing-body { display: flex; align-items: flex-start; gap: 16px; padding: 18px 20px 14px; }
-      .room-listing-icon { font-size: 38px; flex-shrink: 0; margin-top: 2px; }
-      .room-listing-info { flex: 1; }
-      .room-listing-name { font-size: 17px; font-weight: 700; color: #1a202c; margin-bottom: 6px; }
-      .room-listing-card.selected .room-listing-name { color: #0077BE; }
-      .room-listing-specs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
-      .room-spec-badge {
-        display: inline-flex; align-items: center; gap: 5px;
-        background: #f7fafc; border: 1px solid #e2e8f0;
-        border-radius: 20px; padding: 4px 10px;
-        font-size: 12px; color: #4a5568; font-weight: 500;
-      }
-      .room-listing-footer {
-        border-top: 1px solid #e2e8f0; padding: 12px 20px;
-        display: flex; align-items: center; justify-content: space-between; background: #fafafa;
-      }
-      .room-listing-card.selected .room-listing-footer { background: #ebf8ff; }
-      .room-capacity-label { font-size: 13px; color: #718096; }
-      .room-capacity-label strong { color: #2d3748; }
-      .btn-select-room {
-        background: #0077BE; color: #fff; border: none; border-radius: 10px;
-        padding: 9px 22px; font-size: 14px; font-weight: 700;
-        cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
-      }
-      .btn-select-room:hover { background: #005f99; transform: translateY(-1px); }
-      .btn-select-room.selected-btn { background: linear-gradient(135deg, #48bb78, #38a169); }
-      .btn-select-room.selected-btn:hover { background: linear-gradient(135deg, #38a169, #276749); }
-      .room-selector-grid { display: none; }
-      .room-card-col { display: none; }
-      .room-selection-hint {
-        text-align: center; padding: 12px 20px;
-        background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
-        border: 1.5px solid #fb923c; border-radius: 12px;
-        font-size: 14px; font-weight: 600; color: #9a3412;
-        margin-top: 20px; display: none;
-      }
-      .room-selection-hint.show { display: block; }
-      .selected-rooms-summary {
-        margin-top: 20px; padding: 14px 20px;
-        background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%);
-        border: 2px solid #48bb78; border-radius: 12px;
-        font-size: 14px; font-weight: 600; color: #276749; display: none;
-      }
-      .selected-rooms-summary.show { display: block; }
 
       /* ── Calendar Instruction Banner ── */
       .calendar-instruction {
@@ -1057,95 +960,6 @@ html, body { overscroll-behavior: none; }
         0%, 100% { box-shadow: none; }
         50% { box-shadow: 0 0 0 4px rgba(255,255,255,0.6); }
       }
-
-      /* ── Per-room availability chips ── */
-      .room-chips {
-        display: flex;
-        justify-content: center;
-        gap: 2px;
-        margin-top: 3px;
-        flex-wrap: wrap;
-      }
-      .room-chip {
-        font-size: 8px;
-        font-weight: 700;
-        padding: 1px 4px;
-        border-radius: 4px;
-        line-height: 1.4;
-        letter-spacing: 0.2px;
-        white-space: nowrap;
-        border: 1px solid transparent;
-      }
-      .chip-available {
-        background: #166534;
-        color: #ffffff;
-        border-color: #14532d;
-      }
-      .chip-booked {
-        background: #ef4444;
-        color: #ffffff;
-        border-color: #dc2626;
-      }
-      @media (max-width: 400px) {
-        .room-chip { font-size: 7px; padding: 1px 3px; }
-      }
-
-      /* ── In-modal room picker ── */
-      .cal-room-picker {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 16px;
-        background: rgba(255,255,255,0.12);
-        border-top: 1px solid rgba(255,255,255,0.2);
-        flex-wrap: wrap;
-      }
-      .cal-room-picker-label {
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.6px;
-        color: rgba(255,255,255,0.85);
-        white-space: nowrap;
-        flex-shrink: 0;
-      }
-      .cal-room-picker-btns {
-        display: flex;
-        gap: 6px;
-        flex-wrap: wrap;
-      }
-      .cal-room-btn {
-        padding: 5px 11px;
-        border-radius: 20px;
-        border: 1.5px solid rgba(255,255,255,0.45);
-        background: rgba(255,255,255,0.12);
-        color: rgba(255,255,255,0.9);
-        font-size: 12px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        font-family: inherit;
-        white-space: nowrap;
-      }
-      .cal-room-btn:hover {
-        background: rgba(255,255,255,0.25);
-        border-color: rgba(255,255,255,0.75);
-      }
-      .cal-room-btn.active {
-        background: white;
-        color: #0077BE;
-        border-color: white;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      }
-      .cal-room-picker-hint {
-        font-size: 10px;
-        color: rgba(255,255,255,0.65);
-        margin-left: auto;
-        white-space: nowrap;
-      }
-      @media (max-width: 480px) {
-        .cal-room-picker-hint { display: none; }
-      }
       /* ── Availability peek button (Step 1) ── */
       .avail-peek-btn {
         display: inline-flex;
@@ -1170,46 +984,8 @@ html, body { overscroll-behavior: none; }
         box-shadow: 0 6px 16px rgba(22,101,52,0.18);
       }
       .avail-peek-btn:active { transform: translateY(0); }
-      .avail-peek-dots {
-        font-size: 18px;
-        letter-spacing: 2px;
-        line-height: 1;
-        color: #15803d;
-      }
+      .avail-peek-dots { font-size: 18px; letter-spacing: 2px; line-height: 1; color: #15803d; }
       .avail-peek-icon { font-size: 16px; }
-
-      /* ── Room card column wrapper (card + peek link stacked) ── */
-      .room-card-col {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0;
-      }
-      .room-card-col .room-card {
-        flex: 1;
-        margin-bottom: 0;
-      }
-
-      /* ── Per-card availability peek link ── */
-      .room-avail-peek-btn {
-        display: block;
-        width: fit-content;
-        margin: 8px auto 0;
-        padding: 5px 14px;
-        background: #f1f5f9;
-        border: none;
-        font-family: inherit;
-        font-size: 12px;
-        font-weight: 500;
-        color: #475569;
-        cursor: pointer;
-        text-align: center;
-        letter-spacing: 0.2px;
-        line-height: 1.4;
-        transition: background 0.15s, color 0.15s;
-        border-radius: 20px;
-      }
-      .room-avail-peek-btn:hover { background: #e2e8f0; color: #0077BE; }
 
       /* ── Room availability modal ── */
       .room-avail-overlay {
@@ -1273,60 +1049,30 @@ html, body { overscroll-behavior: none; }
       }
       .room-avail-nav-btn:hover:not(:disabled) { background: #dcfce7; }
       .room-avail-nav-btn:disabled { opacity: 0.35; cursor: default; }
-      .room-avail-month-label {
-        font-size: 14px; font-weight: 600; color: #1e293b;
-        text-transform: capitalize;
-      }
+      .room-avail-month-label { font-size: 14px; font-weight: 600; color: #1e293b; text-transform: capitalize; }
       .room-avail-cal-wrap { min-height: 200px; }
-
-      /* mini calendar grid reusing chip styles */
-      .ra-cal-grid {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 2px;
-      }
-      .ra-cal-dow {
-        font-size: 10px; font-weight: 600; color: #94a3b8;
-        text-align: center; padding: 4px 0;
-      }
+      .ra-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+      .ra-cal-dow { font-size: 10px; font-weight: 600; color: #94a3b8; text-align: center; padding: 4px 0; }
       .ra-cal-day {
-        aspect-ratio: 1;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 12px; font-weight: 500;
-        border-radius: 6px;
-        color: #1e293b;
-        position: relative;
+        aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+        font-size: 12px; font-weight: 500; border-radius: 6px; color: #1e293b;
       }
       .ra-cal-day.other-month { visibility: hidden; }
       .ra-cal-day.past { color: #cbd5e1; }
       .ra-cal-day.today { font-weight: 700; outline: 2px solid #15803d; outline-offset: -2px; }
       .ra-cal-day.booked-mid { background: #fee2e2; color: #991b1b; }
-      .ra-cal-day.booked-checkin {
-        background: linear-gradient(to right, transparent 50%, #fee2e2 50%);
-        color: #991b1b;
-      }
-      .ra-cal-day.booked-checkout {
-        background: linear-gradient(to left, transparent 50%, #fee2e2 50%);
-        color: #991b1b;
-      }
+      .ra-cal-day.booked-checkin { background: linear-gradient(to right, transparent 50%, #fee2e2 50%); color: #991b1b; }
+      .ra-cal-day.booked-checkout { background: linear-gradient(to left, transparent 50%, #fee2e2 50%); color: #991b1b; }
       .ra-cal-day.booked-shared { background: #fee2e2; color: #991b1b; }
       .room-avail-legend {
-        display: flex; gap: 12px; flex-wrap: wrap;
-        margin-top: 12px;
-        font-size: 11px; color: #64748b;
-        justify-content: center;
+        display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px;
+        font-size: 11px; color: #64748b; justify-content: center;
       }
       .ra-legend-item { display: flex; align-items: center; gap: 5px; }
-      .ra-legend-dot {
-        width: 12px; height: 12px; border-radius: 3px;
-        flex-shrink: 0;
-      }
+      .ra-legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
       .ra-legend-dot.avail { background: #fff; border: 1.5px solid #e2e8f0; }
       .ra-legend-dot.taken { background: #fee2e2; border: 1.5px solid #fca5a5; }
-      .room-avail-loading {
-        text-align: center; padding: 32px 0;
-        color: #64748b; font-size: 13px;
-      }
+      .room-avail-loading { text-align: center; padding: 32px 0; color: #64748b; font-size: 13px; }
     </style>
   </head>
   <body>
@@ -1349,7 +1095,7 @@ html, body { overscroll-behavior: none; }
           <!-- Title + cabin name -->
           <div class="header-center">
             <h1>Registro de Huéspedes</h1>
-            <p class="header-subtitle">🏡 Apart Hotel Najos-2</p>
+            <p class="header-subtitle">🏡 Apart Hotel Najos-4</p>
           </div>
 
           <!-- empty right to keep layout balanced -->
@@ -1361,8 +1107,8 @@ html, body { overscroll-behavior: none; }
 
       <div class="banner-container">
         <img
-          src="https://imgur.com/Bvh5FzZ.jpg"
-          alt="Apto Najos-2"
+          src="https://imgur.com/YKfbIGO.jpg"
+alt="Apto Najos-4"
           class="banner-image"
           onclick="showBannerLightbox()"
         />
@@ -1376,21 +1122,16 @@ html, body { overscroll-behavior: none; }
           </div>
           <div class="progress-step active" data-step="1">
             <div class="progress-circle">1</div>
-            <div class="progress-label">Habitaciones</div>
-            <div class="progress-icon">🛏️</div>
-          </div>
-          <div class="progress-step" data-step="2">
-            <div class="progress-circle">2</div>
             <div class="progress-label">Bienvenidos</div>
             <div class="progress-icon">🌴</div>
           </div>
-          <div class="progress-step" data-step="3">
-            <div class="progress-circle">3</div>
+          <div class="progress-step" data-step="2">
+            <div class="progress-circle">2</div>
             <div class="progress-label">Tu Estadía</div>
             <div class="progress-icon">🏖️</div>
           </div>
-          <div class="progress-step" data-step="4">
-            <div class="progress-circle">4</div>
+          <div class="progress-step" data-step="3">
+            <div class="progress-circle">3</div>
             <div class="progress-label">Confirmación</div>
             <div class="progress-icon">✓</div>
           </div>
@@ -1402,26 +1143,10 @@ html, body { overscroll-behavior: none; }
         <div id="errorMessage"   class="message error-message"></div>
 
         <form id="registrationForm">
-          <!-- Step 1 — Room Selection -->
+          <!-- Step 1 -->
           <div class="step-container active" data-step="1">
             <div class="step-intro">
-              <h2>🛏️ ¿Qué habitaciones necesitas?</h2>
-              <p>Selecciona una o más habitaciones según tu grupo. Puedes combinar cuartos para acomodar a todos.</p>
-            </div>
-            <div class="room-listing" id="roomListing">
-              <!-- Rooms injected by JS -->
-            </div>
-            <div class="room-selector-grid" id="roomSelectorGrid" style="display:none;"></div>
-            <div class="room-selection-hint" id="roomHint">
-              ⚠️ Por favor selecciona al menos una habitación para continuar.
-            </div>
-            <div class="selected-rooms-summary" id="roomsSummary"></div>
-          </div>
-
-          <!-- Step 2 — Datos (was Step 1) -->
-          <div class="step-container" data-step="2">
-            <div class="step-intro">
-              <h2>🌴 ¡Bienvenidos a Apart Hotel Najos-2!</h2>
+              <h2>🌴 ¡Bienvenidos a Apart Hotel Najos-4!</h2>
               <p>Solo necesitamos unos datos básicos para prepararte una llegada perfecta.</p>
             </div>
             <div class="grid-2">
@@ -1470,10 +1195,17 @@ html, body { overscroll-behavior: none; }
                   style="width:100%;padding:14px 18px;border:2px solid #14b8a6;border-radius:12px;font-size:16px;font-family:inherit;background:#fafafa;" />
               </div>
             </div>
+            <div style="text-align:center; margin-top:24px; margin-bottom:8px;">
+              <button type="button" class="avail-peek-btn" onclick="openRoomAvailModal()">
+                <span class="avail-peek-dots">•••</span>
+                <span class="avail-peek-label">Ver disponibilidad del calendario</span>
+                <span class="avail-peek-icon">📅</span>
+              </button>
+            </div>
           </div>
 
-          <!-- Step 3 — Tu Estadía (was Step 2) -->
-          <div class="step-container" data-step="3">
+          <!-- Step 2 -->
+          <div class="step-container" data-step="2">
             <div class="step-intro">
               <h2>🌊 ¡Genial! Ahora dime cuándo vienes</h2>
               <p>Selecciona tus fechas de entrada y salida en nuestro calendario interactivo.</p>
@@ -1501,8 +1233,8 @@ html, body { overscroll-behavior: none; }
             </div>
           </div>
 
-          <!-- Step 4 — Confirmación (was Step 3) -->
-          <div class="step-container" data-step="4">
+          <!-- Step 3 -->
+          <div class="step-container" data-step="3">
             <div class="step-intro">
               <h2>👨‍👩‍👧‍👦 Casi listos... completa los datos de tu grupo</h2>
               <p>Indica cuántos acompañantes tienes y completa su información.</p>
@@ -1515,14 +1247,14 @@ html, body { overscroll-behavior: none; }
                 <button type="button" class="stepper-btn" id="increaseBtn">+</button>
               </div>
               <input type="hidden" id="totalHuespedes" name="totalHuespedes" value="0" required />
-              <div class="helper-text" id="companionsHelperText">La capacidad depende de las habitaciones seleccionadas</div>
+              <div class="helper-text">Máximo 1 acompañante (habitación para 2 personas)</div>
             </div>
             <div class="companions-container" id="companionsContainer"></div>
             <div style="margin-top: 40px">
               <div class="checkbox-group" id="consentGroup">
                 <input type="checkbox" id="consent" name="consent" required />
                 <label for="consent">
-                  Autorizo el tratamiento de mis datos personales por Aptos Najos-2 conforme a la ley colombiana.
+                  Autorizo el tratamiento de mis datos personales por Aptos Najos-4 conforme a la ley colombiana.
                   <span class="required">*</span>
                   <br /><small style="color:#742a2a; margin-top:6px; display:block; font-weight:400;">
                     Al marcar acepto la política de privacidad y el manejo responsable de mi información.
@@ -1540,7 +1272,6 @@ html, body { overscroll-behavior: none; }
               <input type="hidden" id="rulesConsent" name="rulesConsent" value="" />
             </div>
 
-            <!-- Summary -->
             <div class="summary-box" id="summaryBox" style="display:none">
               <div class="summary-title">📋 Resumen de tu Registro</div>
               <div id="summaryContent"></div>
@@ -1606,7 +1337,7 @@ html, body { overscroll-behavior: none; }
     <div id="roomAvailModal" class="room-avail-overlay">
       <div class="room-avail-modal">
         <div class="room-avail-header">
-          <h3 id="roomAvailTitle">📅 Disponibilidad</h3>
+          <h3 id="roomAvailTitle">📅 Disponibilidad · Apto Najos-4</h3>
           <button class="room-avail-close" onclick="closeRoomAvailModal()">✕</button>
         </div>
         <div class="room-avail-body">
@@ -1648,12 +1379,6 @@ html, body { overscroll-behavior: none; }
             </div>
           </div>
           <button class="modal-close" onclick="closeDatePickerModal()">✕</button>
-          <!-- In-modal room picker -->
-          <div class="cal-room-picker" id="calRoomPicker">
-            <span class="cal-room-picker-label">🔄 Modificar habitaciones:</span>
-            <div class="cal-room-picker-btns" id="calRoomPickerBtns"></div>
-            <span class="cal-room-picker-hint">Toca para cambiar</span>
-          </div>
         </div>
         <div class="date-picker-body">
           <div id="calendarInstruction" class="calendar-instruction state-checkin">
@@ -1698,6 +1423,7 @@ html, body { overscroll-behavior: none; }
     getFirestore, collection, addDoc, serverTimestamp, getDocs,
     doc, getDoc, onSnapshot, query, where,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
       const firebaseConfig = {
         apiKey: "AIzaSyBGno4JfubhTO-deCJtP9ozXD_pdPrhmh8",
         authDomain: "aptos-najos.firebaseapp.com",
@@ -1711,21 +1437,6 @@ html, body { overscroll-behavior: none; }
       const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
-// ── Room definitions for Apto 2 ──
-const ROOMS_CONFIG = [
-  { id: 1, name: "Cuarto 1", icon: "🛏️", detail: "Cama doble · 2 personas",
-    capacity: "hasta 2 personas",
-    specs: ["🛏️ Cama doble", "📶 WiFi gratis", "🧺 Armario"] },
-  { id: 2, name: "Cuarto 2", icon: "🛏️", detail: "Cama doble · 2 personas",
-    capacity: "hasta 2 personas",
-    specs: ["🛏️ Cama doble", "📶 WiFi gratis", "🧺 Armario"] },
-  { id: 3, name: "Cuarto 3", icon: "🛏️", detail: "Cama sencilla · 1 persona",
-    capacity: "hasta 1 persona",
-    specs: ["🛏️ Cama sencilla", "📶 WiFi gratis"] },
-];
-
-let selectedRooms = []; // array of room ids e.g. [1, 3]
-
 function toDateStr(d) {
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
@@ -1733,7 +1444,7 @@ function toDateStr(d) {
 let currentStep = 1;
       let companions = [];
       let companionFilledStatus = {};
-      let maxCompanions = 1; // updated dynamically after room selection
+      const maxCompanions = 1; // Apto 4 has 1 room (2 people max)
       let selectedCheckIn  = null;
       let selectedCheckOut = null;
       let selectingCheckIn = true;
@@ -1763,15 +1474,6 @@ let currentStep = 1;
 
 window.updateReservationDisplay = function(reservation) {
     if (!reservation.fechaEntrada || !reservation.fechaSalida) return;
-    // Restore rooms from saved registration
-    if (reservation.habitaciones && Array.isArray(reservation.habitaciones)) {
-      selectedRooms = reservation.habitaciones
-        .map(name => parseInt(name.replace("Cuarto ", "")))
-        .filter(n => !isNaN(n));
-      selectedRooms.sort();
-      maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
-      buildRoomSelector();
-    }
     selectedCheckIn  = reservation.fechaEntrada;
     selectedCheckOut = reservation.fechaSalida;
     selectingCheckIn = true;
@@ -1873,85 +1575,12 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       decreaseBtn.addEventListener("click", () => { if (currentCompanionCount > 0) updateCompanions(currentCompanionCount - 1); });
       increaseBtn.addEventListener("click", () => {
         if (currentCompanionCount < maxCompanions) updateCompanions(currentCompanionCount + 1);
-        else showToast(`👥 Máximo ${maxCompanions} acompañante(s) para las habitaciones seleccionadas`);
+        else showToast(`👥 Máximo ${maxCompanions} acompañantes permitidos`);
       });
       updateStepperButtons();
 
-      // ── Room Listing (Booking-style) ──
-      function buildRoomSelector() { buildRoomListing(); } // alias for compatibility
-
-      function buildRoomListing() {
-        const listing = document.getElementById("roomListing");
-        if (!listing) return;
-        listing.innerHTML = "";
-        ROOMS_CONFIG.forEach(room => {
-          const isSelected = selectedRooms.includes(room.id);
-          const card = document.createElement("div");
-          card.className = "room-listing-card" + (isSelected ? " selected" : "");
-          card.dataset.roomId = room.id;
-          // Build spec badges from room config
-          const specs = room.specs || [];
-          const specBadges = specs.map(s => `<span class="room-spec-badge">${s}</span>`).join("");
-          card.innerHTML = `
-            <div class="room-listing-body">
-              <span class="room-listing-icon">${room.icon}</span>
-              <div class="room-listing-info">
-                <div class="room-listing-name">${room.name}</div>
-                <div class="room-listing-specs">${specBadges}</div>
-              </div>
-            </div>
-            <div class="room-listing-footer">
-              <span class="room-capacity-label">👥 Capacidad: <strong>${room.capacity}</strong></span>
-              <button type="button" class="btn-select-room ${isSelected ? "selected-btn" : ""}" data-room-id="${room.id}">
-                ${isSelected ? "✅ Seleccionado" : "Seleccionar"}
-              </button>
-            </div>
-          `;
-          card.querySelector(".btn-select-room").addEventListener("click", () => toggleRoom(room.id));
-          listing.appendChild(card);
-        });
-        updateRoomsSummary();
-      }
-
-      function toggleRoom(roomId) {
-        const idx = selectedRooms.indexOf(roomId);
-        if (idx === -1) selectedRooms.push(roomId);
-        else selectedRooms.splice(idx, 1);
-        selectedRooms.sort();
-        document.getElementById("roomHint").classList.remove("show");
-        // Update maxCompanions immediately
-        maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
-        if (currentCompanionCount > maxCompanions) updateCompanions(maxCompanions);
-        // Reset cached dates so calendar reloads for the new room combination
-        bookedDatesLoaded = false;
-        selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
-        buildRoomListing();
-      }
-
-      function updateRoomsSummary() {
-        const el = document.getElementById("roomsSummary");
-        if (!el) return;
-        if (selectedRooms.length === 0) { el.classList.remove("show"); return; }
-        const names = selectedRooms.map(id => ROOMS_CONFIG.find(r => r.id === id)?.name).join(", ");
-        el.classList.add("show");
-        el.innerHTML = `✅ Seleccionaste: <strong>${names}</strong> · ${selectedRooms.length} habitación(es) · hasta ${selectedRooms.length * 2} personas`;
-      }
-
-      function applyRoomUrlParams() {
-        const params = new URLSearchParams(window.location.search);
-        const cuartos = params.get("cuartos");
-        if (cuartos) {
-          selectedRooms = cuartos.split(",").map(Number).filter(n => n >= 1 && n <= ROOMS_CONFIG.length);
-          selectedRooms.sort();
-        }
-      }
-
-      // Read URL params and build selector on load
-      applyRoomUrlParams();
-      buildRoomSelector();
-
       function updateProgress() {
-        progressFill.style.width = ((currentStep - 1) / 3 * 100) + "%";
+        progressFill.style.width = ((currentStep - 1) / 2 * 100) + "%";
         document.querySelectorAll(".progress-step").forEach((step, index) => {
           const n = index + 1;
           step.classList.remove("active", "completed");
@@ -1971,54 +1600,31 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         document.querySelectorAll(".step-container").forEach(c => c.classList.remove("active"));
         document.querySelector(`.step-container[data-step="${step}"]`).classList.add("active");
         btnBack.style.display   = step === 1 ? "none" : "block";
-        btnNext.style.display   = step === 4 ? "none" : "block";
-        btnSubmit.style.display = step === 4 ? "block" : "none";
-        summaryBox.style.display = step === 4 ? "block" : "none";
-        if (step === 4) { updateSummary(); updateSubmitBtn(); }
-        if (step === 3 && !bookedDatesLoaded) {
-          loadBookedDates().then(() => { bookedDatesLoaded = true; });
-        }
-        // When entering step 2, lock in maxCompanions based on selected rooms
-        if (step === 2) {
-          maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
-          if (currentCompanionCount > maxCompanions) updateCompanions(maxCompanions);
-          updateStepperButtons();
-          const helperEl = document.getElementById("companionsHelperText");
-          if (helperEl) {
-            const cap = selectedRooms.length * 2;
-            helperEl.textContent = `Capacidad total: ${cap} persona(s) · máximo ${maxCompanions} acompañante(s)`;
-          }
-        }
+        btnNext.style.display   = step === 3 ? "none" : "block";
+        btnSubmit.style.display = step === 3 ? "block" : "none";
+        summaryBox.style.display = step === 3 ? "block" : "none";
+        if (step === 3) { updateSummary(); updateSubmitBtn(); }
+        if (step === 2 && !bookedDatesLoaded) loadBookedDates().then(() => { bookedDatesLoaded = true; });
         updateProgress();
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
       function validateStep(step) {
-        // Step 1: must select at least one room
         if (step === 1) {
-          if (selectedRooms.length === 0) {
-            document.getElementById("roomHint").classList.add("show");
-            showToast("🛏️ Por favor selecciona al menos una habitación");
-            return false;
-          }
-          return true;
-        }
-        // Step 2: país check
-        if (step === 2) {
           const paisSelect = document.getElementById("pais");
           if (paisSelect.value === "__otro__" && !document.getElementById("otrosPais").value.trim()) {
             showToast("⚠️ Por favor escribe tu país de origen"); return false;
           }
         }
-        // Step 3: must have check-in and check-out selected
-        if (step === 3) {
+        // Step 2: must have check-in and check-out selected
+        if (step === 2) {
           if (!selectedCheckIn || !selectedCheckOut) {
             showToast("📅 Por favor selecciona las fechas de check-in y check-out");
             return false;
           }
         }
-        // Step 4: rules must be accepted
-        if (step === 4 && rulesConsentHidden.value !== "accepted") {
+        // Custom check: rules must be accepted on step 3
+        if (step === 3 && rulesConsentHidden.value !== "accepted") {
           showToast("📋 Debes leer y aceptar el Reglamento del Apartamento para continuar.");
           return false;
         }
@@ -2036,31 +1642,27 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       }
 
       window.closeSuccessModal = function() {
-    const modal = document.getElementById("successModal");
-    if (modal) {
-      modal.style.animation = "fadeOut 0.3s ease";
-      setTimeout(() => {
-        modal.remove(); form.reset();
-        companions = []; companionFilledStatus = {};
-        companionsContainer.innerHTML = "";
-        consentGroup.classList.remove("checked");
-        rulesConsentHidden.value = "";
-        const mc = document.getElementById("rulesModalCheck");
-        if (mc) mc.checked = false;
-        const cb = document.getElementById("rulesConfirmBtn");
-        if (cb) { cb.disabled = true; cb.style.opacity = "0.5"; cb.style.cursor = "not-allowed"; }
-        const st = document.getElementById("rulesTriggerStatus");
-        if (st) st.textContent = "👆 Toca para leer";
-        const tb = document.getElementById("rulesTriggerBtn");
-        if (tb) tb.classList.remove("accepted");
-        currentStep = 1; currentCompanionCount = 0;
+        const modal = document.getElementById("successModal");
+        if (modal) {
+          modal.style.animation = "fadeOut 0.3s ease";
+          setTimeout(() => {
+            modal.remove(); form.reset();
+            companions = []; companionFilledStatus = {};
+            companionsContainer.innerHTML = "";
+            consentGroup.classList.remove("checked");
+            rulesConsentHidden.value = "";
+            const mc = document.getElementById("rulesModalCheck");
+            if (mc) mc.checked = false;
+            const cb = document.getElementById("rulesConfirmBtn");
+            if (cb) { cb.disabled = true; cb.style.opacity = "0.5"; cb.style.cursor = "not-allowed"; }
+            const st = document.getElementById("rulesTriggerStatus");
+            if (st) st.textContent = "👆 Toca para leer";
+            const tb = document.getElementById("rulesTriggerBtn");
+            if (tb) tb.classList.remove("accepted");
+            currentStep = 1; currentCompanionCount = 0;
             stepperValue.textContent = "0"; totalHuespedesInput.value = "0";
             updateStepperButtons();
             selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
-            bookedDatesLoaded = false;
-            // Reset room selection
-            selectedRooms = []; maxCompanions = 1;
-            buildRoomSelector();
             updateDateDisplay();
             horaEntrada.value = "14:00"; horaSalida.value = "11:00";
             showStep(1);
@@ -2073,7 +1675,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           <div class="lightbox-overlay" onclick="this.remove()">
             <div class="lightbox-content" onclick="event.stopPropagation()">
               <button class="lightbox-close" onclick="this.closest('.lightbox-overlay').remove()">×</button>
-              <img src="https://imgur.com/Bvh5FzZ.jpg" alt="Apto Najos-2" class="lightbox-image" />
+              <img src="https://imgur.com/YKfbIGO.jpg" alt="Apto Najos-4" class="lightbox-image" />
             </div>
           </div>
         `);
@@ -2160,9 +1762,8 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         const nombre   = formData.get("nombre");
         const apellido = formData.get("apellido");
         const filled   = Object.values(companionFilledStatus).filter(s => s).length;
-        const roomNames = selectedRooms.map(id => ROOMS_CONFIG.find(r => r.id === id)?.name).join(", ");
         let html = `
-          <div class="summary-item"><span class="summary-label">Habitación(es):</span><span class="summary-value">${roomNames || "—"}</span></div>
+          <div class="summary-item"><span class="summary-label">Habitación:</span><span class="summary-value">Habitación 1</span></div>
           <div class="summary-item"><span class="summary-label">Huésped Principal:</span><span class="summary-value">${nombre} ${apellido}</span></div>
         `;
         if (selectedCheckIn && selectedCheckOut) {
@@ -2182,124 +1783,63 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
 
       async function loadBookedDates() {
     try {
-        // Fetch all availability for this apto and filter client-side by selected rooms.
-        // A doc matches if:
-        //   a) it has no habitacion field (legacy whole-apto booking → blocks everything)
-        //   b) its habitacion matches one of the selected rooms
-        const selectedRoomNames = selectedRooms.map(id => `Cuarto ${id}`);
         const querySnapshot = await getDocs(
-          query(collection(db, "cabin_availability"), where("apto", "==", "Apto Najos-2"))
+          query(collection(db, "cabin_availability"), where("apto", "==", "Apto Najos-4"))
         );
         const relevantDocs = [];
         querySnapshot.forEach(doc => {
           const d = doc.data();
-          if (!d.fechaInicio || !d.fechaFin) return;
-          // Include if no habitacion (legacy) OR if habitacion is one of the selected rooms
-          if (!d.habitacion || selectedRoomNames.includes(d.habitacion)) {
-            relevantDocs.push(d);
-          }
+          if (d.fechaInicio && d.fechaFin) relevantDocs.push(d);
         });
-
         bookedDates = [];
         window.checkoutDates = []; window.checkinDates = []; window.middleDates = []; window.sharedDates = [];
         const checkInDates  = relevantDocs.map(d => d.fechaInicio);
         const checkOutDates = relevantDocs.map(d => d.fechaFin);
-
         relevantDocs.forEach(d => {
-            const start = new Date(d.fechaInicio + "T00:00:00");
-            const end   = new Date(d.fechaFin   + "T00:00:00");
+            const start = new Date(d.fechaInicio + "T00:00:00"); const end = new Date(d.fechaFin + "T00:00:00");
             const isCheckInShared  = checkOutDates.includes(d.fechaInicio);
             const isCheckOutShared = checkInDates.includes(d.fechaFin);
-
-            if (isCheckInShared) { if (!window.sharedDates.includes(d.fechaInicio))  window.sharedDates.push(d.fechaInicio); }
-            else                 { if (!window.checkinDates.includes(d.fechaInicio))  window.checkinDates.push(d.fechaInicio); }
-
+            if (isCheckInShared) { if (!window.sharedDates.includes(d.fechaInicio)) window.sharedDates.push(d.fechaInicio); }
+            else { if (!window.checkinDates.includes(d.fechaInicio)) window.checkinDates.push(d.fechaInicio); }
             for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
                 const s = toDateStr(dt);
                 if (s !== d.fechaInicio && s !== d.fechaFin && !window.middleDates.includes(s)) window.middleDates.push(s);
             }
-            if (isCheckOutShared) { if (!window.sharedDates.includes(d.fechaFin))    window.sharedDates.push(d.fechaFin); }
-            else                  { if (!window.checkoutDates.includes(d.fechaFin))   window.checkoutDates.push(d.fechaFin); }
-
+            if (isCheckOutShared) { if (!window.sharedDates.includes(d.fechaFin)) window.sharedDates.push(d.fechaFin); }
+            else { if (!window.checkoutDates.includes(d.fechaFin)) window.checkoutDates.push(d.fechaFin); }
             for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
                 const s = toDateStr(dt);
                 if (!bookedDates.includes(s)) bookedDates.push(s);
             }
             if (isCheckOutShared && !bookedDates.includes(d.fechaFin)) bookedDates.push(d.fechaFin);
         });
-
-        // ── Build per-room availability map for ALL rooms (powers the dot indicators) ──
-        window.roomAvailMap = {};
-        querySnapshot.forEach(docSnap => {
-          const d = docSnap.data();
-          if (!d.fechaInicio || !d.fechaFin || !d.habitacion) return;
-          const start = new Date(d.fechaInicio + "T00:00:00");
-          const end   = new Date(d.fechaFin   + "T00:00:00");
-          for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
-            const s = toDateStr(dt);
-            if (!window.roomAvailMap[s]) window.roomAvailMap[s] = {};
-            window.roomAvailMap[s][d.habitacion] = 'booked';
-          }
-          if (!window.roomAvailMap[d.fechaFin]) window.roomAvailMap[d.fechaFin] = {};
-          window.roomAvailMap[d.fechaFin][d.habitacion] = 'booked';
-        });
-
-        // Build / refresh the in-modal room picker
-        buildCalRoomPicker();
     } catch (err) { console.error("Error loading booked dates:", err); }
 }
 
-      // ── Room Availability Modal ──────────────────────────────
+      // ── Room Availability Modal (single room: Apto Najos-4) ──
       let roomAvailOffset = 0;
       let roomAvailDateSets = null;
-      let roomAvailCurrentRoom = null;
 
       function raToDateStr(d) {
         return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
       }
 
-      async function openRoomAvailModal(room) {
-        roomAvailCurrentRoom = room;
+      window.openRoomAvailModal = async function() {
         roomAvailOffset = 0;
         roomAvailDateSets = null;
-        document.getElementById("roomAvailTitle").textContent = `📅 ${room.name} · Disponibilidad`;
         document.getElementById("roomAvailCalWrap").innerHTML = '<div class="room-avail-loading">Cargando…</div>';
         document.getElementById("roomAvailModal").classList.add("open");
         document.body.style.overflow = "hidden";
-        await loadAndRenderRoomAvail();
-      }
-
-      window.closeRoomAvailModal = function() {
-        document.getElementById("roomAvailModal").classList.remove("open");
-        document.body.style.overflow = "";
-      };
-
-      window.roomAvailNavigate = function(delta) {
-        const now = new Date();
-        const newOffset = roomAvailOffset + delta;
-        const abs = now.getMonth() + newOffset;
-        const y = now.getFullYear() + Math.floor(abs / 12);
-        const m = ((abs % 12) + 12) % 12;
-        // Don't go before current month
-        if (y < now.getFullYear() || (y === now.getFullYear() && m < now.getMonth())) return;
-        roomAvailOffset = newOffset;
-        renderRoomAvailMonth();
-      };
-
-      async function loadAndRenderRoomAvail() {
         try {
           const snap = await getDocs(
-            query(collection(db, "cabin_availability"), where("apto", "==", "Apto Najos-2"))
+            query(collection(db, "cabin_availability"), where("apto", "==", "Apto Najos-4"))
           );
           const reservations = [];
           snap.forEach(doc => {
             const d = doc.data();
             if (!d.fechaInicio || !d.fechaFin) return;
-            const roomKey = roomAvailCurrentRoom.name; // e.g. "Cuarto 1"
-            if (!d.habitacion || d.habitacion === roomKey)
-              reservations.push({ start: d.fechaInicio, end: d.fechaFin });
+            reservations.push({ start: d.fechaInicio, end: d.fechaFin });
           });
-          // Build date sets
           const allCheckins  = new Set(reservations.map(r => r.start));
           const allCheckouts = new Set(reservations.map(r => r.end));
           const mid = new Set(), checkin = new Set(), checkout = new Set(), shared = new Set();
@@ -2316,7 +1856,23 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         } catch (err) {
           document.getElementById("roomAvailCalWrap").innerHTML = '<div class="room-avail-loading">Error al cargar datos.</div>';
         }
-      }
+      };
+
+      window.closeRoomAvailModal = function() {
+        document.getElementById("roomAvailModal").classList.remove("open");
+        document.body.style.overflow = "";
+      };
+
+      window.roomAvailNavigate = function(delta) {
+        const now = new Date();
+        const newOffset = roomAvailOffset + delta;
+        const abs = now.getMonth() + newOffset;
+        const y = now.getFullYear() + Math.floor(abs / 12);
+        const m = ((abs % 12) + 12) % 12;
+        if (y < now.getFullYear() || (y === now.getFullYear() && m < now.getMonth())) return;
+        roomAvailOffset = newOffset;
+        renderRoomAvailMonth();
+      };
 
       const RA_MONTHS = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 
@@ -2326,14 +1882,8 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         const abs = now.getMonth() + roomAvailOffset;
         const y = now.getFullYear() + Math.floor(abs / 12);
         const m = ((abs % 12) + 12) % 12;
-
         document.getElementById("roomAvailMonthLabel").textContent = `${RA_MONTHS[m]} ${y}`;
-
-        // Prev button: disable if at current month
-        const prevBtn = document.getElementById("roomAvailPrev");
-        prevBtn.disabled = (y === now.getFullYear() && m === now.getMonth());
-
-        // Build mini grid
+        document.getElementById("roomAvailPrev").disabled = (y === now.getFullYear() && m === now.getMonth());
         const grid = document.createElement("div");
         grid.className = "ra-cal-grid";
         ["L","M","X","J","V","S","D"].forEach(d => {
@@ -2365,75 +1915,18 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         wrap.appendChild(grid);
       }
 
-      // Close modal on overlay click
       document.getElementById("roomAvailModal").addEventListener("click", function(e) {
         if (e.target === this) closeRoomAvailModal();
       });
       // ── End Room Availability Modal ──────────────────────────
 
-      function buildCalRoomPicker() {
-        const btns = document.getElementById("calRoomPickerBtns");
-        if (!btns) return;
-        btns.innerHTML = "";
-        ROOMS_CONFIG.forEach(room => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "cal-room-btn" + (selectedRooms.includes(room.id) ? " active" : "");
-          btn.textContent = room.name;
-          btn.dataset.roomId = room.id;
-          btn.addEventListener("click", () => toggleCalRoom(room.id));
-          btns.appendChild(btn);
-        });
-      }
-
-      function toggleCalRoom(roomId) {
-        roomId = Number(roomId); // dataset values are strings — normalise to number
-        const idx = selectedRooms.indexOf(roomId);
-        if (idx === -1) {
-          selectedRooms.push(roomId);
-        } else {
-          if (selectedRooms.length === 1) {
-            showToast("🛏️ Debes tener al menos una habitación seleccionada");
-            return;
-          }
-          selectedRooms.splice(idx, 1);
-        }
-        selectedRooms.sort();
-        // Sync to main room selector
-        buildRoomSelector();
-        // Update maxCompanions dynamically: 1 room→1, 2 rooms→3, 3 rooms→5
-        maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
-        if (currentCompanionCount > maxCompanions) updateCompanions(maxCompanions);
-        // Update helper text if visible
-        const helperEl = document.getElementById("companionsHelperText");
-        if (helperEl) {
-          const cap = selectedRooms.length * 2;
-          helperEl.textContent = `Capacidad total: ${cap} persona(s) · máximo ${maxCompanions} acompañante(s)`;
-        }
-        // Reset dates since room combo changed
-        selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
-        updateDateDisplay();
-        // Reload availability for new combo
-        document.getElementById("datePickerScroll").innerHTML = '<div style="text-align:center;padding:40px;color:#14b8a6;font-size:18px;">⏳ Cargando disponibilidad...</div>';
-        loadBookedDates().then(() => { bookedDatesLoaded = true; renderCalendar(); updateInstruction(); buildCalRoomPicker(); });
-      }
-
       window.openDatePickerModal = function() {
         const modal = document.getElementById("datePickerModal");
         modal.classList.add("show");
         document.body.style.overflow = "hidden";
-        // If called from step 1 with no rooms yet, preview all rooms
-        const previewAll = selectedRooms.length === 0;
-        if (previewAll) ROOMS_CONFIG.forEach(r => { if (!selectedRooms.includes(r.id)) selectedRooms.push(r.id); });
-        buildCalRoomPicker();
+        // Always reload to get fresh availability data
         document.getElementById("datePickerScroll").innerHTML = '<div style="text-align:center;padding:40px;color:#14b8a6;font-size:18px;">⏳ Cargando disponibilidad...</div>';
-        loadBookedDates().then(() => {
-          bookedDatesLoaded = true;
-          renderCalendar();
-          updateInstruction();
-          // If we auto-filled rooms for preview, clear them back so step 1 stays unselected
-          if (previewAll) { selectedRooms = []; buildRoomSelector(); buildCalRoomPicker(); renderCalendar(); }
-        });
+        loadBookedDates().then(() => { bookedDatesLoaded = true; renderCalendar(); updateInstruction(); });
       };
 
       window.closeDatePickerModal = function() {
@@ -2555,20 +2048,6 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           }
           const num = document.createElement("div"); num.className = "calendar-day-number"; num.textContent = day;
           cell.appendChild(num);
-          // Per-room availability chips — only for selected rooms
-          if (cellDate >= today && window.roomAvailMap !== undefined) {
-            const chips = document.createElement("div");
-            chips.className = "room-chips";
-            ROOMS_CONFIG.filter(room => selectedRooms.includes(room.id)).forEach(room => {
-              const chip = document.createElement("span");
-              const isBooked = window.roomAvailMap[dateStr]?.[room.name] === 'booked';
-              chip.className = "room-chip " + (isBooked ? "chip-booked" : "chip-available");
-              chip.textContent = "C" + room.id;
-              chip.title = `${room.name}: ${isBooked ? "Ocupado" : "Disponible"}`;
-              chips.appendChild(chip);
-            });
-            cell.appendChild(chips);
-          }
           if (isClickable) { cell.style.cursor = "pointer"; cell.addEventListener("click", () => selectDate(dateStr)); }
           grid.appendChild(cell);
         }
@@ -2600,17 +2079,14 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
 
       form.addEventListener("submit", async function(e) {
         e.preventDefault();
-        if (selectedRooms.length === 0) { showToast("🛏️ Por favor selecciona al menos una habitación"); return; }
         if (!selectedCheckIn || !selectedCheckOut) { showToast("⚠️ Por favor selecciona tus fechas de estadía"); return; }
         const paisSelect = document.getElementById("pais");
         if (paisSelect.value === "__otro__" && !document.getElementById("otrosPais").value.trim()) {
           showToast("⚠️ Por favor escribe tu país de origen"); return;
         }
         const formData = new FormData(form);
-        const habitacionNames = selectedRooms.map(id => `Cuarto ${id}`);
         const data = {
-          apto: "Apto Najos-2",
-          habitaciones: habitacionNames,
+          apto: "Apto Najos-4",
           timestamp: serverTimestamp(),
           nombre: formData.get("nombre"), apellido: formData.get("apellido"),
           celular: formData.get("celular"), tipoId: formData.get("tipoId"),
@@ -2629,18 +2105,13 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
         });
         btnSubmit.textContent = "Enviando..."; btnSubmit.disabled = true;
         try {
+          data.habitaciones = ["Habitación 1"];
           const regRef = await addDoc(collection(db, "registrations"), data);
-          // Write one cabin_availability doc per selected room
-          for (const roomName of habitacionNames) {
-            await addDoc(collection(db, "cabin_availability"), {
-              apto: "Apto Najos-2",
-              habitacion: roomName,
-              fechaInicio: selectedCheckIn,
-              fechaFin: selectedCheckOut,
-              registrationId: regRef.id,
-              createdAt: serverTimestamp(),
-            });
-          }
+          await addDoc(collection(db, "cabin_availability"), {
+            apto: "Apto Najos-4", habitacion: "Habitación 1",
+            fechaInicio: selectedCheckIn, fechaFin: selectedCheckOut,
+            registrationId: regRef.id, createdAt: serverTimestamp(),
+          });
           try {
             const emailResp = await fetch("/api/send-email", {
               method: "POST", headers: { "Content-Type": "application/json" },
@@ -2655,9 +2126,7 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
                 <button class="modal-close" onclick="closeSuccessModal()">×</button>
                 <div class="modal-icon">🎉</div>
                 <div class="modal-title">¡Registro Completado!</div>
-                <div class="modal-text">Te esperamos con ríos, naturaleza y buenas vibras.<br><br>
-                  <strong>Habitación(es):</strong> ${habitacionNames.join(", ")}
-                </div>
+                <div class="modal-text">Te esperamos con ríos, naturaleza y buenas vibras.</div>
               </div>
             </div>
           `);
@@ -2698,7 +2167,6 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
           confirmBtn.disabled = true;
           confirmBtn.style.opacity = "0.5";
           confirmBtn.style.cursor = "not-allowed";
-          // Revert trigger button and hidden input if user unchecks inside modal
           rulesConsentHidden.value = "";
           const statusEl = document.getElementById("rulesTriggerStatus");
           const triggerBtn = document.getElementById("rulesTriggerBtn");
@@ -2732,15 +2200,9 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
         const consentOk = consentCheckbox.checked;
         const rulesOk   = rulesConsentHidden.value === "accepted";
         if (consentOk && rulesOk) {
-          btn.disabled = false;
-          btn.style.opacity = "1";
-          btn.style.cursor  = "pointer";
-          btn.style.filter  = "";
+          btn.disabled = false; btn.style.opacity = "1"; btn.style.cursor = "pointer"; btn.style.filter = "";
         } else {
-          btn.disabled = true;
-          btn.style.opacity = "0.5";
-          btn.style.cursor  = "not-allowed";
-          btn.style.filter  = "grayscale(30%)";
+          btn.disabled = true; btn.style.opacity = "0.5"; btn.style.cursor = "not-allowed"; btn.style.filter = "grayscale(30%)";
         }
       }
       consentCheckbox.addEventListener("change", updateSubmitBtn);
