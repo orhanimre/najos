@@ -931,28 +931,27 @@ html, body { overscroll-behavior: none; }
 
 
       /* ── Room Selector ── */
-      .room-selector-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-        margin-top: 20px;
-      }
-      @media (max-width: 600px) {
-        .room-selector-grid { grid-template-columns: 1fr; gap: 12px; }
-      }
-      .room-card {
-        border: 2.5px solid #e2e8f0; border-radius: 16px;
-        padding: 20px 16px; text-align: center; cursor: pointer;
-        background: #fafafa; transition: all 0.25s ease;
-        position: relative; user-select: none;
-      }
-      .room-card:hover { border-color: #14b8a6; background: #f0fdfa; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(20,184,166,0.15); }
-      .room-card.selected { border-color: #0077BE; background: linear-gradient(135deg, #ebf8ff 0%, #e0f7f4 100%); box-shadow: 0 4px 16px rgba(0,119,190,0.2); transform: translateY(-2px); }
-      .room-card.selected::after { content: "✓"; position: absolute; top: -10px; right: -10px; width: 26px; height: 26px; background: #0077BE; color: white; border-radius: 50%; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 8px rgba(0,119,190,0.4); }
-      .room-card-icon { font-size: 36px; margin-bottom: 10px; display: block; }
-      .room-card-name { font-weight: 700; font-size: 15px; color: #2d3748; margin-bottom: 6px; }
-      .room-card.selected .room-card-name { color: #0077BE; }
-      .room-card-detail { font-size: 12px; color: #718096; line-height: 1.4; }
+      /* ── Booking-style Room Listing ── */
+      .room-listing { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+      .room-listing-card { border: 1.5px solid #e2e8f0; border-radius: 16px; background: #fff; overflow: hidden; transition: box-shadow 0.2s; }
+      .room-listing-card.selected { border-color: #0077BE; box-shadow: 0 4px 16px rgba(0,119,190,0.18); }
+      .room-listing-body { display: flex; align-items: flex-start; gap: 16px; padding: 18px 20px 14px; }
+      .room-listing-icon { font-size: 38px; flex-shrink: 0; margin-top: 2px; }
+      .room-listing-info { flex: 1; }
+      .room-listing-name { font-size: 17px; font-weight: 700; color: #1a202c; margin-bottom: 6px; }
+      .room-listing-card.selected .room-listing-name { color: #0077BE; }
+      .room-listing-specs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
+      .room-spec-badge { display: inline-flex; align-items: center; gap: 5px; background: #f7fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 4px 10px; font-size: 12px; color: #4a5568; font-weight: 500; }
+      .room-listing-footer { border-top: 1px solid #e2e8f0; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; background: #fafafa; }
+      .room-listing-card.selected .room-listing-footer { background: #ebf8ff; }
+      .room-capacity-label { font-size: 13px; color: #718096; }
+      .room-capacity-label strong { color: #2d3748; }
+      .btn-select-room { background: #0077BE; color: #fff; border: none; border-radius: 10px; padding: 9px 22px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+      .btn-select-room:hover { background: #005f99; transform: translateY(-1px); }
+      .btn-select-room.selected-btn { background: linear-gradient(135deg, #48bb78, #38a169); }
+      .btn-select-room.selected-btn:hover { background: linear-gradient(135deg, #38a169, #276749); }
+      .room-selector-grid { display: none; }
+      .room-card-col { display: none; }
       .room-selection-hint { text-align: center; padding: 12px 20px; background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border: 1.5px solid #fb923c; border-radius: 12px; font-size: 14px; font-weight: 600; color: #9a3412; margin-top: 20px; display: none; }
       .room-selection-hint.show { display: block; }
       .selected-rooms-summary { margin-top: 20px; padding: 14px 20px; background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%); border: 2px solid #48bb78; border-radius: 12px; font-size: 14px; font-weight: 600; color: #276749; display: none; }
@@ -1335,9 +1334,10 @@ html, body { overscroll-behavior: none; }
           <div class="step-container active" data-step="1">
             <div class="step-intro">
               <h2>🛏️ ¿Qué habitaciones necesitas?</h2>
-              <p>Apto 3 tiene 2 cuartos independientes. Selecciona uno o ambos según tu grupo.</p>
+              <p>Selecciona una o ambas habitaciones según tu grupo. Puedes combinar cuartos para acomodar a todos.</p>
             </div>
-            <div class="room-selector-grid" id="roomSelectorGrid"></div>
+            <div class="room-listing" id="roomListing"><!-- Rooms injected by JS --></div>
+            <div class="room-selector-grid" id="roomSelectorGrid" style="display:none;"></div>
             <div class="room-selection-hint" id="roomHint">⚠️ Por favor selecciona al menos una habitación para continuar.</div>
             <div class="selected-rooms-summary" id="roomsSummary"></div>
           </div>
@@ -1643,8 +1643,12 @@ let currentStep = 1;
 let selectedRooms = []; // array of room ids
 
 const ROOMS_CONFIG = [
-  { id: 1, name: "Cuarto 1", icon: "🛏️", detail: "Cama doble · 2 personas" },
-  { id: 2, name: "Cuarto 2", icon: "🛏️", detail: "Cama doble · 2 personas" },
+  { id: 1, name: "Cuarto 1", icon: "🛏️", detail: "Cama doble · 2 personas",
+    capacity: "hasta 2 personas",
+    specs: ["🛏️ Cama doble", "📶 WiFi gratis", "🧺 Armario"] },
+  { id: 2, name: "Cuarto 2", icon: "🛏️", detail: "Cama doble · 2 personas",
+    capacity: "hasta 2 personas",
+    specs: ["🛏️ Cama doble", "📶 WiFi gratis", "🧺 Armario"] },
 ];
       let companions = [];
       let companionFilledStatus = {};
@@ -1791,29 +1795,36 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
 
 
       // ── Room selector ──
-      function buildRoomSelector() {
-        const grid = document.getElementById("roomSelectorGrid");
-        if (!grid) return;
-        grid.innerHTML = "";
+      function buildRoomSelector() { buildRoomListing(); } // alias for compatibility
+
+      function buildRoomListing() {
+        const listing = document.getElementById("roomListing");
+        if (!listing) return;
+        listing.innerHTML = "";
         ROOMS_CONFIG.forEach(room => {
-          const col = document.createElement("div");
-          col.className = "room-card-col";
-
+          const isSelected = selectedRooms.includes(room.id);
           const card = document.createElement("div");
-          card.className = "room-card" + (selectedRooms.includes(room.id) ? " selected" : "");
+          card.className = "room-listing-card" + (isSelected ? " selected" : "");
           card.dataset.roomId = room.id;
-          card.innerHTML = `<span class="room-card-icon">${room.icon}</span><div class="room-card-name">${room.name}</div><div class="room-card-detail">${room.detail}</div>`;
-          card.addEventListener("click", () => toggleRoom(room.id));
-
-          const peekBtn = document.createElement("button");
-          peekBtn.type = "button";
-          peekBtn.className = "room-avail-peek-btn";
-          peekBtn.textContent = "Ver disponibilidad 📅";
-          peekBtn.addEventListener("click", () => openRoomAvailModal(room));
-
-          col.appendChild(card);
-          col.appendChild(peekBtn);
-          grid.appendChild(col);
+          const specs = room.specs || [];
+          const specBadges = specs.map(s => `<span class="room-spec-badge">${s}</span>`).join("");
+          card.innerHTML = `
+            <div class="room-listing-body">
+              <span class="room-listing-icon">${room.icon}</span>
+              <div class="room-listing-info">
+                <div class="room-listing-name">${room.name}</div>
+                <div class="room-listing-specs">${specBadges}</div>
+              </div>
+            </div>
+            <div class="room-listing-footer">
+              <span class="room-capacity-label">👥 Capacidad: <strong>${room.capacity}</strong></span>
+              <button type="button" class="btn-select-room ${isSelected ? "selected-btn" : ""}" data-room-id="${room.id}">
+                ${isSelected ? "✅ Seleccionado" : "Seleccionar"}
+              </button>
+            </div>
+          `;
+          card.querySelector(".btn-select-room").addEventListener("click", () => toggleRoom(room.id));
+          listing.appendChild(card);
         });
         updateRoomsSummary();
       }
@@ -1822,10 +1833,11 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         if (idx === -1) selectedRooms.push(roomId); else selectedRooms.splice(idx, 1);
         selectedRooms.sort();
         document.getElementById("roomHint").classList.remove("show");
-        // BUG FIX: reset cached dates so calendar reloads for the new room combination
+        maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
+        if (currentCompanionCount > maxCompanions) updateCompanions(maxCompanions);
         bookedDatesLoaded = false;
         selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
-        buildRoomSelector();
+        buildRoomListing();
       }
       function updateRoomsSummary() {
         const el = document.getElementById("roomsSummary");
