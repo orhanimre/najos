@@ -493,9 +493,9 @@
         <div class="content" id="mainContent">
 
             <div class="gallery">
-                <img src="https://imgur.com/rR8w3I0.jpg" alt="Cuarto-1" onclick="openModal(this.src)">
-                <img src="https://imgur.com/JzCkcQx.jpg" alt="Cuarto-2" onclick="openModal(this.src)">
-                <img src="https://imgur.com/WhS9y1g.jpg" alt="Cuarto-3" onclick="openModal(this.src)">
+                <img src="https://imgur.com/rR8w3I0.jpg" alt="Habitación-1" onclick="openModal(this.src)">
+                <img src="https://imgur.com/JzCkcQx.jpg" alt="Habitación-2" onclick="openModal(this.src)">
+                <img src="https://imgur.com/WhS9y1g.jpg" alt="Habitación-3" onclick="openModal(this.src)">
                 <img src="https://imgur.com/fTBIHMQ.jpg" alt="Baño" onclick="openModal(this.src)">
                 <img src="https://imgur.com/cAPVEeQ.jpg" alt="Cocina-1" onclick="openModal(this.src)">
                 <img src="https://imgur.com/LFG8Hax.jpg" alt="Cocina-2" onclick="openModal(this.src)">
@@ -518,16 +518,16 @@
 
             <!-- ── PER-ROOM AVAILABILITY ── -->
             <div class="section" id="availabilitySection">
-                <h2>📅 Disponibilidad por Cuarto — Apto 3</h2>
+                <h2>📅 Disponibilidad por Habitación — Apto 3</h2>
                 <p style="color:#6B7280; font-size:13px; margin-bottom:24px; font-weight:400;">
-                    Este apartamento tiene 2 cuartos independientes. Puedes reservar uno o ambos cuartos.
+                    Este apartamento tiene 2 habitaciones independientes. Puedes reservar uno o ambas habitaciones.
                 </p>
 
                 <div class="rooms-grid">
-                    <!-- Cuarto 1 -->
+                    <!-- Habitación 1 -->
                     <div class="room-card">
                         <div class="room-card-header">
-                            <span class="room-card-name">🛏️ Cuarto 1</span>
+                            <span class="room-card-name">🛏️ Habitación 1</span>
                             <span class="room-card-badge">Hasta 2 personas</span>
                         </div>
                         <div class="room-card-body">
@@ -541,14 +541,14 @@
                             </div>
                         </div>
                         <div class="room-card-footer">
-                            <a href="registro-apto3.html?cuartos=1" class="room-reserve-btn">Reservar Cuarto 1 →</a>
+                            <a href="registro-apto3.html?habitaciones=1" class="room-reserve-btn">Reservar Habitación 1 →</a>
                         </div>
                     </div>
 
-                    <!-- Cuarto 2 -->
+                    <!-- Habitación 2 -->
                     <div class="room-card">
                         <div class="room-card-header">
-                            <span class="room-card-name">🛏️ Cuarto 2</span>
+                            <span class="room-card-name">🛏️ Habitación 2</span>
                             <span class="room-card-badge">Hasta 2 personas</span>
                         </div>
                         <div class="room-card-body">
@@ -562,17 +562,23 @@
                             </div>
                         </div>
                         <div class="room-card-footer">
-                            <a href="registro-apto3.html?cuartos=2" class="room-reserve-btn">Reservar Cuarto 2 →</a>
+                            <a href="registro-apto3.html?habitaciones=2" class="room-reserve-btn">Reservar Habitación 2 →</a>
                         </div>
                     </div>
                 </div>
 
-                <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:14px 18px; margin-top:4px; display:flex; align-items:flex-start; gap:10px;">
-                    <span style="font-size:18px; flex-shrink:0;">💡</span>
-                    <p style="font-size:13px; color:#1e40af; margin:0; font-weight:500; line-height:1.5;">
-                        ¿Vienes con más personas? Puedes reservar ambos cuartos a la vez desde el formulario de registro.
-                        <a href="registro-apto3.html" style="color:#1d4ed8; font-weight:700; text-decoration:underline;">Reservar ambos cuartos →</a>
-                    </p>
+                <!-- Multi-room CTA banner -->
+                <div style="background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 100%); border-radius:16px; padding:20px 22px; margin-top:8px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; box-shadow:0 4px 18px rgba(29,78,216,0.25);">
+                    <div style="display:flex; align-items:center; gap:14px; flex:1; min-width:180px;">
+                        <span style="font-size:32px; flex-shrink:0;">👨‍👩‍👧‍👦</span>
+                        <div>
+                            <div style="color:#fff; font-weight:800; font-size:15px; margin-bottom:3px;">¿Vienes en grupo?</div>
+                            <div style="color:#bfdbfe; font-size:13px; line-height:1.4;">Reserva ambas habitaciones a la vez y acomoda a todos juntos</div>
+                        </div>
+                    </div>
+                    <a href="registro-apto3.html" style="background:#fff; color:#1d4ed8; font-weight:800; font-size:14px; padding:11px 22px; border-radius:12px; text-decoration:none; white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,0.15); flex-shrink:0;">
+                        Reservar ambas habitaciones →
+                    </a>
                 </div>
 
                 <div class="rooms-legend">
@@ -748,8 +754,8 @@
                          'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
     const ROOMS = [
-        { id: 'r1', key: 'Cuarto 1', calId: 'r1-cal', labelId: 'r1-label' },
-        { id: 'r2', key: 'Cuarto 2', calId: 'r2-cal', labelId: 'r2-label' },
+        { id: 'r1', key: 'Habitación 1', calId: 'r1-cal', labelId: 'r1-label' },
+        { id: 'r2', key: 'Habitación 2', calId: 'r2-cal', labelId: 'r2-label' },
     ];
 
     const roomState = {};
