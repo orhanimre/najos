@@ -1956,9 +1956,9 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
 
       function applyRoomUrlParams() {
         const params = new URLSearchParams(window.location.search);
-        const habitacións = params.get("habitacións");
-        if (habitacións) {
-          selectedRooms = habitacións.split(",").map(Number).filter(n => n >= 1 && n <= ROOMS_CONFIG.length);
+        const habitaciones = params.get("habitaciones");
+        if (habitaciones) {
+          selectedRooms = habitaciones.split(",").map(Number).filter(n => n >= 1 && n <= ROOMS_CONFIG.length);
           selectedRooms.sort();
         }
       }
