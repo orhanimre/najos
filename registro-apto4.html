@@ -1247,7 +1247,7 @@ alt="Apto Najos-4"
                 <button type="button" class="stepper-btn" id="increaseBtn">+</button>
               </div>
               <input type="hidden" id="totalHuespedes" name="totalHuespedes" value="0" required />
-              <div class="helper-text">Máximo 1 acompañante (cuarto para 2 personas)</div>
+              <div class="helper-text">Máximo 1 acompañante (habitación para 2 personas)</div>
             </div>
             <div class="companions-container" id="companionsContainer"></div>
             <div style="margin-top: 40px">
@@ -1763,7 +1763,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         const apellido = formData.get("apellido");
         const filled   = Object.values(companionFilledStatus).filter(s => s).length;
         let html = `
-          <div class="summary-item"><span class="summary-label">Habitación:</span><span class="summary-value">Cuarto 1</span></div>
+          <div class="summary-item"><span class="summary-label">Habitación:</span><span class="summary-value">Habitación 1</span></div>
           <div class="summary-item"><span class="summary-label">Huésped Principal:</span><span class="summary-value">${nombre} ${apellido}</span></div>
         `;
         if (selectedCheckIn && selectedCheckOut) {
@@ -2105,10 +2105,10 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
         });
         btnSubmit.textContent = "Enviando..."; btnSubmit.disabled = true;
         try {
-          data.habitaciones = ["Cuarto 1"];
+          data.habitaciones = ["Habitación 1"];
           const regRef = await addDoc(collection(db, "registrations"), data);
           await addDoc(collection(db, "cabin_availability"), {
-            apto: "Apto Najos-4", habitacion: "Cuarto 1",
+            apto: "Apto Najos-4", habitacion: "Habitación 1",
             fechaInicio: selectedCheckIn, fechaFin: selectedCheckOut,
             registrationId: regRef.id, createdAt: serverTimestamp(),
           });
