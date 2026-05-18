@@ -1335,7 +1335,7 @@ html, body { overscroll-behavior: none; }
           <div class="step-container active" data-step="1">
             <div class="step-intro">
               <h2>🛏️ ¿Qué habitaciones necesitas?</h2>
-              <p>Apto 3 tiene 2 habitacións independientes. Selecciona uno o ambos según tu grupo.</p>
+              <p>Apto 3 tiene 2 habitaciones independientes. Selecciona una o ambas según tu grupo.</p>
             </div>
             <div class="room-selector-grid" id="roomSelectorGrid"></div>
             <div class="room-selection-hint" id="roomHint">⚠️ Por favor selecciona al menos una habitación para continuar.</div>
@@ -1837,9 +1837,9 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       }
       function applyRoomUrlParams() {
         const params = new URLSearchParams(window.location.search);
-        const habitacións = params.get("habitacións");
-        if (habitacións) {
-          selectedRooms = habitacións.split(",").map(Number).filter(n => n >= 1 && n <= ROOMS_CONFIG.length);
+        const habitaciones = params.get("habitaciones");
+        if (habitaciones) {
+          selectedRooms = habitaciones.split(",").map(Number).filter(n => n >= 1 && n <= ROOMS_CONFIG.length);
           selectedRooms.sort();
         }
       }
