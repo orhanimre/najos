@@ -312,27 +312,6 @@ html, body { overscroll-behavior: none; }
 
         .cabana-buttons { display: flex; gap: 10px; margin-top: 20px; }
 
-        .select-btn {
-            background: var(--ocean-dark);
-            color: var(--white);
-            border: none;
-            padding: 13px 18px;
-            border-radius: 10px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 13.5px;
-            font-weight: 600;
-            cursor: pointer;
-            flex: 1;
-            display: flex; align-items: center; justify-content: center;
-            gap: 7px;
-            transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-            box-shadow: 0 3px 10px rgba(0,90,141,0.28);
-        }
-        .select-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; transition: transform 0.2s ease; }
-        .select-btn:hover { background: #004E7C; box-shadow: 0 5px 16px rgba(0,90,141,0.38); transform: translateY(-1px); }
-        .select-btn:hover svg { transform: translateX(3px); }
-        .select-btn:active { transform: translateY(0); box-shadow: none; }
-
         .info-btn {
             background: var(--sunset);
             color: var(--white);
@@ -441,10 +420,6 @@ html, body { overscroll-behavior: none; }
                                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                                 Ver detalles
                             </button>
-                            <button class="select-btn" onclick="selectCabana(1)">
-                                Reservar
-                                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -461,10 +436,6 @@ html, body { overscroll-behavior: none; }
                                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                                 Ver detalles
                             </button>
-                            <button class="select-btn" onclick="selectCabana(2)">
-                                Reservar
-                                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -480,10 +451,6 @@ html, body { overscroll-behavior: none; }
                             <button class="info-btn" onclick="showInfo(3)">
                                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                                 Ver detalles
-                            </button>
-                            <button class="select-btn" onclick="selectCabana(3)">
-                                Reservar
-                                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                             </button>
                         </div>
                     </div>
