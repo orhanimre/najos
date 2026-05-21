@@ -837,8 +837,8 @@
             <div class="guests-modal-overlay" id="guestsModal">
                 <div class="guests-modal">
                     <button class="modal-close-btn" onclick="closeGuestsModal()">×</button>
-                    <div class="guests-modal-title">Huéspedes</div>
-                    <div class="guests-modal-subtitle">Selecciona cuántos huéspedes van a hospedarse</div>
+                    <div class="guests-modal-title">Huéspedes y Habitaciones</div>
+                    <div class="guests-modal-subtitle">1–2 huéspedes → 1 hab. · 3–4 → 2 hab.</div>
 
                     <div class="stepper-group">
                         <label class="stepper-label">👥 Número de Huéspedes</label>
@@ -847,7 +847,17 @@
                             <div class="stepper-value" id="guestCount">1</div>
                             <button class="stepper-btn" onclick="incrementGuests()">+</button>
                         </div>
-                        <div class="stepper-info" id="guestInfo">1 huésped seleccionado (máximo 2 en Apto 4)</div>
+                        <div class="stepper-info" id="guestInfo">1 huésped seleccionado</div>
+                    </div>
+
+                    <div class="stepper-group" id="roomsStepperGroup" style="display:none;">
+                        <label class="stepper-label">🛏️ Número de Habitaciones</label>
+                        <div class="stepper">
+                            <button class="stepper-btn" onclick="decrementRooms()">−</button>
+                            <div class="stepper-value" id="roomCount">1</div>
+                            <button class="stepper-btn" onclick="incrementRooms()">+</button>
+                        </div>
+                        <div class="stepper-info" id="roomInfo">1 habitación seleccionada (máximo 2 en Apto 4)</div>
                     </div>
 
                     <div class="modal-action-btns">
@@ -883,6 +893,39 @@
             </div>
 
             <!-- ── ROOM AVAILABILITY ── -->
+            <div class="section" id="availabilitySection">
+                <h2>📅 Disponibilidad — Apto 4</h2>
+                <p style="color:#6B7280; font-size:13px; margin-bottom:24px; font-weight:400;">
+                    Apartamento de un solo habitación privado, ideal para parejas o viajeros solos.
+                </p>
+
+                <div class="room-card">
+                    <div class="room-card-header">
+                        <span class="room-card-name">🛏️ Habitación 1</span>
+                        <span class="room-card-badge">Hasta 2 personas</span>
+                    </div>
+                    <div class="room-card-body">
+                        <div class="room-card-nav">
+                            <button class="room-cal-btn" onclick="roomNavigate(-1)">‹</button>
+                            <span class="room-cal-label" id="r1-label"></span>
+                            <button class="room-cal-btn" onclick="roomNavigate(1)">›</button>
+                        </div>
+                        <div class="room-cal-container" id="r1-cal">
+                            <div class="room-cal-loading">Cargando…</div>
+                        </div>
+                    </div>
+                    <div class="room-card-footer">
+                        <a href="registro-apto4.html" class="room-reserve-btn">Reservar ahora →</a>
+                    </div>
+                </div>
+
+                <div class="rooms-legend">
+                    <div class="rooms-legend-item"><div class="rooms-legend-dot" style="background:white; border:1px solid #e5e7eb;"></div>Disponible</div>
+                    <div class="rooms-legend-item"><div class="rooms-legend-dot" style="background:#fecaca;"></div>Reservado</div>
+                    <div class="rooms-legend-item"><div class="rooms-legend-dot" style="background:linear-gradient(90deg, white 50%, #fecaca 50%); border:1px solid #e5e7eb;"></div>Día de entrada</div>
+                    <div class="rooms-legend-item"><div class="rooms-legend-dot" style="background:linear-gradient(90deg, #fecaca 50%, white 50%); border:1px solid #e5e7eb;"></div>Día de salida</div>
+                </div>
+            </div>
 
             <div class="section" style="display: none;">
                 <h2>🌐 Reserva en línea</h2>
@@ -1033,13 +1076,14 @@
         const APTO_DATA = {
             'apto2': { name: 'Apto 2', totalRooms: 3, capacity: 2 },
             'apto3': { name: 'Apto 3', totalRooms: 2, capacity: 2 },
-            'apto4': { name: 'Apto 4', totalRooms: 1, capacity: 2 },
+            'apto4': { name: 'Apto 4', totalRooms: 2, capacity: 2 },
         };
 
         let currentApto = 'apto4'; // Default for apto4.html
 
         let bookingState = {
             guests: 1,
+            rooms: 1,
             checkIn: null,
             checkOut: null
         };
@@ -1068,7 +1112,7 @@
         }
 
         window.incrementGuests = function() {
-            const maxGuests = 2; // Apto 4 only has 1 room
+            const maxGuests = 4;
             if (bookingState.guests < maxGuests) {
                 bookingState.guests++;
                 updateGuestsDisplay();
@@ -1082,15 +1126,41 @@
             }
         };
 
+        window.incrementRooms = function() {
+            if (bookingState.rooms < 2) {
+                bookingState.rooms++;
+                updateRoomsDisplay();
+            }
+        };
+
+        window.decrementRooms = function() {
+            if (bookingState.rooms > 1) {
+                bookingState.rooms--;
+                updateRoomsDisplay();
+            }
+        };
+
+        function updateRoomsDisplay() {
+            document.getElementById('roomCount').textContent = bookingState.rooms;
+            const roomLabel = bookingState.rooms === 1 ? 'habitación' : 'habitaciones';
+            document.getElementById('roomInfo').textContent = `${bookingState.rooms} ${roomLabel} seleccionada${bookingState.rooms > 1 ? 's' : ''} (máximo 2 en Apto 4)`;
+        }
+
         function updateGuestsDisplay() {
             document.getElementById('guestCount').textContent = bookingState.guests;
             const guestLabel = bookingState.guests === 1 ? 'huésped' : 'huéspedes';
-            document.getElementById('guestInfo').textContent = `${bookingState.guests} ${guestLabel} seleccionado${bookingState.guests > 1 ? 's' : ''} (máximo 2 en Apto 4)`;
+            document.getElementById('guestInfo').textContent = `${bookingState.guests} ${guestLabel} seleccionado${bookingState.guests > 1 ? 's' : ''}`;
+            // Auto-assign rooms based on guests
+            bookingState.rooms = bookingState.guests >= 3 ? 2 : 1;
+            updateRoomsDisplay();
+            // Show/hide rooms stepper
+            document.getElementById('roomsStepperGroup').style.display = bookingState.guests >= 3 ? 'block' : 'none';
             updateSummary();
         }
 
         function updateSummary() {
-            const summary = `${bookingState.guests} ${bookingState.guests === 1 ? 'huésped' : 'huéspedes'}`;
+            const roomPart = bookingState.rooms > 1 ? ` • ${bookingState.rooms} habitaciones` : '';
+            const summary = `${bookingState.guests} ${bookingState.guests === 1 ? 'huésped' : 'huéspedes'}${roomPart}`;
             document.getElementById('guestsSummary').textContent = summary;
         }
 
