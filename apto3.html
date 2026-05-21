@@ -466,6 +466,323 @@
             .header.scrolled .nav-menu { margin-bottom: 4px; }
             .header.scrolled .header-title h1 { font-size: 15px; }
         }
+
+        /* ── BOOKING SECTION ── */
+        .booking-banner {
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
+            padding: 28px 40px;
+            margin-bottom: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 77, 115, 0.25);
+        }
+
+        .booking-title {
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .booking-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            align-items: flex-end;
+        }
+
+        .booking-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .booking-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .booking-input {
+            padding: 12px 14px;
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--ocean-dark);
+            transition: all 0.25s ease;
+        }
+
+        .booking-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+        }
+
+        .booking-input::placeholder {
+            color: #b0bcc4;
+        }
+
+        .guests-selector {
+            padding: 12px 14px;
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--ocean-dark);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+
+        .guests-selector:hover {
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .guests-selector::after {
+            content: '▼';
+            font-size: 10px;
+            margin-left: 8px;
+            opacity: 0.6;
+        }
+
+        .booking-btn {
+            padding: 12px 28px;
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--ocean-dark);
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .booking-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .booking-btn:active {
+            transform: translateY(0);
+        }
+
+        /* ── GUESTS MODAL ── */
+        .guests-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .guests-modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .guests-modal {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close-btn {
+            float: right;
+            background: none;
+            border: none;
+            font-size: 24px;
+            font-weight: 300;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close-btn:hover {
+            color: #374151;
+        }
+
+        .guests-modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--ocean-dark);
+            margin-bottom: 8px;
+            clear: both;
+        }
+
+        .guests-modal-subtitle {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 28px;
+            font-weight: 400;
+        }
+
+        .stepper-group {
+            margin-bottom: 24px;
+        }
+
+        .stepper-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ocean-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .stepper {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: #f3f4f6;
+            padding: 12px 16px;
+            border-radius: 10px;
+        }
+
+        .stepper-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            background: var(--ocean);
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .stepper-btn:hover {
+            background: var(--ocean-dark);
+            transform: scale(1.05);
+        }
+
+        .stepper-btn:active {
+            transform: scale(0.95);
+        }
+
+        .stepper-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .stepper-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--ocean-dark);
+            text-align: center;
+            flex: 1;
+        }
+
+        .stepper-info {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        .modal-action-btns {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-btn-cancel {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .modal-btn-cancel:hover {
+            background: #d1d5db;
+        }
+
+        .modal-btn-confirm {
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 119, 190, 0.3);
+        }
+
+        .modal-btn-confirm:hover {
+            box-shadow: 0 6px 18px rgba(0, 119, 190, 0.4);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .booking-form {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .booking-banner {
+                padding: 20px 20px;
+                margin-bottom: 30px;
+            }
+
+            .booking-title {
+                font-size: 16px;
+                margin-bottom: 16px;
+            }
+
+            .guests-modal {
+                padding: 24px;
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -491,6 +808,66 @@
         </div>
 
         <div class="content" id="mainContent">
+
+            <!-- ── BOOKING SECTION ── -->
+            <div class="booking-banner">
+                <div class="booking-title">🏨 Reserva tu estadía</div>
+                <div class="booking-form">
+                    <div class="booking-field">
+                        <label class="booking-label">Entrada (Check-in)</label>
+                        <input type="date" id="checkInDate" class="booking-input" required>
+                    </div>
+                    <div class="booking-field">
+                        <label class="booking-label">Salida (Check-out)</label>
+                        <input type="date" id="checkOutDate" class="booking-input" required>
+                    </div>
+                    <div class="booking-field">
+                        <label class="booking-label">Huéspedes</label>
+                        <div class="guests-selector" id="guestsSelector">
+                            <span id="guestsSummary">Selecciona...</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px; margin-top: 16px;">
+                    <button class="booking-btn" onclick="searchAvailability()" style="flex: 1;">
+                        🔍 Buscar disponibilidad
+                    </button>
+                </div>
+            </div>
+
+            <!-- ── GUESTS MODAL ── -->
+            <div class="guests-modal-overlay" id="guestsModal">
+                <div class="guests-modal">
+                    <button class="modal-close-btn" onclick="closeGuestsModal()">×</button>
+                    <div class="guests-modal-title">Huéspedes y Habitaciones</div>
+                    <div class="guests-modal-subtitle">Selecciona cuántos huéspedes y cuántas habitaciones necesitas</div>
+
+                    <div class="stepper-group">
+                        <label class="stepper-label">👥 Número de Huéspedes</label>
+                        <div class="stepper">
+                            <button class="stepper-btn" onclick="decrementGuests()">−</button>
+                            <div class="stepper-value" id="guestCount">1</div>
+                            <button class="stepper-btn" onclick="incrementGuests()">+</button>
+                        </div>
+                        <div class="stepper-info" id="guestInfo">1 huésped seleccionado (máximo 4 en Apto 3)</div>
+                    </div>
+
+                    <div class="stepper-group">
+                        <label class="stepper-label">🛏️ Número de Habitaciones</label>
+                        <div class="stepper">
+                            <button class="stepper-btn" onclick="decrementRooms()">−</button>
+                            <div class="stepper-value" id="roomCount">1</div>
+                            <button class="stepper-btn" onclick="incrementRooms()">+</button>
+                        </div>
+                        <div class="stepper-info" id="roomInfo">1 habitación seleccionada (máximo 2 en Apto 3)</div>
+                    </div>
+
+                    <div class="modal-action-btns">
+                        <button class="modal-btn modal-btn-cancel" onclick="closeGuestsModal()">Cancelar</button>
+                        <button class="modal-btn modal-btn-confirm" onclick="confirmGuestsSelection()">Confirmar</button>
+                    </div>
+                </div>
+            </div>
 
             <div class="gallery">
                 <img src="https://imgur.com/rR8w3I0.jpg" alt="Habitación-1" onclick="openModal(this.src)">
@@ -733,6 +1110,132 @@
             const dx = e.changedTouches[0].clientX - _tx;
             if (Math.abs(dx) > 40) slideModal(dx < 0 ? 1 : -1);
         });
+
+        // ── BOOKING INTERFACE ──
+        const APTO_DATA = {
+            'apto2': { name: 'Apto 2', totalRooms: 3, capacity: 2 },
+            'apto3': { name: 'Apto 3', totalRooms: 2, capacity: 2 },
+            'apto4': { name: 'Apto 4', totalRooms: 1, capacity: 2 },
+        };
+
+        let currentApto = 'apto3'; // Default for apto3.html
+
+        let bookingState = {
+            guests: 1,
+            rooms: 1,
+            checkIn: null,
+            checkOut: null
+        };
+
+        function initBookingDates() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const toDateString = (d) => d.toISOString().split('T')[0];
+            document.getElementById('checkInDate').valueAsDate = today;
+            document.getElementById('checkOutDate').valueAsDate = tomorrow;
+            bookingState.checkIn = toDateString(today);
+            bookingState.checkOut = toDateString(tomorrow);
+        }
+
+        document.getElementById('guestsSelector').addEventListener('click', openGuestsModal);
+
+        function openGuestsModal() {
+            document.getElementById('guestsModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeGuestsModal() {
+            document.getElementById('guestsModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        window.incrementGuests = function() {
+            const maxGuests = 4; // 2 rooms × 2 guests per room
+            if (bookingState.guests < maxGuests) {
+                bookingState.guests++;
+                updateGuestsDisplay();
+            }
+        };
+
+        window.decrementGuests = function() {
+            if (bookingState.guests > 1) {
+                bookingState.guests--;
+                updateGuestsDisplay();
+            }
+        };
+
+        window.incrementRooms = function() {
+            const aptoData = APTO_DATA[currentApto];
+            const maxRooms = aptoData.totalRooms;
+            if (bookingState.rooms < maxRooms) {
+                bookingState.rooms++;
+                updateRoomsDisplay();
+            }
+        };
+
+        window.decrementRooms = function() {
+            if (bookingState.rooms > 1) {
+                bookingState.rooms--;
+                updateRoomsDisplay();
+            }
+        };
+
+        function updateGuestsDisplay() {
+            document.getElementById('guestCount').textContent = bookingState.guests;
+            const guestLabel = bookingState.guests === 1 ? 'huésped' : 'huéspedes';
+            document.getElementById('guestInfo').textContent = `${bookingState.guests} ${guestLabel} seleccionado${bookingState.guests > 1 ? 's' : ''}`;
+            updateSummary();
+        }
+
+        function updateRoomsDisplay() {
+            document.getElementById('roomCount').textContent = bookingState.rooms;
+            const roomLabel = bookingState.rooms === 1 ? 'habitación' : 'habitaciones';
+            const aptoData = APTO_DATA[currentApto];
+            document.getElementById('roomInfo').textContent = `${bookingState.rooms} ${roomLabel} seleccionada${bookingState.rooms > 1 ? 's' : ''} (máximo ${aptoData.totalRooms} en ${aptoData.name})`;
+        }
+
+        function updateSummary() {
+            const summary = `${bookingState.guests} ${bookingState.guests === 1 ? 'huésped' : 'huéspedes'} • ${bookingState.rooms} ${bookingState.rooms === 1 ? 'habitación' : 'habitaciones'}`;
+            document.getElementById('guestsSummary').textContent = summary;
+        }
+
+        window.confirmGuestsSelection = function() {
+            const aptoData = APTO_DATA[currentApto];
+            let recommendedRooms = 1;
+            if (bookingState.guests >= 2 && bookingState.guests <= 2) recommendedRooms = 1;
+            else if (bookingState.guests === 3 || bookingState.guests === 4) recommendedRooms = 2;
+            else if (bookingState.guests === 5 || bookingState.guests === 6) recommendedRooms = 3;
+            recommendedRooms = Math.min(recommendedRooms, aptoData.totalRooms);
+            if (bookingState.rooms < recommendedRooms) {
+                bookingState.rooms = recommendedRooms;
+                updateRoomsDisplay();
+            }
+            closeGuestsModal();
+        };
+
+        window.closeGuestsModal = closeGuestsModal;
+
+        window.searchAvailability = function() {
+            const checkIn = document.getElementById('checkInDate').value;
+            const checkOut = document.getElementById('checkOutDate').value;
+            if (!checkIn || !checkOut) {
+                alert('Por favor selecciona fechas de entrada y salida');
+                return;
+            }
+            const checkInDate = new Date(checkIn);
+            const checkOutDate = new Date(checkOut);
+            if (checkInDate >= checkOutDate) {
+                alert('La fecha de salida debe ser posterior a la fecha de entrada');
+                return;
+            }
+            bookingState.checkIn = checkIn;
+            bookingState.checkOut = checkOut;
+            console.log('Search availability:', bookingState);
+            alert(`Buscando disponibilidad para ${bookingState.guests} ${bookingState.guests === 1 ? 'huésped' : 'huéspedes'} en ${bookingState.rooms} ${bookingState.rooms === 1 ? 'habitación' : 'habitaciones'} del ${checkIn} al ${checkOut}`);
+        };
+
+        window.addEventListener('load', initBookingDates);
     </script>
 
     <!-- ── FIREBASE PER-ROOM AVAILABILITY ── -->
