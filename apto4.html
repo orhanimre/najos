@@ -1101,6 +1101,11 @@
         window.closeGuestsModal = closeGuestsModal;
 
         window.searchAvailability = function() {
+            if (!guestsConfirmed) {
+                alert('Por favor selecciona el número de huéspedes antes de buscar');
+                openGuestsModal();
+                return;
+            }
             const checkIn = document.getElementById('checkInDate').value;
             const checkOut = document.getElementById('checkOutDate').value;
             if (!checkIn || !checkOut) {
