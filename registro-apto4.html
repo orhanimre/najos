@@ -1122,13 +1122,13 @@ alt="Apto Najos-4"
           </div>
           <div class="progress-step active" data-step="1">
             <div class="progress-circle">1</div>
-            <div class="progress-label">Bienvenidos</div>
-            <div class="progress-icon">🌴</div>
+            <div class="progress-label">Tu Estadía</div>
+            <div class="progress-icon">🏖️</div>
           </div>
           <div class="progress-step" data-step="2">
             <div class="progress-circle">2</div>
-            <div class="progress-label">Tu Estadía</div>
-            <div class="progress-icon">🏖️</div>
+            <div class="progress-label">Tus Datos</div>
+            <div class="progress-icon">🌴</div>
           </div>
           <div class="progress-step" data-step="3">
             <div class="progress-circle">3</div>
@@ -1143,8 +1143,37 @@ alt="Apto Najos-4"
         <div id="errorMessage"   class="message error-message"></div>
 
         <form id="registrationForm">
-          <!-- Step 1 -->
+          <!-- Step 1 — Tu Estadía -->
           <div class="step-container active" data-step="1">
+            <div class="step-intro">
+              <h2>🌊 ¡Genial! Ahora dime cuándo vienes</h2>
+              <p>Selecciona tus fechas de entrada y salida en nuestro calendario interactivo.</p>
+            </div>
+            <div class="form-group">
+              <label>Fechas de Estadía <span class="required">*</span></label>
+              <div class="date-picker-trigger" onclick="openDatePickerModal()">
+                <span id="dateDisplayText" class="placeholder">Selecciona tus fechas</span>
+                <span class="calendar-icon">📅</span>
+              </div>
+              <input type="hidden" id="fechaEntrada" name="fechaEntrada" required />
+              <input type="hidden" id="fechaSalida"  name="fechaSalida"  required />
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label for="horaEntrada">Hora de Entrada <span class="required">*</span></label>
+                <input type="time" id="horaEntrada" name="horaEntrada" min="14:00" max="21:00" required />
+                <div class="helper-text">Entre 2:00 PM y 9:00 PM</div>
+              </div>
+              <div class="form-group">
+                <label for="horaSalida">Hora de Salida <span class="required">*</span></label>
+                <input type="time" id="horaSalida" name="horaSalida" max="11:00" required />
+                <div class="helper-text">Antes de las 11:00 AM</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 — Tus Datos -->
+          <div class="step-container" data-step="2">
             <div class="step-intro">
               <h2>🌴 ¡Bienvenidos a Apart Hotel Najos-4!</h2>
               <p>Solo necesitamos unos datos básicos para prepararte una llegada perfecta.</p>
@@ -1204,7 +1233,7 @@ alt="Apto Najos-4"
             </div>
           </div>
 
-          <!-- Step 2 -->
+          <!-- Step 3 — Confirmación -->
           <div class="step-container" data-step="3">
             <div class="step-intro">
               <h2>👨‍👩‍👧‍👦 Casi listos... completa los datos de tu grupo</h2>
@@ -1246,35 +1275,6 @@ alt="Apto Najos-4"
             <div class="summary-box" id="summaryBox" style="display:none">
               <div class="summary-title">📋 Resumen de tu Registro</div>
               <div id="summaryContent"></div>
-            </div>
-          </div>
-
-          <!-- Step 3 — Tu Estadía (was Step 2) -->
-          <div class="step-container" data-step="2">
-            <div class="step-intro">
-              <h2>🌊 ¡Genial! Ahora dime cuándo vienes</h2>
-              <p>Selecciona tus fechas de entrada y salida en nuestro calendario interactivo.</p>
-            </div>
-            <div class="form-group">
-              <label>Fechas de Estadía <span class="required">*</span></label>
-              <div class="date-picker-trigger" onclick="openDatePickerModal()">
-                <span id="dateDisplayText" class="placeholder">Selecciona tus fechas</span>
-                <span class="calendar-icon">📅</span>
-              </div>
-              <input type="hidden" id="fechaEntrada" name="fechaEntrada" required />
-              <input type="hidden" id="fechaSalida"  name="fechaSalida"  required />
-            </div>
-            <div class="grid-2">
-              <div class="form-group">
-                <label for="horaEntrada">Hora de Entrada <span class="required">*</span></label>
-                <input type="time" id="horaEntrada" name="horaEntrada" min="14:00" max="21:00" required />
-                <div class="helper-text">Entre 2:00 PM y 9:00 PM</div>
-              </div>
-              <div class="form-group">
-                <label for="horaSalida">Hora de Salida <span class="required">*</span></label>
-                <input type="time" id="horaSalida" name="horaSalida" max="11:00" required />
-                <div class="helper-text">Antes de las 11:00 AM</div>
-              </div>
             </div>
           </div>
 
