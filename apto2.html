@@ -1386,6 +1386,13 @@
             document.getElementById('guestCount').textContent = bookingState.guests;
             const guestLabel = bookingState.guests === 1 ? 'huésped' : 'huéspedes';
             document.getElementById('guestInfo').textContent = `${bookingState.guests} ${guestLabel} seleccionado${bookingState.guests > 1 ? 's' : ''}`;
+            // Auto-assign rooms based on guests
+            const aptoData = APTO_DATA[currentApto];
+            let autoRooms = 1;
+            if (bookingState.guests >= 3 && bookingState.guests <= 4) autoRooms = 2;
+            else if (bookingState.guests >= 5) autoRooms = 3;
+            bookingState.rooms = Math.min(autoRooms, aptoData.totalRooms);
+            updateRoomsDisplay();
             updateSummary();
         }
 
