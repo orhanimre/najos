@@ -837,8 +837,8 @@
             <div class="guests-modal-overlay" id="guestsModal">
                 <div class="guests-modal">
                     <button class="modal-close-btn" onclick="closeGuestsModal()">×</button>
-                    <div class="guests-modal-title">Huéspedes y Habitaciones</div>
-                    <div class="guests-modal-subtitle">1–2 huéspedes → 1 hab. · 3–4 → 2 hab.</div>
+                    <div class="guests-modal-title">Huéspedes</div>
+                    <div class="guests-modal-subtitle">Selecciona cuántos huéspedes van a hospedarse</div>
 
                     <div class="stepper-group">
                         <label class="stepper-label">👥 Número de Huéspedes</label>
@@ -847,17 +847,7 @@
                             <div class="stepper-value" id="guestCount">1</div>
                             <button class="stepper-btn" onclick="incrementGuests()">+</button>
                         </div>
-                        <div class="stepper-info" id="guestInfo">1 huésped seleccionado</div>
-                    </div>
-
-                    <div class="stepper-group" id="roomsStepperGroup" style="display:none;">
-                        <label class="stepper-label">🛏️ Número de Habitaciones</label>
-                        <div class="stepper">
-                            <button class="stepper-btn" onclick="decrementRooms()">−</button>
-                            <div class="stepper-value" id="roomCount">1</div>
-                            <button class="stepper-btn" onclick="incrementRooms()">+</button>
-                        </div>
-                        <div class="stepper-info" id="roomInfo">1 habitación seleccionada (máximo 2 en Apto 4)</div>
+                        <div class="stepper-info" id="guestInfo">1 huésped seleccionado (máximo 2 en Apto 4)</div>
                     </div>
 
                     <div class="modal-action-btns">
@@ -1076,14 +1066,13 @@
         const APTO_DATA = {
             'apto2': { name: 'Apto 2', totalRooms: 3, capacity: 2 },
             'apto3': { name: 'Apto 3', totalRooms: 2, capacity: 2 },
-            'apto4': { name: 'Apto 4', totalRooms: 2, capacity: 2 },
+            'apto4': { name: 'Apto 4', totalRooms: 1, capacity: 2 },
         };
 
         let currentApto = 'apto4'; // Default for apto4.html
 
         let bookingState = {
             guests: 1,
-            rooms: 1,
             checkIn: null,
             checkOut: null
         };
@@ -1112,7 +1101,7 @@
         }
 
         window.incrementGuests = function() {
-            const maxGuests = 4;
+            const maxGuests = 2; // Apto 4 only has 1 room
             if (bookingState.guests < maxGuests) {
                 bookingState.guests++;
                 updateGuestsDisplay();
@@ -1126,41 +1115,15 @@
             }
         };
 
-        window.incrementRooms = function() {
-            if (bookingState.rooms < 2) {
-                bookingState.rooms++;
-                updateRoomsDisplay();
-            }
-        };
-
-        window.decrementRooms = function() {
-            if (bookingState.rooms > 1) {
-                bookingState.rooms--;
-                updateRoomsDisplay();
-            }
-        };
-
-        function updateRoomsDisplay() {
-            document.getElementById('roomCount').textContent = bookingState.rooms;
-            const roomLabel = bookingState.rooms === 1 ? 'habitación' : 'habitaciones';
-            document.getElementById('roomInfo').textContent = `${bookingState.rooms} ${roomLabel} seleccionada${bookingState.rooms > 1 ? 's' : ''} (máximo 2 en Apto 4)`;
-        }
-
         function updateGuestsDisplay() {
             document.getElementById('guestCount').textContent = bookingState.guests;
             const guestLabel = bookingState.guests === 1 ? 'huésped' : 'huéspedes';
-            document.getElementById('guestInfo').textContent = `${bookingState.guests} ${guestLabel} seleccionado${bookingState.guests > 1 ? 's' : ''}`;
-            // Auto-assign rooms based on guests
-            bookingState.rooms = bookingState.guests >= 3 ? 2 : 1;
-            updateRoomsDisplay();
-            // Show/hide rooms stepper
-            document.getElementById('roomsStepperGroup').style.display = bookingState.guests >= 3 ? 'block' : 'none';
+            document.getElementById('guestInfo').textContent = `${bookingState.guests} ${guestLabel} seleccionado${bookingState.guests > 1 ? 's' : ''} (máximo 2 en Apto 4)`;
             updateSummary();
         }
 
         function updateSummary() {
-            const roomPart = bookingState.rooms > 1 ? ` • ${bookingState.rooms} habitaciones` : '';
-            const summary = `${bookingState.guests} ${bookingState.guests === 1 ? 'huésped' : 'huéspedes'}${roomPart}`;
+            const summary = `${bookingState.guests} ${bookingState.guests === 1 ? 'huésped' : 'huéspedes'}`;
             document.getElementById('guestsSummary').textContent = summary;
         }
 
