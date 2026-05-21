@@ -1409,13 +1409,13 @@ html, body { overscroll-behavior: none; }
           </div>
           <div class="progress-step" data-step="3">
             <div class="progress-circle">3</div>
-            <div class="progress-label">Confirmación</div>
-            <div class="progress-icon">✓</div>
+            <div class="progress-label">Tu Estadía</div>
+            <div class="progress-icon">🏖️</div>
           </div>
           <div class="progress-step" data-step="4">
             <div class="progress-circle">4</div>
-            <div class="progress-label">Tu Estadía</div>
-            <div class="progress-icon">🏖️</div>
+            <div class="progress-label">Confirmación</div>
+            <div class="progress-icon">✓</div>
           </div>
         </div>
       </div>
@@ -1494,8 +1494,8 @@ html, body { overscroll-behavior: none; }
             </div>
           </div>
 
-          <!-- Step 3 — Confirmación (was Step 4) -->
-          <div class="step-container" data-step="3">
+          <!-- Step 3 — Tu Estadía -->
+          <div class="step-container" data-step="4">
             <div class="step-intro">
               <h2>👨‍👩‍👧‍👦 Casi listos... completa los datos de tu grupo</h2>
               <p>Indica cuántos acompañantes tienes y completa su información.</p>
@@ -1540,8 +1540,8 @@ html, body { overscroll-behavior: none; }
             </div>
           </div>
 
-          <!-- Step 4 — Tu Estadía (was Step 3) -->
-          <div class="step-container" data-step="4">
+          <!-- Step 4 — Confirmación -->
+          <div class="step-container" data-step="3">
             <div class="step-intro">
               <h2>🌊 ¡Genial! Ahora dime cuándo vienes</h2>
               <p>Selecciona tus fechas de entrada y salida en nuestro calendario interactivo.</p>
@@ -1995,8 +1995,8 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         if (step === 3 && !bookedDatesLoaded) {
           loadBookedDates().then(() => { bookedDatesLoaded = true; });
         }
-        // When entering step 2, lock in maxCompanions based on selected rooms
-        if (step === 2) {
+        // When entering step 4 (confirmation/companions), lock maxCompanions based on rooms
+        if (step === 4) {
           maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
           if (currentCompanionCount > maxCompanions) updateCompanions(maxCompanions);
           updateStepperButtons();
