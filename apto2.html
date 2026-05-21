@@ -1003,7 +1003,7 @@
                 <div class="guests-modal">
                     <button class="modal-close-btn" onclick="closeGuestsModal()">×</button>
                     <div class="guests-modal-title">Huéspedes y Habitaciones</div>
-                    <div class="guests-modal-subtitle">Selecciona cuántos huéspedes y cuántas habitaciones necesitas</div>
+                    <div class="guests-modal-subtitle">Selecciona cuántos huéspedes necesitas. Las habitaciones se asignan automáticamente.</div>
 
                     <div class="stepper-group">
                         <label class="stepper-label">👥 Número de Huéspedes</label>
@@ -1015,14 +1015,13 @@
                         <div class="stepper-info" id="guestInfo">1 huésped seleccionado</div>
                     </div>
 
-                    <div class="stepper-group">
+                                        <div class="stepper-group">
                         <label class="stepper-label">🛏️ Número de Habitaciones</label>
-                        <div class="stepper">
-                            <button class="stepper-btn" onclick="decrementRooms()">−</button>
-                            <div class="stepper-value" id="roomCount">1</div>
-                            <button class="stepper-btn" onclick="incrementRooms()">+</button>
+                        <div class="stepper" style="background:#f0f9ff; border:1.5px solid #bae6fd;">
+                            <div style="font-size:12px; color:#0369a1; font-weight:600; flex:1; text-align:center; padding: 0 8px;">Se asigna automáticamente según los huéspedes</div>
+                            <div class="stepper-value" id="roomCount" style="color:#0369a1; min-width:36px;">1</div>
                         </div>
-                        <div class="stepper-info" id="roomInfo">1 habitación seleccionada (máximo 3 en Apto 2)</div>
+                        <div class="stepper-info" id="roomInfo">1–2 huéspedes → 1 hab. · 3–4 → 2 hab. · 5–6 → 3 hab.</div>
                     </div>
 
                     <div class="modal-action-btns">
@@ -1058,110 +1057,6 @@
             </div>
 
             <!-- ── PER-ROOM AVAILABILITY ── -->
-            <div class="section" id="availabilitySection">
-                <h2>📅 Disponibilidad por Habitación — Apto 2</h2>
-                <p style="color:#6B7280; font-size:13px; margin-bottom:24px; font-weight:400;">
-                    Este apartamento tiene 3 habitaciones independientes. Puedes reservar uno o varios habitaciones según tu grupo.
-                </p>
-
-                <div class="rooms-grid">
-                    <!-- Habitación 1 -->
-                    <div class="room-card">
-                        <div class="room-card-header">
-                            <span class="room-card-name">🛏️ Habitación 1</span>
-                            <span class="room-card-badge">Hasta 2 personas</span>
-                        </div>
-                        <div class="room-card-body">
-                            <div class="room-card-nav">
-                                <button class="room-cal-btn" onclick="roomNavigate('r1',-1)">‹</button>
-                                <span class="room-cal-label" id="r1-label"></span>
-                                <button class="room-cal-btn" onclick="roomNavigate('r1',1)">›</button>
-                            </div>
-                            <div class="room-cal-container" id="r1-cal">
-                                <div class="room-cal-loading">Cargando…</div>
-                            </div>
-                        </div>
-                        <div class="room-card-footer">
-                            <a href="registro-apto2.html?habitaciones=1" class="room-reserve-btn">Reservar Habitación 1 →</a>
-                        </div>
-                    </div>
-
-                    <!-- Habitación 2 -->
-                    <div class="room-card">
-                        <div class="room-card-header">
-                            <span class="room-card-name">🛏️ Habitación 2</span>
-                            <span class="room-card-badge">Hasta 2 personas</span>
-                        </div>
-                        <div class="room-card-body">
-                            <div class="room-card-nav">
-                                <button class="room-cal-btn" onclick="roomNavigate('r2',-1)">‹</button>
-                                <span class="room-cal-label" id="r2-label"></span>
-                                <button class="room-cal-btn" onclick="roomNavigate('r2',1)">›</button>
-                            </div>
-                            <div class="room-cal-container" id="r2-cal">
-                                <div class="room-cal-loading">Cargando…</div>
-                            </div>
-                        </div>
-                        <div class="room-card-footer">
-                            <a href="registro-apto2.html?habitaciones=2" class="room-reserve-btn">Reservar Habitación 2 →</a>
-                        </div>
-                    </div>
-
-                    <!-- Habitación 3 -->
-                    <div class="room-card">
-                        <div class="room-card-header">
-                            <span class="room-card-name">🛏️ Habitación 3</span>
-                            <span class="room-card-badge">Hasta 2 personas</span>
-                        </div>
-                        <div class="room-card-body">
-                            <div class="room-card-nav">
-                                <button class="room-cal-btn" onclick="roomNavigate('r3',-1)">‹</button>
-                                <span class="room-cal-label" id="r3-label"></span>
-                                <button class="room-cal-btn" onclick="roomNavigate('r3',1)">›</button>
-                            </div>
-                            <div class="room-cal-container" id="r3-cal">
-                                <div class="room-cal-loading">Cargando…</div>
-                            </div>
-                        </div>
-                        <div class="room-card-footer">
-                            <a href="registro-apto2.html?habitaciones=3" class="room-reserve-btn">Reservar Habitación 3 →</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Multi-room CTA banner -->
-                <div style="background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 100%); border-radius:16px; padding:20px 22px; margin-top:8px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; box-shadow:0 4px 18px rgba(29,78,216,0.25);">
-                    <div style="display:flex; align-items:center; gap:14px; flex:1; min-width:180px;">
-                        <span style="font-size:32px; flex-shrink:0;">👨‍👩‍👧‍👦</span>
-                        <div>
-                            <div style="color:#fff; font-weight:800; font-size:15px; margin-bottom:3px;">¿Vienes en grupo?</div>
-                            <div style="color:#bfdbfe; font-size:13px; line-height:1.4;">Reserva 2 o 3 habitaciones a la vez y acomoda a todos juntos</div>
-                        </div>
-                    </div>
-                    <a href="registro-apto2.html" style="background:#fff; color:#1d4ed8; font-weight:800; font-size:14px; padding:11px 22px; border-radius:12px; text-decoration:none; white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,0.15); flex-shrink:0;">
-                        Reservar varias habitaciones →
-                    </a>
-                </div>
-
-                <div class="rooms-legend">
-                    <div class="rooms-legend-item">
-                        <div class="rooms-legend-dot" style="background:white; border:1px solid #e5e7eb;"></div>
-                        Disponible
-                    </div>
-                    <div class="rooms-legend-item">
-                        <div class="rooms-legend-dot" style="background:#fecaca;"></div>
-                        Reservado
-                    </div>
-                    <div class="rooms-legend-item">
-                        <div class="rooms-legend-dot" style="background:linear-gradient(90deg, white 50%, #fecaca 50%); border:1px solid #e5e7eb;"></div>
-                        Día de entrada
-                    </div>
-                    <div class="rooms-legend-item">
-                        <div class="rooms-legend-dot" style="background:linear-gradient(90deg, #fecaca 50%, white 50%); border:1px solid #e5e7eb;"></div>
-                        Día de salida
-                    </div>
-                </div>
-            </div>
 
             <div class="section" style="display: none;">
                 <h2>🌐 Reserva en línea</h2>
@@ -1366,34 +1261,26 @@
             }
         };
 
-        window.incrementRooms = function() {
-            const aptoData = APTO_DATA[currentApto];
-            const maxRooms = aptoData.totalRooms;
-            if (bookingState.rooms < maxRooms) {
-                bookingState.rooms++;
-                updateRoomsDisplay();
-            }
-        };
-
-        window.decrementRooms = function() {
-            if (bookingState.rooms > 1) {
-                bookingState.rooms--;
-                updateRoomsDisplay();
-            }
-        };
+        function guestsToRooms(guests) {
+            const maxRooms = APTO_DATA[currentApto].totalRooms;
+            let rooms = guests <= 2 ? 1 : guests <= 4 ? 2 : 3;
+            return Math.min(rooms, maxRooms);
+        }
 
         function updateGuestsDisplay() {
             document.getElementById('guestCount').textContent = bookingState.guests;
             const guestLabel = bookingState.guests === 1 ? 'huésped' : 'huéspedes';
             document.getElementById('guestInfo').textContent = `${bookingState.guests} ${guestLabel} seleccionado${bookingState.guests > 1 ? 's' : ''}`;
+            // Auto-calculate rooms from guests
+            bookingState.rooms = guestsToRooms(bookingState.guests);
+            updateRoomsDisplay();
             updateSummary();
         }
 
         function updateRoomsDisplay() {
             document.getElementById('roomCount').textContent = bookingState.rooms;
             const roomLabel = bookingState.rooms === 1 ? 'habitación' : 'habitaciones';
-            const aptoData = APTO_DATA[currentApto];
-            document.getElementById('roomInfo').textContent = `${bookingState.rooms} ${roomLabel} seleccionada${bookingState.rooms > 1 ? 's' : ''} (máximo ${aptoData.totalRooms} en ${aptoData.name})`;
+            document.getElementById('roomInfo').textContent = `1–2 huéspedes → 1 hab. · 3–4 → 2 hab. · 5–6 → 3 hab.`;
         }
 
         function updateSummary() {
@@ -1402,23 +1289,7 @@
         }
 
         window.confirmGuestsSelection = function() {
-            // Calculate required rooms based on guests
-            const aptoData = APTO_DATA[currentApto];
-            let recommendedRooms = 1;
-
-            if (bookingState.guests >= 2 && bookingState.guests <= 2) recommendedRooms = 1;
-            else if (bookingState.guests === 3 || bookingState.guests === 4) recommendedRooms = 2;
-            else if (bookingState.guests === 5 || bookingState.guests === 6) recommendedRooms = 3;
-
-            // Ensure recommended rooms don't exceed available
-            recommendedRooms = Math.min(recommendedRooms, aptoData.totalRooms);
-
-            // Auto-adjust room count to recommendation if needed
-            if (bookingState.rooms < recommendedRooms) {
-                bookingState.rooms = recommendedRooms;
-                updateRoomsDisplay();
-            }
-
+            // Rooms already auto-calculated in updateGuestsDisplay
             closeGuestsModal();
         };
 
