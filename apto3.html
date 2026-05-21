@@ -824,7 +824,7 @@
                     <div class="booking-field">
                         <label class="booking-label">Huéspedes</label>
                         <div class="guests-selector" id="guestsSelector">
-                            <span id="guestsSummary">Selecciona...</span>
+                            <span id="guestsSummary" style="display:flex;flex-direction:column;gap:2px;line-height:1.3">Selecciona...</span>
                         </div>
                     </div>
                 </div>
@@ -836,7 +836,7 @@
             </div>
 
             <!-- ── GUESTS MODAL ── -->
-            <div class="guests-modal-overlay" id="guestsModal">
+            <div class="guests-modal-overlay" id="guestsModal" onclick="if(event.target===this)closeGuestsModal()">
                 <div class="guests-modal">
                     <button class="modal-close-btn" onclick="closeGuestsModal()">×</button>
                     <div class="guests-modal-title">Huéspedes y Habitaciones</div>
@@ -891,79 +891,6 @@
                     <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                     Abrir en Google Maps
                 </button>
-            </div>
-
-            <!-- ── PER-ROOM AVAILABILITY ── -->
-            <div class="section" id="availabilitySection">
-                <h2>📅 Disponibilidad por Habitación — Apto 3</h2>
-                <p style="color:#6B7280; font-size:13px; margin-bottom:24px; font-weight:400;">
-                    Este apartamento tiene 2 habitaciones independientes. Puedes reservar uno o ambas habitaciones.
-                </p>
-
-                <div class="rooms-grid">
-                    <!-- Habitación 1 -->
-                    <div class="room-card">
-                        <div class="room-card-header">
-                            <span class="room-card-name">🛏️ Habitación 1</span>
-                            <span class="room-card-badge">Hasta 2 personas</span>
-                        </div>
-                        <div class="room-card-body">
-                            <div class="room-card-nav">
-                                <button class="room-cal-btn" onclick="roomNavigate('r1',-1)">‹</button>
-                                <span class="room-cal-label" id="r1-label"></span>
-                                <button class="room-cal-btn" onclick="roomNavigate('r1',1)">›</button>
-                            </div>
-                            <div class="room-cal-container" id="r1-cal">
-                                <div class="room-cal-loading">Cargando…</div>
-                            </div>
-                        </div>
-                        <div class="room-card-footer">
-                            <a href="registro-apto3.html?habitaciones=1" class="room-reserve-btn">Reservar Habitación 1 →</a>
-                        </div>
-                    </div>
-
-                    <!-- Habitación 2 -->
-                    <div class="room-card">
-                        <div class="room-card-header">
-                            <span class="room-card-name">🛏️ Habitación 2</span>
-                            <span class="room-card-badge">Hasta 2 personas</span>
-                        </div>
-                        <div class="room-card-body">
-                            <div class="room-card-nav">
-                                <button class="room-cal-btn" onclick="roomNavigate('r2',-1)">‹</button>
-                                <span class="room-cal-label" id="r2-label"></span>
-                                <button class="room-cal-btn" onclick="roomNavigate('r2',1)">›</button>
-                            </div>
-                            <div class="room-cal-container" id="r2-cal">
-                                <div class="room-cal-loading">Cargando…</div>
-                            </div>
-                        </div>
-                        <div class="room-card-footer">
-                            <a href="registro-apto3.html?habitaciones=2" class="room-reserve-btn">Reservar Habitación 2 →</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Multi-room CTA banner -->
-                <div style="background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 100%); border-radius:16px; padding:20px 22px; margin-top:8px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; box-shadow:0 4px 18px rgba(29,78,216,0.25);">
-                    <div style="display:flex; align-items:center; gap:14px; flex:1; min-width:180px;">
-                        <span style="font-size:32px; flex-shrink:0;">👨‍👩‍👧‍👦</span>
-                        <div>
-                            <div style="color:#fff; font-weight:800; font-size:15px; margin-bottom:3px;">¿Vienes en grupo?</div>
-                            <div style="color:#bfdbfe; font-size:13px; line-height:1.4;">Reserva ambas habitaciones a la vez y acomoda a todos juntos</div>
-                        </div>
-                    </div>
-                    <a href="registro-apto3.html" style="background:#fff; color:#1d4ed8; font-weight:800; font-size:14px; padding:11px 22px; border-radius:12px; text-decoration:none; white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,0.15); flex-shrink:0;">
-                        Reservar ambas habitaciones →
-                    </a>
-                </div>
-
-                <div class="rooms-legend">
-                    <div class="rooms-legend-item"><div class="rooms-legend-dot" style="background:white; border:1px solid #e5e7eb;"></div>Disponible</div>
-                    <div class="rooms-legend-item"><div class="rooms-legend-dot" style="background:#fecaca;"></div>Reservado</div>
-                    <div class="rooms-legend-item"><div class="rooms-legend-dot" style="background:linear-gradient(90deg, white 50%, #fecaca 50%); border:1px solid #e5e7eb;"></div>Día de entrada</div>
-                    <div class="rooms-legend-item"><div class="rooms-legend-dot" style="background:linear-gradient(90deg, #fecaca 50%, white 50%); border:1px solid #e5e7eb;"></div>Día de salida</div>
-                </div>
             </div>
 
             <div class="section" style="display: none;">
@@ -1126,6 +1053,7 @@
             checkIn: null,
             checkOut: null
         };
+        let guestsConfirmed = false;
 
         function initBookingDates() {
             const today = new Date();
@@ -1202,11 +1130,14 @@
         }
 
         function updateSummary() {
-            const summary = `${bookingState.guests} ${bookingState.guests === 1 ? 'huésped' : 'huéspedes'} • ${bookingState.rooms} ${bookingState.rooms === 1 ? 'habitación' : 'habitaciones'}`;
-            document.getElementById('guestsSummary').textContent = summary;
+            const gL = bookingState.guests === 1 ? 'huésped' : 'huéspedes';
+            const rL = bookingState.rooms === 1 ? 'habitación' : 'habitaciones';
+            document.getElementById('guestsSummary').innerHTML =
+                `<span>${bookingState.guests} ${gL}</span><span style="font-size:12px;opacity:0.75">${bookingState.rooms} ${rL}</span>`;
         }
 
         window.confirmGuestsSelection = function() {
+            guestsConfirmed = true;
             const aptoData = APTO_DATA[currentApto];
             let recommendedRooms = 1;
             if (bookingState.guests >= 2 && bookingState.guests <= 2) recommendedRooms = 1;
