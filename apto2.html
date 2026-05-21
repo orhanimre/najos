@@ -1444,9 +1444,15 @@
             bookingState.checkIn = checkIn;
             bookingState.checkOut = checkOut;
 
-            // Log the search (could be extended to filter calendar or redirect to booking form)
-            console.log('Search availability:', bookingState);
-            alert(`Buscando disponibilidad para ${bookingState.guests} ${bookingState.guests === 1 ? 'huésped' : 'huéspedes'} en ${bookingState.rooms} ${bookingState.rooms === 1 ? 'habitación' : 'habitaciones'} del ${checkIn} al ${checkOut}`);
+            // Redirect to registration page with booking parameters
+            const params = new URLSearchParams({
+                checkIn: bookingState.checkIn,
+                checkOut: bookingState.checkOut,
+                guests: bookingState.guests,
+                rooms: bookingState.rooms
+            });
+
+            window.location.href = `registro-apto2.html?${params}`;
         };
 
         // Initialize on page load
