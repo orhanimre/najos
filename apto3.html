@@ -1185,6 +1185,12 @@
             document.getElementById('guestCount').textContent = bookingState.guests;
             const guestLabel = bookingState.guests === 1 ? 'huésped' : 'huéspedes';
             document.getElementById('guestInfo').textContent = `${bookingState.guests} ${guestLabel} seleccionado${bookingState.guests > 1 ? 's' : ''}`;
+            // Auto-assign rooms based on guests (max 2 rooms in Apto 3)
+            const aptoData = APTO_DATA[currentApto];
+            let autoRooms = 1;
+            if (bookingState.guests >= 3) autoRooms = 2;
+            bookingState.rooms = Math.min(autoRooms, aptoData.totalRooms);
+            updateRoomsDisplay();
             updateSummary();
         }
 
