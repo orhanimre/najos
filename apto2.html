@@ -1414,6 +1414,26 @@
                 return;
             }
 
+            // Check selected date range against all rooms' booked dates
+            const rs = window._aptoRoomState;
+            const rooms = window._aptoRooms;
+            if (rs && rooms) {
+                function hasConflict(ds, ci, co) {
+                    if (!ds) return false;
+                    for (let d = new Date(ci + 'T00:00:00'); d < new Date(co + 'T00:00:00'); d.setDate(d.getDate() + 1)) {
+                        const s = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+                        if (ds.mid.has(s) || ds.shared.has(s) || (ds.checkin.has(s) && s !== ci)) return true;
+                    }
+                    return false;
+                }
+                // Check each room; if ALL rooms have a conflict on those dates, block
+                const conflictingRooms = rooms.filter(r => hasConflict(rs[r.id].dateSets, checkIn, checkOut));
+                if (conflictingRooms.length === rooms.length) {
+                    showToast('❌ Todas las habitaciones están reservadas en esas fechas. Por favor elige otras fechas.', '📅');
+                    return;
+                }
+            }
+
             bookingState.checkIn = checkIn;
             bookingState.checkOut = checkOut;
 
@@ -1610,6 +1630,8 @@
                 calEl.innerHTML = '<div class="room-cal-loading">No se pudo cargar. Intenta de nuevo.</div>';
             }
         }
+        window._aptoRoomState = roomState; // expose for searchAvailability
+        window._aptoRooms = ROOMS;
     }
 
     initRoomCalendars();
