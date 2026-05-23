@@ -1184,6 +1184,31 @@
                 showToast('La fecha de salida debe ser posterior a la de entrada', '📅');
                 return;
             }
+
+            // Check against loaded booked dates
+            const ds = window._aptoDateSets;
+            if (ds) {
+                const ci = new Date(checkIn + 'T00:00:00');
+                const co = new Date(checkOut + 'T00:00:00');
+                let conflict = false;
+                // Check-in day must not be a fully blocked middle or shared date
+                const ciStr = checkIn;
+                if (ds.mid.has(ciStr) || ds.shared.has(ciStr) || ds.checkin.has(ciStr)) conflict = true;
+                // All middle nights must be free
+                if (!conflict) {
+                    for (let d = new Date(ci); d < co; d.setDate(d.getDate() + 1)) {
+                        const s = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+                        if (ds.mid.has(s) || ds.shared.has(s) || (ds.checkin.has(s) && s !== checkIn)) {
+                            conflict = true; break;
+                        }
+                    }
+                }
+                if (conflict) {
+                    showToast('❌ Hay fechas reservadas en este rango. Por favor elige otras fechas.', '📅');
+                    return;
+                }
+            }
+
             bookingState.checkIn = checkIn;
             bookingState.checkOut = checkOut;
 
@@ -1309,6 +1334,7 @@
         try {
             const reservations = await loadReservations();
             dateSets = buildDateSets(reservations);
+            window._aptoDateSets = dateSets; // expose for searchAvailability
             renderPage();
         } catch (err) {
             console.error("Error loading availability:", err);
