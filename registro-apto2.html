@@ -1443,8 +1443,8 @@ html, body { overscroll-behavior: none; }
           <!-- Step 2 — Tu Estadía -->
           <div class="step-container" data-step="2">
             <div class="step-intro">
-              <h2>📅 Confirma tus fechas de estadía</h2>
-              <p>Estas son las fechas que seleccionaste. Verifica que sean correctas o ajústalas si es necesario.</p>
+              <h2>🌊 ¡Genial! Ahora dime cuándo vienes</h2>
+              <p>Selecciona tus fechas de entrada y salida en nuestro calendario interactivo.</p>
             </div>
             <div class="form-group">
               <label>Fechas de Estadía <span class="required">*</span></label>
@@ -2098,30 +2098,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
     if (modal) {
       modal.style.animation = "fadeOut 0.3s ease";
       setTimeout(() => {
-        modal.remove(); form.reset();
-        companions = []; companionFilledStatus = {};
-        companionsContainer.innerHTML = "";
-        consentGroup.classList.remove("checked");
-        rulesConsentHidden.value = "";
-        const mc = document.getElementById("rulesModalCheck");
-        if (mc) mc.checked = false;
-        const cb = document.getElementById("rulesConfirmBtn");
-        if (cb) { cb.disabled = true; cb.style.opacity = "0.5"; cb.style.cursor = "not-allowed"; }
-        const st = document.getElementById("rulesTriggerStatus");
-        if (st) st.textContent = "👆 Toca para leer";
-        const tb = document.getElementById("rulesTriggerBtn");
-        if (tb) tb.classList.remove("accepted");
-        currentStep = 1; currentCompanionCount = 0;
-            stepperValue.textContent = "0"; totalHuespedesInput.value = "0";
-            updateStepperButtons();
-            selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
-            bookedDatesLoaded = false;
-            // Reset room selection
-            selectedRooms = []; maxCompanions = 1;
-            buildRoomSelector();
-            updateDateDisplay();
-            horaEntrada.value = "14:00"; horaSalida.value = "11:00";
-            showStep(1);
+        window.location.href = "apto2.html";
           }, 300);
         }
       };
@@ -2152,7 +2129,33 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         `);
       };
 
-      btnNext.addEventListener("click", () => { if (validateStep(currentStep)) { currentStep++; showStep(currentStep); } });
+      async function checkDatesAvailable() {
+        if (!selectedCheckIn || !selectedCheckOut) return true;
+        if (!bookedDatesLoaded) {
+          try { await loadBookedDates(); bookedDatesLoaded = true; } catch(e) { return true; }
+        }
+        const ci = new Date(selectedCheckIn + 'T00:00:00');
+        const co = new Date(selectedCheckOut + 'T00:00:00');
+        for (let d = new Date(ci); d < co; d.setDate(d.getDate() + 1)) {
+          const s = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+          if (bookedDates.includes(s)) return false;
+        }
+        return true;
+      }
+
+      btnNext.addEventListener("click", async () => {
+        if (currentStep === 2) { // Tu Estadía step
+          if (!validateStep(currentStep)) return;
+          const available = await checkDatesAvailable();
+          if (!available) {
+            showToast("❌ Las fechas seleccionadas están reservadas. Por favor elige otras fechas.");
+            return;
+          }
+          currentStep++; showStep(currentStep);
+        } else {
+          if (validateStep(currentStep)) { currentStep++; showStep(currentStep); }
+        }
+      });
       btnBack.addEventListener("click", () => { currentStep--; showStep(currentStep); });
 
       function checkCompanionFilled(index) {
