@@ -301,6 +301,13 @@ html, body { overscroll-behavior: none; }
       .progress-step.active .progress-label   { color: #14b8a6; }
       .progress-step.completed .progress-label { color: #48bb78; }
 
+      .progress-step.completed,
+      .progress-step.active { cursor: pointer; }
+      .progress-step.completed:hover .progress-circle {
+        transform: scale(1.08);
+        box-shadow: 0 4px 12px rgba(72,187,120,0.4);
+      }
+
       .form-content { padding: 40px 40px 30px; }
 
       .step-container { display: none; animation: fadeIn 0.4s ease; }
@@ -1374,7 +1381,7 @@ html, body { overscroll-behavior: none; }
           <!-- Step 3 — Tus Datos -->
           <div class="step-container" data-step="3">
             <div class="step-intro">
-              <h2>🌴 ¡Bienvenidos a Apart Hotel Najos-3!</h2>
+              <h2>👤 Tus Datos Personales</h2>
               <p>Solo necesitamos unos datos básicos para prepararte una llegada perfecta.</p>
             </div>
             <div class="grid-2">
@@ -1428,7 +1435,7 @@ html, body { overscroll-behavior: none; }
           <!-- Step 4 — Confirmación -->
           <div class="step-container" data-step="4">
             <div class="step-intro">
-              <h2>👨‍👩‍👧‍👦 Casi listos... completa los datos de tu grupo</h2>
+              <h2>✅ Último paso: tu grupo y confirmación</h2>
               <p>Indica cuántos acompañantes tienes y completa su información.</p>
             </div>
             <div class="form-group">
@@ -2022,6 +2029,14 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           if (!available) {
             showToast("❌ Las fechas seleccionadas están reservadas. Por favor elige otras fechas.");
             return;
+
+      // Tappable progress steps — navigate back to completed steps
+      document.querySelectorAll(".progress-step").forEach(stepEl => {
+        stepEl.addEventListener("click", () => {
+          const target = parseInt(stepEl.dataset.step);
+          if (target < currentStep) { currentStep = target; showStep(currentStep); }
+        });
+      });
           }
           currentStep++; showStep(currentStep);
         } else {
