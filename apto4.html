@@ -1088,9 +1088,12 @@
 
         let bookingState = {
             guests: 1,
+            rooms: 1,
             checkIn: null,
             checkOut: null
         };
+
+        let guestsConfirmed = false;
 
         function initBookingDates() {
             const today = new Date();
