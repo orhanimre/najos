@@ -830,7 +830,180 @@
             #toast-container { top: 80px; width: calc(100% - 32px); }
             .toast { min-width: unset; width: 100%; }
         }
-        </style>
+    
+      /* ── Date Picker Modal (ported from registro) ── */
+      .date-picker-trigger-btn {
+        width: 100%; padding: 14px 18px;
+        border: 2px solid #e2e8f0; border-radius: 12px;
+        font-size: 16px; background: #fafafa; cursor: pointer;
+        text-align: left; color: #2d3748; font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 4px;
+      }
+      .date-picker-trigger-btn:hover { border-color: #14b8a6; background: white; }
+      .date-picker-trigger-btn.has-value { color: #1f2937; font-weight: 600; border-color: #14b8a6; }
+      .date-picker-trigger-btn .placeholder { color: #9ca3af; }
+      .date-picker-trigger-btn .cal-icon { color: #14b8a6; font-size: 18px; }
+
+      .apto-date-picker-modal {
+        display: none; position: fixed; top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+        z-index: 10000; padding: 20px;
+        align-items: center; justify-content: center;
+      }
+      .apto-date-picker-modal.show { display: flex; }
+
+      .apto-dp-content {
+        background: white; border-radius: 20px; padding: 0;
+        max-width: 900px; width: calc(100% - 32px); max-height: 90vh;
+        display: flex; flex-direction: column;
+        animation: slideUp 0.3s ease;
+        box-shadow: 0 24px 48px rgba(0,0,0,0.3);
+        overflow: hidden; box-sizing: border-box;
+      }
+
+      .apto-dp-header {
+        padding: 24px;
+        background: linear-gradient(135deg, #0077BE 0%, #4DA8DA 100%);
+        color: white; border-radius: 20px 20px 0 0; flex-shrink: 0;
+      }
+      .apto-dp-header h3 { font-size: 20px; font-weight: 700; margin: 0 0 16px 0; text-align: center; }
+
+      .apto-date-selection-buttons { display: flex; gap: 12px; margin-top: 16px; }
+      .apto-date-btn-wrapper { flex: 1; position: relative; }
+
+      .apto-date-selection-btn {
+        width: 100%; padding: 12px 35px 12px 20px;
+        border: 2px solid rgba(255,255,255,0.3);
+        background: rgba(255,255,255,0.1); color: white;
+        border-radius: 12px; font-size: 15px; font-weight: 600;
+        cursor: pointer; transition: all 0.3s ease;
+        display: flex; flex-direction: column; align-items: center;
+        gap: 4px; position: relative;
+      }
+      .apto-date-selection-btn.active {
+        background: white; color: #14b8a6; border-color: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      }
+      .apto-date-selection-btn .label {
+        font-size: 11px; text-transform: uppercase;
+        letter-spacing: 0.5px; opacity: 0.8;
+      }
+      .apto-date-selection-btn.active .label { opacity: 1; }
+      .apto-date-selection-btn .value { font-size: 15px; font-weight: 700; white-space: nowrap; }
+
+      .apto-date-reset-btn {
+        position: absolute; top: 8px; right: 8px;
+        width: 18px; height: 18px; border-radius: 50%;
+        background: #ef4444; color: white;
+        border: 1.5px solid white; font-size: 11px; font-weight: 700;
+        cursor: pointer; display: none;
+        align-items: center; justify-content: center;
+        transition: all 0.2s ease; padding: 0; line-height: 1;
+        z-index: 5; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      }
+      .apto-date-reset-btn:hover { background: #dc2626; transform: scale(1.2); }
+      .apto-date-reset-btn.show { display: flex; }
+
+      .apto-dp-body { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+
+      .apto-dp-scroll {
+        flex: 1; overflow-y: auto; overflow-x: hidden; padding: 24px;
+        -webkit-overflow-scrolling: touch; width: 100%; box-sizing: border-box;
+      }
+
+      .apto-cal-month-section { margin-bottom: 32px; width: 100%; box-sizing: border-box; min-width: 0; }
+      .apto-cal-month-section:last-child { margin-bottom: 0; }
+
+      .apto-cal-month-title {
+        font-size: 18px; font-weight: 700; color: #1f2937;
+        margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #e5e7eb;
+      }
+
+      .apto-cal-grid {
+        display: grid; grid-template-columns: repeat(7, 1fr);
+        gap: 4px; margin-top: 12px; width: 100%; box-sizing: border-box; min-width: 0;
+      }
+
+      .apto-cal-day-header {
+        text-align: center; font-weight: 700; font-size: 11px; color: #14b8a6;
+        padding: 12px 8px; text-transform: uppercase; letter-spacing: 0.3px;
+        display: flex; align-items: center; justify-content: center;
+      }
+
+      .apto-cal-day {
+        position: relative; aspect-ratio: 1;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        cursor: pointer; transition: all 0.2s;
+        padding: 8px; background: white;
+        min-height: 50px; max-height: 70px; box-sizing: border-box; border-radius: 8px;
+      }
+      .apto-cal-day.other-month { visibility: hidden; pointer-events: none; }
+      .apto-cal-day.today .apto-cal-day-num { font-weight: 700; color: #14b8a6; }
+      .apto-cal-day.past { opacity: 0.4; pointer-events: none; }
+      .apto-cal-day.past .apto-cal-day-num { color: #9ca3af; }
+      .apto-cal-day-num { font-size: 14px; font-weight: 600; color: #1f2937; position: relative; z-index: 2; }
+      .apto-cal-day.shared-booked { background: #9ca3af; cursor: not-allowed; border: 2px solid #9ca3af; }
+      .apto-cal-day.shared-booked .apto-cal-day-num { color: white; font-weight: 700; }
+      .apto-cal-day.checkin-only {
+        background: linear-gradient(90deg, white 0%, white 50%, #9ca3af 50%, #9ca3af 100%);
+        border: 2px solid #9ca3af; cursor: not-allowed;
+      }
+      .apto-cal-day.checkin-only .apto-cal-day-num { color: #1f2937; font-weight: 700; }
+      .apto-cal-day.checkin-only.clickable { cursor: pointer; }
+      .apto-cal-day.checkin-only.clickable:hover { transform: scale(1.05); border-color: #14b8a6; }
+      .apto-cal-day.checkout-available {
+        background: linear-gradient(90deg, #9ca3af 0%, #9ca3af 50%, white 50%, white 100%);
+        border: 2px solid #9ca3af; cursor: pointer;
+      }
+      .apto-cal-day.checkout-available .apto-cal-day-num { color: #1f2937; font-weight: 700; }
+      .apto-cal-day.checkout-available:hover { transform: scale(1.05); border-color: #14b8a6; }
+      .apto-cal-day.middle-booked { background: #d1d5db; cursor: not-allowed; border: 1px solid #d1d5db; }
+      .apto-cal-day.middle-booked .apto-cal-day-num { color: #4b5563; font-weight: 600; }
+      .apto-cal-day.booked { background: #9ca3af; cursor: not-allowed; }
+      .apto-cal-day.booked .apto-cal-day-num { color: white; font-weight: 600; }
+      .apto-cal-day.available { background: white; border: 1px solid #e5e7eb; cursor: pointer; }
+      .apto-cal-day.available .apto-cal-day-num { color: #1f2937; font-weight: 600; }
+      .apto-cal-day.available:hover { background: #f3f4f6; transform: scale(1.05); border-color: #14b8a6; }
+      .apto-cal-day.available:active { transform: scale(0.95); }
+      .apto-cal-day.check-in  { background: #4b5563; border: 2px solid #4b5563; }
+      .apto-cal-day.check-out { background: #4b5563; border: 2px solid #4b5563; }
+      .apto-cal-day.check-in .apto-cal-day-num,
+      .apto-cal-day.check-out .apto-cal-day-num { color: white; font-weight: 700; }
+      .apto-cal-day.in-range { background: #d1d5db; border: 1px solid #d1d5db; }
+      .apto-cal-day.in-range .apto-cal-day-num { color: #1f2937; font-weight: 600; }
+
+      .apto-cal-legend {
+        padding: 16px 24px; background: #f9fafb; border-top: 1px solid #e5e7eb;
+        display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;
+      }
+      .apto-legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #4a5568; }
+      .apto-legend-color { width: 24px; height: 24px; border-radius: 6px; }
+      .apto-legend-color.booked   { background: #9ca3af; }
+      .apto-legend-color.selected { background: #4b5563; }
+      .apto-legend-color.range    { background: #d1d5db; }
+      .apto-legend-color.available { background: white; border: 2px solid #e5e7eb; }
+
+      .apto-cal-instruction {
+        margin: 0 24px 16px; padding: 10px 16px; border-radius: 8px;
+        font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px;
+      }
+      .apto-cal-instruction.state-checkin  { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+      .apto-cal-instruction.state-checkout { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+      .apto-cal-instruction.state-done     { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+
+      @media (max-width: 480px) {
+        .apto-cal-grid { gap: 2px; }
+        .apto-cal-day { padding: 4px; min-height: 45px; max-height: 60px; }
+        .apto-cal-day-num { font-size: 12px; }
+        .apto-cal-day-header { font-size: 9px; padding: 6px 2px; }
+        .apto-cal-month-section { margin-bottom: 24px; }
+        .apto-cal-legend { padding: 12px 16px; gap: 12px; justify-content: space-around; }
+      }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -860,13 +1033,12 @@
             <div class="booking-banner">
                 <div class="booking-title">🏨 Reserva tu estadía</div>
                 <div class="booking-form">
-                    <div class="booking-field">
-                        <label class="booking-label">Entrada (Check-in)</label>
-                        <input type="date" id="checkInDate" class="booking-input" required>
-                    </div>
-                    <div class="booking-field">
-                        <label class="booking-label">Salida (Check-out)</label>
-                        <input type="date" id="checkOutDate" class="booking-input" required>
+                    <div class="booking-field" style="flex: 1 1 100%;">
+                        <label class="booking-label">📅 Fechas de Estadía</label>
+                        <button type="button" class="date-picker-trigger-btn" id="aptDateTrigger" onclick="openAptDatePicker()">
+                          <span id="aptDateTriggerText" class="placeholder">Selecciona tus fechas</span>
+                          <span class="cal-icon">📅</span>
+                        </button>
                     </div>
                     <div class="booking-field">
                         <label class="booking-label">Huéspedes</label>
@@ -1241,6 +1413,7 @@
     };
 
     const CABIN = "Apto Najos-4";
+    const APT_CABIN = "Apto Najos-4";
     const ROOM_KEY = "Habitación 1";
     const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
                          'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -1343,7 +1516,327 @@
     }
 
     initCalendar();
+
+        // ── Inline Date Picker (calendar modal) ──────────────────────────────
+        let aptSelectedCheckIn  = null;
+        let aptSelectedCheckOut = null;
+        let aptSelectingCheckIn = true;
+        let aptBookedDates      = [];
+        let aptBookedDatesLoaded = false;
+
+        window._aptSelectedCheckIn  = null;
+        window._aptSelectedCheckOut = null;
+
+        function aptToDateStr(d) {
+          return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        }
+
+        function aptFormatDateNice(dateStr) {
+          return new Date(dateStr + 'T00:00:00').toLocaleDateString('es-ES', { weekday:'short', day:'numeric', month:'short' });
+        }
+
+        function aptUpdateDateDisplay() {
+          const trigger  = document.getElementById('aptDateTrigger');
+          const triggerText = document.getElementById('aptDateTriggerText');
+          const ciDisplay = document.getElementById('aptCheckInDisplay');
+          const coDisplay = document.getElementById('aptCheckOutDisplay');
+          const confirmBtn = document.getElementById('aptConfirmDatesBtn');
+          const ciBtn = document.getElementById('aptCheckInBtn');
+          const coBtn = document.getElementById('aptCheckOutBtn');
+          const resetCI = document.getElementById('aptResetCheckIn');
+          const resetCO = document.getElementById('aptResetCheckOut');
+          if (!trigger) return;
+
+          if (aptSelectedCheckIn && aptSelectedCheckOut) {
+            triggerText.textContent = `${aptFormatDateNice(aptSelectedCheckIn)} → ${aptFormatDateNice(aptSelectedCheckOut)}`;
+            triggerText.classList.remove('placeholder');
+            trigger.classList.add('has-value');
+            ciDisplay.textContent = aptFormatDateNice(aptSelectedCheckIn);
+            coDisplay.textContent = aptFormatDateNice(aptSelectedCheckOut);
+            resetCI.classList.add('show'); resetCO.classList.add('show');
+            if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.style.opacity = '1'; }
+          } else if (aptSelectedCheckIn) {
+            triggerText.textContent = `${aptFormatDateNice(aptSelectedCheckIn)} → Selecciona check-out`;
+            triggerText.classList.remove('placeholder');
+            trigger.classList.add('has-value');
+            ciDisplay.textContent = aptFormatDateNice(aptSelectedCheckIn);
+            coDisplay.textContent = 'Añadir fecha';
+            resetCI.classList.add('show'); resetCO.classList.remove('show');
+            if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.style.opacity = '0.5'; }
+          } else {
+            triggerText.textContent = 'Selecciona tus fechas';
+            triggerText.classList.add('placeholder');
+            trigger.classList.remove('has-value');
+            ciDisplay.textContent = 'Añadir fecha'; coDisplay.textContent = 'Añadir fecha';
+            resetCI.classList.remove('show'); resetCO.classList.remove('show');
+            if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.style.opacity = '0.5'; }
+          }
+          if (aptSelectingCheckIn) {
+            ciBtn.classList.add('active'); coBtn.classList.remove('active');
+          } else {
+            ciBtn.classList.remove('active'); coBtn.classList.add('active');
+          }
+          aptUpdateInstruction();
+          window._aptSelectedCheckIn  = aptSelectedCheckIn;
+          window._aptSelectedCheckOut = aptSelectedCheckOut;
+        }
+
+        function aptUpdateInstruction() {
+          const banner = document.getElementById('aptCalInstruction');
+          const icon   = document.getElementById('aptCalInstructionIcon');
+          const text   = document.getElementById('aptCalInstructionText');
+          if (!banner) return;
+          if (!aptSelectedCheckIn) {
+            banner.className = 'apto-cal-instruction state-checkin';
+            icon.textContent = '👆'; text.textContent = 'Toca el día en que llegas';
+          } else if (!aptSelectedCheckOut) {
+            banner.className = 'apto-cal-instruction state-checkout';
+            icon.textContent = '🎉'; text.textContent = '¡Llegada lista! Ahora toca el día en que te vas';
+          } else {
+            banner.className = 'apto-cal-instruction state-done';
+            icon.textContent = '✅'; text.textContent = '¡Perfecto! Confirma tus fechas abajo';
+          }
+        }
+
+        function aptRenderCalendar() {
+          const scroll = document.getElementById('aptDpScroll');
+          scroll.innerHTML = '';
+          const today = new Date();
+          for (let i = 0; i < 6; i++) {
+            scroll.appendChild(aptCreateMonthSection(new Date(today.getFullYear(), today.getMonth() + i, 1)));
+          }
+        }
+
+        function aptCreateMonthSection(date) {
+          const section = document.createElement('div');
+          section.className = 'apto-cal-month-section';
+          const monthName = date.toLocaleDateString('es-ES', { month:'long', year:'numeric' });
+          const title = document.createElement('div');
+          title.className = 'apto-cal-month-title';
+          title.textContent = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+          section.appendChild(title);
+          const grid = document.createElement('div');
+          grid.className = 'apto-cal-grid';
+          ['L','M','X','J','V','S','D'].forEach(d => {
+            const h = document.createElement('div');
+            h.className = 'apto-cal-day-header'; h.textContent = d; grid.appendChild(h);
+          });
+          const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+          const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+          for (let i = 0; i < (firstDay === 0 ? 6 : firstDay - 1); i++) {
+            const e = document.createElement('div'); e.className = 'apto-cal-day other-month'; grid.appendChild(e);
+          }
+          const today = new Date(); today.setHours(0,0,0,0);
+          for (let day = 1; day <= daysInMonth; day++) {
+            const cell = document.createElement('div'); cell.className = 'apto-cal-day';
+            const cellDate = new Date(date.getFullYear(), date.getMonth(), day);
+            const dateStr  = aptToDateStr(cellDate);
+            if (cellDate < today) cell.classList.add('past');
+            if (cellDate.toDateString() === today.toDateString()) cell.classList.add('today');
+            let isClickable = false;
+            if (aptSelectedCheckIn === dateStr)  { cell.classList.add('check-in');  isClickable = true; }
+            else if (aptSelectedCheckOut === dateStr) { cell.classList.add('check-out'); isClickable = true; }
+            else if (aptSelectedCheckIn && aptSelectedCheckOut && dateStr > aptSelectedCheckIn && dateStr < aptSelectedCheckOut) {
+              cell.classList.add('in-range'); isClickable = true;
+            }
+            else if (window.aptSharedDates?.includes(dateStr))  { cell.classList.add('shared-booked'); isClickable = false; }
+            else if (window.aptCheckinDates?.includes(dateStr)) {
+              cell.classList.add('checkin-only');
+              isClickable = !aptSelectingCheckIn && aptSelectedCheckIn && dateStr > aptSelectedCheckIn && cellDate >= today;
+              if (isClickable) cell.classList.add('clickable');
+            }
+            else if (window.aptCheckoutDates?.includes(dateStr) && cellDate >= today) {
+              cell.classList.add('checkout-available');
+              isClickable = aptSelectingCheckIn || (!aptSelectingCheckIn && aptSelectedCheckIn && dateStr > aptSelectedCheckIn);
+            }
+            else if (window.aptMiddleDates?.includes(dateStr))  { cell.classList.add('middle-booked'); isClickable = false; }
+            else if (cellDate >= today) {
+              if (!aptSelectingCheckIn && aptSelectedCheckIn && dateStr <= aptSelectedCheckIn) {
+                cell.classList.add('past'); isClickable = false;
+              } else { cell.classList.add('available'); isClickable = true; }
+            }
+            const num = document.createElement('div'); num.className = 'apto-cal-day-num'; num.textContent = day;
+            cell.appendChild(num);
+            if (isClickable) { cell.style.cursor = 'pointer'; cell.addEventListener('click', () => aptSelectDate(dateStr)); }
+            grid.appendChild(cell);
+          }
+          section.appendChild(grid);
+          return section;
+        }
+
+        function aptSelectDate(dateStr) {
+          if (aptSelectingCheckIn) {
+            aptSelectedCheckIn = dateStr; aptSelectedCheckOut = null; aptSelectingCheckIn = false;
+            aptUpdateDateDisplay(); aptRenderCalendar();
+          } else {
+            if (dateStr <= aptSelectedCheckIn) {
+              showToast('⚠️ La fecha de check-out debe ser después del check-in', '📅'); return;
+            }
+            let hasConflict = false;
+            const dayAfter = new Date(aptSelectedCheckIn + 'T00:00:00');
+            dayAfter.setDate(dayAfter.getDate() + 1);
+            for (let d = dayAfter; d < new Date(dateStr + 'T00:00:00'); d.setDate(d.getDate() + 1)) {
+              if (aptBookedDates.includes(aptToDateStr(d))) { hasConflict = true; break; }
+            }
+            if (hasConflict) { showToast('⚠️ Hay fechas reservadas en este rango. Por favor elige otras.', '📅'); return; }
+            aptSelectedCheckOut = dateStr; aptSelectingCheckIn = true;
+            aptUpdateDateDisplay(); aptRenderCalendar();
+          }
+        }
+
+        async function aptLoadBookedDates() {
+          const { getFirestore, collection, getDocs, query, where } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+          const { initializeApp, getApps } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+          const apps = getApps();
+          const app  = apps.length ? apps[0] : initializeApp({
+            apiKey: 'AIzaSyBGno4JfubhTO-deCJtP9ozXD_pdPrhmh8',
+            authDomain: 'aptos-najos.firebaseapp.com',
+            projectId: 'aptos-najos',
+            storageBucket: 'aptos-najos.firebasestorage.app',
+            messagingSenderId: '773909398953',
+            appId: '1:773909398953:web:157467cae451bf125ff0b8',
+          });
+          const db2 = getFirestore(app);
+          const snap = await getDocs(
+            query(collection(db2, 'cabin_availability'), where('apto', '==', APT_CABIN))
+          );
+          const docs = [];
+          snap.forEach(doc => { const d = doc.data(); if (d.fechaInicio && d.fechaFin) docs.push(d); });
+
+          aptBookedDates = [];
+          window.aptCheckoutDates = []; window.aptCheckinDates = [];
+          window.aptMiddleDates   = []; window.aptSharedDates  = [];
+
+          const ciDates = docs.map(d => d.fechaInicio);
+          const coDates = docs.map(d => d.fechaFin);
+          docs.forEach(d => {
+            const isSharedCI = coDates.includes(d.fechaInicio);
+            const isSharedCO = ciDates.includes(d.fechaFin);
+            if (isSharedCI) { if (!window.aptSharedDates.includes(d.fechaInicio))  window.aptSharedDates.push(d.fechaInicio); }
+            else            { if (!window.aptCheckinDates.includes(d.fechaInicio)) window.aptCheckinDates.push(d.fechaInicio); }
+            const s = new Date(d.fechaInicio + 'T00:00:00');
+            const e = new Date(d.fechaFin   + 'T00:00:00');
+            for (let dt = new Date(s); dt < e; dt.setDate(dt.getDate() + 1)) {
+              const ds = aptToDateStr(dt);
+              if (ds !== d.fechaInicio && ds !== d.fechaFin && !window.aptMiddleDates.includes(ds)) window.aptMiddleDates.push(ds);
+              if (!aptBookedDates.includes(ds)) aptBookedDates.push(ds);
+            }
+            if (isSharedCO) { if (!window.aptSharedDates.includes(d.fechaFin))    window.aptSharedDates.push(d.fechaFin); }
+            else            { if (!window.aptCheckoutDates.includes(d.fechaFin))  window.aptCheckoutDates.push(d.fechaFin); }
+            if (isSharedCO && !aptBookedDates.includes(d.fechaFin)) aptBookedDates.push(d.fechaFin);
+          });
+        }
+
+        window.openAptDatePicker = function() {
+          document.getElementById('aptDatePickerModal').classList.add('show');
+          document.body.style.overflow = 'hidden';
+          document.getElementById('aptDpScroll').innerHTML = '<div style="text-align:center;padding:40px;color:#14b8a6;font-size:18px;">⏳ Cargando disponibilidad...</div>';
+          aptLoadBookedDates().then(() => {
+            aptBookedDatesLoaded = true;
+            aptRenderCalendar();
+            aptUpdateInstruction();
+          });
+        };
+
+        window.closeAptDatePicker = function() {
+          document.getElementById('aptDatePickerModal').classList.remove('show');
+          document.body.style.overflow = '';
+        };
+
+        window.aptConfirmDates = function() {
+          if (aptSelectedCheckIn && aptSelectedCheckOut) {
+            closeAptDatePicker();
+          } else {
+            showToast('⚠️ Por favor selecciona ambas fechas: check-in y check-out', '📅');
+          }
+        };
+
+        document.getElementById('aptDatePickerModal').addEventListener('click', function(e) {
+          if (e.target === this) closeAptDatePicker();
+        });
+        document.getElementById('aptCheckInBtn').addEventListener('click', () => {
+          aptSelectingCheckIn = true; aptUpdateDateDisplay(); aptRenderCalendar();
+        });
+        document.getElementById('aptCheckOutBtn').addEventListener('click', () => {
+          if (aptSelectedCheckIn) { aptSelectingCheckIn = false; aptUpdateDateDisplay(); aptRenderCalendar(); }
+          else showToast('⚠️ Primero selecciona tu fecha de check-in', '📅');
+        });
+        document.getElementById('aptResetCheckIn').addEventListener('click', (e) => {
+          e.preventDefault(); e.stopPropagation();
+          aptSelectedCheckIn = null; aptSelectedCheckOut = null; aptSelectingCheckIn = true;
+          aptUpdateDateDisplay(); aptRenderCalendar();
+        });
+        document.getElementById('aptResetCheckOut').addEventListener('click', (e) => {
+          e.preventDefault(); e.stopPropagation();
+          aptSelectedCheckOut = null; aptSelectingCheckIn = false;
+          aptUpdateDateDisplay(); aptRenderCalendar();
+        });
+
+        aptUpdateDateDisplay();
+
 </script>
     <div id="toast-container"></div>
+
+    <!-- ── Date Picker Modal ── -->
+    <div id="aptDatePickerModal" class="apto-date-picker-modal">
+      <div class="apto-dp-content">
+        <div class="apto-dp-header">
+          <h3>📅 Selecciona tus Fechas</h3>
+          <div class="apto-date-selection-buttons">
+            <div class="apto-date-btn-wrapper">
+              <button type="button" class="apto-date-selection-btn active" id="aptCheckInBtn">
+                <span class="label">Check-in</span>
+                <span class="value" id="aptCheckInDisplay">Añadir fecha</span>
+              </button>
+              <button type="button" class="apto-date-reset-btn" id="aptResetCheckIn" title="Limpiar fecha">×</button>
+            </div>
+            <div class="apto-date-btn-wrapper">
+              <button type="button" class="apto-date-selection-btn" id="aptCheckOutBtn">
+                <span class="label">Check-out</span>
+                <span class="value" id="aptCheckOutDisplay">Añadir fecha</span>
+              </button>
+              <button type="button" class="apto-date-reset-btn" id="aptResetCheckOut" title="Limpiar fecha">×</button>
+            </div>
+          </div>
+          <button class="modal-close" onclick="closeAptDatePicker()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.2);border:none;color:white;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+        </div>
+        <div class="apto-dp-body">
+          <div id="aptCalInstruction" class="apto-cal-instruction state-checkin">
+            <span id="aptCalInstructionIcon">👆</span>
+            <span id="aptCalInstructionText">Toca el día en que llegas</span>
+          </div>
+          <div class="apto-dp-scroll" id="aptDpScroll"></div>
+          <div class="apto-cal-legend">
+            <div class="apto-legend-item">
+              <div class="apto-legend-color available"></div>
+              <span>Disponible</span>
+            </div>
+            <div class="apto-legend-item">
+              <div class="apto-legend-color selected"></div>
+              <span>Seleccionado</span>
+            </div>
+            <div class="apto-legend-item">
+              <div style="display:flex;gap:3px;align-items:center;">
+                <div style="width:24px;height:24px;border-radius:6px;background:#166534;"></div>
+                <div style="width:24px;height:24px;border-radius:6px;background:#ef4444;"></div>
+              </div>
+              <span>Libre / Ocupado</span>
+            </div>
+          </div>
+          <div style="padding:16px 24px; background:white; border-top:1px solid #e5e7eb;">
+            <button
+              type="button"
+              id="aptConfirmDatesBtn"
+              onclick="aptConfirmDates()"
+              style="width:100%;padding:14px 24px;background:linear-gradient(135deg,#0077BE 0%,#4DA8DA 100%);color:white;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.3s ease;box-shadow:0 4px 12px rgba(102,126,234,0.4);opacity:0.5;"
+              disabled
+              onmouseover="if(!this.disabled){this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(102,126,234,0.5)'}"
+              onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 12px rgba(102,126,234,0.4)'"
+            >✓ Confirmar Fechas</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </body>
 </html>
