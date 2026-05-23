@@ -1956,16 +1956,57 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
 
       function applyRoomUrlParams() {
         const params = new URLSearchParams(window.location.search);
+
+        // Pre-fill rooms from URL (legacy support)
         const habitaciones = params.get("habitaciones");
         if (habitaciones) {
           selectedRooms = habitaciones.split(",").map(Number).filter(n => n >= 1 && n <= ROOMS_CONFIG.length);
           selectedRooms.sort();
+        }
+
+        // Pre-fill dates from apto page
+        const checkIn  = params.get("checkIn");
+        const checkOut = params.get("checkOut");
+        if (checkIn && checkOut) {
+          selectedCheckIn  = checkIn;
+          selectedCheckOut = checkOut;
+          selectingCheckIn = false;
+        }
+
+        // Pre-fill rooms count: if "rooms" param provided and no habitaciones, auto-select first N rooms
+        const roomsParam = params.get("rooms");
+        if (roomsParam && !habitaciones) {
+          const n = Math.min(parseInt(roomsParam) || 1, ROOMS_CONFIG.length);
+          selectedRooms = ROOMS_CONFIG.slice(0, n).map(r => r.id);
+        }
+
+        // Pre-fill companions from guests param (guests includes the main guest, companions = guests - 1)
+        const guestsParam = params.get("guests");
+        if (guestsParam) {
+          const companions = Math.max(0, parseInt(guestsParam) - 1);
+          maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
+          const clamped = Math.min(companions, maxCompanions);
+          if (clamped > 0) {
+            setTimeout(() => updateCompanions(clamped), 0);
+          }
         }
       }
 
       // Read URL params and build selector on load
       applyRoomUrlParams();
       buildRoomSelector();
+
+      // If dates were passed from apto page, skip straight to Tu Estadía (step 2)
+      (function skipToStepIfDatesProvided() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("checkIn") && params.get("checkOut") && selectedRooms.length > 0) {
+          updateDateDisplay();
+          renderCalendar();
+          currentStep = 2;
+          showStep(2);
+          updateProgress();
+        }
+      })();
 
       function updateProgress() {
         progressFill.style.width = ((currentStep - 1) / 3 * 100) + "%";
