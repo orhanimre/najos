@@ -2251,6 +2251,40 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
 
       updateProgress();
       updateDateDisplay();
+
+      // Pre-fill dates from apto4 page and skip to Tus Datos (step 2)
+      (function applyAptoUrlParams() {
+        const params = new URLSearchParams(window.location.search);
+        const checkIn  = params.get("checkIn");
+        const checkOut = params.get("checkOut");
+        if (checkIn && checkOut) {
+          selectedCheckIn  = checkIn;
+          selectedCheckOut = checkOut;
+          selectingCheckIn = false;
+          updateDateDisplay();
+          // Also pre-fill hidden inputs so validation passes
+          const fi = document.getElementById("fechaEntrada");
+          const fs = document.getElementById("fechaSalida");
+          if (fi) fi.value = checkIn;
+          if (fs) fs.value = checkOut;
+          // Pre-fill companions stepper from guests param
+          const guestsParam = params.get("guests");
+          if (guestsParam) {
+            const companions = Math.max(0, Math.min(parseInt(guestsParam) - 1, maxCompanions));
+            if (companions > 0 && typeof updateCompanions === "function") {
+              setTimeout(() => updateCompanions(companions), 0);
+            }
+          }
+          // Skip to step 2 — Tus Datos
+          currentStep = 2;
+          showStep(2);
+          updateProgress();
+          // Load calendar data in background for step 1 if user goes back
+          if (!bookedDatesLoaded) {
+            loadBookedDates().then(() => { bookedDatesLoaded = true; renderCalendar(); updateInstruction(); });
+          }
+        }
+      })();
     </script>
   </body>
 </html>
