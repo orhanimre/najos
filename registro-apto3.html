@@ -1353,31 +1353,17 @@ html, body { overscroll-behavior: none; }
           <div class="step-container" data-step="2">
             <div class="step-intro">
               <h2>🌊 ¡Genial! Ahora dime cuándo vienes</h2>
-              <p>Selecciona tus fechas de entrada y salida en nuestro calendario interactivo.</p>
+              <p>Tus fechas y horarios han sido seleccionados. Ahora completa tus datos personales.</p>
             </div>
-            <div class="form-group">
-              <input type="hidden" id="fechaEntrada" name="fechaEntrada" required />
-              <input type="hidden" id="fechaSalida"  name="fechaSalida"  required />
-              <div id="registroDatesDisplay" style="background:#f0fdf4;border:2px solid #bbf7d0;border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;font-weight:600;color:#166534;font-size:15px;">
-                <span style="font-size:20px;">📅</span>
-                <div>
-                  <div id="registroDatesText" style="font-size:15px;font-weight:700;color:#166534;">Cargando fechas...</div>
-                  <div style="font-size:12px;font-weight:500;color:#4ade80;margin-top:2px;">Seleccionadas desde la página del apartamento</div>
-                </div>
-              </div>
+            <!-- Stay summary (pre-filled from apto page) -->
+            <div id="stayDatesSummary" style="background:#f0f7ff;border:1px solid #bfdbfe;border-radius:12px;padding:16px 20px;margin-bottom:20px;display:none;">
+              <div style="font-size:13px;font-weight:700;color:#005A8D;margin-bottom:8px;">📅 Tu Estadía</div>
+              <div id="stayDatesText" style="font-size:14px;color:#1e293b;line-height:1.8;"></div>
             </div>
-            <div class="grid-2">
-              <div class="form-group">
-                <label for="horaEntrada">Hora de Entrada <span class="required">*</span></label>
-                <input type="time" id="horaEntrada" name="horaEntrada" min="14:00" max="21:00" required />
-                <div class="helper-text">Entre 2:00 PM y 9:00 PM</div>
-              </div>
-              <div class="form-group">
-                <label for="horaSalida">Hora de Salida <span class="required">*</span></label>
-                <input type="time" id="horaSalida" name="horaSalida" max="11:00" required />
-                <div class="helper-text">Antes de las 11:00 AM</div>
-              </div>
-            </div>
+            <input type="hidden" id="fechaEntrada" name="fechaEntrada" />
+            <input type="hidden" id="fechaSalida"  name="fechaSalida"  />
+            <input type="hidden" id="horaEntrada" name="horaEntrada" />
+            <input type="hidden" id="horaSalida"  name="horaSalida"  />
           </div>
 
           <!-- Step 3 — Tus Datos -->
@@ -1747,21 +1733,9 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       const horaEntrada     = document.getElementById("horaEntrada");
       const horaSalida      = document.getElementById("horaSalida");
 
-      setTimeout(() => { horaEntrada.value = "14:00"; horaSalida.value = "11:00"; }, 0);
-
-      horaEntrada.addEventListener("change", function() {
-        if (this.value < "14:00" || this.value > "21:00") {
-          showToast("⏰ La hora de entrada debe ser entre 2:00 PM y 9:00 PM");
-          this.value = "14:00";
-        }
-      });
-
-      horaSalida.addEventListener("change", function() {
-        if (this.value > "11:00") {
-          showToast("⏰ La hora de salida debe ser antes de las 11:00 AM");
-          this.value = "11:00";
-        }
-      });
+      // Default times if not set from URL params
+      if (!horaEntrada.value) horaEntrada.value = "14:00";
+      if (!horaSalida.value)  horaSalida.value  = "11:00";
 
       consentCheckbox.addEventListener("change", function() {
         consentGroup.classList.toggle("checked", this.checked);
@@ -1863,6 +1837,18 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           selectingCheckIn = false;
         }
 
+        // Pre-fill times from apto page
+        const horaEntradaParam = params.get("horaEntrada");
+        const horaSalidaParam  = params.get("horaSalida");
+        if (horaEntradaParam) {
+          const hi = document.getElementById("horaEntrada");
+          if (hi) hi.value = horaEntradaParam;
+        }
+        if (horaSalidaParam) {
+          const hs = document.getElementById("horaSalida");
+          if (hs) hs.value = horaSalidaParam;
+        }
+
         // Pre-fill rooms count: if "rooms" param provided and no habitaciones, auto-select first N rooms
         const roomsParam = params.get("rooms");
         if (roomsParam && !habitaciones) {
@@ -1883,16 +1869,47 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       }
       applyRoomUrlParams();
       buildRoomSelector();
-      updateRegistroDatesDisplay();
 
-      // If dates were passed from apto page, skip straight to Tu Estadía (step 2)
+      // If dates were passed from apto page, populate summary and skip to Tus Datos (step 3)
       (function skipToStepIfDatesProvided() {
         const params = new URLSearchParams(window.location.search);
         if (params.get("checkIn") && params.get("checkOut") && selectedRooms.length > 0) {
           updateDateDisplay();
           renderCalendar();
-          currentStep = 2;
-          showStep(2);
+
+          // Set hidden date/time fields
+          const fechaEntradaEl = document.getElementById("fechaEntrada");
+          const fechaSalidaEl  = document.getElementById("fechaSalida");
+          if (fechaEntradaEl) fechaEntradaEl.value = selectedCheckIn;
+          if (fechaSalidaEl)  fechaSalidaEl.value  = selectedCheckOut;
+
+          // Default times if not set
+          const horaEntradaEl = document.getElementById("horaEntrada");
+          const horaSalidaEl  = document.getElementById("horaSalida");
+          if (horaEntradaEl && !horaEntradaEl.value) horaEntradaEl.value = "14:00";
+          if (horaSalidaEl  && !horaSalidaEl.value)  horaSalidaEl.value  = "11:00";
+
+          // Populate the stay summary box
+          const summaryBox = document.getElementById("stayDatesSummary");
+          const summaryText = document.getElementById("stayDatesText");
+          if (summaryBox && summaryText) {
+            const hi = horaEntradaEl ? horaEntradaEl.value : "14:00";
+            const hs = horaSalidaEl  ? horaSalidaEl.value  : "11:00";
+            const fmtTime = t => {
+              const [h, m] = t.split(":").map(Number);
+              const ampm = h >= 12 ? "PM" : "AM";
+              return `${((h % 12) || 12)}:${String(m).padStart(2,"0")} ${ampm}`;
+            };
+            summaryText.innerHTML = `
+              ✅ Check-in: <strong>${formatDateNice(selectedCheckIn)}</strong> a las <strong>${fmtTime(hi)}</strong><br>
+              🚪 Check-out: <strong>${formatDateNice(selectedCheckOut)}</strong> a las <strong>${fmtTime(hs)}</strong>
+            `;
+            summaryBox.style.display = "block";
+          }
+
+          // Skip directly to Tus Datos (step 3) — step 2 is a pass-through
+          currentStep = 3;
+          showStep(3);
           updateProgress();
         }
       })();
@@ -1944,17 +1961,18 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           }
           return true;
         }
+        // Step 2: dates must be set (pre-filled from apto page)
         if (step === 2) {
+          if (!selectedCheckIn || !selectedCheckOut) {
+            showToast("📅 Por favor vuelve a la página del apartamento y selecciona las fechas");
+            return false;
+          }
+        }
+        // Step 3: país check
+        if (step === 3) {
           const paisSelect = document.getElementById("pais");
           if (paisSelect.value === "__otro__" && !document.getElementById("otrosPais").value.trim()) {
             showToast("⚠️ Por favor escribe tu país de origen"); return false;
-          }
-        }
-        // Step 3: must have check-in and check-out selected
-        if (step === 3) {
-          if (!selectedCheckIn || !selectedCheckOut) {
-            showToast("📅 Por favor selecciona las fechas de check-in y check-out");
-            return false;
           }
         }
         // Custom check: rules must be accepted on step 4
@@ -2407,27 +2425,12 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         document.getElementById("fechaEntrada").value = selectedCheckIn  || "";
         document.getElementById("fechaSalida").value  = selectedCheckOut || "";
         updateInstruction();
-        updateRegistroDatesDisplay();
         if (selectingCheckIn) {
           if (checkInBtn) checkInBtn.classList.add("active");
           if (checkOutBtn) checkOutBtn.classList.remove("active");
         } else {
           if (checkInBtn) checkInBtn.classList.remove("active");
           if (checkOutBtn) checkOutBtn.classList.add("active");
-        }
-      }
-
-
-      // ── Update static dates display in Tu Estadía step ──
-      function updateRegistroDatesDisplay() {
-        const el = document.getElementById('registroDatesText');
-        if (!el) return;
-        if (selectedCheckIn && selectedCheckOut) {
-          el.textContent = `${formatDateNice(selectedCheckIn)}  →  ${formatDateNice(selectedCheckOut)}`;
-        } else if (selectedCheckIn) {
-          el.textContent = `Entrada: ${formatDateNice(selectedCheckIn)}  · Salida: pendiente`;
-        } else {
-          el.textContent = 'No se recibieron fechas — usa el modal de fechas';
         }
       }
 
