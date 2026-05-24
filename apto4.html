@@ -1255,13 +1255,14 @@
             document.body.style.overflow = 'hidden';
             aptoRenderCalendar();
             aptoUpdateInstruction();
-            // Scroll to today
+            // Re-render after a short delay so Firebase booked dates (async) are shown
             setTimeout(() => {
+                aptoRenderCalendar();
                 const todayCell = document.querySelector('#aptoDatePickerScroll .apto-cal-day.today');
                 if (todayCell) {
                     todayCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
-            }, 60);
+            }, 150);
         };
 
         window.closeAptoDatePicker = function() {
@@ -1484,8 +1485,8 @@
                 mark(rs.dateSets.shared,   'shared');
             });
             window.aptoRoomAvailMap = ram;
-            const modal = document.getElementById('aptoDatePickerModal');
-            if (modal && modal.classList.contains('show')) { aptoRenderCalendar(); }
+            // Always re-render: open = updates immediately; closed = ready for next open.
+            aptoRenderCalendar();
         };
 
         document.getElementById('guestsSelector').addEventListener('click', openGuestsModal);
