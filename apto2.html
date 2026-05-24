@@ -408,93 +408,18 @@
         }
 
         /* ── ROOM CARDS ── */
-        .rooms-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
-            margin-bottom: 8px;
-        }
 
-        .room-card {
-            background: white;
-            border: 1.5px solid #e5e7eb;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0,77,115,0.07);
-            transition: box-shadow 0.25s ease, transform 0.25s ease;
-        }
 
-        .room-card:hover {
-            box-shadow: 0 8px 28px rgba(0,77,115,0.14);
-            transform: translateY(-2px);
-        }
 
-        .room-card-header {
-            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
-            color: white;
-            padding: 14px 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-        }
 
-        .room-card-name {
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: 0.2px;
-        }
 
-        .room-card-badge {
-            background: rgba(255,255,255,0.2);
-            border-radius: 20px;
-            padding: 3px 10px;
-            font-size: 11px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
 
-        .room-card-body {
-            padding: 14px;
-        }
 
-        .room-card-nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
 
-        .room-cal-btn {
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            border: 1.5px solid #d1d5eb;
-            background: white;
-            font-size: 16px;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.2s;
-            color: #374151;
-        }
 
-        .room-cal-btn:hover { background: #f3f4f6; border-color: #9ca3af; }
 
-        .room-cal-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #6B7280;
-        }
 
-        .room-cal-container {
-            min-height: 180px;
-        }
 
-        .room-cal-loading {
-            text-align: center;
-            padding: 24px 12px;
-            color: #9ca3af;
-            font-size: 12px;
-        }
 
         .room-cal-months {
             display: flex;
@@ -556,54 +481,14 @@
         .room-cal-day.booked-checkout { background: linear-gradient(90deg, #fecaca 50%, white 50%); font-weight: 600; }
         .room-cal-day.booked-shared   { background: #fecaca; color: #dc2626; font-weight: 700; }
 
-        .room-card-footer {
-            padding: 12px 14px 14px;
-            border-top: 1px solid #f3f4f6;
-        }
 
-        .room-reserve-btn {
-            display: block;
-            width: 100%;
-            padding: 11px 16px;
-            background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-dark) 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            box-shadow: 0 3px 10px rgba(0,119,190,0.3);
-        }
 
-        .room-reserve-btn:hover {
-            background: linear-gradient(135deg, var(--ocean-dark) 0%, #004470 100%);
-            box-shadow: 0 6px 18px rgba(0,119,190,0.4);
-            transform: translateY(-1px);
-        }
 
-        .rooms-legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 20px;
-        }
 
-        .rooms-legend-item {
-            display: flex; align-items: center; gap: 6px;
-            font-size: 12px; color: #6B7280; font-weight: 500;
-        }
 
-        .rooms-legend-dot {
-            width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0;
-        }
 
         @media (max-width: 768px) {
-            .rooms-grid { grid-template-columns: 1fr; gap: 16px; }
-        }
+            }
 
         /* ── SHRINKING HEADER ON SCROLL ── */
         .header { transition: padding 0.3s ease, box-shadow 0.3s ease; }
@@ -1300,78 +1185,6 @@
                 </div>
             </div>
 
-            <div class="section">
-                <h2>🛏️ Disponibilidad por Habitación</h2>
-                <p class="contact-subtitle">Consulta la disponibilidad de cada habitación del apartamento</p>
-                <div class="rooms-grid">
-
-                    <div class="room-card">
-                        <div class="room-card-header">
-                            <span class="room-card-name">🛏️ Habitación 1</span>
-                            <span class="room-card-badge">Cama doble · 2 personas</span>
-                        </div>
-                        <div class="room-card-body">
-                            <div class="room-card-nav">
-                                <button class="room-cal-btn" onclick="roomNavigate('r1', -1)">&#8249;</button>
-                                <span class="room-cal-label" id="r1-label">Cargando…</span>
-                                <button class="room-cal-btn" onclick="roomNavigate('r1', 1)">&#8250;</button>
-                            </div>
-                            <div class="room-cal-container" id="r1-cal">
-                                <div class="room-cal-loading">Cargando disponibilidad…</div>
-                            </div>
-                        </div>
-                        <div class="room-card-footer">
-                            <button class="room-reserve-btn" onclick="searchAvailability()">Reservar esta habitación →</button>
-                        </div>
-                    </div>
-
-                    <div class="room-card">
-                        <div class="room-card-header">
-                            <span class="room-card-name">🛏️ Habitación 2</span>
-                            <span class="room-card-badge">Cama doble · 2 personas</span>
-                        </div>
-                        <div class="room-card-body">
-                            <div class="room-card-nav">
-                                <button class="room-cal-btn" onclick="roomNavigate('r2', -1)">&#8249;</button>
-                                <span class="room-cal-label" id="r2-label">Cargando…</span>
-                                <button class="room-cal-btn" onclick="roomNavigate('r2', 1)">&#8250;</button>
-                            </div>
-                            <div class="room-cal-container" id="r2-cal">
-                                <div class="room-cal-loading">Cargando disponibilidad…</div>
-                            </div>
-                        </div>
-                        <div class="room-card-footer">
-                            <button class="room-reserve-btn" onclick="searchAvailability()">Reservar esta habitación →</button>
-                        </div>
-                    </div>
-
-                    <div class="room-card">
-                        <div class="room-card-header">
-                            <span class="room-card-name">🛏️ Habitación 3</span>
-                            <span class="room-card-badge">Cama sencilla · 1 persona</span>
-                        </div>
-                        <div class="room-card-body">
-                            <div class="room-card-nav">
-                                <button class="room-cal-btn" onclick="roomNavigate('r3', -1)">&#8249;</button>
-                                <span class="room-cal-label" id="r3-label">Cargando…</span>
-                                <button class="room-cal-btn" onclick="roomNavigate('r3', 1)">&#8250;</button>
-                            </div>
-                            <div class="room-cal-container" id="r3-cal">
-                                <div class="room-cal-loading">Cargando disponibilidad…</div>
-                            </div>
-                        </div>
-                        <div class="room-card-footer">
-                            <button class="room-reserve-btn" onclick="searchAvailability()">Reservar esta habitación →</button>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="rooms-legend">
-                    <div class="rooms-legend-item"><div class="rooms-legend-dot" style="background:#fecaca;"></div>Ocupado</div>
-                    <div class="rooms-legend-item"><div class="rooms-legend-dot" style="background:linear-gradient(90deg,white 50%,#fecaca 50%);border:1px solid #e5e7eb;"></div>Llegada</div>
-                    <div class="rooms-legend-item"><div class="rooms-legend-dot" style="background:linear-gradient(90deg,#fecaca 50%,white 50%);border:1px solid #e5e7eb;"></div>Salida</div>
-                </div>
-            </div>
 
             <div class="contact-section">
                 <h2>📞 Comuníquese con Nosotros</h2>
@@ -2148,22 +1961,11 @@
         labelEl.textContent = `${MONTH_NAMES[m]} ${y}`;
 
         // Disable prev if at current month
-        const prevBtn = calEl.closest('.room-card').querySelector('.room-cal-btn:first-child');
-        const nextBtn = calEl.closest('.room-card').querySelector('.room-cal-btn:last-child');
         prevBtn.style.opacity = state.offset === 0 ? '0.3' : '1';
         prevBtn.style.cursor  = state.offset === 0 ? 'default' : 'pointer';
         nextBtn.style.opacity = state.offset >= 5 ? '0.3' : '1';
         nextBtn.style.cursor  = state.offset >= 5 ? 'default' : 'pointer';
     }
-
-    window.roomNavigate = function(roomId, direction) {
-        const state = roomState[roomId];
-        if (direction === -1 && state.offset === 0) return;
-        if (direction ===  1 && state.offset >= 5)  return;
-        state.offset += direction;
-        const room = ROOMS.find(r => r.id === roomId);
-        renderRoomPage(room);
-    };
 
     async function initRoomCalendars() {
         for (const room of ROOMS) {
