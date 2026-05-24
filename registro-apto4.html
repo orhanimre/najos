@@ -1580,14 +1580,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       }
 
       function validateStep(step) {
-        // Step 1: dates must be set (pre-filled from apto page)
-        if (step === 1) {
-          if (!selectedCheckIn || !selectedCheckOut) {
-            showToast("📅 Por favor vuelve a la página del apartamento y selecciona las fechas");
-            return false;
-          }
-        }
-        // Step 2: país check + personal data
+        // Step 1 (Tus Datos): país check
         if (step === 1) {
           const paisSelect = document.getElementById("pais");
           if (paisSelect.value === "__otro__" && !document.getElementById("otrosPais").value.trim()) {
