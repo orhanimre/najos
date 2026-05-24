@@ -825,6 +825,12 @@
                 grid-template-columns: 1fr;
                 gap: 12px;
             }
+            .booking-time-row {
+                grid-column: 1 / -1;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
 
             .booking-banner {
                 padding: 20px 20px;
@@ -952,15 +958,17 @@
                             <span style="font-size:18px;">📅</span>
                         </button>
                     </div>
-                    <div class="booking-field">
-                        <label class="booking-label">🕐 Hora de Llegada</label>
-                        <input type="time" id="aptoHoraEntrada" class="booking-input" value="14:00" min="14:00" max="21:00">
-                        <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-top:4px;">Entre 2:00 PM y 9:00 PM</div>
-                    </div>
-                    <div class="booking-field">
-                        <label class="booking-label">🕙 Hora de Salida</label>
-                        <input type="time" id="aptoHoraSalida" class="booking-input" value="11:00" max="11:00">
-                        <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-top:4px;">Antes de las 11:00 AM</div>
+                    <div class="booking-time-row">
+                        <div class="booking-field">
+                            <label class="booking-label">🕐 Hora de Llegada</label>
+                            <input type="time" id="aptoHoraEntrada" class="booking-input" value="14:00" min="14:00" max="21:00">
+                            <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-top:4px;">Entre 2:00 PM y 9:00 PM</div>
+                        </div>
+                        <div class="booking-field">
+                            <label class="booking-label">🕙 Hora de Salida</label>
+                            <input type="time" id="aptoHoraSalida" class="booking-input" value="11:00" max="11:00">
+                            <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-top:4px;">Antes de las 11:00 AM</div>
+                        </div>
                     </div>
                 </div>
                 <div style="display: flex; gap: 12px; margin-top: 16px;">
