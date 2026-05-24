@@ -1893,14 +1893,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       }
 
       function validateStep(step) {
-        if (step === 1) {
-          if (!selectedCheckIn || !selectedCheckOut) {
-            showToast("📅 Por favor vuelve a la página del apartamento y selecciona las fechas");
-            return false;
-          }
-          return true;
-        }
-        if (step === 1) {
+                if (step === 1) {
           const paisSelect = document.getElementById("pais");
           if (paisSelect && paisSelect.value === "__otro__" && !document.getElementById("otrosPais").value.trim()) {
             showToast("⚠️ Por favor escribe tu país de origen"); return false;
