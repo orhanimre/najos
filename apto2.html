@@ -1459,6 +1459,13 @@
             aptoBuildCalRoomPicker();
             aptoRenderCalendar();
             aptoUpdateInstruction();
+            // Scroll to today
+            setTimeout(() => {
+                const todayCell = document.querySelector('#aptoDatePickerScroll .apto-cal-day.today');
+                if (todayCell) {
+                    todayCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 60);
         };
 
         window.closeAptoDatePicker = function() {
