@@ -1356,16 +1356,31 @@
             modal.classList.add('show');
             document.body.style.overflow = 'hidden';
             aptoBuildCalRoomPicker();
-            aptoRenderCalendar();
             aptoUpdateInstruction();
-            // Re-render after a short delay so Firebase booked dates (async) are shown
-            setTimeout(() => {
+
+            function finishOpen() {
                 aptoRenderCalendar();
-                const todayCell = document.querySelector('#aptoDatePickerScroll .apto-cal-day.today');
-                if (todayCell) {
-                    todayCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            }, 150);
+                setTimeout(() => {
+                    const todayCell = document.querySelector('#aptoDatePickerScroll .apto-cal-day.today');
+                    if (todayCell) todayCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 60);
+            }
+
+            if (window.aptoDataReady) {
+                finishOpen();
+            } else {
+                // Show spinner while Firebase loads
+                document.getElementById('aptoDatePickerScroll').innerHTML =
+                    '<div style="text-align:center;padding:60px 20px;color:var(--ocean);font-size:16px;font-weight:600;">⏳ Cargando disponibilidad...</div>';
+                let attempts = 0;
+                const poll = setInterval(() => {
+                    attempts++;
+                    if (window.aptoDataReady || attempts > 100) {
+                        clearInterval(poll);
+                        finishOpen();
+                    }
+                }, 100);
+            }
         };
 
         window.closeAptoDatePicker = function() {
@@ -1651,6 +1666,7 @@
                 mark(rs.dateSets.shared,   'shared');
             });
             window.aptoRoomAvailMap = ram;
+            window.aptoDataReady = true;
             // Always re-render: open = updates immediately; closed = ready for next open.
             aptoRenderCalendar();
         };
