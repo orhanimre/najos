@@ -1464,15 +1464,18 @@
                 else if (cellDate.toDateString() === today.toDateString()) { cell.classList.add('today'); }
 
                 const selectedRoomNames = aptoSelectedRooms.map(id => `Habitación ${id}`);
-                const bookedForAllSelected = selectedRoomNames.length > 0 &&
-                    selectedRoomNames.every(rn => ram[dateStr]?.[rn] === 'booked');
+                const blockingStatuses = ['mid','checkin','shared'];
+                const anyRoomBlocked = selectedRoomNames.some(rn => blockingStatuses.includes(ram[dateStr]?.[rn]));
+                const anyRoomCheckout = selectedRoomNames.some(rn => ram[dateStr]?.[rn] === 'checkout');
+                const isPartialDay = anyRoomCheckout && !anyRoomBlocked;
 
                 if (dateStr === aptoSelectedCheckIn) { cell.classList.add('check-in'); }
                 else if (dateStr === aptoSelectedCheckOut) { cell.classList.add('check-out'); }
                 else if (aptoSelectedCheckIn && aptoSelectedCheckOut && dateStr > aptoSelectedCheckIn && dateStr < aptoSelectedCheckOut) {
                     cell.classList.add('in-range');
                 } else if (cellDate >= today) {
-                    if (bookedForAllSelected) cell.classList.add('booked-mid');
+                    if (anyRoomBlocked) cell.classList.add('booked-mid');
+                    else if (isPartialDay) cell.classList.add('booked-checkout');
                     else cell.classList.add('available');
                 }
 
@@ -1482,10 +1485,11 @@
                     aptoSelectedRooms.forEach(roomId => {
                         const roomName = `Habitación ${roomId}`;
                         const chip = document.createElement('span');
-                        const isBooked = ram[dateStr]?.[roomName] === 'booked';
-                        chip.className = 'room-chip ' + (isBooked ? 'chip-booked' : 'chip-available');
+                        const st = ram[dateStr]?.[roomName];
+                        const isOccupied = st && st !== 'checkout';
+                        chip.className = 'room-chip ' + (isOccupied ? 'chip-booked' : 'chip-available');
                         chip.textContent = 'C' + roomId;
-                        chip.title = `${roomName}: ${isBooked ? 'Ocupado' : 'Disponible'}`;
+                        chip.title = `${roomName}: ${isOccupied ? 'Ocupado' : (st === 'checkout' ? 'Salida' : 'Disponible')}`;
                         chips.appendChild(chip);
                     });
                     cell.appendChild(chips);
@@ -1511,10 +1515,11 @@
                 if (dateStr <= aptoSelectedCheckIn) { showToast('⚠️ La salida debe ser después de la llegada'); return; }
                 const ci = new Date(aptoSelectedCheckIn + 'T00:00:00');
                 const co = new Date(dateStr + 'T00:00:00');
+                const blockSt = ['mid','checkin','shared'];
                 for (let d = new Date(ci); d < co; d.setDate(d.getDate() + 1)) {
                     const s = aptoToDateStr(d);
-                    const allBooked = selectedRoomNames.every(rn => ram[s]?.[rn] === 'booked');
-                    if (allBooked) { showToast('⚠️ Hay fechas reservadas en ese rango. Elige otras fechas.'); return; }
+                    const anyBlocked = selectedRoomNames.some(rn => blockSt.includes(ram[s]?.[rn]));
+                    if (anyBlocked) { showToast('⚠️ Hay fechas reservadas en ese rango. Elige otras fechas.'); return; }
                 }
                 aptoSelectedCheckOut = dateStr; aptoSelectingCheckIn = true;
                 aptoUpdateDateDisplay(); aptoRenderCalendar();
@@ -1538,15 +1543,16 @@
                 if (!roomName) return;
                 const mark = (dateSet, status) => dateSet.forEach(d => {
                     if (!ram[d]) ram[d] = {};
-                    ram[d][roomName] = status;
+                    if (!ram[d][roomName] || status === 'mid' || status === 'shared') {
+                        ram[d][roomName] = status;
+                    }
                 });
-                mark(rs.dateSets.mid,      'booked');
-                mark(rs.dateSets.checkin,  'booked');
-                mark(rs.dateSets.checkout, 'booked');
-                mark(rs.dateSets.shared,   'booked');
+                mark(rs.dateSets.mid,      'mid');
+                mark(rs.dateSets.checkin,  'checkin');
+                mark(rs.dateSets.checkout, 'checkout');
+                mark(rs.dateSets.shared,   'shared');
             });
             window.aptoRoomAvailMap = ram;
-            // Re-render calendar if date picker is open
             const modal = document.getElementById('aptoDatePickerModal');
             if (modal && modal.classList.contains('show')) { aptoRenderCalendar(); }
         };
