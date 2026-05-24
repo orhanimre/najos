@@ -1253,16 +1253,30 @@
             const modal = document.getElementById('aptoDatePickerModal');
             modal.classList.add('show');
             document.body.style.overflow = 'hidden';
-            aptoRenderCalendar();
             aptoUpdateInstruction();
-            // Re-render after a short delay so Firebase booked dates (async) are shown
-            setTimeout(() => {
+
+            function finishOpen() {
                 aptoRenderCalendar();
-                const todayCell = document.querySelector('#aptoDatePickerScroll .apto-cal-day.today');
-                if (todayCell) {
-                    todayCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            }, 150);
+                setTimeout(() => {
+                    const todayCell = document.querySelector('#aptoDatePickerScroll .apto-cal-day.today');
+                    if (todayCell) todayCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 60);
+            }
+
+            if (window.aptoDataReady) {
+                finishOpen();
+            } else {
+                document.getElementById('aptoDatePickerScroll').innerHTML =
+                    '<div style="text-align:center;padding:60px 20px;color:var(--ocean);font-size:16px;font-weight:600;">⏳ Cargando disponibilidad...</div>';
+                let attempts = 0;
+                const poll = setInterval(() => {
+                    attempts++;
+                    if (window.aptoDataReady || attempts > 100) {
+                        clearInterval(poll);
+                        finishOpen();
+                    }
+                }, 100);
+            }
         };
 
         window.closeAptoDatePicker = function() {
@@ -1485,6 +1499,7 @@
                 mark(rs.dateSets.shared,   'shared');
             });
             window.aptoRoomAvailMap = ram;
+            window.aptoDataReady = true;
             // Always re-render: open = updates immediately; closed = ready for next open.
             aptoRenderCalendar();
         };
@@ -1720,11 +1735,12 @@
             const reservations = await loadReservations();
             dateSets = buildDateSets(reservations);
             window._aptoDateSets = dateSets; // expose for searchAvailability
-            if (window._aptoSetBookedDates) window._aptoSetBookedDates(dateSets);
-            renderPage();
+            // Wrap in the roomState format that _aptoSetBookedDates expects: { r1: { dateSets } }
+            if (window._aptoSetBookedDates) window._aptoSetBookedDates({ r1: { dateSets } });
+            if (calEl) renderPage(); // only render if sidebar calendar element exists in DOM
         } catch (err) {
             console.error("Error loading availability:", err);
-            calEl.innerHTML = '<div class="room-cal-loading">No se pudo cargar. Intenta de nuevo.</div>';
+            if (calEl) calEl.innerHTML = '<div class="room-cal-loading">No se pudo cargar. Intenta de nuevo.</div>';
         }
     }
 
