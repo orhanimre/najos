@@ -993,7 +993,8 @@
                         </div>
                         <button type="button" onclick="closeAptoDatePicker()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.2);border:none;color:white;width:34px;height:34px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
                         <!-- In-modal room chip selector -->
-                        <div class="cal-room-picker" id="aptoCalRoomPicker">
+                        <!-- Room picker hidden: rooms are fixed by guest count -->
+                        <div class="cal-room-picker" id="aptoCalRoomPicker" style="display:none;">
                             <span class="cal-room-picker-label">🛏️ Habitaciones:</span>
                             <div class="cal-room-picker-btns" id="aptoCalRoomPickerBtns"></div>
                             <span class="cal-room-picker-hint">Toca para cambiar</span>
