@@ -1899,7 +1899,7 @@
     }
 
     async function loadRoomReservations(roomKey) {
-        // Single-field query (no composite index needed) — filter by habitacion in JS
+        // Single-field query — filter by habitacion in JS
         const snap = await getDocs(
             query(collection(db, "cabin_availability"), where("apto", "==", CABIN))
         );
@@ -2024,10 +2024,10 @@
             try {
                 const reservations = await loadRoomReservations(room.key);
                 roomState[room.id].dateSets = buildDateSets(reservations);
-                renderRoomPage(room);
+                if (calEl) renderRoomPage(room); // only render if element exists in DOM
             } catch (err) {
                 console.error(`Error loading room ${room.key}:`, err);
-                calEl.innerHTML = '<div class="room-cal-loading">No se pudo cargar. Intenta de nuevo.</div>';
+                if (calEl) calEl.innerHTML = '<div class="room-cal-loading">No se pudo cargar. Intenta de nuevo.</div>';
             }
         }
         window._aptoRoomState = roomState; // expose for searchAvailability
