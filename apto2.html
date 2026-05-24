@@ -1358,14 +1358,14 @@
             aptoBuildCalRoomPicker();
             aptoRenderCalendar();
             aptoUpdateInstruction();
-            // Re-render after a tick in case Firebase data arrived while modal was closed
+            // Re-render after a short delay so Firebase booked dates (async) are shown
             setTimeout(() => {
                 aptoRenderCalendar();
                 const todayCell = document.querySelector('#aptoDatePickerScroll .apto-cal-day.today');
                 if (todayCell) {
                     todayCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
-            }, 100);
+            }, 150);
         };
 
         window.closeAptoDatePicker = function() {
@@ -1637,8 +1637,11 @@
                 if (!roomName) return;
                 const mark = (dateSet, status) => dateSet.forEach(d => {
                     if (!ram[d]) ram[d] = {};
+                    // Only upgrade status (mid > checkin/checkout > shared), never downgrade
                     const cur = ram[d][roomName];
                     if (!cur || status === 'mid' || status === 'shared') {
+                        ram[d][roomName] = status;
+                    } else if (!cur) {
                         ram[d][roomName] = status;
                     }
                 });
@@ -1648,8 +1651,7 @@
                 mark(rs.dateSets.shared,   'shared');
             });
             window.aptoRoomAvailMap = ram;
-            window.aptoBookedDatesReady = true;
-            // Always re-render — if modal is open update immediately; data is now ready for next open too
+            // Always re-render: open = updates immediately; closed = ready for next open.
             aptoRenderCalendar();
         };
 
