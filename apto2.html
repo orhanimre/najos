@@ -1546,37 +1546,43 @@
                 if (cellDate < today) { cell.classList.add('past'); }
                 else if (cellDate.toDateString() === today.toDateString()) { cell.classList.add('today'); }
 
-                // Determine booking status for selected rooms only
-                const selectedRoomNames = aptoSelectedRooms.map(id => `Habitación ${id}`);
-                // A day is blocked only if ALL selected rooms are mid or shared on that date
-                // (partial bookings still leave rooms available for other guests)
+                // Always work with ALL rooms to determine per-room status
+                const allRoomNames = APTO_ROOMS_CONFIG.map(r => r.name);
+                const requestedCount = aptoSelectedRooms.length;
                 const blockingStatuses = ['mid','shared'];
-                const allRoomsBlocked = selectedRoomNames.every(rn => blockingStatuses.includes(ram[dateStr]?.[rn]));
-                // Checkout day: ALL selected rooms check out — available for new check-in (grey|white half-half)
-                const allRoomsCheckout = selectedRoomNames.every(rn => ram[dateStr]?.[rn] === 'checkout');
-                const isPartialDay = allRoomsCheckout && !allRoomsBlocked;
-                // Checkin day: ALL selected rooms have someone arriving — available only as checkout target
-                const allRoomsCheckin = selectedRoomNames.every(rn => ram[dateStr]?.[rn] === 'checkin');
-                const isCheckinDay = allRoomsCheckin && !allRoomsBlocked;
-                const anyRoomBlocked = allRoomsBlocked; // alias for rendering block below
+
+                // Count how many rooms are free on this day (not mid/shared)
+                const freeOnDay = allRoomNames.filter(rn => !blockingStatuses.includes(ram[dateStr]?.[rn])).length;
+                // Count rooms with checkout status (half-free)
+                const checkoutOnDay = allRoomNames.filter(rn => ram[dateStr]?.[rn] === 'checkout').length;
+                // Count rooms with checkin status (half-blocked)
+                const checkinOnDay = allRoomNames.filter(rn => ram[dateStr]?.[rn] === 'checkin').length;
+
+                // Day is fully blocked if not enough rooms are free for the requested count
+                const dayFullyBlocked = freeOnDay < requestedCount;
+                // Day is a "checkout" half-day if adding checkout rooms gets us to enough
+                const dayIsCheckout = !dayFullyBlocked && checkoutOnDay > 0 &&
+                                      (freeOnDay - checkoutOnDay) < requestedCount;
+                // Day is a "checkin" half-day if rooms that are free would become blocked
+                const dayIsCheckin = !dayFullyBlocked && checkinOnDay > 0 &&
+                                     (freeOnDay - checkinOnDay) < requestedCount;
 
                 if (dateStr === aptoSelectedCheckIn) { cell.classList.add('check-in'); }
                 else if (dateStr === aptoSelectedCheckOut) { cell.classList.add('check-out'); }
                 else if (aptoSelectedCheckIn && aptoSelectedCheckOut && dateStr > aptoSelectedCheckIn && dateStr < aptoSelectedCheckOut) {
                     cell.classList.add('in-range');
                 } else if (cellDate >= today) {
-                    if (anyRoomBlocked) cell.classList.add('booked-mid');
-                    else if (isPartialDay) cell.classList.add('booked-checkout');
-                    else if (isCheckinDay) cell.classList.add('booked-checkin');
+                    if (dayFullyBlocked) cell.classList.add('booked-mid');
+                    else if (dayIsCheckout) cell.classList.add('booked-checkout');
+                    else if (dayIsCheckin) cell.classList.add('booked-checkin');
                     else cell.classList.add('available');
                 }
 
-                // Per-room availability chips
+                // Always show ALL room dots regardless of selection
                 if (cellDate >= today) {
                     const chips = document.createElement('div');
                     chips.className = 'room-chips';
-                    aptoSelectedRooms.forEach(roomId => {
-                        const roomName = `Habitación ${roomId}`;
+                    allRoomNames.forEach(roomName => {
                         const chip = document.createElement('span');
                         const st = ram[dateStr]?.[roomName];
                         const isOccupied = st && st !== 'checkout' && st !== 'checkin';
@@ -1590,20 +1596,19 @@
                 const isBlocked = cell.classList.contains('booked-mid') ||
                                   cell.classList.contains('past') ||
                                   cell.classList.contains('other-month');
-                // booked-checkin days are only valid as checkout targets (not as new check-in)
                 const isCheckinCell = cell.classList.contains('booked-checkin');
                 if (!isBlocked) {
                     if (isCheckinCell) {
                         if (!aptoSelectingCheckIn && aptoSelectedCheckIn && dateStr > aptoSelectedCheckIn) {
                             cell.classList.add('clickable');
                             cell.style.cursor = 'pointer';
-                            cell.addEventListener('click', () => aptoSelectDate(dateStr, selectedRoomNames));
+                            cell.addEventListener('click', () => aptoSelectDate(dateStr));
                         } else {
                             cell.style.cursor = 'not-allowed';
                         }
                     } else {
                         cell.style.cursor = 'pointer';
-                        cell.addEventListener('click', () => aptoSelectDate(dateStr, selectedRoomNames));
+                        cell.addEventListener('click', () => aptoSelectDate(dateStr));
                     }
                 }
                 grid.appendChild(cell);
@@ -1612,31 +1617,30 @@
             return section;
         }
 
-        function aptoSelectDate(dateStr, selectedRoomNames) {
+        function aptoSelectDate(dateStr) {
             const ram = window.aptoRoomAvailMap || {};
+            const allRoomNames = APTO_ROOMS_CONFIG.map(r => r.name);
+            const requestedCount = aptoSelectedRooms.length;
+            const blockSt = ['mid','checkin','shared'];
             if (aptoSelectingCheckIn) {
                 aptoSelectedCheckIn = dateStr; aptoSelectedCheckOut = null; aptoSelectingCheckIn = false;
                 aptoUpdateDateDisplay(); aptoRenderCalendar();
             } else {
                 if (dateStr <= aptoSelectedCheckIn) { showToast('⚠️ La salida debe ser después de la llegada'); return; }
-                // For each selected room, check if it is free for every night in the range.
-                // A room is blocked on a night if its status is mid, checkin, or shared.
+                // For each room, check it's free every night in the range
                 const ci = new Date(aptoSelectedCheckIn + 'T00:00:00');
                 const co = new Date(dateStr + 'T00:00:00');
-                const blockSt = ['mid','checkin','shared'];
-                const freeRooms = selectedRoomNames.filter(rn => {
+                const freeRooms = allRoomNames.filter(rn => {
                     for (let d = new Date(ci); d < co; d.setDate(d.getDate() + 1)) {
                         if (blockSt.includes(ram[aptoToDateStr(d)]?.[rn])) return false;
                     }
                     return true;
                 });
-                if (freeRooms.length < selectedRoomNames.length) {
-                    const need = selectedRoomNames.length;
-                    const avail = freeRooms.length;
-                    if (avail === 0) {
-                        showToast(`⚠️ No hay habitaciones disponibles para esas fechas.`);
+                if (freeRooms.length < requestedCount) {
+                    if (freeRooms.length === 0) {
+                        showToast('⚠️ No hay habitaciones disponibles para esas fechas.');
                     } else {
-                        showToast(`⚠️ Solo ${avail} de ${need} habitaciones están libres en esas fechas. Reduce el número de habitaciones o elige otras fechas.`);
+                        showToast(`⚠️ Solo ${freeRooms.length} de ${requestedCount} habitaciones están libres en esas fechas. Reduce el número de habitaciones o elige otras fechas.`);
                     }
                     return;
                 }
