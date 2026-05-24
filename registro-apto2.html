@@ -1949,6 +1949,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
 
       applyRoomUrlParams();
       buildRoomSelector();
+      showStep(1); // always show Tus Datos on load
 
       // Auto-start at step 2 (Tus Datos) — dates+rooms always come from apto page
       (function autoStart() {
