@@ -1619,14 +1619,26 @@
                 aptoUpdateDateDisplay(); aptoRenderCalendar();
             } else {
                 if (dateStr <= aptoSelectedCheckIn) { showToast('⚠️ La salida debe ser después de la llegada'); return; }
-                // Check no blocked days in range for selected rooms (all rooms must be blocked to deny)
+                // For each selected room, check if it is free for every night in the range.
+                // A room is blocked on a night if its status is mid, checkin, or shared.
                 const ci = new Date(aptoSelectedCheckIn + 'T00:00:00');
                 const co = new Date(dateStr + 'T00:00:00');
                 const blockSt = ['mid','checkin','shared'];
-                for (let d = new Date(ci); d < co; d.setDate(d.getDate() + 1)) {
-                    const s = aptoToDateStr(d);
-                    const allBlocked = selectedRoomNames.every(rn => blockSt.includes(ram[s]?.[rn]));
-                    if (allBlocked) { showToast('⚠️ Hay fechas reservadas en ese rango. Elige otras fechas.'); return; }
+                const freeRooms = selectedRoomNames.filter(rn => {
+                    for (let d = new Date(ci); d < co; d.setDate(d.getDate() + 1)) {
+                        if (blockSt.includes(ram[aptoToDateStr(d)]?.[rn])) return false;
+                    }
+                    return true;
+                });
+                if (freeRooms.length < selectedRoomNames.length) {
+                    const need = selectedRoomNames.length;
+                    const avail = freeRooms.length;
+                    if (avail === 0) {
+                        showToast(`⚠️ No hay habitaciones disponibles para esas fechas.`);
+                    } else {
+                        showToast(`⚠️ Solo ${avail} de ${need} habitaciones están libres en esas fechas. Reduce el número de habitaciones o elige otras fechas.`);
+                    }
+                    return;
                 }
                 aptoSelectedCheckOut = dateStr; aptoSelectingCheckIn = true;
                 aptoUpdateDateDisplay(); aptoRenderCalendar();
