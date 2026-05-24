@@ -1973,6 +1973,13 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           if (!available) {
             showToast("❌ Las fechas seleccionadas están reservadas. Por favor elige otras fechas.");
             return;
+          }
+          currentStep++; showStep(currentStep);
+        } else {
+          if (validateStep(currentStep)) { currentStep++; showStep(currentStep); }
+        }
+      });
+      btnBack.addEventListener("click", () => { currentStep--; showStep(currentStep); });
 
       // Tappable progress steps — navigate back to completed steps
       document.querySelectorAll(".progress-step").forEach(stepEl => {
@@ -1981,13 +1988,6 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           if (target < currentStep) { currentStep = target; showStep(currentStep); }
         });
       });
-          }
-          currentStep++; showStep(currentStep);
-        } else {
-          if (validateStep(currentStep)) { currentStep++; showStep(currentStep); }
-        }
-      });
-      btnBack.addEventListener("click", () => { currentStep--; showStep(currentStep); });
 
       function checkCompanionFilled(index) {
         const card = document.querySelector(`[data-companion-index="${index}"]`);
