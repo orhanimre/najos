@@ -1393,14 +1393,17 @@
                 if (cellDate < today) { cell.classList.add('past'); }
                 else if (cellDate.toDateString() === today.toDateString()) { cell.classList.add('today'); }
 
-                const isBooked = ram[dateStr]?.['Habitación 1'] === 'booked';
+                const st4 = ram[dateStr]?.['Habitación 1'];
+                const isBlocked4 = st4 === 'mid' || st4 === 'checkin' || st4 === 'shared';
+                const isCheckout4 = st4 === 'checkout';
 
                 if (dateStr === aptoSelectedCheckIn) { cell.classList.add('check-in'); }
                 else if (dateStr === aptoSelectedCheckOut) { cell.classList.add('check-out'); }
                 else if (aptoSelectedCheckIn && aptoSelectedCheckOut && dateStr > aptoSelectedCheckIn && dateStr < aptoSelectedCheckOut) {
                     cell.classList.add('in-range');
                 } else if (cellDate >= today) {
-                    if (isBooked) cell.classList.add('booked-mid');
+                    if (isBlocked4) cell.classList.add('booked-mid');
+                    else if (isCheckout4) cell.classList.add('booked-checkout');
                     else cell.classList.add('available');
                 }
 
@@ -1408,9 +1411,10 @@
                     const chips = document.createElement('div');
                     chips.className = 'room-chips';
                     const chip = document.createElement('span');
-                    chip.className = 'room-chip ' + (isBooked ? 'chip-booked' : 'chip-available');
+                    const isOccupied4 = isBlocked4;
+                    chip.className = 'room-chip ' + (isOccupied4 ? 'chip-booked' : 'chip-available');
                     chip.textContent = 'C1';
-                    chip.title = `Habitación 1: ${isBooked ? 'Ocupado' : 'Disponible'}`;
+                    chip.title = `Habitación 1: ${isOccupied4 ? 'Ocupado' : (isCheckout4 ? 'Salida' : 'Disponible')}`;
                     chips.appendChild(chip);
                     cell.appendChild(chips);
                 }
@@ -1455,21 +1459,22 @@
         });
 
         window._aptoSetBookedDates = function(roomStates) {
-            // apto4 single room — build ram from dateSets
+            // apto4 single room — build ram with typed statuses
             const ram = {};
             Object.values(roomStates).forEach(rs => {
                 if (!rs.dateSets) return;
-                const mark = (dateSet) => dateSet.forEach(d => {
+                const mark = (dateSet, status) => dateSet.forEach(d => {
                     if (!ram[d]) ram[d] = {};
-                    ram[d]['Habitación 1'] = 'booked';
+                    if (!ram[d]['Habitación 1'] || status === 'mid' || status === 'shared') {
+                        ram[d]['Habitación 1'] = status;
+                    }
                 });
-                mark(rs.dateSets.mid);
-                mark(rs.dateSets.checkin);
-                mark(rs.dateSets.checkout);
-                mark(rs.dateSets.shared);
+                mark(rs.dateSets.mid,      'mid');
+                mark(rs.dateSets.checkin,  'checkin');
+                mark(rs.dateSets.checkout, 'checkout');
+                mark(rs.dateSets.shared,   'shared');
             });
             window.aptoRoomAvailMap = ram;
-            // Re-render calendar if date picker is open
             const modal = document.getElementById('aptoDatePickerModal');
             if (modal && modal.classList.contains('show')) { aptoRenderCalendar(); }
         };
