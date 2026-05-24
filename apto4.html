@@ -484,7 +484,7 @@
 
         .booking-form {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 16px;
             align-items: start;
         }
@@ -916,11 +916,13 @@
             .toast { min-width: unset; width: 100%; }
         }
     
-        .room-chips { display:flex; justify-content:center; gap:2px; margin-top:3px; flex-wrap:wrap; }
-        .room-chip { font-size:8px; font-weight:700; padding:1px 4px; border-radius:4px; line-height:1.4;
-                     letter-spacing:0.2px; white-space:nowrap; border:1px solid transparent; }
-        .chip-available { background:#166534; color:#fff; border-color:#14532d; }
-        .chip-booked    { background:#ef4444; color:#fff; border-color:#dc2626; }
+        .room-chips { display:flex; justify-content:center; gap:3px; margin-top:4px; }
+        .room-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+        .dot-available { background:#16a34a; }
+        .dot-booked    { background:#ef4444; }
+        .dot-partial   { background:#ea580c; }
+        .apto-cal-day.check-in .room-chips,
+        .apto-cal-day.check-out .room-chips { background:rgba(255,255,255,0.9); border-radius:8px; padding:2px 4px; }
     </style>
 </head>
 <body>
@@ -1015,6 +1017,10 @@
                             <div class="legend-item"><div class="legend-color available"></div><span>Disponible</span></div>
                             <div class="legend-item"><div class="legend-color selected"></div><span>Seleccionado</span></div>
                             <div class="legend-item"><div class="legend-color booked"></div><span>Ocupado</span></div>
+                            <div class="legend-item" style="display:flex;gap:6px;align-items:center;">
+                                <div style="width:10px;height:10px;border-radius:50%;background:#ea580c;"></div>
+                                <span>Llegada / Salida</span>
+                            </div>
                         </div>
                         <div style="padding:16px 24px;background:white;border-top:1px solid #e5e7eb;">
                             <button type="button" id="aptoConfirmDatesBtn" onclick="aptoConfirmDates()"
@@ -1455,8 +1461,7 @@
                     chips.className = 'room-chips';
                     const chip = document.createElement('span');
                     const isOccupied4 = isBlocked4;
-                    chip.className = 'room-chip ' + (isOccupied4 ? 'chip-booked' : 'chip-available');
-                    chip.textContent = 'C1';
+                    chip.className = 'room-dot ' + (isOccupied4 ? 'dot-booked' : (isCheckout4 || isCheckin4 ? 'dot-partial' : 'dot-available'));
                     chip.title = `Habitación 1: ${isOccupied4 ? 'Ocupado' : (isCheckout4 ? 'Salida' : (isCheckin4 ? 'Llegada' : 'Disponible'))}`;
                     chips.appendChild(chip);
                     cell.appendChild(chips);
