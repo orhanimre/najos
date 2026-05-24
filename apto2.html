@@ -988,7 +988,11 @@
         .cal-room-btn:hover { background:rgba(255,255,255,0.25); border-color:rgba(255,255,255,0.75); }
         .cal-room-btn.active { background:white; color:#0077BE; border-color:white; box-shadow:0 2px 8px rgba(0,0,0,0.2); }
         .cal-room-picker-hint { font-size:10px; color:rgba(255,255,255,0.65); margin-left:auto; white-space:nowrap; }
-        @media (max-width:480px) { .cal-room-picker-hint { display:none; } }
+        @media (max-width:480px) {
+            .cal-room-picker-hint { display:none; }
+            .cal-room-btn { padding:4px 8px; font-size:10.5px; letter-spacing:-0.2px; }
+            .cal-room-picker-label { font-size:10px; }
+        }
     </style>
 </head>
 <body>
@@ -1086,15 +1090,16 @@
                         </div>
                         <div class="date-picker-scroll" id="aptoDatePickerScroll"></div>
                         <div class="calendar-legend">
-                            <div class="legend-item"><div class="legend-color available"></div><span>Disponible</span></div>
-                            <div class="legend-item"><div class="legend-color selected"></div><span>Seleccionado</span></div>
-                            <div class="legend-item" style="display:flex;gap:3px;align-items:center;">
-                                <div style="width:20px;height:20px;border-radius:4px;background:#166534;"></div>
-                                <div style="width:20px;height:20px;border-radius:4px;background:#ef4444;margin-right:4px;"></div>
-                                <span>Libre / Ocupado</span>
+                            <div class="legend-item" style="display:flex;gap:6px;align-items:center;">
+                                <div style="width:12px;height:12px;border-radius:50%;background:#16a34a;flex-shrink:0;"></div>
+                                <span>Libre</span>
                             </div>
                             <div class="legend-item" style="display:flex;gap:6px;align-items:center;">
-                                <div style="width:10px;height:10px;border-radius:50%;background:#ea580c;"></div>
+                                <div style="width:12px;height:12px;border-radius:50%;background:#ef4444;flex-shrink:0;"></div>
+                                <span>Ocupado</span>
+                            </div>
+                            <div class="legend-item" style="display:flex;gap:6px;align-items:center;">
+                                <div style="width:10px;height:10px;border-radius:50%;background:#ea580c;flex-shrink:0;"></div>
                                 <span>Llegada / Salida</span>
                             </div>
                         </div>
