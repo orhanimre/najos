@@ -2230,6 +2230,7 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
 
       updateProgress();
       updateDateDisplay();
+      showStep(1); // always show Tus Datos on load
 
       // Pre-fill dates/times from apto4 page and skip to Tus Datos (step 2)
       (function applyAptoUrlParams() {
