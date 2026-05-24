@@ -2282,9 +2282,9 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
           }
         }
 
-        // Skip to step 2 — Tus Datos
-        currentStep = 2;
-        showStep(2);
+        // Skip to step 1 — Tus Datos
+        currentStep = 1;
+        showStep(1);
         updateProgress();
 
         if (!bookedDatesLoaded) {
