@@ -1289,15 +1289,15 @@ window.updateEditRooms = function() {
   if (!container) return;
   container.innerHTML = '';
   const roomMap = {
-    'Apto Najos-2': ['Cuarto 1', 'Cuarto 2', 'Cuarto 3'],
-    'Apto Najos-3': ['Cuarto 1', 'Cuarto 2'],
-    'Apto Najos-4': ['Cuarto 1'],
+    'Apto Najos-2': ['Habitación 1', 'Habitación 2', 'Habitación 3'],
+    'Apto Najos-3': ['Habitación 1', 'Habitación 2'],
+    'Apto Najos-4': ['Habitación 1'],
   };
   const rooms = roomMap[apto] || [];
-  // Apto 4 has only 1 room — hide selector, auto-select Cuarto 1
+  // Apto 4 has only 1 room — hide selector, auto-select Habitación 1
   if (rooms.length <= 1) {
     document.getElementById('editRoomsGroup').style.display = 'none';
-    // Store Cuarto 1 as a hidden data attribute so saveEdit() can pick it up
+    // Store Habitación 1 as a hidden data attribute so saveEdit() can pick it up
     container.dataset.autoRoom = rooms.length === 1 ? rooms[0] : '';
     return;
   }
@@ -1727,7 +1727,7 @@ window.doRestore = async function() {
     try {
       const habitaciones = currentReg.habitaciones && currentReg.habitaciones.length
         ? currentReg.habitaciones
-        : ['Cuarto 1'];
+        : ['Habitación 1'];
       for (const roomName of habitaciones) {
         await addDoc(collection(db, 'cabin_availability'), {
           apto: currentReg.apto,
@@ -1790,11 +1790,11 @@ function renderCalendar() {
 
   // Room config per apto — stable room index → dot color
   const roomConfig = {
-    2: ['Cuarto 1', 'Cuarto 2', 'Cuarto 3'],
-    3: ['Cuarto 1', 'Cuarto 2'],
-    4: ['Cuarto 1'],
+    2: ['Habitación 1', 'Habitación 2', 'Habitación 3'],
+    3: ['Habitación 1', 'Habitación 2'],
+    4: ['Habitación 1'],
   };
-  const rooms = roomConfig[currentCalCabin] || ['Cuarto 1'];
+  const rooms = roomConfig[currentCalCabin] || ['Habitación 1'];
 
   // One fixed color per room slot (not per guest) so dots are always the same color per room
   const ROOM_COLORS = [
@@ -1901,7 +1901,7 @@ function renderCalendar() {
           seenRooms.add(roomIdx);
           const chip = document.createElement('div');
           chip.className = `cal-room-chip ${ ['c1','c2','c3'][roomIdx] || 'c1' }`;
-          chip.textContent = roomName.replace('Cuarto ', 'C');
+          chip.textContent = roomName.replace('Habitación ', 'H');
           chipsEl.appendChild(chip);
         });
         cell.appendChild(chipsEl);
@@ -2114,9 +2114,9 @@ window.updateAddRooms = function() {
   if (!container) return;
   container.innerHTML = '';
   const roomMap = {
-    'Apto Najos-2': ['Cuarto 1', 'Cuarto 2', 'Cuarto 3'],
-    'Apto Najos-3': ['Cuarto 1', 'Cuarto 2'],
-    'Apto Najos-4': ['Cuarto 1'],
+    'Apto Najos-2': ['Habitación 1', 'Habitación 2', 'Habitación 3'],
+    'Apto Najos-3': ['Habitación 1', 'Habitación 2'],
+    'Apto Najos-4': ['Habitación 1'],
   };
   const rooms = roomMap[apto] || [];
   if (rooms.length <= 1) {
