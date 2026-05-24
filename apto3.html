@@ -512,6 +512,8 @@
         .apto-cal-day.booked-mid { background: #d1d5db; cursor: not-allowed; }
         .apto-cal-day.booked-mid .apto-cal-day-num { color: #6b7280; }
         .apto-cal-day.booked-checkin { background: linear-gradient(90deg,white 50%,#d1d5db 50%); cursor: not-allowed; border: 1px solid #d1d5db; }
+        .apto-cal-day.booked-checkin.clickable { cursor: pointer; }
+        .apto-cal-day.booked-checkin.clickable:hover { transform: scale(1.05); border-color: var(--ocean-light); }
         .apto-cal-day.booked-checkout { background: linear-gradient(90deg,#d1d5db 50%,white 50%); cursor: pointer; border: 1px solid #d1d5db; }
         .apto-cal-day.booked-checkout:hover { transform: scale(1.05); border-color: var(--ocean-light); }
         .apto-cal-day.booked-shared { background: #9ca3af; cursor: not-allowed; }
@@ -1517,10 +1519,12 @@
                 else if (cellDate.toDateString() === today.toDateString()) { cell.classList.add('today'); }
 
                 const selectedRoomNames = aptoSelectedRooms.map(id => `Habitación ${id}`);
-                const blockingStatuses = ['mid','checkin','shared'];
+                const blockingStatuses = ['mid','shared'];
                 const anyRoomBlocked = selectedRoomNames.some(rn => blockingStatuses.includes(ram[dateStr]?.[rn]));
                 const anyRoomCheckout = selectedRoomNames.some(rn => ram[dateStr]?.[rn] === 'checkout');
                 const isPartialDay = anyRoomCheckout && !anyRoomBlocked;
+                const anyRoomCheckin = selectedRoomNames.some(rn => ram[dateStr]?.[rn] === 'checkin');
+                const isCheckinDay = anyRoomCheckin && !anyRoomBlocked;
 
                 if (dateStr === aptoSelectedCheckIn) { cell.classList.add('check-in'); }
                 else if (dateStr === aptoSelectedCheckOut) { cell.classList.add('check-out'); }
@@ -1529,6 +1533,7 @@
                 } else if (cellDate >= today) {
                     if (anyRoomBlocked) cell.classList.add('booked-mid');
                     else if (isPartialDay) cell.classList.add('booked-checkout');
+                    else if (isCheckinDay) cell.classList.add('booked-checkin');
                     else cell.classList.add('available');
                 }
 
@@ -1539,19 +1544,30 @@
                         const roomName = `Habitación ${roomId}`;
                         const chip = document.createElement('span');
                         const st = ram[dateStr]?.[roomName];
-                        const isOccupied = st && st !== 'checkout';
+                        const isOccupied = st && st !== 'checkout' && st !== 'checkin';
                         chip.className = 'room-chip ' + (isOccupied ? 'chip-booked' : 'chip-available');
                         chip.textContent = 'C' + roomId;
-                        chip.title = `${roomName}: ${isOccupied ? 'Ocupado' : (st === 'checkout' ? 'Salida' : 'Disponible')}`;
+                        chip.title = `${roomName}: ${isOccupied ? 'Ocupado' : (st === 'checkout' ? 'Salida' : (st === 'checkin' ? 'Llegada' : 'Disponible'))}`;
                         chips.appendChild(chip);
                     });
                     cell.appendChild(chips);
                 }
 
                 const isBlocked = cell.classList.contains('booked-mid') || cell.classList.contains('past') || cell.classList.contains('other-month');
+                const isCheckinCell = cell.classList.contains('booked-checkin');
                 if (!isBlocked) {
-                    cell.style.cursor = 'pointer';
-                    cell.addEventListener('click', () => aptoSelectDate(dateStr, selectedRoomNames));
+                    if (isCheckinCell) {
+                        if (!aptoSelectingCheckIn && aptoSelectedCheckIn && dateStr > aptoSelectedCheckIn) {
+                            cell.classList.add('clickable');
+                            cell.style.cursor = 'pointer';
+                            cell.addEventListener('click', () => aptoSelectDate(dateStr, selectedRoomNames));
+                        } else {
+                            cell.style.cursor = 'not-allowed';
+                        }
+                    } else {
+                        cell.style.cursor = 'pointer';
+                        cell.addEventListener('click', () => aptoSelectDate(dateStr, selectedRoomNames));
+                    }
                 }
                 grid.appendChild(cell);
             }
