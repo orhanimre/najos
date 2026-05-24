@@ -2256,62 +2256,59 @@ for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate(
         const params = new URLSearchParams(window.location.search);
         const checkIn  = params.get("checkIn");
         const checkOut = params.get("checkOut");
-        if (checkIn && checkOut) {
-          selectedCheckIn  = checkIn;
-          selectedCheckOut = checkOut;
-          selectingCheckIn = false;
-          updateDateDisplay();
+        if (!checkIn || !checkOut) return;
 
-          // Pre-fill hidden date inputs
-          const fi = document.getElementById("fechaEntrada");
-          const fs = document.getElementById("fechaSalida");
-          if (fi) fi.value = checkIn;
-          if (fs) fs.value = checkOut;
+        selectedCheckIn  = checkIn;
+        selectedCheckOut = checkOut;
+        selectingCheckIn = false;
+        updateDateDisplay();
 
-          // Pre-fill times from apto page
-          const horaEntradaParam = params.get("horaEntrada");
-          const horaSalidaParam  = params.get("horaSalida");
-          const horaEntradaEl = document.getElementById("horaEntrada");
-          const horaSalidaEl  = document.getElementById("horaSalida");
-          if (horaEntradaEl) horaEntradaEl.value = horaEntradaParam || "14:00";
-          if (horaSalidaEl)  horaSalidaEl.value  = horaSalidaParam  || "11:00";
+        // Hidden date fields
+        const fi = document.getElementById("fechaEntrada");
+        const fs = document.getElementById("fechaSalida");
+        if (fi) fi.value = checkIn;
+        if (fs) fs.value = checkOut;
 
-          // Populate the stay summary box in step 1
-          const summaryBox  = document.getElementById("stayDatesSummary");
-          const summaryText = document.getElementById("stayDatesText");
-          if (summaryBox && summaryText) {
-            const hi = horaEntradaEl ? horaEntradaEl.value : "14:00";
-            const hs = horaSalidaEl  ? horaSalidaEl.value  : "11:00";
-            const fmtTime = t => {
-              const [h, m] = t.split(":").map(Number);
-              const ampm = h >= 12 ? "PM" : "AM";
-              return `${((h % 12) || 12)}:${String(m).padStart(2,"0")} ${ampm}`;
-            };
-            summaryText.innerHTML = `
-              ✅ Check-in: <strong>${formatDateNice(selectedCheckIn)}</strong> a las <strong>${fmtTime(hi)}</strong><br>
-              🚪 Check-out: <strong>${formatDateNice(selectedCheckOut)}</strong> a las <strong>${fmtTime(hs)}</strong>
-            `;
-            summaryBox.style.display = "block";
+        // Times
+        const horaEntradaEl = document.getElementById("horaEntrada");
+        const horaSalidaEl  = document.getElementById("horaSalida");
+        if (horaEntradaEl) horaEntradaEl.value = params.get("horaEntrada") || "14:00";
+        if (horaSalidaEl)  horaSalidaEl.value  = params.get("horaSalida")  || "11:00";
+
+        // Rooms (apto4 always room 1)
+        const habitacionesParam = params.get("habitaciones") || "1";
+
+        // Populate stay summary
+        const summaryBox  = document.getElementById("stayDatesSummary");
+        const summaryText = document.getElementById("stayDatesText");
+        if (summaryBox && summaryText) {
+          const hi = horaEntradaEl ? horaEntradaEl.value : "14:00";
+          const hs = horaSalidaEl  ? horaSalidaEl.value  : "11:00";
+          const fmtTime = t => { const [h,m]=t.split(":").map(Number); return `${((h%12)||12)}:${String(m).padStart(2,"0")} ${h>=12?"PM":"AM"}`; };
+          summaryText.innerHTML = `
+            ✅ Check-in: <strong>${formatDateNice(selectedCheckIn)}</strong> a las <strong>${fmtTime(hi)}</strong><br>
+            🚪 Check-out: <strong>${formatDateNice(selectedCheckOut)}</strong> a las <strong>${fmtTime(hs)}</strong><br>
+            🛏️ Habitaciones: <strong>Habitación 1</strong>
+          `;
+          summaryBox.style.display = "block";
+        }
+
+        // Guests
+        const guestsParam = params.get("guests");
+        if (guestsParam) {
+          const companions = Math.max(0, Math.min(parseInt(guestsParam) - 1, maxCompanions));
+          if (companions > 0 && typeof updateCompanions === "function") {
+            setTimeout(() => updateCompanions(companions), 0);
           }
+        }
 
-          // Pre-fill companions stepper from guests param
-          const guestsParam = params.get("guests");
-          if (guestsParam) {
-            const companions = Math.max(0, Math.min(parseInt(guestsParam) - 1, maxCompanions));
-            if (companions > 0 && typeof updateCompanions === "function") {
-              setTimeout(() => updateCompanions(companions), 0);
-            }
-          }
+        // Skip to step 2 — Tus Datos
+        currentStep = 2;
+        showStep(2);
+        updateProgress();
 
-          // Skip to step 2 — Tus Datos
-          currentStep = 2;
-          showStep(2);
-          updateProgress();
-
-          // Load calendar data in background in case user goes back
-          if (!bookedDatesLoaded) {
-            loadBookedDates().then(() => { bookedDatesLoaded = true; renderCalendar(); updateInstruction(); });
-          }
+        if (!bookedDatesLoaded) {
+          loadBookedDates().then(() => { bookedDatesLoaded = true; renderCalendar(); updateInstruction(); });
         }
       })();
     </script>
