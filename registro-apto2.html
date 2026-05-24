@@ -1406,21 +1406,16 @@ html, body { overscroll-behavior: none; }
           </div>
           <div class="progress-step active" data-step="1">
             <div class="progress-circle">1</div>
-            <div class="progress-label">Habitaciones</div>
-            <div class="progress-icon">🛏️</div>
-          </div>
-          <div class="progress-step" data-step="2">
-            <div class="progress-circle">2</div>
             <div class="progress-label">Tu Estadía</div>
             <div class="progress-icon">🏖️</div>
           </div>
-          <div class="progress-step" data-step="3">
-            <div class="progress-circle">3</div>
+          <div class="progress-step" data-step="2">
+            <div class="progress-circle">2</div>
             <div class="progress-label">Tus Datos</div>
             <div class="progress-icon">🌴</div>
           </div>
-          <div class="progress-step" data-step="4">
-            <div class="progress-circle">4</div>
+          <div class="progress-step" data-step="3">
+            <div class="progress-circle">3</div>
             <div class="progress-label">Confirmación</div>
             <div class="progress-icon">✓</div>
           </div>
@@ -1433,22 +1428,8 @@ html, body { overscroll-behavior: none; }
 
         <form id="registrationForm">
           <!-- Step 1 — Room Selection -->
+          <!-- Step 1 — Tu Estadía (pre-filled from apto page) -->
           <div class="step-container active" data-step="1">
-            <div class="step-intro">
-              <h2>🛏️ ¿Qué habitaciones necesitas?</h2>
-              <p>Cada habitación puede ser reservada por huéspedes distintos. Selecciona una o más según tu grupo.</p>
-            </div>
-            <div class="room-selector-grid" id="roomSelectorGrid">
-              <!-- Rooms injected by JS -->
-            </div>
-            <div class="room-selection-hint" id="roomHint">
-              ⚠️ Por favor selecciona al menos una habitación para continuar.
-            </div>
-            <div class="selected-rooms-summary" id="roomsSummary"></div>
-          </div>
-
-          <!-- Step 2 — Tu Estadía -->
-          <div class="step-container" data-step="2">
             <div class="step-intro">
               <h2>🌊 ¡Genial! Ahora dime cuándo vienes</h2>
               <p>Tus fechas y horarios han sido seleccionados. Ahora completa tus datos personales.</p>
@@ -1465,7 +1446,7 @@ html, body { overscroll-behavior: none; }
           </div>
 
           <!-- Step 3 — Tus Datos -->
-          <div class="step-container" data-step="3">
+          <div class="step-container" data-step="2">
             <div class="step-intro">
               <h2>👤 Tus Datos Personales</h2>
               <p>Solo necesitamos unos datos básicos para prepararte una llegada perfecta.</p>
@@ -1519,7 +1500,7 @@ html, body { overscroll-behavior: none; }
           </div>
 
           <!-- Step 4 — Confirmación -->
-          <div class="step-container" data-step="4">
+          <div class="step-container" data-step="3">
             <div class="step-intro">
               <h2>✅ Último paso: tu grupo y confirmación</h2>
               <p>Indica cuántos acompañantes tienes y completa su información.</p>
@@ -1940,12 +1921,17 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       function applyRoomUrlParams() {
         const params = new URLSearchParams(window.location.search);
 
-        // Pre-fill rooms from URL (legacy support)
-        const habitaciones = params.get("habitaciones");
-        if (habitaciones) {
-          selectedRooms = habitaciones.split(",").map(Number).filter(n => n >= 1 && n <= ROOMS_CONFIG.length);
+        // Pre-fill rooms from URL (sent by apto page)
+        const habitacionesParam = params.get("habitaciones");
+        if (habitacionesParam) {
+          selectedRooms = habitacionesParam.split(",").map(Number).filter(n => n >= 1 && n <= ROOMS_CONFIG.length);
           selectedRooms.sort();
         }
+        if (selectedRooms.length === 0) {
+          // Default: select all rooms
+          selectedRooms = ROOMS_CONFIG.map(r => r.id);
+        }
+        maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
 
         // Pre-fill dates from apto page
         const checkIn  = params.get("checkIn");
@@ -1959,78 +1945,64 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         // Pre-fill times from apto page
         const horaEntradaParam = params.get("horaEntrada");
         const horaSalidaParam  = params.get("horaSalida");
-        if (horaEntradaParam) {
-          const hi = document.getElementById("horaEntrada");
-          if (hi) hi.value = horaEntradaParam;
-        }
-        if (horaSalidaParam) {
-          const hs = document.getElementById("horaSalida");
-          if (hs) hs.value = horaSalidaParam;
-        }
+        const horaEntradaEl = document.getElementById("horaEntrada");
+        const horaSalidaEl  = document.getElementById("horaSalida");
+        if (horaEntradaEl) horaEntradaEl.value = horaEntradaParam || "14:00";
+        if (horaSalidaEl)  horaSalidaEl.value  = horaSalidaParam  || "11:00";
 
-        // Pre-fill rooms count: if "rooms" param provided and no habitaciones, auto-select first N rooms
-        const roomsParam = params.get("rooms");
-        if (roomsParam && !habitaciones) {
-          const n = Math.min(parseInt(roomsParam) || 1, ROOMS_CONFIG.length);
-          selectedRooms = ROOMS_CONFIG.slice(0, n).map(r => r.id);
-        }
-
-        // Pre-fill companions from guests param (guests includes the main guest, companions = guests - 1)
+        // Pre-fill guests
         const guestsParam = params.get("guests");
         if (guestsParam) {
-          const companions = Math.max(0, parseInt(guestsParam) - 1);
-          maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
-          const clamped = Math.min(companions, maxCompanions);
-          if (clamped > 0) {
-            setTimeout(() => updateCompanions(clamped), 0);
-          }
+          const companions = Math.max(0, Math.min(parseInt(guestsParam) - 1, maxCompanions));
+          if (companions > 0) setTimeout(() => updateCompanions(companions), 0);
         }
+
+        buildRoomSelector();
+        updateStepperButtons();
       }
 
-      // Read URL params and build selector on load
       applyRoomUrlParams();
       buildRoomSelector();
 
-      // If dates were passed from apto page, populate summary and skip to Tus Datos (step 3)
-      (function skipToStepIfDatesProvided() {
+      // Auto-start at step 2 (Tus Datos) — dates+rooms always come from apto page
+      (function autoStart() {
         const params = new URLSearchParams(window.location.search);
-        if (params.get("checkIn") && params.get("checkOut") && selectedRooms.length > 0) {
+        if (params.get("checkIn") && params.get("checkOut")) {
           updateDateDisplay();
           renderCalendar();
-
-          // Populate the stay summary box in step 2
-          const summaryBox = document.getElementById("stayDatesSummary");
+          // Populate stay summary
+          const summaryBox  = document.getElementById("stayDatesSummary");
           const summaryText = document.getElementById("stayDatesText");
           const horaEntradaEl = document.getElementById("horaEntrada");
           const horaSalidaEl  = document.getElementById("horaSalida");
           const fechaEntradaEl = document.getElementById("fechaEntrada");
           const fechaSalidaEl  = document.getElementById("fechaSalida");
-          if (fechaEntradaEl) fechaEntradaEl.value = selectedCheckIn;
-          if (fechaSalidaEl)  fechaSalidaEl.value  = selectedCheckOut;
-          if (summaryBox && summaryText) {
+          if (fechaEntradaEl) fechaEntradaEl.value = selectedCheckIn || "";
+          if (fechaSalidaEl)  fechaSalidaEl.value  = selectedCheckOut || "";
+          if (summaryBox && summaryText && selectedCheckIn && selectedCheckOut) {
             const hi = horaEntradaEl ? horaEntradaEl.value : "14:00";
             const hs = horaSalidaEl  ? horaSalidaEl.value  : "11:00";
             const fmtTime = t => {
               const [h, m] = t.split(":").map(Number);
-              const ampm = h >= 12 ? "PM" : "AM";
-              return `${((h % 12) || 12)}:${String(m).padStart(2,"0")} ${ampm}`;
+              return `${((h % 12) || 12)}:${String(m).padStart(2,"0")} ${h >= 12 ? "PM" : "AM"}`;
             };
+            const roomNames = selectedRooms.map(id => `C${id}`).join(", ");
             summaryText.innerHTML = `
               ✅ Check-in: <strong>${formatDateNice(selectedCheckIn)}</strong> a las <strong>${fmtTime(hi)}</strong><br>
-              🚪 Check-out: <strong>${formatDateNice(selectedCheckOut)}</strong> a las <strong>${fmtTime(hs)}</strong>
+              🚪 Check-out: <strong>${formatDateNice(selectedCheckOut)}</strong> a las <strong>${fmtTime(hs)}</strong><br>
+              🛏️ Habitaciones: <strong>${selectedRooms.map(id => ROOMS_CONFIG.find(r=>r.id===id)?.name).join(", ")}</strong>
             `;
             summaryBox.style.display = "block";
           }
-
-          // Skip directly to Tus Datos (step 3) — step 2 is a pass-through
-          currentStep = 3;
-          showStep(3);
+          // Skip directly to Tus Datos (step 2)
+          currentStep = 2;
+          showStep(2);
           updateProgress();
         }
       })();
 
       function updateProgress() {
-        progressFill.style.width = ((currentStep - 1) / 3 * 100) + "%";
+        progressFill.style.width = ((currentStep - 1) / 2 * 100) + "%";
         document.querySelectorAll(".progress-step").forEach((step, index) => {
           const n = index + 1;
           step.classList.remove("active", "completed");
@@ -2050,14 +2022,11 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         document.querySelectorAll(".step-container").forEach(c => c.classList.remove("active"));
         document.querySelector(`.step-container[data-step="${step}"]`).classList.add("active");
         btnBack.style.display   = step === 1 ? "none" : "block";
-        btnNext.style.display   = step === 4 ? "none" : "block";
-        btnSubmit.style.display = step === 4 ? "block" : "none";
-        summaryBox.style.display = step === 4 ? "block" : "none";
-        if (step === 4) { updateSummary(); updateSubmitBtn(); }
-        if (step === 3 && !bookedDatesLoaded) {
-          loadBookedDates().then(() => { bookedDatesLoaded = true; });
-        }
-        // When entering step 2, lock in maxCompanions based on selected rooms
+        btnNext.style.display   = step === 3 ? "none" : "block";
+        btnSubmit.style.display = step === 3 ? "block" : "none";
+        summaryBox.style.display = step === 3 ? "block" : "none";
+        if (step === 3) { updateSummary(); updateSubmitBtn(); }
+        // When entering step 2 (Tus Datos), set maxCompanions from URL-provided rooms
         if (step === 2) {
           maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
           if (currentCompanionCount > maxCompanions) updateCompanions(maxCompanions);
@@ -2073,31 +2042,23 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       }
 
       function validateStep(step) {
-        // Step 1: must select at least one room
+        // Step 1 (Tu Estadía): dates must be pre-filled
         if (step === 1) {
-          if (selectedRooms.length === 0) {
-            document.getElementById("roomHint").classList.add("show");
-            showToast("🛏️ Por favor selecciona al menos una habitación");
-            return false;
-          }
-          return true;
-        }
-        // Step 2: dates must be set (pre-filled from apto page, but just in case)
-        if (step === 2) {
           if (!selectedCheckIn || !selectedCheckOut) {
             showToast("📅 Por favor vuelve a la página del apartamento y selecciona las fechas");
             return false;
           }
+          return true;
         }
-        // Step 3: país check
-        if (step === 3) {
+        // Step 2 (Tus Datos): país check
+        if (step === 2) {
           const paisSelect = document.getElementById("pais");
           if (paisSelect.value === "__otro__" && !document.getElementById("otrosPais").value.trim()) {
             showToast("⚠️ Por favor escribe tu país de origen"); return false;
           }
         }
-        // Step 4: rules must be accepted
-        if (step === 4 && rulesConsentHidden.value !== "accepted") {
+        // Step 3 (Confirmación): rules must be accepted
+        if (step === 3 && rulesConsentHidden.value !== "accepted") {
           showToast("📋 Debes leer y aceptar el Reglamento del Apartamento para continuar.");
           return false;
         }
