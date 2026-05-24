@@ -1934,23 +1934,24 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         const resetCO  = document.getElementById("resetCheckOut");
 
         if (selectedCheckIn && selectedCheckOut) {
-          displayText.textContent = `${formatDateNice(selectedCheckIn)} → ${formatDateNice(selectedCheckOut)}`;
-          displayText.classList.remove("placeholder"); trigger.classList.add("has-value");
-          checkInDisplay.textContent = formatDateNice(selectedCheckIn);
-          checkOutDisplay.textContent = formatDateNice(selectedCheckOut);
+          if (displayText) { displayText.textContent = `${formatDateNice(selectedCheckIn)} → ${formatDateNice(selectedCheckOut)}`; displayText.classList.remove("placeholder"); }
+          if (trigger) trigger.classList.add("has-value");
+          if (checkInDisplay) checkInDisplay.textContent = formatDateNice(selectedCheckIn);
+          if (checkOutDisplay) checkOutDisplay.textContent = formatDateNice(selectedCheckOut);
           if (resetCI) resetCI.classList.add("show"); if (resetCO) resetCO.classList.add("show");
           if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.style.opacity = "1"; }
         } else if (selectedCheckIn) {
-          displayText.textContent = `${formatDateNice(selectedCheckIn)} → Selecciona check-out`;
-          displayText.classList.remove("placeholder"); trigger.classList.add("has-value");
-          checkInDisplay.textContent = formatDateNice(selectedCheckIn);
-          checkOutDisplay.textContent = "Añadir fecha";
+          if (displayText) { displayText.textContent = `${formatDateNice(selectedCheckIn)} → Selecciona check-out`; displayText.classList.remove("placeholder"); }
+          if (trigger) trigger.classList.add("has-value");
+          if (checkInDisplay) checkInDisplay.textContent = formatDateNice(selectedCheckIn);
+          if (checkOutDisplay) checkOutDisplay.textContent = "Añadir fecha";
           if (resetCI) resetCI.classList.add("show"); if (resetCO) resetCO.classList.remove("show");
           if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.style.opacity = "0.5"; }
         } else {
-          displayText.textContent = "Selecciona tus fechas";
-          displayText.classList.add("placeholder"); trigger.classList.remove("has-value");
-          checkInDisplay.textContent = "Añadir fecha"; checkOutDisplay.textContent = "Añadir fecha";
+          if (displayText) { displayText.textContent = "Selecciona tus fechas"; displayText.classList.add("placeholder"); }
+          if (trigger) trigger.classList.remove("has-value");
+          if (checkInDisplay) checkInDisplay.textContent = "Añadir fecha";
+          if (checkOutDisplay) checkOutDisplay.textContent = "Añadir fecha";
           if (resetCI) resetCI.classList.remove("show"); if (resetCO) resetCO.classList.remove("show");
           if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.style.opacity = "0.5"; }
         }
