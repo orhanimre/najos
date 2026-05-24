@@ -1121,6 +1121,59 @@
                 </div>
             </div>
 
+            <div class="section">
+                <h2>🛏️ Disponibilidad por Habitación</h2>
+                <p class="contact-subtitle">Consulta la disponibilidad de cada habitación del apartamento</p>
+                <div class="rooms-grid">
+
+                    <div class="room-card">
+                        <div class="room-card-header">
+                            <span class="room-card-name">🛏️ Habitación 1</span>
+                            <span class="room-card-badge">Cama doble · 2 personas</span>
+                        </div>
+                        <div class="room-card-body">
+                            <div class="room-card-nav">
+                                <button class="room-cal-btn" onclick="roomNavigate('r1', -1)">&#8249;</button>
+                                <span class="room-cal-label" id="r1-label">Cargando…</span>
+                                <button class="room-cal-btn" onclick="roomNavigate('r1', 1)">&#8250;</button>
+                            </div>
+                            <div class="room-cal-container" id="r1-cal">
+                                <div class="room-cal-loading">Cargando disponibilidad…</div>
+                            </div>
+                        </div>
+                        <div class="room-card-footer">
+                            <button class="room-reserve-btn" onclick="searchAvailability()">Reservar esta habitación →</button>
+                        </div>
+                    </div>
+
+                    <div class="room-card">
+                        <div class="room-card-header">
+                            <span class="room-card-name">🛏️ Habitación 2</span>
+                            <span class="room-card-badge">Cama doble · 2 personas</span>
+                        </div>
+                        <div class="room-card-body">
+                            <div class="room-card-nav">
+                                <button class="room-cal-btn" onclick="roomNavigate('r2', -1)">&#8249;</button>
+                                <span class="room-cal-label" id="r2-label">Cargando…</span>
+                                <button class="room-cal-btn" onclick="roomNavigate('r2', 1)">&#8250;</button>
+                            </div>
+                            <div class="room-cal-container" id="r2-cal">
+                                <div class="room-cal-loading">Cargando disponibilidad…</div>
+                            </div>
+                        </div>
+                        <div class="room-card-footer">
+                            <button class="room-reserve-btn" onclick="searchAvailability()">Reservar esta habitación →</button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="rooms-legend">
+                    <div class="rooms-legend-item"><div class="rooms-legend-dot" style="background:#fecaca;"></div>Ocupado</div>
+                    <div class="rooms-legend-item"><div class="rooms-legend-dot" style="background:linear-gradient(90deg,white 50%,#fecaca 50%);border:1px solid #e5e7eb;"></div>Llegada</div>
+                    <div class="rooms-legend-item"><div class="rooms-legend-dot" style="background:linear-gradient(90deg,#fecaca 50%,white 50%);border:1px solid #e5e7eb;"></div>Salida</div>
+                </div>
+            </div>
+
             <div class="contact-section">
                 <h2>📞 Comuníquese con Nosotros</h2>
                 <p class="contact-subtitle">Estamos disponibles para ayudarte a planear tu estadía perfecta</p>
