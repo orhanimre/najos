@@ -1801,6 +1801,20 @@
             }
             const horaEntrada   = document.getElementById('aptoHoraEntrada').value || '14:00';
             const horaSalida    = document.getElementById('aptoHoraSalida').value  || '11:00';
+
+            // Validate hora de llegada: must be between 14:00 and 21:00
+            if (horaEntrada < '14:00' || horaEntrada > '21:00') {
+                showToast('La hora de llegada debe ser entre las 14:00 y las 21:00', '🕐');
+                document.getElementById('aptoHoraEntrada').focus();
+                return;
+            }
+            // Validate hora de salida: must be 11:00 or earlier
+            if (horaSalida > '11:00') {
+                showToast('La hora de salida debe ser a las 11:00 o antes', '🕙');
+                document.getElementById('aptoHoraSalida').focus();
+                return;
+            }
+
             const habitaciones  = aptoSelectedRooms.join(',');
             const params = new URLSearchParams({
                 checkIn, checkOut,
@@ -1810,6 +1824,29 @@
             });
             window.location.href = `registro-apto2.html?${params}`;
         };
+
+        // ── ENFORCE TIME RESTRICTIONS IN REAL TIME ──
+        (function() {
+            const entradaEl = document.getElementById('aptoHoraEntrada');
+            const salidaEl  = document.getElementById('aptoHoraSalida');
+
+            entradaEl.addEventListener('change', function() {
+                if (this.value < '14:00') {
+                    this.value = '14:00';
+                    showToast('La llegada mínima es a las 14:00', '🕐');
+                } else if (this.value > '21:00') {
+                    this.value = '21:00';
+                    showToast('La llegada máxima es a las 21:00', '🕙');
+                }
+            });
+
+            salidaEl.addEventListener('change', function() {
+                if (this.value > '11:00') {
+                    this.value = '11:00';
+                    showToast('La salida máxima es a las 11:00', '🕙');
+                }
+            });
+        })();
     </script>
 
     <!-- ── FIREBASE PER-ROOM AVAILABILITY ── -->
