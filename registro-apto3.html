@@ -905,7 +905,7 @@ html, body { overscroll-behavior: none; }
         .step-intro p  { font-size: 14px; }
 
         .grid-2 { grid-template-columns: 1fr; }
-        .step-container[data-step="3"] .grid-2 { grid-template-columns: 1fr 1fr; gap: 12px; }
+        .step-container[data-step="2"] .grid-2 { grid-template-columns: 1fr 1fr; gap: 12px; }
 
         .step-navigation { flex-direction: column-reverse; gap: 12px; margin-top: 30px; padding-top: 20px; }
         .nav-btn { padding: 14px 24px; font-size: 15px; }
@@ -1310,18 +1310,13 @@ html, body { overscroll-behavior: none; }
           <div class="progress-line">
             <div class="progress-line-fill" id="progressFill"></div>
           </div>
-          <div class="progress-step active" data-step="1">
+          <div class="progress-step" data-step="1">
             <div class="progress-circle">1</div>
-            <div class="progress-label">Tu Estadía</div>
-            <div class="progress-icon">🏖️</div>
-          </div>
-          <div class="progress-step" data-step="2">
-            <div class="progress-circle">2</div>
             <div class="progress-label">Tus Datos</div>
             <div class="progress-icon">🌴</div>
           </div>
-          <div class="progress-step" data-step="3">
-            <div class="progress-circle">3</div>
+          <div class="progress-step" data-step="2">
+            <div class="progress-circle">2</div>
             <div class="progress-label">Confirmación</div>
             <div class="progress-icon">✓</div>
           </div>
@@ -1333,14 +1328,9 @@ html, body { overscroll-behavior: none; }
         <div id="errorMessage"   class="message error-message"></div>
 
         <form id="registrationForm">
-          <!-- Step 1 — Room Selection -->
-          <!-- Step 1 — Tu Estadía (pre-filled from apto page) -->
-          <div class="step-container active" data-step="1" id="step-estadia">
-            <div class="step-intro">
-              <h2>🌊 ¡Genial! Ahora dime cuándo vienes</h2>
-              <p>Tus fechas y horarios han sido seleccionados. Ahora completa tus datos personales.</p>
-            </div>
-            <!-- Stay summary (pre-filled from apto page) -->
+          
+          <!-- Step 3 — Tus Datos -->
+          <div class="step-container" data-step="1">
             <div id="stayDatesSummary" style="background:#f0f7ff;border:1px solid #bfdbfe;border-radius:12px;padding:16px 20px;margin-bottom:20px;display:none;">
               <div style="font-size:13px;font-weight:700;color:#005A8D;margin-bottom:8px;">📅 Tu Estadía</div>
               <div id="stayDatesText" style="font-size:14px;color:#1e293b;line-height:1.8;"></div>
@@ -1349,10 +1339,6 @@ html, body { overscroll-behavior: none; }
             <input type="hidden" id="fechaSalida"  name="fechaSalida"  />
             <input type="hidden" id="horaEntrada" name="horaEntrada" />
             <input type="hidden" id="horaSalida"  name="horaSalida"  />
-          </div>
-
-          <!-- Step 3 — Tus Datos -->
-          <div class="step-container" data-step="2">
             <div class="step-intro">
               <h2>👤 Tus Datos Personales</h2>
               <p>Solo necesitamos unos datos básicos para prepararte una llegada perfecta.</p>
@@ -1406,7 +1392,7 @@ html, body { overscroll-behavior: none; }
           </div>
 
           <!-- Step 4 — Confirmación -->
-          <div class="step-container" data-step="3">
+          <div class="step-container" data-step="2">
             <div class="step-intro">
               <h2>✅ Último paso: tu grupo y confirmación</h2>
               <p>Indica cuántos acompañantes tienes y completa su información.</p>
@@ -1869,7 +1855,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       })();
 
       function updateProgress() {
-        progressFill.style.width = ((currentStep - 1) / 2 * 100) + "%";
+        progressFill.style.width = ((currentStep - 1) / 1 * 100) + "%";
         document.querySelectorAll(".progress-step").forEach((step, index) => {
           const n = index + 1;
           step.classList.remove("active", "completed");
@@ -1889,11 +1875,11 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         document.querySelectorAll(".step-container").forEach(c => c.classList.remove("active"));
         document.querySelector(`.step-container[data-step="${step}"]`).classList.add("active");
         btnBack.style.display   = step === 1 ? "none" : "block";
-        btnNext.style.display   = step === 3 ? "none" : "block";
-        btnSubmit.style.display = step === 3 ? "block" : "none";
-        summaryBox.style.display = step === 3 ? "block" : "none";
-        if (step === 3) { updateSummary(); updateSubmitBtn(); }
-        if (step === 2) {
+        btnNext.style.display   = step === 2 ? "none" : "block";
+        btnSubmit.style.display = step === 2 ? "block" : "none";
+        summaryBox.style.display = step === 2 ? "block" : "none";
+        if (step === 2) { updateSummary(); updateSubmitBtn(); }
+        if (step === 1) {
           maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
           if (currentCompanionCount > maxCompanions) updateCompanions(maxCompanions);
           updateStepperButtons();
@@ -1914,13 +1900,13 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           }
           return true;
         }
-        if (step === 2) {
+        if (step === 1) {
           const paisSelect = document.getElementById("pais");
           if (paisSelect && paisSelect.value === "__otro__" && !document.getElementById("otrosPais").value.trim()) {
             showToast("⚠️ Por favor escribe tu país de origen"); return false;
           }
         }
-        if (step === 3 && rulesConsentHidden.value !== "accepted") {
+        if (step === 2 && rulesConsentHidden.value !== "accepted") {
           showToast("📋 Debes leer y aceptar el Reglamento del Apartamento para continuar.");
           return false;
         }
@@ -1987,7 +1973,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       }
 
       btnNext.addEventListener("click", async () => {
-        if (currentStep === 2) { // Tu Estadía step
+        if (currentStep === 1) { // Tus Datos step
           if (!validateStep(currentStep)) return;
           const available = await checkDatesAvailable();
           if (!available) {
@@ -2019,7 +2005,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         const isFilled = nombre && apellido && tipoId && numId;
         card.classList.toggle("filled", isFilled);
         companionFilledStatus[index] = isFilled;
-        if (currentStep === 3) updateSummary();
+        if (currentStep === 2) updateSummary();
         return isFilled;
       }
 
