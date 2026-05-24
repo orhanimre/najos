@@ -1710,6 +1710,14 @@
                 bookingState.rooms = recommendedRooms;
                 updateRoomsDisplay();
             }
+            // Sync aptoSelectedRooms to match the confirmed room count
+            aptoSelectedRooms = [];
+            for (let i = 1; i <= bookingState.rooms; i++) aptoSelectedRooms.push(i);
+
+            // Reset dates when guest/room selection changes
+            aptoSelectedCheckIn = null; aptoSelectedCheckOut = null; aptoSelectingCheckIn = true;
+            aptoUpdateDateDisplay();
+
             closeGuestsModal();
         };
 
