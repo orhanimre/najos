@@ -986,7 +986,7 @@
                 </div>
                 <div style="display: flex; gap: 12px; margin-top: 16px;">
                     <button class="booking-btn" onclick="searchAvailability()" style="flex: 1;">
-                        🔍 Buscar disponibilidad
+                        🏖️ Reserva tu Estancia
                     </button>
                 </div>
             </div>
@@ -1546,6 +1546,9 @@
                 mark(rs.dateSets.shared,   'booked');
             });
             window.aptoRoomAvailMap = ram;
+            // Re-render calendar if date picker is open
+            const modal = document.getElementById('aptoDatePickerModal');
+            if (modal && modal.classList.contains('show')) { aptoRenderCalendar(); }
         };
 
         document.getElementById('guestsSelector').addEventListener('click', openGuestsModal);
@@ -1652,6 +1655,11 @@
             }, 3500);
         }
         window.searchAvailability = function() {
+            if (!guestsConfirmed || bookingState.guests < 1) {
+                showToast('Por favor selecciona el número de huéspedes antes de continuar', '👥');
+                openGuestsModal();
+                return;
+            }
             if (!aptoSelectedCheckIn || !aptoSelectedCheckOut) {
                 showToast('Por favor selecciona tus fechas de entrada y salida', '📅');
                 openAptoDatePicker();
