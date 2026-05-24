@@ -1282,16 +1282,30 @@
             modal.classList.add('show');
             document.body.style.overflow = 'hidden';
             aptoBuildCalRoomPicker();
-            aptoRenderCalendar();
             aptoUpdateInstruction();
-            // Re-render after a short delay so Firebase booked dates (async) are shown
-            setTimeout(() => {
+
+            function finishOpen() {
                 aptoRenderCalendar();
-                const todayCell = document.querySelector('#aptoDatePickerScroll .apto-cal-day.today');
-                if (todayCell) {
-                    todayCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            }, 150);
+                setTimeout(() => {
+                    const todayCell = document.querySelector('#aptoDatePickerScroll .apto-cal-day.today');
+                    if (todayCell) todayCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 60);
+            }
+
+            if (window.aptoDataReady) {
+                finishOpen();
+            } else {
+                document.getElementById('aptoDatePickerScroll').innerHTML =
+                    '<div style="text-align:center;padding:60px 20px;color:var(--ocean);font-size:16px;font-weight:600;">⏳ Cargando disponibilidad...</div>';
+                let attempts = 0;
+                const poll = setInterval(() => {
+                    attempts++;
+                    if (window.aptoDataReady || attempts > 100) {
+                        clearInterval(poll);
+                        finishOpen();
+                    }
+                }, 100);
+            }
         };
 
         window.closeAptoDatePicker = function() {
@@ -1557,6 +1571,7 @@
                 mark(rs.dateSets.shared,   'shared');
             });
             window.aptoRoomAvailMap = ram;
+            window.aptoDataReady = true;
             // Always re-render: open = updates immediately; closed = ready for next open.
             aptoRenderCalendar();
         };
@@ -1777,7 +1792,7 @@
     }
 
     async function loadRoomReservations(roomKey) {
-        // Single-field query (no composite index needed) — filter by habitacion in JS
+        // Single-field query — filter by habitacion in JS
         const snap = await getDocs(
             query(collection(db, "cabin_availability"), where("apto", "==", CABIN))
         );
@@ -1852,10 +1867,10 @@
             try {
                 const reservations = await loadRoomReservations(room.key);
                 roomState[room.id].dateSets = buildDateSets(reservations);
-                renderRoomPage(room);
+                if (calEl) renderRoomPage(room); // only render if element exists in DOM
             } catch (err) {
                 console.error(`Error loading room ${room.key}:`, err);
-                calEl.innerHTML = '<div class="room-cal-loading">No se pudo cargar. Intenta de nuevo.</div>';
+                if (calEl) calEl.innerHTML = '<div class="room-cal-loading">No se pudo cargar. Intenta de nuevo.</div>';
             }
         }
         window._aptoRoomState = roomState; // expose for searchAvailability
