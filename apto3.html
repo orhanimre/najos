@@ -1471,11 +1471,12 @@
 
                 const selectedRoomNames = aptoSelectedRooms.map(id => `Habitación ${id}`);
                 const blockingStatuses = ['mid','shared'];
-                const anyRoomBlocked = selectedRoomNames.some(rn => blockingStatuses.includes(ram[dateStr]?.[rn]));
-                const anyRoomCheckout = selectedRoomNames.some(rn => ram[dateStr]?.[rn] === 'checkout');
-                const isPartialDay = anyRoomCheckout && !anyRoomBlocked;
-                const anyRoomCheckin = selectedRoomNames.some(rn => ram[dateStr]?.[rn] === 'checkin');
-                const isCheckinDay = anyRoomCheckin && !anyRoomBlocked;
+                const allRoomsBlocked = selectedRoomNames.every(rn => blockingStatuses.includes(ram[dateStr]?.[rn]));
+                const allRoomsCheckout = selectedRoomNames.every(rn => ram[dateStr]?.[rn] === 'checkout');
+                const isPartialDay = allRoomsCheckout && !allRoomsBlocked;
+                const allRoomsCheckin = selectedRoomNames.every(rn => ram[dateStr]?.[rn] === 'checkin');
+                const isCheckinDay = allRoomsCheckin && !allRoomsBlocked;
+                const anyRoomBlocked = allRoomsBlocked; // alias for rendering block below
 
                 if (dateStr === aptoSelectedCheckIn) { cell.classList.add('check-in'); }
                 else if (dateStr === aptoSelectedCheckOut) { cell.classList.add('check-out'); }
@@ -1537,8 +1538,8 @@
                 const blockSt = ['mid','checkin','shared'];
                 for (let d = new Date(ci); d < co; d.setDate(d.getDate() + 1)) {
                     const s = aptoToDateStr(d);
-                    const anyBlocked = selectedRoomNames.some(rn => blockSt.includes(ram[s]?.[rn]));
-                    if (anyBlocked) { showToast('⚠️ Hay fechas reservadas en ese rango. Elige otras fechas.'); return; }
+                    const allBlocked = selectedRoomNames.every(rn => blockSt.includes(ram[s]?.[rn]));
+                    if (allBlocked) { showToast('⚠️ Hay fechas reservadas en ese rango. Elige otras fechas.'); return; }
                 }
                 aptoSelectedCheckOut = dateStr; aptoSelectingCheckIn = true;
                 aptoUpdateDateDisplay(); aptoRenderCalendar();
