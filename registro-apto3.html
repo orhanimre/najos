@@ -730,7 +730,6 @@ html, body { overscroll-behavior: none; }
       .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #4a5568; }
       .legend-color { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
       .legend-color.booked   { background: #9ca3af; }
-      .legend-color.selected { background: #4b5563; }
       .legend-color.range    { background: #d1d5db; }
       .legend-color.available { background: white; border: 2px solid #e5e7eb; }
 
@@ -937,33 +936,6 @@ html, body { overscroll-behavior: none; }
       }
 
 
-      /* ── Room Selector ── */
-      .room-selector-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-        margin-top: 20px;
-      }
-      @media (max-width: 600px) {
-        .room-selector-grid { grid-template-columns: 1fr; gap: 12px; }
-      }
-      .room-card {
-        border: 2.5px solid #e2e8f0; border-radius: 16px;
-        padding: 20px 16px; text-align: center; cursor: pointer;
-        background: #fafafa; transition: all 0.25s ease;
-        position: relative; user-select: none;
-      }
-      .room-card:hover { border-color: #14b8a6; background: #f0fdfa; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(20,184,166,0.15); }
-      .room-card.selected { border-color: #0077BE; background: linear-gradient(135deg, #ebf8ff 0%, #e0f7f4 100%); box-shadow: 0 4px 16px rgba(0,119,190,0.2); transform: translateY(-2px); }
-      .room-card.selected::after { content: "✓"; position: absolute; top: -10px; right: -10px; width: 26px; height: 26px; background: #0077BE; color: white; border-radius: 50%; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 8px rgba(0,119,190,0.4); }
-      .room-card-icon { font-size: 36px; margin-bottom: 10px; display: block; }
-      .room-card-name { font-weight: 700; font-size: 15px; color: #2d3748; margin-bottom: 6px; }
-      .room-card.selected .room-card-name { color: #0077BE; }
-      .room-card-detail { font-size: 12px; color: #718096; line-height: 1.4; }
-      .room-selection-hint { text-align: center; padding: 12px 20px; background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border: 1.5px solid #fb923c; border-radius: 12px; font-size: 14px; font-weight: 600; color: #9a3412; margin-top: 20px; display: none; }
-      .room-selection-hint.show { display: block; }
-      .selected-rooms-summary { margin-top: 20px; padding: 14px 20px; background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%); border: 2px solid #48bb78; border-radius: 12px; font-size: 14px; font-weight: 600; color: #276749; display: none; }
-      .selected-rooms-summary.show { display: block; }
       /* ── Calendar Instruction Banner ── */
       .calendar-instruction {
         display: flex; align-items: center; justify-content: center;
@@ -1115,18 +1087,6 @@ html, body { overscroll-behavior: none; }
         color: #15803d;
       }
       .avail-peek-icon { font-size: 16px; }
-
-      /* ── Room card column wrapper (card + peek link stacked) ── */
-      .room-card-col {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0;
-      }
-      .room-card-col .room-card {
-        flex: 1;
-        margin-bottom: 0;
-      }
 
       /* ── Per-card availability peek link ── */
       .room-avail-peek-btn {
@@ -1556,10 +1516,6 @@ html, body { overscroll-behavior: none; }
               <span>Disponible</span>
             </div>
             <div class="legend-item">
-              <div class="legend-color selected"></div>
-              <span>Seleccionado</span>
-            </div>
-            <div class="legend-item">
               <div style="display:flex;gap:3px;align-items:center;">
                 <div style="width:24px;height:24px;border-radius:6px;background:#166534;"></div>
                 <div style="width:24px;height:24px;border-radius:6px;background:#ef4444;"></div>
@@ -1585,7 +1541,7 @@ html, body { overscroll-behavior: none; }
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import {
     getFirestore, collection, addDoc, serverTimestamp, getDocs,
-    doc, getDoc, onSnapshot, query, where,
+    query, where,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -1621,49 +1577,6 @@ const ROOMS_CONFIG = [
       let bookedDates = [];
       let bookedDatesLoaded = false;
 
-      window.loadExistingReservation = async function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const reservationId = urlParams.get('id');
-    if (!reservationId) return;
-    try {
-        const docRef = doc(db, "registrations", reservationId);
-        onSnapshot(docRef, async (docSnap) => {
-            if (!docSnap.exists()) return;
-            updateReservationDisplay(docSnap.data());
-            await loadBookedDates();
-            bookedDatesLoaded = true;
-            renderCalendar();
-        });
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) updateReservationDisplay(docSnap.data());
-    } catch (error) {
-        console.error("Error loading reservation:", error);
-        showToast("❌ Error al cargar la reserva");
-    }
-};
-
-window.updateReservationDisplay = function(reservation) {
-    if (!reservation.fechaEntrada || !reservation.fechaSalida) return;
-    if (reservation.habitaciones && Array.isArray(reservation.habitaciones)) {
-      selectedRooms = reservation.habitaciones.map(name => parseInt(name.replace("Habitación ", ""))).filter(n => !isNaN(n));
-      selectedRooms.sort();
-      maxCompanions = Math.max(0, selectedRooms.length * 2 - 1);
-      buildRoomSelector();
-    }
-    selectedCheckIn  = reservation.fechaEntrada;
-    selectedCheckOut = reservation.fechaSalida;
-    selectingCheckIn = true;
-    const hi = document.getElementById('horaEntrada');
-    const hs = document.getElementById('horaSalida');
-    if (reservation.horaEntrada && hi) hi.value = reservation.horaEntrada;
-    if (reservation.horaSalida  && hs) hs.value = reservation.horaSalida;
-    updateDateDisplay();
-    renderCalendar();
-    setTimeout(() => renderCalendar(), 100);
-    showToast("✅ Reserva actualizada desde admin");
-};
-
-document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
 
       function showToast(message) {
         const toast = document.createElement("div");
@@ -1744,51 +1657,6 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       updateStepperButtons();
 
 
-      // ── Room selector ──
-      function buildRoomSelector() {
-        const grid = document.getElementById("roomSelectorGrid");
-        if (!grid) return;
-        grid.innerHTML = "";
-        ROOMS_CONFIG.forEach(room => {
-          const col = document.createElement("div");
-          col.className = "room-card-col";
-
-          const card = document.createElement("div");
-          card.className = "room-card" + (selectedRooms.includes(room.id) ? " selected" : "");
-          card.dataset.roomId = room.id;
-          card.innerHTML = `<span class="room-card-icon">${room.icon}</span><div class="room-card-name">${room.name}</div><div class="room-card-detail">${room.detail}</div>`;
-          card.addEventListener("click", () => toggleRoom(room.id));
-
-          const peekBtn = document.createElement("button");
-          peekBtn.type = "button";
-          peekBtn.className = "room-avail-peek-btn";
-          peekBtn.textContent = "Ver disponibilidad 📅";
-          peekBtn.addEventListener("click", () => openRoomAvailModal(room));
-
-          col.appendChild(card);
-          col.appendChild(peekBtn);
-          grid.appendChild(col);
-        });
-        updateRoomsSummary();
-      }
-      function toggleRoom(roomId) {
-        const idx = selectedRooms.indexOf(roomId);
-        if (idx === -1) selectedRooms.push(roomId); else selectedRooms.splice(idx, 1);
-        selectedRooms.sort();
-        document.getElementById("roomHint").classList.remove("show");
-        // BUG FIX: reset cached dates so calendar reloads for the new room combination
-        bookedDatesLoaded = false;
-        selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
-        buildRoomSelector();
-      }
-      function updateRoomsSummary() {
-        const el = document.getElementById("roomsSummary");
-        if (!el) return;
-        if (selectedRooms.length === 0) { el.classList.remove("show"); return; }
-        const names = selectedRooms.map(id => ROOMS_CONFIG.find(r => r.id === id)?.name).join(", ");
-        el.classList.add("show");
-        el.innerHTML = `✅ Seleccionaste: <strong>${names}</strong> · ${selectedRooms.length} habitación(es) · hasta ${selectedRooms.length * 2} personas`;
-      }
       function applyRoomUrlParams() {
         const params = new URLSearchParams(window.location.search);
         const habitacionesParam = params.get("habitaciones");
@@ -1816,12 +1684,10 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           if (companions > 0) setTimeout(() => updateCompanions(companions), 0);
         }
 
-        buildRoomSelector();
         updateStepperButtons();
       }
 
       applyRoomUrlParams();
-      buildRoomSelector();
       showStep(1); // always show Tus Datos on load
 
       // Auto-start at step 2 (Tus Datos) — dates+rooms always come from apto page
@@ -1937,20 +1803,6 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
         `);
       };
 
-      window.showMapModal = function(imageUrl) {
-        document.body.insertAdjacentHTML("beforeend", `
-          <div class="lightbox-overlay" onclick="this.remove()">
-            <div class="lightbox-content" onclick="event.stopPropagation()">
-              <button class="lightbox-close" onclick="this.closest('.lightbox-overlay').remove()">×</button>
-              <img src="${imageUrl}" alt="Mapa de Sitios" class="lightbox-image" />
-              <div style="background:rgba(255,255,255,0.95);color:#2d3748;padding:16px 20px;border-radius:12px;margin-top:20px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.15);">
-                <div style="font-size:16px;font-weight:700;margin-bottom:6px;">📸 Para guardar el mapa:</div>
-                <div style="font-size:14px;color:#4a5568;line-height:1.5;">Mantén presionada la imagen y selecciona<br>"Guardar imagen" o "Descargar imagen"</div>
-              </div>
-            </div>
-          </div>
-        `);
-      };
 
       async function checkDatesAvailable() {
         if (!selectedCheckIn || !selectedCheckOut) return true;
@@ -2134,10 +1986,6 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
       let roomAvailDateSets = null;
       let roomAvailCurrentRoom = null;
 
-      function raToDateStr(d) {
-        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-      }
-
       async function openRoomAvailModal(room) {
         roomAvailCurrentRoom = room;
         roomAvailOffset = 0;
@@ -2186,7 +2034,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
             const s = new Date(start + "T00:00:00");
             const e = new Date(end   + "T00:00:00");
             const cur = new Date(s); cur.setDate(cur.getDate() + 1);
-            while (cur < e) { mid.add(raToDateStr(cur)); cur.setDate(cur.getDate() + 1); }
+            while (cur < e) { mid.add(toDateStr(cur)); cur.setDate(cur.getDate() + 1); }
             if (allCheckins.has(end)) shared.add(end); else checkout.add(end);
           });
           roomAvailDateSets = { mid, checkin, checkout, shared };
@@ -2224,13 +2072,13 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           const cell = document.createElement("div");
           cell.className = "ra-cal-day";
           const cur = new Date(y, m, d);
-          const ds = raToDateStr(cur);
+          const ds = toDateStr(cur);
           if (cur < now) cell.classList.add("past");
           else if (roomAvailDateSets.shared.has(ds))   cell.classList.add("booked-shared");
           else if (roomAvailDateSets.mid.has(ds))      cell.classList.add("booked-mid");
           else if (roomAvailDateSets.checkin.has(ds))  cell.classList.add("booked-checkin");
           else if (roomAvailDateSets.checkout.has(ds)) cell.classList.add("booked-checkout");
-          if (ds === raToDateStr(now)) cell.classList.add("today");
+          if (ds === toDateStr(now)) cell.classList.add("today");
           cell.textContent = d;
           grid.appendChild(cell);
         }
@@ -2272,8 +2120,6 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           selectedRooms.splice(idx, 1);
         }
         selectedRooms.sort();
-        // Sync to main room selector
-        buildRoomSelector();
         // Reset dates since room combo changed
         selectedCheckIn = null; selectedCheckOut = null; selectingCheckIn = true;
         updateDateDisplay();
@@ -2295,7 +2141,7 @@ document.addEventListener('DOMContentLoaded', () => loadExistingReservation());
           bookedDatesLoaded = true;
           renderCalendar();
           updateInstruction();
-          if (previewAll) { selectedRooms = []; buildRoomSelector(); buildCalRoomPicker(); renderCalendar(); }
+          if (previewAll) { selectedRooms = []; buildCalRoomPicker(); renderCalendar(); }
         });
       };
 
