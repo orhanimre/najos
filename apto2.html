@@ -1548,16 +1548,17 @@
 
                 // Determine booking status for selected rooms only
                 const selectedRoomNames = aptoSelectedRooms.map(id => `Habitación ${id}`);
-                // A day is blocked if ANY selected room is mid or shared on that date
-                // checkin days are NOT fully blocked — they're half-available (like checkout days)
+                // A day is blocked only if ALL selected rooms are mid or shared on that date
+                // (partial bookings still leave rooms available for other guests)
                 const blockingStatuses = ['mid','shared'];
-                const anyRoomBlocked = selectedRoomNames.some(rn => blockingStatuses.includes(ram[dateStr]?.[rn]));
-                // Checkout day: some room checks out — available for new check-in (grey|white half-half)
-                const anyRoomCheckout = selectedRoomNames.some(rn => ram[dateStr]?.[rn] === 'checkout');
-                const isPartialDay = anyRoomCheckout && !anyRoomBlocked;
-                // Checkin day: someone arrives — available only as checkout target (white|grey half-half)
-                const anyRoomCheckin = selectedRoomNames.some(rn => ram[dateStr]?.[rn] === 'checkin');
-                const isCheckinDay = anyRoomCheckin && !anyRoomBlocked;
+                const allRoomsBlocked = selectedRoomNames.every(rn => blockingStatuses.includes(ram[dateStr]?.[rn]));
+                // Checkout day: ALL selected rooms check out — available for new check-in (grey|white half-half)
+                const allRoomsCheckout = selectedRoomNames.every(rn => ram[dateStr]?.[rn] === 'checkout');
+                const isPartialDay = allRoomsCheckout && !allRoomsBlocked;
+                // Checkin day: ALL selected rooms have someone arriving — available only as checkout target
+                const allRoomsCheckin = selectedRoomNames.every(rn => ram[dateStr]?.[rn] === 'checkin');
+                const isCheckinDay = allRoomsCheckin && !allRoomsBlocked;
+                const anyRoomBlocked = allRoomsBlocked; // alias for rendering block below
 
                 if (dateStr === aptoSelectedCheckIn) { cell.classList.add('check-in'); }
                 else if (dateStr === aptoSelectedCheckOut) { cell.classList.add('check-out'); }
@@ -1618,14 +1619,14 @@
                 aptoUpdateDateDisplay(); aptoRenderCalendar();
             } else {
                 if (dateStr <= aptoSelectedCheckIn) { showToast('⚠️ La salida debe ser después de la llegada'); return; }
-                // Check no blocked days in range for selected rooms
+                // Check no blocked days in range for selected rooms (all rooms must be blocked to deny)
                 const ci = new Date(aptoSelectedCheckIn + 'T00:00:00');
                 const co = new Date(dateStr + 'T00:00:00');
                 const blockSt = ['mid','checkin','shared'];
                 for (let d = new Date(ci); d < co; d.setDate(d.getDate() + 1)) {
                     const s = aptoToDateStr(d);
-                    const anyBlocked = selectedRoomNames.some(rn => blockSt.includes(ram[s]?.[rn]));
-                    if (anyBlocked) { showToast('⚠️ Hay fechas reservadas en ese rango. Elige otras fechas.'); return; }
+                    const allBlocked = selectedRoomNames.every(rn => blockSt.includes(ram[s]?.[rn]));
+                    if (allBlocked) { showToast('⚠️ Hay fechas reservadas en ese rango. Elige otras fechas.'); return; }
                 }
                 aptoSelectedCheckOut = dateStr; aptoSelectingCheckIn = true;
                 aptoUpdateDateDisplay(); aptoRenderCalendar();
