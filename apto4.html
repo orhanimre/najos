@@ -1563,6 +1563,7 @@
 
         window.confirmGuestsSelection = function() {
             guestsConfirmed = true;
+            updateSummary();
             // Reset dates when guest selection changes
             aptoSelectedCheckIn = null; aptoSelectedCheckOut = null; aptoSelectingCheckIn = true;
             aptoUpdateDateDisplay();
