@@ -1682,6 +1682,7 @@
             // Always enforce the guest→room rule, no manual override
             bookingState.rooms = Math.min(roomsForGuests(bookingState.guests), aptoData.totalRooms);
             updateRoomsDisplay();
+            updateSummary();
             // Sync aptoSelectedRooms to match the confirmed room count
             aptoSelectedRooms = [];
             for (let i = 1; i <= bookingState.rooms; i++) aptoSelectedRooms.push(i);
