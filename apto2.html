@@ -1706,8 +1706,6 @@
 
         document.getElementById('guestsSelector').addEventListener('click', openGuestsModal);
 
-                document.getElementById('guestsSelector').addEventListener('click', openGuestsModal);
-
         function openGuestsModal() {
             document.getElementById('guestsModal').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -1774,6 +1772,7 @@
             // Always enforce the guest→room rule, no manual override
             bookingState.rooms = Math.min(roomsForGuests(bookingState.guests), aptoData.totalRooms);
             updateRoomsDisplay();
+            updateSummary();
 
             // Sync aptoSelectedRooms to match the confirmed room count
             aptoSelectedRooms = [];
