@@ -1659,6 +1659,11 @@
                     }
                     return;
                 }
+                // Assign the first N actually-free rooms (by their numeric IDs)
+                aptoSelectedRooms = freeRooms.slice(0, requestedCount).map(name => {
+                    const m = name.match(/(\d+)$/);
+                    return m ? Number(m[1]) : null;
+                }).filter(Boolean);
                 aptoSelectedCheckOut = dateStr; aptoSelectingCheckIn = true;
                 aptoUpdateDateDisplay(); aptoRenderCalendar();
             }
