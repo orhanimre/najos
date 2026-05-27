@@ -1989,6 +1989,7 @@ let currentStep = 1;
           try { await loadBookedDates(); bookedDatesLoaded = true; } catch(e) { return true; }
         }
         const selectedRoomNames = selectedRooms.map(id => `Habitación ${id}`);
+        if (selectedRoomNames.length === 0) return true; // no rooms selected = nothing to check
         const ram = window.roomAvailMap || {};
         const ci = new Date(selectedCheckIn + 'T00:00:00');
         const co = new Date(selectedCheckOut + 'T00:00:00');
@@ -2427,8 +2428,9 @@ let currentStep = 1;
         const modal = document.getElementById("datePickerModal");
         modal.classList.add("show");
         document.body.style.overflow = "hidden";
-        // If called from step 1 with no rooms yet, preview all rooms
-        const previewAll = selectedRooms.length === 0;
+        // If called with no rooms yet, preview all rooms (but don't wipe URL-provided rooms)
+        const hadRooms = selectedRooms.length > 0;
+        const previewAll = !hadRooms;
         if (previewAll) ROOMS_CONFIG.forEach(r => { if (!selectedRooms.includes(r.id)) selectedRooms.push(r.id); });
         buildCalRoomPicker();
         document.getElementById("datePickerScroll").innerHTML = '<div style="text-align:center;padding:40px;color:#14b8a6;font-size:18px;">⏳ Cargando disponibilidad...</div>';
@@ -2591,6 +2593,7 @@ let currentStep = 1;
           let hasConflict = false;
 const selectedRoomNames2 = selectedRooms.map(id => `Habitación ${id}`);
 const ram2 = window.roomAvailMap || {};
+if (selectedRoomNames2.length === 0) { selectedCheckOut = dateStr; selectingCheckIn = true; updateDateDisplay(); renderCalendar(); return; }
 const dayAfter = new Date(selectedCheckIn + "T00:00:00");
 dayAfter.setDate(dayAfter.getDate() + 1);
 for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate() + 1)) {
