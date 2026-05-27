@@ -1920,9 +1920,13 @@ const ROOMS_CONFIG = [
         }
         const ci = new Date(selectedCheckIn + 'T00:00:00');
         const co = new Date(selectedCheckOut + 'T00:00:00');
+        const selectedRoomNames = selectedRooms.map(id => `Habitación ${id}`);
+        const ram = window.roomAvailMap || {};
         for (let d = new Date(ci); d < co; d.setDate(d.getDate() + 1)) {
           const s = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-          if (bookedDates.includes(s)) return false;
+          for (const roomName of selectedRoomNames) {
+            if (ram[s]?.[roomName] === 'booked') return false;
+          }
         }
         return true;
       }
