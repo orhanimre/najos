@@ -905,6 +905,9 @@ html, body { overscroll-behavior: none; }
 
         .grid-2 { grid-template-columns: 1fr; }
         .step-container[data-step="2"] .grid-2 { grid-template-columns: 1fr 1fr; gap: 12px; }
+        .companion-card .grid-2 label { font-size: 12px; }
+        .companion-card .grid-2 select,
+        .companion-card .grid-2 input { font-size: 13px; padding: 10px 10px; padding-right: 30px; }
 
         .step-navigation { flex-direction: column-reverse; gap: 12px; margin-top: 30px; padding-top: 20px; }
         .nav-btn { padding: 14px 24px; font-size: 15px; }
@@ -1316,7 +1319,7 @@ html, body { overscroll-behavior: none; }
             <div class="form-group">
               <label for="edad">Edad</label>
               <select id="edad" name="edad">
-                <option value="">— Opcional —</option>
+                <option value="">Selecciona tu edad</option>
                 <option value="1">1 año</option>
                 <option value="2">2 años</option>
                 <option value="3">3 años</option>
@@ -1982,7 +1985,7 @@ const ROOMS_CONFIG = [
           <div class="form-group">
             <label>Edad</label>
             <select name="acomp${index}Edad" class="companion-field" data-companion="${index}">
-              <option value="">— Opcional —</option>
+              <option value="">Selecciona tu edad</option>
               <option value="1">1 año</option>
               <option value="2">2 años</option>
               <option value="3">3 años</option>
