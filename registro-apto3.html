@@ -1918,15 +1918,13 @@ const ROOMS_CONFIG = [
         if (!bookedDatesLoaded) {
           try { await loadBookedDates(); bookedDatesLoaded = true; } catch(e) { return true; }
         }
-        const ci = new Date(selectedCheckIn + 'T00:00:00');
-        const co = new Date(selectedCheckOut + 'T00:00:00');
         const selectedRoomNames = selectedRooms.map(id => `Habitación ${id}`);
         const ram = window.roomAvailMap || {};
+        const ci = new Date(selectedCheckIn + 'T00:00:00');
+        const co = new Date(selectedCheckOut + 'T00:00:00');
         for (let d = new Date(ci); d < co; d.setDate(d.getDate() + 1)) {
-          const s = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-          for (const roomName of selectedRoomNames) {
-            if (ram[s]?.[roomName] === 'booked') return false;
-          }
+          const s = toDateStr(d);
+          if (selectedRoomNames.every(rn => ram[s]?.[rn] === 'booked')) return false;
         }
         return true;
       }
@@ -2145,57 +2143,58 @@ const ROOMS_CONFIG = [
 
       async function loadBookedDates() {
     try {
-        const selectedRoomNames = selectedRooms.map(id => `Habitación ${id}`);
         const querySnapshot = await getDocs(
           query(collection(db, "cabin_availability"), where("apto", "==", "Apto Najos-3"))
         );
-        const relevantDocs = [];
-        querySnapshot.forEach(doc => {
-          const d = doc.data();
-          if (!d.fechaInicio || !d.fechaFin) return;
-          // Include if no habitacion (legacy) OR habitacion matches a selected room
-          if (!d.habitacion || selectedRoomNames.includes(d.habitacion)) relevantDocs.push(d);
-        });
-        bookedDates = [];
-        window.checkoutDates = []; window.checkinDates = []; window.middleDates = []; window.sharedDates = [];
-        const checkInDates  = relevantDocs.map(d => d.fechaInicio);
-        const checkOutDates = relevantDocs.map(d => d.fechaFin);
-        relevantDocs.forEach(d => {
-            const start = new Date(d.fechaInicio + "T00:00:00"); const end = new Date(d.fechaFin + "T00:00:00");
-            const isCheckInShared  = checkOutDates.includes(d.fechaInicio);
-            const isCheckOutShared = checkInDates.includes(d.fechaFin);
-            if (isCheckInShared) { if (!window.sharedDates.includes(d.fechaInicio)) window.sharedDates.push(d.fechaInicio); }
-            else { if (!window.checkinDates.includes(d.fechaInicio)) window.checkinDates.push(d.fechaInicio); }
-            for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
-                const s = toDateStr(dt);
-                if (s !== d.fechaInicio && s !== d.fechaFin && !window.middleDates.includes(s)) window.middleDates.push(s);
-            }
-            if (isCheckOutShared) { if (!window.sharedDates.includes(d.fechaFin)) window.sharedDates.push(d.fechaFin); }
-            else { if (!window.checkoutDates.includes(d.fechaFin)) window.checkoutDates.push(d.fechaFin); }
-            for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
-                const s = toDateStr(dt);
-                if (!bookedDates.includes(s)) bookedDates.push(s);
-            }
-            if (isCheckOutShared && !bookedDates.includes(d.fechaFin)) bookedDates.push(d.fechaFin);
-        });
 
-        // ── Build per-room availability map for ALL rooms (powers the dot indicators) ──
+        // Build per-room availability map for ALL rooms
         window.roomAvailMap = {};
         querySnapshot.forEach(docSnap => {
           const d = docSnap.data();
-          if (!d.fechaInicio || !d.fechaFin || !d.habitacion) return;
+          if (!d.fechaInicio || !d.fechaFin) return;
+          const roomsToMark = d.habitacion ? [d.habitacion] : ROOMS_CONFIG.map(r => r.name);
           const start = new Date(d.fechaInicio + "T00:00:00");
           const end   = new Date(d.fechaFin   + "T00:00:00");
           for (let dt = new Date(start); dt < end; dt.setDate(dt.getDate() + 1)) {
             const s = toDateStr(dt);
             if (!window.roomAvailMap[s]) window.roomAvailMap[s] = {};
-            window.roomAvailMap[s][d.habitacion] = 'booked';
+            roomsToMark.forEach(rn => { window.roomAvailMap[s][rn] = 'booked'; });
           }
+          // Mark checkout day
           if (!window.roomAvailMap[d.fechaFin]) window.roomAvailMap[d.fechaFin] = {};
-          window.roomAvailMap[d.fechaFin][d.habitacion] = 'booked';
+          roomsToMark.forEach(rn => {
+            if (!window.roomAvailMap[d.fechaFin][rn]) window.roomAvailMap[d.fechaFin][rn] = 'checkout';
+          });
         });
 
-        // Build / refresh the in-modal room picker
+        // Recompute flat calendar arrays based only on selected rooms.
+        // A date blocks the calendar only when ALL selected rooms are occupied that night.
+        const selectedRoomNames = selectedRooms.map(id => `Habitación ${id}`);
+        bookedDates = [];
+        window.checkoutDates = []; window.checkinDates = []; window.middleDates = []; window.sharedDates = [];
+
+        const today = new Date(); today.setHours(0,0,0,0);
+        const end6m = new Date(today.getFullYear(), today.getMonth() + 7, 1);
+        for (let dt = new Date(today); dt < end6m; dt.setDate(dt.getDate() + 1)) {
+          const s = toDateStr(dt);
+          const ram = window.roomAvailMap[s] || {};
+          const statuses = selectedRoomNames.map(rn => ram[rn]);
+          const allBooked   = statuses.every(st => st === 'booked');
+          const anyCheckout = statuses.some(st => st === 'checkout');
+          const allBlocked  = statuses.every(st => st === 'booked' || st === 'checkout');
+
+          if (allBooked) {
+            const prev = new Date(dt); prev.setDate(prev.getDate() - 1);
+            const prevRam = window.roomAvailMap[toDateStr(prev)] || {};
+            const prevAllBooked = selectedRoomNames.every(rn => prevRam[rn] === 'booked');
+            if (!prevAllBooked) window.checkinDates.push(s);
+            else window.middleDates.push(s);
+            bookedDates.push(s);
+          } else if (allBlocked && anyCheckout) {
+            window.checkoutDates.push(s);
+          }
+        }
+
         buildCalRoomPicker();
     } catch (err) { console.error("Error loading booked dates:", err); }
 }
@@ -2512,10 +2511,12 @@ const ROOMS_CONFIG = [
         } else {
           if (dateStr <= selectedCheckIn) { showToast("⚠️ La fecha de check-out debe ser después del check-in"); return; }
           let hasConflict = false;
+const selectedRoomNames2 = selectedRooms.map(id => `Habitación ${id}`);
+const ram2 = window.roomAvailMap || {};
 const dayAfter = new Date(selectedCheckIn + "T00:00:00");
 dayAfter.setDate(dayAfter.getDate() + 1);
 for (let d = dayAfter; d < new Date(dateStr + "T00:00:00"); d.setDate(d.getDate() + 1)) {
-    if (bookedDates.includes(toDateStr(d))) { hasConflict = true; break; }
+    if (selectedRoomNames2.every(rn => ram2[toDateStr(d)]?.[rn] === 'booked')) { hasConflict = true; break; }
 }
           if (hasConflict) { showToast("⚠️ Hay fechas reservadas en este rango. Por favor selecciona otras fechas."); return; }
           selectedCheckOut = dateStr; selectingCheckIn = true;
