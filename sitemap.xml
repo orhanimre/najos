@@ -1,43 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
-  <!-- Homepage - highest priority -->
   <url>
     <loc>https://aptonajos.com/</loc>
     <lastmod>2025-06-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://i.imgur.com/Bvh5FzZ.jpg</image:loc>
+      <image:title>Apartamento 2 – Apart Hotel Najos, San Carlos</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://i.imgur.com/rR8w3I0.jpg</image:loc>
+      <image:title>Apartamento 3 – Apart Hotel Najos, San Carlos</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://i.imgur.com/YKfbIGO.jpg</image:loc>
+      <image:title>Apartamento 4 – Apart Hotel Najos, San Carlos</image:title>
+    </image:image>
   </url>
 
-  <!-- Apartment pages -->
   <url>
     <loc>https://aptonajos.com/apto2.html</loc>
     <lastmod>2025-06-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://i.imgur.com/Bvh5FzZ.jpg</image:loc>
+      <image:title>Apartamento 2 – Apart Hotel Najos</image:title>
+    </image:image>
   </url>
+
   <url>
     <loc>https://aptonajos.com/apto3.html</loc>
     <lastmod>2025-06-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://i.imgur.com/rR8w3I0.jpg</image:loc>
+      <image:title>Apartamento 3 – Apart Hotel Najos</image:title>
+    </image:image>
   </url>
+
   <url>
     <loc>https://aptonajos.com/apto4.html</loc>
     <lastmod>2025-06-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://i.imgur.com/YKfbIGO.jpg</image:loc>
+      <image:title>Apartamento 4 – Apart Hotel Najos</image:title>
+    </image:image>
   </url>
 
-  <!-- Destination info page -->
   <url>
     <loc>https://aptonajos.com/san-carlos.html</loc>
     <lastmod>2025-06-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://i.imgur.com/K6YGUKb.jpg</image:loc>
+      <image:title>San Carlos, Antioquia – Charcos y Cascadas</image:title>
+    </image:image>
   </url>
 
-  <!-- About us -->
   <url>
     <loc>https://aptonajos.com/sobre-nosotros.html</loc>
     <lastmod>2025-06-01</lastmod>
