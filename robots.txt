@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Block admin and registration pages from indexing
+Disallow: /admin.html
+Disallow: /registro-apto2.html
+Disallow: /registro-apto3.html
+Disallow: /registro-apto4.html
+
+# Sitemap location
+Sitemap: https://aptonajos.com/sitemap.xml
